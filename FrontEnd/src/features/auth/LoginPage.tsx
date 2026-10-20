@@ -305,6 +305,51 @@ const LoginPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Quick Fill Test Accounts */}
+        <div className="pt-2 text-center">
+          <p className="text-[8px] font-mono text-zinc-400 dark:text-zinc-600 uppercase tracking-widest mb-2">
+            // CHỌN NHANH TÀI KHOẢN MẪU ĐỂ ĐĂNG NHẬP
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setMode('login')
+                setEmail('customer@geartech.vn')
+                setPassword('123456')
+                setErrorMsg(null)
+              }}
+              className="py-2 px-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 font-black text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer"
+            >
+              👑 Khách
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMode('login')
+                setEmail('shop@geartech.vn')
+                setPassword('123456')
+                setErrorMsg(null)
+              }}
+              className="py-2 px-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-500 font-black text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer"
+            >
+              🏬 Shop
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMode('login')
+                setEmail('admin@geartech.vn')
+                setPassword('123456')
+                setErrorMsg(null)
+              }}
+              className="py-2 px-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-[#ff4655] font-black text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer"
+            >
+              🛡️ Admin
+            </button>
+          </div>
+        </div>
+
       </motion.div>
     </div>
   )

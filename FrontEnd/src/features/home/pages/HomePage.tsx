@@ -1,5 +1,6 @@
-import React from 'react'
-import { motion } from 'motion/react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'motion/react'
 import { 
   Laptop,
   Desktop,
@@ -18,97 +19,124 @@ import {
   CaretDown,
   ShieldCheck,
   Wrench,
-  Truck
+  Truck,
+  ShoppingCart,
+  CheckCircle,
+  Clock,
+  Sparkle,
+  ArrowUpRight
 } from '@phosphor-icons/react'
-import { mockProducts } from '../../products/data/productsData'
+import { productService, type ProductItem } from '../../../services/productService'
+import { shopService, type ShopItem } from '../../../services/shopService'
+import { useCartStore } from '../../../store/cartStore'
+import { SafeProductImage } from '../../../components/common/ProductImage'
 import backgroundVideo from '../../../assets/video/BackgroundLoop.mp4'
 import lightHeroImage from '../../../assets/images/predator-helios-neo-16s-ai-phn16s-71-(agw)-banner-2560x1080-(DT).avif'
 import { formatPrice } from '../../../utils/format'
 
-const isImageUrl = (str: string) => {
-  if (!str) return false
-  return str.startsWith('http://') || str.startsWith('https://') || str.startsWith('/') || str.startsWith('data:image/')
-}
-
 interface Category {
   id: string;
   name: string;
+  slug: string;
   icon: React.ReactNode;
+  subtitle: string;
 }
 
 const HomePage: React.FC = () => {
-  // Tech categories (clean vector icons)
-  const categories: Category[] = [
-    { id: '1', name: 'LAPTOP & MACBOOK', icon: <Laptop size={26} /> },
-    { id: '2', name: 'PC & WORKSTATION', icon: <Desktop size={26} /> },
-    { id: '3', name: 'LINH KIỆN MÁY TÍNH', icon: <Cpu size={26} /> },
-    { id: '4', name: 'MÀN HÌNH ĐỒ HỌA', icon: <Monitor size={26} /> },
-    { id: '5', name: 'BÀN PHÍM CƠ', icon: <Keyboard size={26} /> },
-    { id: '6', name: 'CHUỘT GAMING', icon: <Mouse size={26} /> },
-    { id: '7', name: 'TAI NGHE CHỤP TAI', icon: <Headphones size={26} /> },
-    { id: '8', name: 'SMARTWATCH', icon: <Watch size={26} /> },
-    { id: '9', name: 'CỦ SẠC & DÂY CÁP', icon: <Plug size={26} /> },
-    { id: '10', name: 'PHỤ KIỆN HIGH-TECH', icon: <Lightning size={26} /> },
-  ]
+  const navigate = useNavigate()
 
-  // Filter flash sale products
-  const flashSaleProducts = mockProducts.slice(0, 5)
+  // Real data states from Backend API
+  const [allProducts, setAllProducts] = useState<ProductItem[]>([])
+  const [featuredShops, setFeaturedShops] = useState<ShopItem[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Recommended Products
-  const recommendProducts = mockProducts.slice(4, 10)
+  // Interactive Category Filter on Homepage
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>('all')
 
-  // Featured Tech Shops
-  const featuredShops = [
-    {
-      id: 'shop1',
-      name: 'APPLE MALL',
-      category: 'MacBook & Apple Ecosystem',
-      rating: '4.9',
-      followers: '1.2M',
-      logo: '🍎',
-      bgClass: 'from-zinc-900 via-zinc-950 to-black text-white border-zinc-800'
-    },
-    {
-      id: 'shop2',
-      name: 'ASUS ROG ZONE',
-      category: 'ROG Laptop & Gaming Hardware',
-      rating: '4.9',
-      followers: '450K',
-      logo: '👹',
-      bgClass: 'from-red-950/20 via-zinc-950 to-black text-white border-red-500/20'
-    },
-    {
-      id: 'shop3',
-      name: 'LOGITECH G LAB',
-      category: 'Lightspeed Gear & Gaming Mice',
-      rating: '4.9',
-      followers: '680K',
-      logo: '👾',
-      bgClass: 'from-blue-950/20 via-zinc-950 to-black text-white border-blue-500/20'
-    },
-    {
-      id: 'shop4',
-      name: 'KEYCHRON LABS',
-      category: 'Custom Keyboards & Accessories',
-      rating: '4.9',
-      followers: '85K',
-      logo: '⌨️',
-      bgClass: 'from-amber-950/20 via-zinc-950 to-black text-white border-amber-500/20'
+  // Flash Sale Live Ticking Countdown
+  const [timeLeft, setTimeLeft] = useState({ hours: 2, minutes: 45, seconds: 18 })
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 }
+        if (prev.minutes > 0) return { ...prev, minutes: 59, seconds: 59 }
+        if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 }
+        return { hours: 2, minutes: 59, seconds: 59 }
+      })
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Cart Add Toast Notification
+  const [addedToast, setAddedToast] = useState<string | null>(null)
+  const handleAddToCart = async (e: React.MouseEvent, prod: ProductItem) => {
+    e.stopPropagation()
+    try {
+      await useCartStore.getState().addItem(prod)
+      setAddedToast(`Đã thêm "${prod.title}" vào giỏ hàng!`)
+      setTimeout(() => setAddedToast(null), 2500)
+    } catch {
+      // ignore
     }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true)
+        const [productRes, shopRes] = await Promise.all([
+          productService.getProducts({ limit: 20 }),
+          shopService.getShops()
+        ])
+        if (productRes && Array.isArray(productRes.products)) {
+          setAllProducts(productRes.products)
+        }
+        if (Array.isArray(shopRes)) {
+          setFeaturedShops(shopRes)
+        }
+      } catch (err) {
+        console.error('Lỗi tải dữ liệu trang chủ:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  // Tech categories with clean tags
+  const categories: Category[] = [
+    { id: '1', name: 'LAPTOP & MACBOOK', slug: 'laptops', icon: <Laptop size={24} />, subtitle: 'Gaming & AI' },
+    { id: '2', name: 'PC & WORKSTATION', slug: 'desktops', icon: <Desktop size={24} />, subtitle: 'Đồ họa & Render' },
+    { id: '3', name: 'LINH KIỆN MÁY TÍNH', slug: 'components', icon: <Cpu size={24} />, subtitle: 'CPU, VGA, RAM' },
+    { id: '4', name: 'MÀN HÌNH ĐỒ HỌA', slug: 'monitors', icon: <Monitor size={24} />, subtitle: '240Hz, 4K HDR' },
+    { id: '5', name: 'BÀN PHÍM CƠ', slug: 'peripherals', icon: <Keyboard size={24} />, subtitle: 'Custom & Wireless' },
+    { id: '6', name: 'CHUỘT GAMING', slug: 'peripherals', icon: <Mouse size={24} />, subtitle: 'Siêu nhẹ & 8KHz' },
+    { id: '7', name: 'TAI NGHE CHỤP TAI', slug: 'audio', icon: <Headphones size={24} />, subtitle: 'Hi-Res Spatial' },
+    { id: '8', name: 'SMARTWATCH', slug: 'smart-devices', icon: <Watch size={24} />, subtitle: 'Đo sức khỏe' },
+    { id: '9', name: 'CỦ SẠC & DÂY CÁP', slug: 'accessories', icon: <Plug size={24} />, subtitle: 'GaN 140W' },
+    { id: '10', name: 'PHỤ KIỆN HIGH-TECH', slug: 'accessories', icon: <Lightning size={24} />, subtitle: 'Stream & Setup' },
   ]
+
+  // Filter flash sale products from real API
+  const flashSaleProducts = allProducts.slice(0, 5)
+
+  // Filtered Showcase Products
+  const showcaseProducts = activeCategoryFilter === 'all' 
+    ? allProducts.slice(0, 8) 
+    : allProducts.filter(p => p.category?.toLowerCase() === activeCategoryFilter.toLowerCase()).slice(0, 8)
 
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: 0.05 }
+      transition: { staggerChildren: 0.04 }
     }
   }
 
   const itemVariants = {
     hidden: { opacity: 0, y: 15 },
-    show: { opacity: 1, y: 0, transition: { type: 'tween', ease: 'easeOut', duration: 0.3 } }
+    show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' as const } }
   }
 
   return (
@@ -205,70 +233,232 @@ const HomePage: React.FC = () => {
 
       </section>
 
-      {/* 2. Scrollable Body Content */}
-      <div id="main-content" className="max-w-full px-6 lg:px-12 py-12 space-y-12 bg-grid-pattern">
+      {/* ========================================================================= */}
+      {/* 2. INFINITE CYBER MARQUEE (Chuyển động liên tục êm ái phong cách Hi-Tech) */}
+      {/* ========================================================================= */}
+      <div className="relative w-full overflow-hidden border-y border-zinc-200 dark:border-zinc-800/80 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md py-3.5 shadow-sm z-20">
+        <div className="animate-marquee flex items-center gap-12 whitespace-nowrap text-[10px] font-black uppercase tracking-[0.22em] text-zinc-700 dark:text-zinc-200">
+          {/* Loop 1 */}
+          <span className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <ShieldCheck size={15} className="text-emerald-500" />
+            100% CHÍNH HÃNG GEARTECH CERTIFIED
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+          <span className="flex items-center gap-2">
+            <Lightning size={15} className="text-[#ff4655]" />
+            GIAO HỎA TỐC 2H NỘI THÀNH
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+          <span className="flex items-center gap-2">
+            <Sparkle size={15} className="text-yellow-500" />
+            TRẢ GÓP LÃI SUẤT 0% THỦ TỤC 5 PHÚT
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+          <span className="flex items-center gap-2">
+            <Wrench size={15} className="text-blue-500" />
+            ĐẶC QUYỀN 1 ĐỔI 1 TRONG 30 NGÀY
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+          <span className="flex items-center gap-2">
+            <Flame size={15} className="text-[#ff4655]" />
+            HỆ SINH THÁI CHIẾN ĐẤU ESPORTS ĐỈNH CAO
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+
+          {/* Loop 2 Duplicate for continuous loop */}
+          <span className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <ShieldCheck size={15} className="text-emerald-500" />
+            100% CHÍNH HÃNG GEARTECH CERTIFIED
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+          <span className="flex items-center gap-2">
+            <Lightning size={15} className="text-[#ff4655]" />
+            GIAO HỎA TỐC 2H NỘI THÀNH
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+          <span className="flex items-center gap-2">
+            <Sparkle size={15} className="text-yellow-500" />
+            TRẢ GÓP LÃI SUẤT 0% THỦ TỤC 5 PHÚT
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+          <span className="flex items-center gap-2">
+            <Wrench size={15} className="text-blue-500" />
+            ĐẶC QUYỀN 1 ĐỔI 1 TRONG 30 NGÀY
+          </span>
+          <span className="text-[#ff4655] font-mono">//</span>
+          <span className="flex items-center gap-2">
+            <Flame size={15} className="text-[#ff4655]" />
+            HỆ SINH THÁI CHIẾN ĐẤU ESPORTS ĐỈNH CAO
+          </span>
+        </div>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 3. SCROLLABLE BODY CONTENT (Hero Banner ở trên được giữ nguyên 100%)       */}
+      {/* ========================================================================= */}
+      <div id="main-content" className="max-w-full px-6 lg:px-12 py-12 space-y-16 bg-grid-pattern">
         
-        {/* Tech Features Row */}
+        {/* SECTION A: CYBER PODS - 3 TRỤ CỘT DỊCH VỤ CÔNG NGHỆ */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
           
           <motion.div 
-            whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.3)' }}
-            className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-850 rounded-md p-6 flex flex-col justify-between min-h-[160px] shadow-sm dark:shadow-lg relative group transition-all duration-300"
+            whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.6)' }}
+            className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
           >
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded bg-[#ff4655]/10 border border-[#ff4655]/20 flex items-center justify-center text-[#ff4655]">
-                  <Wrench size={16} weight="fill" />
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ff4655]"></div>
+            <div className="space-y-3 pl-2">
+              <div className="flex items-center justify-between">
+                <span className="w-10 h-10 rounded-lg bg-[#ff4655]/10 border border-[#ff4655]/30 flex items-center justify-center text-[#ff4655] shadow-sm group-hover:scale-105 transition-transform">
+                  <Wrench size={20} weight="fill" />
                 </span>
-                <span className="text-[9px] font-black uppercase tracking-widest text-[#ff4655]">// THIẾT KẾ CẤU HÌNH</span>
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-[#ff4655]/10 text-[#ff4655] border border-[#ff4655]/30 uppercase">
+                  LÃI SUẤT 0%
+                </span>
               </div>
-              <h3 className="text-lg font-black tracking-tight uppercase text-zinc-900 dark:text-white mt-2">Build PC Trả Góp 0%</h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold">Tự do build PC Gaming, Workstation đồ họa. Xét duyệt hồ sơ online cực nhanh, hỗ trợ trả góp lãi suất 0%.</p>
+              <div>
+                <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-[#ff4655] transition-colors">
+                  Build PC & Cấu Hình Đồ Họa
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
+                  Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.
+                </p>
+              </div>
             </div>
-            <div className="absolute right-6 bottom-6 text-2xl opacity-10 group-hover:opacity-60 transition-opacity">🖥️</div>
+            <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-[#ff4655] tracking-wider">
+              <span>BẮT ĐẦU BUILD NGAY</span>
+              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+            </div>
           </motion.div>
 
           <motion.div 
-            whileHover={{ y: -5, borderColor: 'rgba(59, 130, 246, 0.3)' }}
-            className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-850 rounded-md p-6 flex flex-col justify-between min-h-[160px] shadow-sm dark:shadow-lg relative group transition-all duration-300"
+            whileHover={{ y: -5, borderColor: 'rgba(37, 99, 235, 0.6)' }}
+            className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
           >
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                  <ShieldCheck size={16} weight="fill" />
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
+            <div className="space-y-3 pl-2">
+              <div className="flex items-center justify-between">
+                <span className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 shadow-sm group-hover:scale-105 transition-transform">
+                  <ShieldCheck size={20} weight="fill" />
                 </span>
-                <span className="text-[9px] font-black uppercase tracking-widest text-blue-400">// CHÍNH SÁCH BẢO HÀNH</span>
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-blue-500/10 text-blue-500 border border-blue-500/30 uppercase">
+                  30 NGÀY VIP
+                </span>
               </div>
-              <h3 className="text-lg font-black tracking-tight uppercase text-zinc-900 dark:text-white mt-2">Bảo Hành 1 Đổi 1</h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold">An tâm tuyệt đối với đặc quyền 1 đổi 1 trong vòng 30 ngày cho mọi dòng Laptop, linh kiện phần cứng nếu gặp lỗi sản xuất.</p>
+              <div>
+                <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-blue-500 transition-colors">
+                  Bảo Hành 1 Đổi 1 Tận Nơi
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
+                  Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.
+                </p>
+              </div>
             </div>
-            <div className="absolute right-6 bottom-6 text-2xl opacity-10 group-hover:opacity-60 transition-opacity">🛡️</div>
+            <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-blue-500 tracking-wider">
+              <span>TRA CỨU BẢO HÀNH</span>
+              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+            </div>
           </motion.div>
 
           <motion.div 
-            whileHover={{ y: -5, borderColor: 'rgba(34, 197, 94, 0.3)' }}
-            className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-850 rounded-md p-6 flex flex-col justify-between min-h-[160px] shadow-sm dark:shadow-lg relative group transition-all duration-300"
+            whileHover={{ y: -5, borderColor: 'rgba(16, 185, 129, 0.6)' }}
+            className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
           >
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                  <Truck size={16} weight="fill" />
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
+            <div className="space-y-3 pl-2">
+              <div className="flex items-center justify-between">
+                <span className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 shadow-sm group-hover:scale-105 transition-transform">
+                  <Truck size={20} weight="fill" />
                 </span>
-                <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400">// GIAO HÀNG SIÊU TỐC</span>
+                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 uppercase">
+                  SIÊU TỐC 2H
+                </span>
               </div>
-              <h3 className="text-lg font-black tracking-tight uppercase text-zinc-900 dark:text-white mt-2">Giao Hàng Hỏa Tốc 2H</h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-semibold">Hỗ trợ giao hàng hỏa tốc trong vòng 2 giờ nội thành cho các đơn hàng linh kiện, chuột bàn phím cơ và tai nghe.</p>
+              <div>
+                <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-emerald-500 transition-colors">
+                  Giao Hàng Hỏa Tốc & Miễn Phí
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
+                  Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.
+                </p>
+              </div>
             </div>
-            <div className="absolute right-6 bottom-6 text-2xl opacity-10 group-hover:opacity-60 transition-opacity">⚡</div>
+            <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-emerald-500 tracking-wider">
+              <span>XEM CHÍNH SÁCH SHIP</span>
+              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+            </div>
           </motion.div>
 
         </section>
 
-        {/* Categories Section */}
+        {/* SECTION B: BỘ SƯU TẬP CHIẾN HẠM 2026 (DUAL BATTLE STATION PROMO BANNERS) */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {/* Banner 1: ROG & MSI Gaming Arena */}
+          <div 
+            onClick={() => navigate('/ProductPage?category=desktops')}
+            className="group relative overflow-hidden rounded-2xl p-7 bg-gradient-to-br from-zinc-950 via-zinc-900 to-black border border-zinc-800 hover:border-[#ff4655]/70 transition-all duration-300 cursor-pointer shadow-lg flex flex-col justify-between min-h-[230px]"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff4655]/15 rounded-full blur-3xl group-hover:bg-[#ff4655]/25 transition-all pointer-events-none"></div>
+            <div className="relative z-10 space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded bg-[#ff4655] text-white text-[9px] font-black uppercase tracking-widest shadow-sm">
+                  ROG // TITAN SERIES 2026
+                </span>
+                <span className="text-[10px] font-mono font-bold text-zinc-400">FPS 240+ RAY TRACING</span>
+              </div>
+              <h3 className="text-xl font-black uppercase text-white tracking-tight group-hover:text-[#ff4655] transition-colors max-w-md">
+                CHIẾN HẠM PC GAMING ĐỈNH CAO THI ĐẤU ESPORTS
+              </h3>
+              <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
+                Trang bị cấu hình GeForce RTX 4090, Intel Core Ultra 9 và bo mạch chủ ROG Strix tối tân nhất.
+              </p>
+            </div>
+            <div className="relative z-10 pt-4 flex items-center justify-between">
+              <span className="text-xs font-black text-[#ff4655] uppercase tracking-wider">Giá từ 28.990.000₫</span>
+              <span className="px-4 py-2 bg-white text-zinc-950 group-hover:bg-[#ff4655] group-hover:text-white rounded text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center gap-1.5">
+                Khám phá ngay <ArrowUpRight size={13} weight="bold" />
+              </span>
+            </div>
+          </div>
+
+          {/* Banner 2: AI Workstation & Watercooling */}
+          <div 
+            onClick={() => navigate('/ProductPage?category=components')}
+            className="group relative overflow-hidden rounded-2xl p-7 bg-gradient-to-br from-zinc-950 via-zinc-900 to-[#071324] border border-zinc-800 hover:border-blue-500/70 transition-all duration-300 cursor-pointer shadow-lg flex flex-col justify-between min-h-[230px]"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/15 rounded-full blur-3xl group-hover:bg-blue-500/25 transition-all pointer-events-none"></div>
+            <div className="relative z-10 space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 rounded bg-blue-600 text-white text-[9px] font-black uppercase tracking-widest shadow-sm">
+                  AI WORKSTATION & CUSTOM WATERCOOL
+                </span>
+                <span className="text-[10px] font-mono font-bold text-zinc-400">RENDER 8K // TRAINING AI</span>
+              </div>
+              <h3 className="text-xl font-black uppercase text-white tracking-tight group-hover:text-blue-400 transition-colors max-w-md">
+                HỆ THỐNG ĐỒ HỌA CHUYÊN NGHIỆP & TẢN NƯỚC ĐỘC BẢN
+              </h3>
+              <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
+                Hỗ trợ Dual GPU, tản nhiệt nước ống đồng mạ niken tối ưu nhiệt độ hoạt động 24/7 không giới hạn.
+              </p>
+            </div>
+            <div className="relative z-10 pt-4 flex items-center justify-between">
+              <span className="text-xs font-black text-blue-400 uppercase tracking-wider">Tùy biến theo yêu cầu</span>
+              <span className="px-4 py-2 bg-white text-zinc-950 group-hover:bg-blue-600 group-hover:text-white rounded text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center gap-1.5">
+                Nhận tư vấn <ArrowUpRight size={13} weight="bold" />
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION C: 10 PHÂN KHU CHUYÊN SÂU - MODERN TECH GLASS PODS */}
         <section className="space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-800/80">
-            <span className="w-1.5 h-4 bg-[#ff4655]"></span>
-            <h3 className="text-xs font-black tracking-[0.2em] text-zinc-800 dark:text-white uppercase">// DANH MỤC THIẾT BỊ</h3>
+          <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center gap-2.5">
+              <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
+              <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">// DANH MỤC THIẾT BỊ CÔNG NGHỆ CHUYÊN SÂU</h3>
+            </div>
+            <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider hidden sm:inline">10 PHÂN KHU THI ĐẤU</span>
           </div>
           
           <motion.div 
@@ -281,73 +471,290 @@ const HomePage: React.FC = () => {
               <motion.div
                 key={cat.id}
                 variants={itemVariants}
-                whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.4)' }}
-                className="bg-white dark:bg-zinc-900/30 border border-zinc-200 dark:border-zinc-850 rounded-sm p-4 flex flex-col items-center justify-center text-center cursor-pointer shadow-sm hover:shadow-neon transition-all duration-200"
+                whileHover={{ y: -5, scale: 1.02 }}
+                onClick={() => navigate(`/ProductPage?category=${cat.slug}`)}
+                className="bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/60 hover:shadow-[0_0_20px_rgba(255,70,85,0.25)] rounded-xl p-3.5 flex flex-col items-center justify-between text-center cursor-pointer shadow-sm transition-all duration-300 group min-h-[125px]"
               >
-                <div className="w-12 h-12 rounded-sm bg-zinc-50 dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 text-[#ff4655] flex items-center justify-center mb-3">
+                <div className="w-11 h-11 rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/80 text-[#ff4655] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#ff4655] group-hover:text-white transition-all shadow-inner">
                   {cat.icon}
                 </div>
-                <span className="text-[10px] font-black text-zinc-600 dark:text-zinc-400 leading-tight uppercase tracking-wider">
-                  {cat.name}
-                </span>
+                <div className="mt-2 space-y-0.5">
+                  <span className="text-[10px] font-black text-zinc-800 dark:text-zinc-200 leading-tight uppercase tracking-wider block group-hover:text-[#ff4655] transition-colors line-clamp-1">
+                    {cat.name}
+                  </span>
+                  <span className="text-[8px] font-mono text-zinc-400 dark:text-zinc-500 block uppercase">
+                    {cat.subtitle}
+                  </span>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </section>
 
-        {/* Flash Sale Section */}
-        <section className="bg-white dark:bg-zinc-900/20 border border-zinc-200 dark:border-zinc-800/80 rounded-md p-6 shadow-sm dark:shadow-xl relative overflow-hidden">
+        {/* SECTION D: GIỜ VÀNG CHIẾN ĐẤU (FLASH SALE CYBER HUD) */}
+        <section className="bg-white dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm dark:shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-0 w-2 h-full bg-[#ff4655]"></div>
 
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-zinc-250 dark:border-zinc-800/50 pl-2">
-            <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-7 h-7 rounded-sm bg-[#ff4655] text-white animate-pulse">
-                <Flame size={16} weight="fill" />
+          {/* Cyber HUD Header */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-zinc-200 dark:border-zinc-800/80 pl-2">
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#ff4655] text-white shadow-[0_0_15px_rgba(255,70,85,0.5)] animate-pulse">
+                <Flame size={18} weight="fill" />
               </span>
-              <h3 className="text-sm font-black tracking-widest text-zinc-900 dark:text-white uppercase">
-                // GIỜ VÀNG CHIẾN ĐẤU // PHÂN KHU HẠ NHIỆT
-              </h3>
-              <div className="flex items-center gap-1.5 ml-2">
-                <span className="bg-yellow-500/10 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 text-[10px] px-2 py-1 rounded-sm font-bold border border-yellow-500/20">02</span>
-                <span className="text-zinc-650 dark:text-zinc-500 font-bold">:</span>
-                <span className="bg-yellow-500/10 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 text-[10px] px-2 py-1 rounded-sm font-bold border border-yellow-500/20">14</span>
-                <span className="text-zinc-655 dark:text-zinc-500 font-bold">:</span>
-                <span className="bg-yellow-500/10 dark:bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 text-[10px] px-2 py-1 rounded-sm font-bold border border-yellow-500/20">35</span>
+              <div>
+                <h3 className="text-sm font-black tracking-widest text-zinc-900 dark:text-white uppercase flex items-center gap-2">
+                  // GIỜ VÀNG CHIẾN ĐẤU // FLASH DEALS
+                </h3>
+                <span className="text-[10px] text-zinc-400 font-mono">CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ</span>
               </div>
+
+              {/* HUD Live Countdown */}
+              <div className="flex items-center gap-1.5 sm:ml-4 bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+                <Clock size={14} className="text-[#ff4655]" weight="bold" />
+                <span className="text-[10px] font-mono font-bold text-zinc-500 uppercase mr-1">KẾT THÚC TRONG:</span>
+                <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+                  {String(timeLeft.hours).padStart(2, '0')}
+                </span>
+                <span className="text-[#ff4655] font-black">:</span>
+                <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+                  {String(timeLeft.minutes).padStart(2, '0')}
+                </span>
+                <span className="text-[#ff4655] font-black">:</span>
+                <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+                  {String(timeLeft.seconds).padStart(2, '0')}
+                </span>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => navigate('/ProductPage?search=sale')}
+              className="text-xs font-black text-[#ff4655] hover:text-[#e03d4b] uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+            >
+              Xem toàn bộ ưu đãi &raquo;
+            </button>
+          </div>
+
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="h-72 bg-zinc-100 dark:bg-zinc-900/60 rounded-xl animate-pulse border border-zinc-200 dark:border-zinc-800" />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {flashSaleProducts.map((prod) => (
+                <motion.div 
+                  key={prod._id || prod.id} 
+                  whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.5)' }}
+                  onClick={() => navigate(`/product/${prod._id || prod.id}`)}
+                  className="group bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/90 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                >
+                  <div className="h-44 bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center text-4xl relative border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden">
+                    <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    
+                    {/* Badge Giảm Giá Góc Gaming */}
+                    <span className="absolute top-2.5 left-2.5 bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded-sm shadow-md flex items-center gap-1">
+                      <Flame size={10} weight="fill" />
+                      {prod.discount || '-15%'}
+                    </span>
+
+                    {/* Quick Add Button */}
+                    <button
+                      onClick={(e) => handleAddToCart(e, prod)}
+                      title="Thêm vào giỏ hàng ngay"
+                      className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-lg bg-zinc-900/80 hover:bg-[#ff4655] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-md backdrop-blur-sm cursor-pointer"
+                    >
+                      <ShoppingCart size={15} weight="bold" />
+                    </button>
+                  </div>
+
+                  <div className="p-4 space-y-3">
+                    <div className="flex items-center gap-1.5">
+                      <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 uppercase">
+                        {prod.categoryName || prod.category}
+                      </span>
+                      {prod.brand && (
+                        <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-purple-500/10 text-purple-500 border border-purple-500/20 uppercase">
+                          {prod.brand}
+                        </span>
+                      )}
+                    </div>
+
+                    <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-200 line-clamp-2 min-h-[32px] group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
+                      {prod.title}
+                    </h4>
+
+                    {/* Progress Bar Bán Chạy */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-[9px] font-mono font-bold text-zinc-400">
+                        <span className="text-[#ff4655] flex items-center gap-0.5">
+                          <Flame size={10} weight="fill" /> ĐÃ BÁN 75%
+                        </span>
+                        <span>SẴN HÀNG</span>
+                      </div>
+                      <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-amber-500 to-[#ff4655] rounded-full w-[75%] animate-pulse"></div>
+                      </div>
+                    </div>
+
+                    {/* Price Block */}
+                    <div className="pt-1">
+                      <div className="flex items-baseline gap-2">
+                        <span className="current-price text-sm font-black text-[#ff4655]">{formatPrice(prod.price)}</span>
+                        {prod.oldPrice && (
+                          <span className="old-price text-[10px] text-zinc-400 line-through">{formatPrice(prod.oldPrice)}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </section>
+
+        {/* SECTION E: BỘ LỌC CẤU HÌNH THEO NGÂN SÁCH (QUICK BUDGET CONFIGURATOR WIDGET) */}
+        <section className="p-6 bg-gradient-to-r from-zinc-900/90 via-zinc-950/90 to-zinc-900/90 border border-zinc-800 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-1 text-center md:text-left">
+            <span className="text-[10px] font-mono font-black text-[#ff4655] uppercase tracking-widest">// CẤU HÌNH THEO TÚI TIỀN</span>
+            <h4 className="text-base font-black uppercase text-white tracking-wider">
+              BẠN ĐANG TÌM CẤU HÌNH THEO MỨC NGÂN SÁCH NÀO?
+            </h4>
+            <p className="text-xs text-zinc-400">
+              Chọn mức giá dự kiến để xem ngay các bộ PC & Laptop tối ưu hiệu năng tốt nhất trong tầm giá.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2.5">
+            {[
+              { label: '< 15 Triệu', desc: 'Esports LOL/Valorant', max: 15000000 },
+              { label: '15 - 25 Triệu', desc: 'Stream & AAA 1080p', min: 15000000, max: 25000000 },
+              { label: '25 - 45 Triệu', desc: '2K 165Hz & Đồ họa', min: 25000000, max: 45000000 },
+              { label: '> 45 Triệu', desc: '4K Ray Tracing & AI', min: 45000000 }
+            ].map((budget, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  let query = '/ProductPage?'
+                  if (budget.min) query += `minPrice=${budget.min}&`
+                  if (budget.max) query += `maxPrice=${budget.max}`
+                  navigate(query)
+                }}
+                className="px-4 py-2.5 bg-zinc-800/80 hover:bg-[#ff4655] border border-zinc-700/80 hover:border-[#ff4655] rounded-xl text-left transition-all cursor-pointer group shadow-sm"
+              >
+                <span className="text-xs font-black text-white group-hover:text-white block uppercase tracking-wider">
+                  {budget.label}
+                </span>
+                <span className="text-[9px] font-mono text-zinc-400 group-hover:text-white/80 block">
+                  {budget.desc}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION F: SHOWCASE SẢN PHẨM CÔNG NGHỆ CHỌN LỌC (INTERACTIVE TABS) */}
+        <section className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center gap-2.5">
+              <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
+              <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">
+                // BỘ SƯU TẬP THIẾT BỊ HÀNG ĐẦU // FLAGSHIP SERIES
+              </h3>
+            </div>
+
+            {/* Category Filter Pills on Homepage */}
+            <div className="flex flex-wrap items-center gap-1.5">
+              {[
+                { id: 'all', label: 'TẤT CẢ' },
+                { id: 'laptops', label: 'LAPTOP' },
+                { id: 'desktops', label: 'PC & WORKSTATION' },
+                { id: 'components', label: 'LINH KIỆN' },
+                { id: 'peripherals', label: 'GEAR CHIẾN ĐẤU' },
+                { id: 'monitors', label: 'MÀN HÌNH' }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveCategoryFilter(tab.id)}
+                  className={`px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                    activeCategoryFilter === tab.id
+                      ? 'bg-[#ff4655] text-white shadow-[0_0_12px_rgba(255,70,85,0.4)]'
+                      : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-zinc-800'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {flashSaleProducts.map((prod) => (
+          {/* Grid Products with Quick Add to Cart */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {showcaseProducts.map((prod) => (
               <motion.div 
-                key={prod.id} 
-                whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.3)' }}
-                className="group bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-850 rounded-sm overflow-hidden shadow-sm hover:shadow-neon transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                key={prod._id || prod.id} 
+                whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.45)' }}
+                onClick={() => navigate(`/product/${prod._id || prod.id}`)}
+                className="group bg-white dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between relative"
               >
-                <div className="h-44 bg-zinc-50 dark:bg-zinc-900/40 flex items-center justify-center text-4xl relative border-b border-zinc-155 dark:border-zinc-900 overflow-hidden">
-                  {isImageUrl(prod.imageEmoji) ? (
-                    <img src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-350" />
-                  ) : (
-                    prod.imageEmoji
-                  )}
+                <div className="h-44 bg-zinc-50 dark:bg-zinc-900/60 flex items-center justify-center text-3xl border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden relative">
+                  <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  
                   {prod.discount && (
-                    <span className="absolute top-3 right-3 bg-yellow-500 text-black text-[10px] font-black px-2 py-0.5 rounded-sm shadow-[0_0_10px_rgba(234,179,8,0.4)]">
+                    <span className="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-mono font-black px-1.5 py-0.5 rounded shadow">
                       {prod.discount}
                     </span>
                   )}
+
+                  {/* Star Rating Badge */}
+                  <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
+                    <Star size={10} weight="fill" /> {prod.rating || 5.0}
+                  </span>
                 </div>
-                <div className="p-4 space-y-3">
-                  <h4 className="text-xs font-bold text-zinc-850 dark:text-zinc-300 line-clamp-2 min-h-[32px] group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
-                    {prod.title}
-                  </h4>
-                  <div className="space-y-1">
-                    <div className="flex items-baseline gap-2">
-                      <span className="current-price text-sm font-extrabold text-[#ff4655] text-glow">{formatPrice(prod.price)}</span>
-                      {prod.oldPrice && (
-                        <span className="old-price text-[10px] text-zinc-400 line-through">{formatPrice(prod.oldPrice)}</span>
+
+                <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 uppercase">
+                        {prod.categoryName || prod.category}
+                      </span>
+                      {prod.brand && (
+                        <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-blue-500/10 text-blue-500 border border-blue-500/20 uppercase">
+                          {prod.brand}
+                        </span>
                       )}
                     </div>
-                    <span className="text-[10px] font-bold text-zinc-500 block uppercase tracking-wider">{prod.salesCount}</span>
+
+                    <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
+                      {prod.title}
+                    </h4>
+
+                    <p className="text-[10px] text-zinc-400 font-mono">
+                      Kho: <strong className="text-zinc-900 dark:text-white">{prod.stock}</strong> cái | SKU: {prod.sku || 'CHÍNH HÃNG'}
+                    </p>
+                  </div>
+
+                  {/* Price and Add to Cart Action */}
+                  <div className="pt-2 border-t border-zinc-100 dark:border-zinc-900 flex items-center justify-between gap-2">
+                    <div>
+                      <span className="text-sm font-black text-[#ff4655] block">
+                        {formatPrice(prod.price)}
+                      </span>
+                      {prod.oldPrice && (
+                        <span className="text-[9px] text-zinc-400 line-through block">
+                          {formatPrice(prod.oldPrice)}
+                        </span>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={(e) => handleAddToCart(e, prod)}
+                      title="Thêm vào giỏ"
+                      className="px-2.5 py-1.5 bg-zinc-900 dark:bg-zinc-800 hover:bg-[#ff4655] text-white text-[10px] font-black rounded uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer"
+                    >
+                      <ShoppingCart size={13} weight="bold" />
+                      <span>+ Giỏ</span>
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -355,43 +762,50 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Featured Tech Brands / Allied Partners */}
+        {/* SECTION G: ĐỐI TÁC CÔNG NGHỆ LIÊN MINH (ALLIED PARTNERS) */}
         <section className="space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-800/80">
-            <span className="w-1.5 h-4 bg-[#ff4655]"></span>
-            <h3 className="text-xs font-black tracking-[0.2em] text-zinc-800 dark:text-white uppercase">// ĐỐI TÁC CÔNG NGHỆ LIÊN MINH</h3>
+          <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="flex items-center gap-2.5">
+              <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
+              <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">// ĐỐI TÁC CÔNG NGHỆ LIÊN MINH</h3>
+            </div>
+            <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider hidden sm:inline">100% GIAN HÀNG CHÍNH HÃNG</span>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {featuredShops.map((shop) => (
               <motion.div
-                key={shop.id}
-                whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.3)' }}
-                className={`relative overflow-hidden rounded-md bg-gradient-to-br ${shop.bgClass} p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:shadow-neon border transition-all duration-300 cursor-pointer group`}
+                key={shop._id}
+                whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.5)' }}
+                onClick={() => navigate(`/shop/${shop._id || shop.id}`)}
+                className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${shop.bgClass || 'from-zinc-900 to-black'} p-5 flex flex-col justify-between min-h-[170px] shadow-sm hover:shadow-xl border border-zinc-800 transition-all duration-300 cursor-pointer group text-white`}
               >
                 <div className="absolute right-0 bottom-0 text-7xl opacity-5 group-hover:scale-110 transition-transform duration-300 select-none">
                   {shop.logo}
                 </div>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-9 h-9 rounded-sm bg-white/10 flex items-center justify-center text-xl backdrop-blur-sm shrink-0 border border-white/10">
+                  <div className="flex items-center gap-3">
+                    <span className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center text-2xl backdrop-blur-sm shrink-0 border border-white/10 shadow-inner group-hover:scale-105 transition-transform">
                       {shop.logo}
                     </span>
                     <div>
-                      <h4 className="text-xs font-black tracking-wider uppercase text-white">{shop.name}</h4>
+                      <div className="flex items-center gap-1.5">
+                        <h4 className="text-xs font-black tracking-wider uppercase text-white group-hover:text-[#ff4655] transition-colors">{shop.name}</h4>
+                        <CheckCircle size={12} weight="fill" className="text-blue-400" />
+                      </div>
                       <p className="text-[9px] text-zinc-400 font-semibold uppercase mt-0.5">{shop.category}</p>
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center pt-4 border-t border-zinc-900/30 mt-2 z-10">
+                <div className="flex justify-between items-center pt-4 border-t border-white/10 mt-2 z-10">
                   <div className="flex gap-3 text-[10px] font-bold">
-                    <span className="flex items-center gap-0.5 text-amber-500">
-                      <Star size={11} weight="fill" /> {shop.rating}
+                    <span className="flex items-center gap-1 text-amber-400">
+                      <Star size={12} weight="fill" /> {shop.rating || 5.0}
                     </span>
-                    <span className="text-zinc-500 uppercase tracking-wide">{shop.followers} Follower</span>
+                    <span className="text-zinc-400 uppercase tracking-wide">{shop.followers || '1.2K'} Follower</span>
                   </div>
-                  <span className="text-[9px] font-black bg-white text-zinc-950 group-hover:bg-[#ff4655] group-hover:text-white px-3 py-1.5 rounded-sm transition-all uppercase tracking-widest">
-                    Ghé thăm
+                  <span className="text-[9px] font-black bg-white text-zinc-950 group-hover:bg-[#ff4655] group-hover:text-white px-3 py-1.5 rounded transition-all uppercase tracking-widest shadow-sm flex items-center gap-1">
+                    Ghé thăm <ArrowUpRight size={11} weight="bold" />
                   </span>
                 </div>
               </motion.div>
@@ -399,48 +813,61 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Recommended Products Section */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-zinc-200 dark:border-zinc-800/80">
-            <span className="w-1.5 h-4 bg-[#ff4655]"></span>
-            <h3 className="text-xs font-black tracking-[0.2em] text-zinc-800 dark:text-white uppercase">// ĐỀ XUẤT THIẾT BỊ HÔM NAY</h3>
+        {/* SECTION H: LÝ DO HÀNG NGHÌN GAME THỦ CHỌN GEARTECH */}
+        <section className="bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-8">
+          <div className="text-center max-w-xl mx-auto space-y-2 mb-8">
+            <span className="text-[10px] font-mono font-black text-[#ff4655] uppercase tracking-widest">// VÌ SAO CHỌN CHÚNG TÔI</span>
+            <h3 className="text-xl font-black uppercase text-zinc-900 dark:text-white tracking-wider">
+              TIÊU CHUẨN GEARTECH ESPORTS CERTIFIED
+            </h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              Mỗi thiết bị phân phối đều trải qua quy trình kiểm tra gắt gao về nhiệt độ, độ bền và tính tương thích phần mềm thi đấu.
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {recommendProducts.map((prod) => (
-              <motion.div 
-                key={prod.id} 
-                whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.3)' }}
-                className="group bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-850 rounded-sm overflow-hidden shadow-sm hover:shadow-neon transition-all duration-300 cursor-pointer flex flex-col justify-between"
-              >
-                <div className="h-40 bg-zinc-50 dark:bg-zinc-900/40 flex items-center justify-center text-3xl border-b border-zinc-150 dark:border-zinc-900 overflow-hidden">
-                  {isImageUrl(prod.imageEmoji) ? (
-                    <img src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-350" />
-                  ) : (
-                    prod.imageEmoji
-                  )}
-                </div>
-                <div className="p-3.5 space-y-2">
-                  <h4 className="text-xs font-bold text-zinc-700 dark:text-zinc-400 line-clamp-2 min-h-[32px] group-hover:text-zinc-900 dark:group-hover:text-white transition-colors uppercase tracking-wide">
-                    {prod.title}
-                  </h4>
-                  <div className="space-y-0.5">
-                    <span className="text-sm font-extrabold text-[#ff4655] text-glow block">
-                      {formatPrice(prod.price)}
-                    </span>
-                    <span className="text-[10px] font-bold text-zinc-500 block uppercase tracking-wider">
-                      {prod.salesCount}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div className="p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl space-y-1">
+              <span className="text-2xl font-black text-[#ff4655] block">50,000+</span>
+              <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200 block uppercase">Game thủ & Khách hàng</span>
+              <span className="text-[9px] text-zinc-400 block">Tin dùng trên toàn quốc</span>
+            </div>
+            <div className="p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl space-y-1">
+              <span className="text-2xl font-black text-blue-500 block">100%</span>
+              <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200 block uppercase">Chính Hãng Nhập Khẩu</span>
+              <span className="text-[9px] text-zinc-400 block">Full VAT & CO/CQ</span>
+            </div>
+            <div className="p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl space-y-1">
+              <span className="text-2xl font-black text-emerald-500 block">64</span>
+              <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200 block uppercase">Tỉnh Thành Vận Chuyển</span>
+              <span className="text-[9px] text-zinc-400 block">Bảo hiểm 100% hàng hóa</span>
+            </div>
+            <div className="p-4 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl space-y-1">
+              <span className="text-2xl font-black text-amber-500 block">4.9 / 5.0</span>
+              <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200 block uppercase">Đánh Giá Hài Lòng</span>
+              <span className="text-[9px] text-zinc-400 block">Từ hơn 12,000 lượt review</span>
+            </div>
           </div>
         </section>
 
       </div>
+
+      {/* Floating Add to Cart Toast Feedback */}
+      <AnimatePresence>
+        {addedToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 30 }}
+            className="fixed bottom-6 right-6 z-50 bg-zinc-900 text-white px-5 py-3 rounded-lg shadow-2xl border border-zinc-700 flex items-center gap-3 text-xs font-bold backdrop-blur-md"
+          >
+            <CheckCircle size={18} className="text-emerald-400" weight="fill" />
+            <span>{addedToast}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
 
 export default HomePage
+

@@ -1,24 +1,20 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { 
-  mockProducts 
-} from '../data/productsData'
+import { productService, type ProductItem } from '../../../services/productService'
+import { categoryService } from '../../../services/categoryService'
+import { brandService, type BrandItem } from '../../../services/brandService'
 import { formatPrice } from '../../../utils/format'
 import { 
   Funnel, 
   Star, 
   Trash, 
   CaretLeft, 
-  CaretRight,
+  CaretRight, 
   ArrowsDownUp,
   MagnifyingGlass
 } from '@phosphor-icons/react'
-
-const isImageUrl = (str: string) => {
-  if (!str) return false
-  return str.startsWith('http://') || str.startsWith('https://') || str.startsWith('/') || str.startsWith('data:image/')
-}
+import { SafeProductImage } from '../../../components/common/ProductImage'
 
 export default function ProductListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -36,7 +32,25 @@ export default function ProductListPage() {
       }
       return prev
     }, { replace: true })
+    setCurrentPage(1)
   }
+
+  // Brand Filter State - Yêu cầu 3.4
+  const brandQuery = searchParams.get('brand') || 'all'
+  const selectedBrand = brandQuery
+  const setSelectedBrand = (val: string) => {
+    setSearchParams(prev => {
+      if (val === 'all') {
+        prev.delete('brand')
+      } else {
+        prev.set('brand', val)
+      }
+      return prev
+    }, { replace: true })
+    setCurrentPage(1)
+  }
+  const [brandsList, setBrandsList] = useState<BrandItem[]>([])
+
   const [minPrice, setMinPrice] = useState<string>('')
   const [maxPrice, setMaxPrice] = useState<string>('')
   const [selectedRating, setSelectedRating] = useState<number | null>(null)
@@ -44,14 +58,18 @@ export default function ProductListPage() {
   // Sort State
   const [sortBy, setSortBy] = useState<string>('popular') // popular, priceAsc, priceDesc, reviews
 
-  // Pagination State
+  // Real Database Products & Pagination State
+  const [products, setProducts] = useState<ProductItem[]>([])
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [totalCount, setTotalCount] = useState<number>(0)
+  const [loading, setLoading] = useState<boolean>(true)
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const itemsPerPage = 6
+  const itemsPerPage = 9
 
-  // Categories list
-  const categoriesList = [
+  // Default categories list fallback
+  const defaultCategories = [
     { value: 'all', label: 'TẤT CẢ SẢN PHẨM' },
-    {value : 'brand', label: 'Hãng máy'},
+    { value: 'brand', label: 'Hãng máy' },
     { value: 'laptops', label: 'LAPTOP & MACBOOK' },
     { value: 'desktops', label: 'PC & WORKSTATION' },
     { value: 'components', label: 'LINH KIỆN MÁY TÍNH' },
@@ -61,53 +79,66 @@ export default function ProductListPage() {
     { value: 'smart-devices', label: 'THIẾT BỊ THÔNG MINH' },
     { value: 'accessories', label: 'PHỤ KIỆN CÔNG NGHỆ' }
   ]
+  const [categoriesList, setCategoriesList] = useState(defaultCategories)
 
-  // Filter & Sort Logic
-  const filteredProducts = useMemo(() => {
-    let result = [...mockProducts]
+  // Fetch dynamic categories from Backend API
+  useEffect(() => {
+    categoryService.getCategories()
+      .then(cats => {
+        if (Array.isArray(cats) && cats.length > 0) {
+          const dynamicCats = [
+            { value: 'all', label: 'TẤT CẢ SẢN PHẨM' },
+            { value: 'brand', label: 'Hãng máy' },
+            ...cats.map(c => ({ value: c.slug, label: c.name.toUpperCase() }))
+          ]
+          setCategoriesList(dynamicCats)
+        }
+      })
+      .catch(err => console.error('Lỗi nạp danh mục động:', err))
+  }, [])
 
-    // 1. Search Query Filter
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim()
-      result = result.filter(p => 
-        p.title.toLowerCase().includes(q) || 
-        p.categoryName.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
-      )
+  // Fetch dynamic brands from Backend API - Yêu cầu 3.4
+  useEffect(() => {
+    brandService.getBrands()
+      .then(bList => {
+        if (Array.isArray(bList)) {
+          setBrandsList(bList)
+        }
+      })
+      .catch(err => console.error('Lỗi nạp danh sách thương hiệu:', err))
+  }, [])
+
+  // Fetch real data from Backend API
+  useEffect(() => {
+    let isMounted = true
+    const fetchProducts = async () => {
+      try {
+        setLoading(true)
+        const data = await productService.getProducts({
+          search: searchQuery || undefined,
+          category: selectedCategory !== 'all' ? selectedCategory : undefined,
+          brand: selectedBrand !== 'all' ? selectedBrand : undefined,
+          minPrice: minPrice || undefined,
+          maxPrice: maxPrice || undefined,
+          rating: selectedRating || undefined,
+          sortBy,
+          page: currentPage,
+          limit: itemsPerPage
+        })
+        if (isMounted && data) {
+          setProducts(data.products || [])
+          setTotalPages(data.totalPages || 1)
+          setTotalCount(data.total || 0)
+        }
+      } catch (error) {
+        console.error('Lỗi tải sản phẩm từ backend:', error)
+      } finally {
+        if (isMounted) setLoading(false)
+      }
     }
-
-    // 2. Category Filter
-    if (selectedCategory !== 'all') {
-      result = result.filter(p => p.category === selectedCategory)
-    }
-
-    // 3. Price Filter
-    if (minPrice) {
-      result = result.filter(p => p.price >= Number(minPrice))
-    }
-    if (maxPrice) {
-      result = result.filter(p => p.price <= Number(maxPrice))
-    }
-
-    // 4. Rating Filter
-    if (selectedRating !== null) {
-      result = result.filter(p => p.rating >= selectedRating)
-    }
-
-    // 5. Sorting Logic
-    if (sortBy === 'priceAsc') {
-      result.sort((a, b) => a.price - b.price)
-    } else if (sortBy === 'priceDesc') {
-      result.sort((a, b) => b.price - a.price)
-    } else if (sortBy === 'reviews') {
-      result.sort((a, b) => b.reviewsCount - a.reviewsCount)
-    } else {
-      // popular / rating
-      result.sort((a, b) => b.rating - a.rating)
-    }
-
-    return result
-  }, [selectedCategory, minPrice, maxPrice, selectedRating, sortBy, searchQuery])
+    fetchProducts()
+    return () => { isMounted = false }
+  }, [searchQuery, selectedCategory, selectedBrand, minPrice, maxPrice, selectedRating, sortBy, currentPage])
 
   // Reset all filters
   const handleResetFilters = () => {
@@ -118,13 +149,6 @@ export default function ProductListPage() {
     setCurrentPage(1)
     setSearchParams({})
   }
-
-  // Pagination Logic
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
-  const paginatedProducts = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage
-    return filteredProducts.slice(start, start + itemsPerPage)
-  }, [filteredProducts, currentPage])
 
 
   const renderStars = (rating: number) => {
@@ -150,7 +174,7 @@ export default function ProductListPage() {
       {searchQuery && (
         <div className="bg-[#ff4655]/10 border border-[#ff4655]/20 text-[#ff4655] p-4 rounded flex items-center justify-between shadow-[0_0_15px_rgba(255,70,85,0.05)]">
           <p className="text-xs font-black uppercase tracking-wider flex items-center gap-2">
-            <MagnifyingGlass size={16} /> // KẾT QUẢ TÌM KIẾM CHO: <span className="underline text-zinc-900 dark:text-white font-black">"{searchQuery}"</span> // ({filteredProducts.length} THIẾT BỊ)
+            <MagnifyingGlass size={16} /> // KẾT QUẢ TÌM KIẾM CHO: <span className="underline text-zinc-900 dark:text-white font-black">"{searchQuery}"</span> // ({totalCount || products.length} THIẾT BỊ)
           </p>
           <button 
             onClick={handleResetFilters}
@@ -173,7 +197,7 @@ export default function ProductListPage() {
                 <Funnel size={12} className="text-[#ff4655]" /> BỘ LỌC THIẾT BỊ
               </h3>
             </div>
-            {(selectedCategory !== 'all' || minPrice || maxPrice || selectedRating !== null || searchQuery) && (
+            {(selectedCategory !== 'all' || selectedBrand !== 'all' || minPrice || maxPrice || selectedRating !== null || searchQuery) && (
               <button 
                 onClick={handleResetFilters}
                 className="text-[9px] font-black tracking-widest text-red-500 hover:text-red-400 transition-colors flex items-center gap-1 uppercase"
@@ -202,6 +226,48 @@ export default function ProductListPage() {
                   }`}
                 >
                   {selectedCategory === cat.value ? `[x] ${cat.label}` : `[ ] ${cat.label}`}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Brands Filter - Yêu cầu 3.4 */}
+          <div className="space-y-3 pt-4 border-t border-zinc-100 dark:border-zinc-900 pl-1">
+            <div className="flex items-center justify-between">
+              <h4 className="text-[8px] font-mono text-zinc-400 dark:text-zinc-600 uppercase tracking-widest">// BRANDS_ALLIANCE</h4>
+              {selectedBrand !== 'all' && (
+                <button
+                  onClick={() => setSelectedBrand('all')}
+                  className="text-[8px] font-mono text-red-500 hover:underline uppercase"
+                >
+                  [Bỏ lọc]
+                </button>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-1.5">
+              <button
+                onClick={() => setSelectedBrand('all')}
+                className={`text-[8px] text-center px-2 py-2 rounded font-black uppercase tracking-wider border transition-all ${
+                  selectedBrand === 'all'
+                    ? 'bg-[#ff4655] text-white border-[#ff4655] shadow-sm shadow-[#ff4655]/20'
+                    : 'bg-zinc-50 dark:bg-zinc-900/40 border-zinc-200 dark:border-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
+                }`}
+              >
+                TẤT CẢ
+              </button>
+              {brandsList.map((b) => (
+                <button
+                  key={b._id || b.slug}
+                  onClick={() => setSelectedBrand(b.slug)}
+                  className={`text-[8px] flex items-center justify-center gap-1 px-2 py-2 rounded font-black uppercase tracking-wider border transition-all ${
+                    selectedBrand === b.slug
+                      ? 'bg-[#ff4655] text-white border-[#ff4655] shadow-sm shadow-[#ff4655]/20'
+                      : 'bg-zinc-50 dark:bg-zinc-900/40 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                  }`}
+                  title={b.description || b.name}
+                >
+                  <span>{b.logo || '🏷️'}</span>
+                  <span className="truncate">{b.name}</span>
                 </button>
               ))}
             </div>
@@ -280,7 +346,7 @@ export default function ProductListPage() {
           {/* Sorting / Meta Header */}
           <div className="bg-white dark:bg-zinc-950/60 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 rounded-3xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm dark:shadow-xl">
             <span className="text-[10px] font-black uppercase text-zinc-400 dark:text-zinc-500 tracking-wider">
-              HIỂN THỊ {filteredProducts.length === 0 ? '0' : `${(currentPage - 1) * itemsPerPage + 1} - ${Math.min(currentPage * itemsPerPage, filteredProducts.length)}`} TRONG {filteredProducts.length} THIẾT BỊ
+              HIỂN THỊ {totalCount === 0 ? '0' : `${(currentPage - 1) * itemsPerPage + 1} - ${Math.min(currentPage * itemsPerPage, totalCount)}`} TRONG {totalCount} THIẾT BỊ
             </span>
 
             {/* Sort Controls */}
@@ -325,7 +391,11 @@ export default function ProductListPage() {
 
           {/* Product Grid */}
           <AnimatePresence mode="popLayout">
-            {paginatedProducts.length === 0 ? (
+            {loading ? (
+              <div className="p-16 text-center text-xs font-bold text-zinc-400">
+                Đang tải danh sách thiết bị công nghệ...
+              </div>
+            ) : products.length === 0 ? (
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -345,47 +415,47 @@ export default function ProductListPage() {
             ) : (
               <motion.div 
                 layout
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
               >
-                {paginatedProducts.map((prod) => (
+                {products.map((prod) => (
                   <motion.div
                     layout
-                    key={prod.id}
-                    whileHover={{ y: -6, borderColor: 'rgba(255, 70, 85, 0.3)' }}
-                    transition={{ type: 'spring' as const, stiffness: 100 }}
-                    className="group bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-850 rounded-2xl overflow-hidden shadow-sm hover:shadow-neon transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                    key={prod._id || prod.id}
+                    whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.4)' }}
+                    transition={{ type: 'spring' as const, stiffness: 120 }}
+                    className="group bg-white dark:bg-zinc-950/70 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col justify-between"
                   >
-                    <Link to={`/product/${prod.id}`}>
-                      <div className="h-44 bg-zinc-50 dark:bg-zinc-900/40 flex items-center justify-center text-4xl relative border-b border-zinc-150 dark:border-zinc-900 overflow-hidden">
-                        {isImageUrl(prod.imageEmoji) ? (
-                          <img src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-350" />
-                        ) : (
-                          prod.imageEmoji
-                        )}
+                    <Link to={`/product/${prod._id || prod.id}`}>
+                      <div className="h-48 bg-zinc-50 dark:bg-zinc-900/50 flex items-center justify-center text-4xl relative border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden">
+                        <SafeProductImage
+                          src={prod.imageEmoji}
+                          alt={prod.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
                         {prod.discount && (
-                          <span className="absolute top-3 right-3 bg-[#ff4655] text-white text-[10px] font-black px-2 py-0.5 rounded shadow-[0_0_10px_rgba(255,70,85,0.4)]">
+                          <span className="absolute top-3 right-3 bg-[#ff4655] text-white text-[10px] font-black px-2 py-0.5 rounded shadow">
                             {prod.discount}
                           </span>
                         )}
                       </div>
                       <div className="p-4 space-y-3">
-                        <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-300 line-clamp-2 min-h-[32px] group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
+                        <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-200 line-clamp-2 min-h-[32px] group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
                           {prod.title}
                         </h4>
                         <div className="space-y-1">
                           <div className="flex items-baseline gap-2">
-                            <span className="current-price text-sm font-extrabold text-[#ff4655] text-glow">{formatPrice(prod.price)}</span>
+                            <span className="current-price text-sm font-extrabold text-[#ff4655]">{formatPrice(prod.price)}</span>
                             {prod.oldPrice && (
                               <span className="old-price text-[10px] text-zinc-400 line-through">{formatPrice(prod.oldPrice)}</span>
                             )}
                           </div>
                           
-                          <div className="flex items-center justify-between pt-1 border-t border-zinc-100 dark:border-zinc-900/40 mt-1">
+                          <div className="flex items-center justify-between pt-1 border-t border-zinc-100 dark:border-zinc-800/60 mt-1">
                             <div className="flex items-center gap-0.5">
                               {renderStars(prod.rating)}
                               <span className="text-[10px] font-semibold text-amber-500 ml-1">{prod.rating}</span>
                             </div>
-                            <span className="text-[9px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{prod.salesCount}</span>
+                            <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{prod.salesCount || 'Chính hãng'}</span>
                           </div>
                         </div>
                       </div>

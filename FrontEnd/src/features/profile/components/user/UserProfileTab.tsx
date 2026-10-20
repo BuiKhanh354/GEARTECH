@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
-import { PencilSimple, FloppyDisk } from '@phosphor-icons/react'
+import { PencilSimple, FloppyDisk, Storefront, CheckCircle, X, Plus } from '@phosphor-icons/react'
+import { shopService } from '../../../../services/shopService'
 
 interface UserProfileTabProps {
   token: string | null;
@@ -21,6 +22,21 @@ export default function UserProfileTab({ token, currentUser, onRefresh }: UserPr
     address: '',
     gender: 'Nam',
     birthday: ''
+  })
+
+  // Trạng thái đơn xin mở gian hàng
+  const [showApplyModal, setShowApplyModal] = useState(false)
+  const [applying, setApplying] = useState(false)
+  const [applySuccess, setApplySuccess] = useState<string | null>(null)
+  const [applyError, setApplyError] = useState<string | null>(null)
+  const [applyForm, setApplyForm] = useState({
+    name: '',
+    description: '',
+    phone: '',
+    email: '',
+    address: '',
+    category: 'Gaming Hardware & Gear',
+    logo: '🏬'
   })
 
   // Sync state when currentUser changes (e.g. initial load)
@@ -62,6 +78,35 @@ export default function UserProfileTab({ token, currentUser, onRefresh }: UserPr
       setError(err.message)
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const handleApplyShop = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setApplyError(null)
+    setApplySuccess(null)
+    setApplying(true)
+
+    try {
+      const res = await shopService.applyShop({
+        name: applyForm.name,
+        description: applyForm.description,
+        phone: applyForm.phone || profileForm.phone,
+        email: applyForm.email || profileForm.email,
+        address: applyForm.address || profileForm.address,
+        category: applyForm.category,
+        logo: applyForm.logo
+      })
+
+      setApplySuccess(res.message || 'Yêu cầu mở gian hàng đã được gửi thành công!')
+      setShowApplyModal(false)
+      if (res.shop) {
+        onRefresh({ ...currentUser, shopId: res.shop._id || res.shop.id })
+      }
+    } catch (err: any) {
+      setApplyError(err.response?.data?.error || 'Có lỗi xảy ra khi gửi yêu cầu mở shop.')
+    } finally {
+      setApplying(false)
     }
   }
 
@@ -185,6 +230,155 @@ export default function UserProfileTab({ token, currentUser, onRefresh }: UserPr
           </div>
         </div>
       </div>
+
+      {/* Become a Shop Partner Card */}
+      <div className="pt-6 border-t border-zinc-100 dark:border-zinc-900">
+        <div className="p-5 rounded-xl bg-gradient-to-r from-zinc-900 to-black border border-zinc-800 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Storefront size={20} className="text-[#ff4655]" />
+              <h4 className="text-xs font-black uppercase tracking-wider">
+                TRỞ THÀNH ĐỐI TÁC GIAN HÀNG GEARTECH
+              </h4>
+            </div>
+            <p className="text-[11px] text-zinc-400 leading-relaxed max-w-xl">
+              Bạn là doanh nghiệp, đại lý bán lẻ thiết bị PC & Gaming? Gửi hồ sơ đăng ký mở gian hàng để tiếp cận hàng triệu khách hàng công nghệ trên toàn quốc.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setShowApplyModal(true)}
+            className="px-4 py-2.5 rounded-lg bg-[#ff4655] hover:bg-[#e03d4b] text-white font-black text-xs uppercase tracking-wider shrink-0 transition-all shadow-md shadow-[#ff4655]/30 cursor-pointer flex items-center justify-center gap-1.5"
+          >
+            <Plus size={14} weight="bold" />
+            Đăng ký mở shop
+          </button>
+        </div>
+
+        {applySuccess && (
+          <div className="mt-3 p-3 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-bold flex items-center gap-2">
+            <CheckCircle size={16} weight="fill" />
+            <span>{applySuccess}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Modal Đăng ký mở shop */}
+      {showApplyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div className="w-full max-w-lg bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 space-y-4 shadow-2xl relative">
+            <div className="flex justify-between items-center border-b border-zinc-200 dark:border-zinc-800 pb-3">
+              <div className="flex items-center gap-2">
+                <Storefront size={18} className="text-[#ff4655]" />
+                <h3 className="text-xs font-black uppercase text-zinc-900 dark:text-white tracking-wider">
+                  HỒ SƠ ĐĂNG KÝ GIAN HÀNG MỚI
+                </h3>
+              </div>
+              <button 
+                onClick={() => setShowApplyModal(false)}
+                className="p-1 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-full text-zinc-400 hover:text-zinc-600"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {applyError && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 text-[#ff4655] text-xs font-bold rounded">
+                ⚠️ {applyError}
+              </div>
+            )}
+
+            <form onSubmit={handleApplyShop} className="space-y-3">
+              <div>
+                <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Tên gian hàng *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="VD: ASUS ROG ZONE, KEYCHRON VIETNAM..."
+                  value={applyForm.name}
+                  onChange={(e) => setApplyForm({ ...applyForm, name: e.target.value })}
+                  className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white uppercase focus:outline-none focus:border-[#ff4655]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Emoji đại diện / Logo *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="VD: 👹, 💻, ⌨️ hoặc đường dẫn ảnh logo"
+                  value={applyForm.logo}
+                  onChange={(e) => setApplyForm({ ...applyForm, logo: e.target.value })}
+                  className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Phân khúc sản phẩm *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="VD: Bàn phím cơ Custom & Switch cao cấp"
+                  value={applyForm.category}
+                  onChange={(e) => setApplyForm({ ...applyForm, category: e.target.value })}
+                  className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Mô tả giới thiệu cửa hàng</label>
+                <textarea
+                  rows={2}
+                  placeholder="Giới thiệu về doanh nghiệp, xuất xứ hàng hóa, chính sách bảo hành..."
+                  value={applyForm.description}
+                  onChange={(e) => setApplyForm({ ...applyForm, description: e.target.value })}
+                  className="w-full text-xs px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Số điện thoại liên hệ</label>
+                  <input
+                    type="text"
+                    placeholder={profileForm.phone || '0901234567'}
+                    value={applyForm.phone}
+                    onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value })}
+                    className="w-full text-xs px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Địa chỉ trụ sở</label>
+                  <input
+                    type="text"
+                    placeholder={profileForm.address || 'Hà Nội, TP.HCM...'}
+                    value={applyForm.address}
+                    onChange={(e) => setApplyForm({ ...applyForm, address: e.target.value })}
+                    className="w-full text-xs px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-2 justify-end pt-3 border-t border-zinc-200 dark:border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setShowApplyModal(false)}
+                  className="px-4 py-2 text-xs font-bold uppercase rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  disabled={applying}
+                  className="px-5 py-2 text-xs font-black uppercase rounded bg-[#ff4655] hover:bg-[#e03d4b] text-white transition-all shadow-md shadow-[#ff4655]/20"
+                >
+                  {applying ? 'ĐANG GỬI...' : 'GỬI ĐƠN XÉT DUYỆT'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </motion.div>
   )
 }

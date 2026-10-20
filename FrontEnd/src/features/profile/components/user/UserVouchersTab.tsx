@@ -31,8 +31,15 @@ export default function UserVouchersTab({ dbVouchers }: UserVouchersTabProps) {
                 <span className="px-2 py-0.5 rounded-sm text-[8px] font-mono font-black bg-yellow-400/10 border border-yellow-400/30 text-yellow-500 tracking-widest uppercase">
                   CODE: {v.code}
                 </span>
-                <h4 className="text-xs font-bold text-zinc-800 dark:text-white leading-normal uppercase pt-1">{v.description}</h4>
-                <p className="text-[9px] text-zinc-400 dark:text-zinc-550 font-semibold pt-1">Đơn tối thiểu: {formatPrice(v.minOrderValue)}</p>
+                <h4 className="text-xs font-bold text-zinc-800 dark:text-white leading-normal uppercase pt-1">{v.description || v.name}</h4>
+                <div className="flex items-center gap-2 pt-1">
+                  <span className="text-[10px] font-black text-[#ff4655]">
+                    {(v.discount_type || v.discountType) === 'percentage' 
+                      ? `Giảm ${v.discountValue}% (Tối đa ${formatPrice(v.maxDiscount || 0)})` 
+                      : `Giảm ${formatPrice(v.discountValue)}`}
+                  </span>
+                  <span className="text-[9px] text-zinc-400 dark:text-zinc-550 font-semibold">• Đơn tối thiểu: {formatPrice(v.minOrderValue || 0)}</span>
+                </div>
               </div>
               <div className="flex justify-between items-center pt-3 border-t border-zinc-100 dark:border-zinc-900/60 mt-4">
                 <span className="text-[8px] font-mono text-zinc-400 dark:text-zinc-550">Hạn dùng: {v.expiryDate ? v.expiryDate.split('T')[0] : 'N/A'}</span>

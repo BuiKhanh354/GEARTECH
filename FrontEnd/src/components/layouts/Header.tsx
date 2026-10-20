@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { formatPrice } from '../../utils/format'
+import { useCartStore } from '../../store/cartStore'
 import { 
   MagnifyingGlass, 
   ShoppingCart, 
@@ -23,7 +24,9 @@ import {
   Plug,
   Lightning,
   Sun,
-  Moon
+  Moon,
+  ShieldCheck,
+  Storefront
 } from '@phosphor-icons/react'
 
 export default function Header() {
@@ -170,7 +173,7 @@ export default function Header() {
     }
   }
 
-  // Mock popular searches
+  // Popular searches
   const popularSearches = [
     'MacBook Pro M3',
     'RTX 4090 PC',
@@ -179,16 +182,13 @@ export default function Header() {
     'Sony WH-1000XM5'
   ]
 
-  // Mock cart items for preview
-  const cartItems = [
-    { id: 'tech-1', title: 'MacBook Pro M3 Max', price: 79990000, emoji: '💻', qty: 1 },
-    { id: 'tech-4', title: 'Keychron Q1 Pro', price: 4590000, emoji: '⌨️', qty: 1 }
-  ]
-
-  const totalCartPrice = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  // Real cart items from persistent Zustand store
+  const { items: cartItems, getTotalCount, getSubtotal } = useCartStore()
+  const totalCartCount = getTotalCount()
+  const totalCartPrice = getSubtotal()
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800/80 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md transition-colors duration-300">
+    <header className="sticky top-0 z-50 w-full border-b border-zinc-200 dark:border-zinc-800/80 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md transition-colors duration-300 shadow-sm dark:shadow-xl">
       <div className="max-w-full px-6 lg:px-12">
         <div className="flex h-16 items-center justify-between gap-4">
           
@@ -196,7 +196,7 @@ export default function Header() {
           <div className="flex items-center gap-6">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60 focus:outline-none transition-colors"
+              className="md:hidden p-2 rounded-xl text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 focus:outline-none transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={20} /> : <List size={20} />}
@@ -204,14 +204,14 @@ export default function Header() {
 
             <Link 
               to="/Trang-chu" 
-              className="group flex items-center gap-3.5 tracking-widest text-lg font-black uppercase text-zinc-900 dark:text-white hover:opacity-90 transition-opacity"
+              className="group flex items-center gap-3 tracking-widest text-lg font-black uppercase text-zinc-900 dark:text-white hover:opacity-95 transition-opacity"
             >
-              <span className="flex items-center justify-center w-9 h-9 rounded bg-[#ff4655] text-white shadow-[0_0_15px_rgba(255,70,85,0.4)] group-hover:scale-105 transition-transform duration-300">
+              <span className="flex items-center justify-center w-9 h-9 rounded bg-[#ff4655] text-white shadow-[0_0_15px_rgba(255,70,85,0.45)] group-hover:scale-105 transition-transform duration-300">
                 <GameController size={20} weight="fill" />
               </span>
               <div className="flex flex-col">
-                <span className="text-sm font-black tracking-[0.25em] leading-none text-zinc-900 dark:text-white dark:text-glow">GEARTECH</span>
-                <span className="text-[8px] font-bold tracking-[0.4em] text-[#ff4655] mt-1">VALORANT ED.</span>
+                <span className="text-sm font-black tracking-[0.22em] leading-none text-zinc-900 dark:text-white">GEARTECH</span>
+                <span className="text-[8px] font-bold tracking-[0.35em] text-[#ff4655] mt-1">VALORANT ED.</span>
               </div>
             </Link>
           </div>
@@ -224,12 +224,12 @@ export default function Header() {
                 value={searchQuery}
                 onFocus={() => setIsSearchFocused(true)}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="TÌM KIẾM THIẾT BỊ..."
-                className="w-full pl-5 pr-11 py-2 rounded bg-zinc-100 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs tracking-wider text-zinc-800 dark:text-white placeholder-zinc-450 dark:placeholder-zinc-550 focus:outline-none focus:bg-white dark:focus:bg-zinc-900 focus:ring-1 focus:ring-[#ff4655] focus:border-[#ff4655] transition-all duration-200 uppercase"
+                placeholder="Tìm kiếm thiết bị công nghệ, laptop, linh kiện..."
+                className="w-full pl-5 pr-11 py-2.5 rounded bg-zinc-100/90 dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 text-xs tracking-wider text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:bg-white dark:focus:bg-zinc-950 focus:ring-2 focus:ring-[#ff4655]/40 focus:border-[#ff4655] transition-all duration-200"
               />
               <button 
                 type="submit" 
-                className="absolute right-3.5 top-2.5 text-zinc-500 hover:text-[#ff4655] transition-colors"
+                className="absolute right-3.5 top-3 text-zinc-400 hover:text-[#ff4655] transition-colors"
               >
                 <MagnifyingGlass size={16} weight="bold" />
               </button>
@@ -243,10 +243,10 @@ export default function Header() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.15 }}
-                  className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded shadow-2xl z-10 py-3"
+                  className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-2xl z-30 py-3"
                 >
-                  <div className="px-4 py-1.5 text-[9px] font-black text-[#ff4655] uppercase tracking-widest">
-                    Tìm kiếm phổ biến
+                  <div className="px-4 py-1.5 text-[9px] font-black text-[#ff4655] uppercase tracking-widest flex items-center gap-1.5">
+                    <Lightning size={12} weight="fill" /> Tìm kiếm phổ biến
                   </div>
                   <div className="mt-1">
                     {popularSearches.map((term, index) => (
@@ -257,7 +257,7 @@ export default function Header() {
                           setIsSearchFocused(false)
                           navigate(`/ProductPage?search=${encodeURIComponent(term)}`)
                         }}
-                        className="w-full text-left px-4 py-2 text-xs font-semibold text-zinc-655 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900/60 flex items-center gap-2 transition-colors uppercase tracking-wider"
+                        className="w-full text-left px-4 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 transition-colors uppercase tracking-wider"
                       >
                         <MagnifyingGlass size={12} className="text-zinc-400 dark:text-zinc-500" />
                         {term}
@@ -274,7 +274,7 @@ export default function Header() {
             
             {/* Navigation Links */}
             <nav className="hidden md:flex items-center gap-6 mr-2">
-              <Link to="/Trang-chu" className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">
+              <Link to="/Trang-chu" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors">
                 Trang chủ
               </Link>
               
@@ -284,7 +284,7 @@ export default function Header() {
                 onMouseEnter={() => setCategoryHovered(true)}
                 onMouseLeave={() => setCategoryHovered(false)}
               >
-                <Link to="/ProductPage" className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-1">
+                <Link to="/ProductPage" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-1">
                   Danh Mục <CaretDown size={10} className={`transition-transform duration-200 ${categoryHovered ? 'rotate-180 text-[#ff4655]' : ''}`} />
                 </Link>
 
@@ -295,12 +295,12 @@ export default function Header() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.15 }}
-                      className="fixed top-16 left-0 w-full bg-white/98 dark:bg-zinc-950/98 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800/80 shadow-2xl z-40 py-8 px-6 lg:px-12"
+                      className="fixed top-16 left-0 w-full bg-white/98 dark:bg-zinc-950/98 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800 shadow-2xl z-40 py-8 px-6 lg:px-12"
                     >
                       <div className="max-w-7xl mx-auto grid grid-cols-12 gap-8">
                         {/* Left Pane: Vertical Categories List (3 cols) */}
-                        <div className="col-span-3 border-r border-zinc-200/80 dark:border-zinc-850 pr-6 space-y-1">
-                          <span className="text-[7px] font-mono text-zinc-450 dark:text-zinc-550 uppercase tracking-[0.25em] pl-2 block mb-2">// CATEGORY_TABS</span>
+                        <div className="col-span-3 border-r border-zinc-200 dark:border-zinc-800 pr-6 space-y-1">
+                          <span className="text-[8px] font-mono text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.25em] pl-2 block mb-2">// CATEGORIES</span>
                           {categoriesList.map((cat) => (
                             <button
                               key={cat.value}
@@ -311,10 +311,10 @@ export default function Header() {
                                 else if (cat.value === 'brand') navigate('/ProductPage')
                                 else navigate(`/ProductPage?category=${cat.value}`)
                               }}
-                              className={`w-full text-left px-3.5 py-2.5 rounded-xl font-black uppercase tracking-wider text-[10px] transition-all border-l-2 flex items-center gap-3.5 ${
+                              className={`w-full text-left px-3.5 py-2.5 rounded-lg font-black uppercase tracking-wider text-[10px] transition-all border-l-2 flex items-center gap-3.5 ${
                                 activeCategoryTab === cat.value
-                                  ? 'bg-[#ff4655]/5 text-[#ff4655] border-l-[#ff4655] border-y-zinc-900/5 dark:border-y-zinc-800/10'
-                                  : 'border-l-transparent text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 hover:text-zinc-900 dark:hover:text-white'
+                                  ? 'bg-[#ff4655]/10 text-[#ff4655] border-l-[#ff4655]'
+                                  : 'border-l-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-white'
                               }`}
                             >
                               <span className={activeCategoryTab === cat.value ? 'text-[#ff4655]' : 'text-zinc-400 dark:text-zinc-500'}>
@@ -331,9 +331,9 @@ export default function Header() {
                           {/* 1. Dynamic Brands Grid when Tab is "brand" */}
                           {activeCategoryTab === 'brand' && (
                             <div className="space-y-4">
-                              <div className="flex items-center gap-2 pb-2 border-b border-zinc-150 dark:border-zinc-900">
+                              <div className="flex items-center gap-2 pb-2 border-b border-zinc-100 dark:border-zinc-900">
                                 <span className="w-1.5 h-3.5 bg-[#ff4655]"></span>
-                                <span className="text-[9px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">HÃNG CÔNG NGHỆ HIỆN NAY // ALLIED BRAND ALLIANCE</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">THƯƠNG HIỆU HỢP TÁC HÀNG ĐẦU</span>
                               </div>
                               
                               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -342,16 +342,16 @@ export default function Header() {
                                     key={brand.name}
                                     to={`/ProductPage?search=${encodeURIComponent(brand.search)}`}
                                     onClick={() => setCategoryHovered(false)}
-                                    className="group p-4 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/30 dark:hover:bg-zinc-900/70 border border-zinc-200/60 dark:border-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-800/80 rounded-2xl transition-all duration-200 flex flex-col justify-between min-h-[90px] relative overflow-hidden"
+                                    className="group p-4 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/40 dark:hover:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 rounded-xl transition-all duration-200 flex flex-col justify-between min-h-[90px] relative overflow-hidden"
                                   >
                                     <div className="absolute right-2 bottom-0 text-5xl opacity-5 group-hover:scale-105 transition-transform select-none">{brand.logo}</div>
                                     <div className="flex items-center gap-2 z-10">
-                                      <span className="w-7 h-7 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-base flex items-center justify-center shrink-0 shadow-sm shadow-[#ff4655]/5">
+                                      <span className="w-7 h-7 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-base flex items-center justify-center shrink-0 shadow-sm">
                                         {brand.logo}
                                       </span>
                                       <h4 className="text-[10px] font-black text-zinc-900 dark:text-white uppercase tracking-wider group-hover:text-[#ff4655] transition-colors">{brand.name}</h4>
                                     </div>
-                                    <p className="text-[8px] text-zinc-500 font-semibold leading-normal capitalize tracking-wide mt-2 z-10">{brand.desc}</p>
+                                    <p className="text-[9px] text-zinc-500 dark:text-zinc-400 font-medium leading-normal mt-2 z-10">{brand.desc}</p>
                                   </Link>
                                 ))}
                               </div>
@@ -361,10 +361,10 @@ export default function Header() {
                           {/* 2. Sub-categories when Tab is not "brand" */}
                           {activeCategoryTab !== 'brand' && (
                             <div className="space-y-4">
-                              <div className="flex items-center gap-2 pb-2 border-b border-zinc-150 dark:border-zinc-900">
+                              <div className="flex items-center gap-2 pb-2 border-b border-zinc-100 dark:border-zinc-900">
                                 <span className="w-1.5 h-3.5 bg-[#ff4655]"></span>
-                                <span className="text-[9px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-                                  CHI TIẾT PHÂN KHU // {categoriesList.find(c => c.value === activeCategoryTab)?.label}
+                                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">
+                                  DANH MỤC THIẾT BỊ // {categoriesList.find(c => c.value === activeCategoryTab)?.label}
                                 </span>
                               </div>
                               
@@ -374,11 +374,11 @@ export default function Header() {
                                     key={sub.label}
                                     to={sub.to}
                                     onClick={() => setCategoryHovered(false)}
-                                    className="group p-4 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/30 dark:hover:bg-zinc-900/70 border border-zinc-200/60 dark:border-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-800/80 rounded-2xl transition-all duration-200 flex flex-col justify-between min-h-[90px] relative overflow-hidden text-left"
+                                    className="group p-4 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/40 dark:hover:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 rounded-xl transition-all duration-200 flex flex-col justify-between min-h-[90px] relative overflow-hidden text-left"
                                   >
                                     <div className="absolute right-2 bottom-0 text-5xl opacity-5 group-hover:scale-105 transition-transform select-none">{sub.icon}</div>
                                     <div className="flex items-center gap-2 z-10">
-                                      <span className="w-7 h-7 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-base flex items-center justify-center shrink-0 shadow-sm shadow-[#ff4655]/5">
+                                      <span className="w-7 h-7 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-base flex items-center justify-center shrink-0 shadow-sm">
                                         {sub.icon}
                                       </span>
                                       <h4 className="text-[10px] font-black text-zinc-900 dark:text-white uppercase tracking-wider group-hover:text-[#ff4655] transition-colors">{sub.label}</h4>
@@ -394,14 +394,14 @@ export default function Header() {
                                               setCategoryHovered(false)
                                               navigate(br.to)
                                             }}
-                                            className="px-1.5 py-0.5 rounded bg-zinc-200 hover:bg-[#ff4655] hover:text-white dark:bg-zinc-800 dark:hover:bg-[#ff4655] dark:hover:text-white text-zinc-700 dark:text-zinc-300 text-[8px] font-black uppercase tracking-wider transition-all cursor-pointer"
+                                            className="px-2 py-0.5 rounded bg-zinc-200 hover:bg-[#ff4655] hover:text-white dark:bg-zinc-800 dark:hover:bg-[#ff4655] dark:hover:text-white text-zinc-700 dark:text-zinc-300 text-[9px] font-black uppercase tracking-wider transition-all cursor-pointer"
                                           >
                                             {br.name}
                                           </button>
                                         ))}
                                       </div>
                                     ) : (
-                                      <span className="text-[8px] font-black text-[#ff4655] mt-3 group-hover:underline flex items-center gap-1 z-10 uppercase tracking-widest">
+                                      <span className="text-[9px] font-black text-[#ff4655] mt-3 group-hover:underline flex items-center gap-1 z-10 uppercase tracking-widest">
                                         Khám phá &raquo;
                                       </span>
                                     )}
@@ -418,18 +418,18 @@ export default function Header() {
                   )}
                 </AnimatePresence>
               </div>
-              <Link to="/tintuc" className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">
+              <Link to="/tintuc" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors">
                 Tin tức
               </Link>
-              <Link to="/about" className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">
-                Chúng tôi là ai
+              <Link to="/about" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors">
+                Chúng tôi
               </Link>
-              <Link to="/Cua-hang" className="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white font-bold text-xs uppercase tracking-widest transition-colors">
-                Cửa hàng
+              <Link to="/Cua-hang" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors">
+                Cửa Hàng & Shop
               </Link>
             </nav>
 
-            {/* Glowing Cart Icon with Preview Dropdown */}
+            {/* Cart Icon with Preview Dropdown */}
             <div 
               className="relative"
               onMouseEnter={() => setCartHovered(true)}
@@ -437,11 +437,11 @@ export default function Header() {
             >
               <Link 
                 to="/cart" 
-                className="p-2.5 rounded text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-white flex items-center justify-center relative transition-all active:scale-95"
+                className="p-2.5 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-[#ff4655] dark:hover:text-white flex items-center justify-center relative transition-all active:scale-95"
               >
-                <ShoppingCart size={18} />
+                <ShoppingCart size={19} weight="bold" />
                 <span className="absolute top-1 right-1 bg-[#ff4655] text-white rounded-full text-[9px] w-4 h-4 flex items-center justify-center font-black shadow-[0_0_10px_rgba(255,70,85,0.6)]">
-                  {cartItems.length}
+                  {totalCartCount}
                 </span>
               </Link>
 
@@ -453,40 +453,46 @@ export default function Header() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.98 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-1 w-80 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded shadow-2xl z-35 py-4"
+                    className="absolute right-0 mt-1 w-80 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl z-35 py-4"
                   >
                     <div className="px-4 pb-3 border-b border-zinc-100 dark:border-zinc-900 flex justify-between items-center">
-                      <span className="text-[9px] font-black text-[#ff4655] uppercase tracking-widest">GIỎ HÀNG CỦA BẠN</span>
-                      <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400">{cartItems.length} sản phẩm</span>
+                      <span className="text-[10px] font-black text-[#ff4655] uppercase tracking-widest">GIỎ HÀNG CỦA BẠN</span>
+                      <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400">{totalCartCount} sản phẩm</span>
                     </div>
                     
                     {/* Cart preview list */}
                     <div className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-900">
-                      {cartItems.map((item) => (
-                        <div key={item.id} className="p-4 flex items-start gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors">
-                          <div className="w-10 h-10 rounded bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-xl shrink-0 border border-zinc-200 dark:border-zinc-800">
-                            {item.emoji}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-xs font-bold text-zinc-900 dark:text-white truncate">{item.title}</h4>
-                            <p className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-1">SL: {item.qty}</p>
-                          </div>
-                          <div className="text-xs font-black text-[#ff4655]">
-                            {formatPrice(item.price)}
-                          </div>
+                      {cartItems.length === 0 ? (
+                        <div className="p-6 text-center text-xs text-zinc-400">
+                          Giỏ hàng của bạn đang trống
                         </div>
-                      ))}
+                      ) : (
+                        cartItems.map((item) => (
+                          <div key={item.id} className="p-4 flex items-start gap-3 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 transition-colors">
+                            <div className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-900 flex items-center justify-center text-xl shrink-0 border border-zinc-200 dark:border-zinc-800">
+                              {item.imageEmoji}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-xs font-bold text-zinc-900 dark:text-white truncate">{item.title}</h4>
+                              <p className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-1">SL: {item.quantity}</p>
+                            </div>
+                            <div className="text-xs font-black text-[#ff4655]">
+                              {formatPrice(item.price)}
+                            </div>
+                          </div>
+                        ))
+                      )}
                     </div>
 
                     {/* Cart preview footer */}
                     <div className="px-4 pt-3 border-t border-zinc-100 dark:border-zinc-900 flex items-center justify-between mt-1">
                       <div>
-                        <p className="text-[9px] text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">Tổng tiền:</p>
+                        <p className="text-[9px] text-zinc-400 uppercase tracking-wider">Tổng cộng:</p>
                         <p className="text-sm font-black text-zinc-900 dark:text-white">{formatPrice(totalCartPrice)}</p>
                       </div>
                       <Link 
                         to="/cart"
-                        className="bg-[#ff4655] hover:bg-[#e03d4b] text-white px-4 py-2 rounded text-xs font-black uppercase tracking-wider transition-all shadow-[0_0_10px_rgba(255,70,85,0.3)] hover:shadow-[0_0_20px_rgba(255,70,85,0.5)] active:scale-95"
+                        className="bg-[#ff4655] hover:bg-[#e03d4b] text-white px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all shadow-[0_0_12px_rgba(255,70,85,0.4)] active:scale-95"
                       >
                         Thanh toán
                       </Link>
@@ -499,13 +505,13 @@ export default function Header() {
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
+              className="p-2.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 hover:text-zinc-900 dark:hover:text-white flex items-center justify-center transition-all active:scale-95 cursor-pointer"
               title={theme === 'dark' ? "Chuyển sang Chế độ Sáng" : "Chuyển sang Chế độ Tối"}
             >
               {theme === 'dark' ? (
-                <Sun size={18} className="text-yellow-500 animate-spin-slow" />
+                <Sun size={19} className="text-amber-400" />
               ) : (
-                <Moon size={18} className="text-zinc-650" />
+                <Moon size={19} className="text-zinc-600" />
               )}
             </button>
 
@@ -514,14 +520,14 @@ export default function Header() {
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-1.5 p-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-850/60 focus:outline-none transition-all duration-200"
+                  className="flex items-center gap-1.5 p-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none transition-all duration-200"
                 >
                   <img
-                    className="h-7 w-7 rounded-sm object-cover shadow-inner border border-zinc-200 dark:border-zinc-700"
+                    className="h-7 w-7 rounded object-cover shadow-inner border border-zinc-200 dark:border-zinc-700"
                     src={currentUser.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"}
                     alt="User avatar"
                   />
-                  <CaretDown size={10} className="text-zinc-500 mr-1 hidden sm:inline" />
+                  <CaretDown size={10} className="text-zinc-400 mr-1 hidden sm:inline" />
                 </button>
                 
                 <AnimatePresence>
@@ -533,31 +539,52 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.98 }}
                         transition={{ duration: 0.12 }}
-                        className="origin-top-right absolute right-0 mt-2.5 w-56 rounded shadow-2xl py-2.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 z-20 focus:outline-none"
+                        className="origin-top-right absolute right-0 mt-2.5 w-56 rounded-xl shadow-2xl py-2.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 z-20 focus:outline-none"
                       >
                         <div className="px-4 py-2 border-b border-zinc-100 dark:border-zinc-900 mb-1.5">
-                          <p className="text-[9px] text-[#ff4655] font-black uppercase tracking-widest">ĐÃ ĐĂNG NHẬP</p>
+                          <p className="text-[9px] text-[#ff4655] font-black uppercase tracking-widest">TÀI KHOẢN GEARTECH</p>
                           <p className="text-xs font-black text-zinc-900 dark:text-white truncate mt-0.5">{currentUser.name}</p>
-                          {currentUser.role === 'shop' ? (
-                            <span className="inline-flex items-center px-2 py-0.5 mt-1.5 rounded text-[8px] font-black bg-[#ff4655]/10 text-[#ff4655] border border-[#ff4655]/20 uppercase tracking-wider">
-                              🏬 DOANH NGHIỆP
+                          {currentUser.role === 'admin' ? (
+                            <span className="inline-flex items-center px-2 py-0.5 mt-1.5 rounded text-[8px] font-black bg-red-500/10 text-red-500 border border-red-500/20 uppercase tracking-wider">
+                               QUẢN TRỊ ADMIN
+                            </span>
+                          ) : currentUser.role === 'shop' ? (
+                            <span className="inline-flex items-center px-2 py-0.5 mt-1.5 rounded text-[8px] font-black bg-amber-500/10 text-amber-500 border border-amber-500/20 uppercase tracking-wider">
+                               CHỦ GIAN HÀNG
                             </span>
                           ) : (
                             <span className="inline-flex items-center px-2 py-0.5 mt-1.5 rounded text-[8px] font-black bg-amber-500/10 text-amber-500 border border-amber-500/20 uppercase tracking-wider">
-                              👑 {currentUser.memberRank || 'THUONG'} MEMBER
+                               {currentUser.memberRank || 'THÀNH VIÊN'} VIP
                             </span>
                           )}
                         </div>
 
-                        <Link to="/profile" className="px-4 py-2 text-xs font-bold text-zinc-650 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-900/50 hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
+                        <Link to="/profile" className="px-4 py-2 text-xs font-bold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
                           <User size={14} />
                           Trang cá nhân
                         </Link>
-                        <Link to="/orders" className="px-4 py-2 text-xs font-bold text-zinc-650 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-900/50 hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
+
+                        {/* Chỉ Admin mới thấy menu Quản trị Admin */}
+                        {currentUser.role === 'admin' && (
+                          <Link to="/admin" className="px-4 py-2 text-xs font-black text-red-500 hover:bg-red-500/10 transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
+                            <ShieldCheck size={14} weight="bold" />
+                            Quản trị Admin
+                          </Link>
+                        )}
+
+                        {/* Chỉ Chủ Shop mới thấy menu Kênh người bán */}
+                        {currentUser.role === 'shop' && (
+                          <Link to="/shop" className="px-4 py-2 text-xs font-black text-amber-500 hover:bg-amber-500/10 transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
+                            <Storefront size={14} weight="bold" />
+                            Kênh Shop
+                          </Link>
+                        )}
+
+                        <Link to="/orders" className="px-4 py-2 text-xs font-bold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
                           <Receipt size={14} />
                           Đơn mua của tôi
                         </Link>
-                        <Link to="/settings" className="px-4 py-2 text-xs font-bold text-zinc-650 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-900/50 hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
+                        <Link to="/settings" className="px-4 py-2 text-xs font-bold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
                           <Gear size={14} />
                           Cài đặt
                         </Link>
@@ -577,7 +604,7 @@ export default function Header() {
             ) : (
               <Link 
                 to="/login"
-                className="bg-[#ff4655] hover:bg-[#e03d4b] text-white px-5 py-2.5 rounded text-xs font-black uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(255, 70, 85, 0.25)] hover:shadow-[0_0_25px_rgba(255, 70, 85, 0.55)] hover:scale-[1.03] active:scale-95 text-center flex items-center justify-center border border-[#ff4655]/40"
+                className="bg-[#ff4655] hover:bg-[#e03d4b] text-white px-5 py-2.5 rounded-lg text-xs font-black uppercase tracking-widest transition-all shadow-[0_0_15px_rgba(255,70,85,0.3)] hover:shadow-[0_0_25px_rgba(255,70,85,0.55)] hover:scale-[1.02] active:scale-95 text-center flex items-center justify-center border border-[#ff4655]/40"
               >
                 Đăng nhập
               </Link>
@@ -594,35 +621,35 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-zinc-200 dark:border-zinc-900 bg-white dark:bg-zinc-950 px-4 py-4 space-y-4 overflow-hidden"
+            className="md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-4 space-y-4 overflow-hidden"
           >
             <form onSubmit={handleSearchSubmit} className="relative">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm kiếm sản phẩm..."
-                className="w-full pl-5 pr-11 py-2 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-800 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-[#ff4655]"
+                placeholder="Tìm kiếm thiết bị..."
+                className="w-full pl-5 pr-11 py-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#ff4655]"
               />
-              <button type="submit" className="absolute right-3.5 top-2.5 text-zinc-500">
+              <button type="submit" className="absolute right-3.5 top-2.5 text-zinc-400">
                 <MagnifyingGlass size={16} />
               </button>
             </form>
             <nav className="flex flex-col space-y-1">
-              <Link to="/Trang-chu" className="px-3.5 py-2.5 rounded text-xs font-bold text-zinc-650 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/Trang-chu" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
                 Trang chủ
               </Link>
-              <Link to="/ProductPage" className="px-3.5 py-2.5 rounded text-xs font-bold text-zinc-655 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/ProductPage" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
                 Danh Mục
               </Link>
-              <Link to="/tintuc" className="px-3.5 py-2.5 rounded text-xs font-bold text-zinc-655 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/tintuc" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
                 Tin tức
               </Link>
-              <Link to="/about" className="px-3.5 py-2.5 rounded text-xs font-bold text-zinc-655 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
-                Chúng tôi là ai
+              <Link to="/about" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
+                Chúng tôi
               </Link>
-              <Link to="/Cua-hang" className="px-3.5 py-2.5 rounded text-xs font-bold text-zinc-655 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
-                Cửa hàng
+              <Link to="/Cua-hang" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
+                Cửa Hàng & Shop
               </Link>
             </nav>
           </motion.div>

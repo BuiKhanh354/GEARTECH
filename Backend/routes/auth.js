@@ -1,0 +1,448 @@
+const express = require('express');
+const router = express.Router();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const Shop = require('../models/Shop');
+const { auth, checkRole } = require('../middleware/auth');
+
+// ==========================================
+// 1. ĐĂNG KÝ TÀI KHOẢN KHÁCH HÀNG
+// POST /api/auth/register
+// ==========================================
+router.post('/register', async (req, res) => {
+  try {
+    const { name, email, password, phone } = req.body;
+
+    // Kiểm tra dữ liệu đầu vào cơ bản
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: 'Vui lòng cung cấp họ và tên.' });
+    }
+    if (!email || !email.trim()) {
+      return res.status(400).json({ error: 'Vui lòng cung cấp địa chỉ email.' });
+    }
+    if (!password || password.length < 6) {
+      return res.status(400).json({ error: 'Mật khẩu phải có độ dài tối thiểu từ 6 ký tự trở lên.' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Kiểm tra email tồn tại
+    const existingUser = await User.findOne({ email: cleanEmail });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email này đã được sử dụng trên hệ thống.' });
+    }
+
+    // Mã hóa mật khẩu
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Yêu cầu Prompt 3.1: Không cho người dùng tự nâng quyền lên Admin hoặc Chủ shop
+    // Luôn cố định role là 'user' và status là 'active'
+    const newUser = new User({
+      name: name.trim(),
+      email: cleanEmail,
+      password: hashedPassword,
+      phone: phone ? phone.trim() : '',
+      role: 'user',
+      status: 'active',
+      memberRank: 'THUONG',
+      points: 0
+    });
+
+    await newUser.save();
+
+    // Tự động tạo bản ghi Customer liên kết 1-1 (Section 3.7: customers)
+    try {
+      const Customer = require('../models/Customer');
+      await Customer.create({
+        userId: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        phone: newUser.phone || '',
+        status: 'active'
+      });
+    } catch (err) {
+      console.error('Lỗi tự động tạo Customer cho user mới:', err);
+    }
+
+    // Không trả mật khẩu hoặc thông tin xác thực nhạy cảm trong response
+    return res.status(201).json({
+      message: 'Đăng ký tài khoản thành công!',
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        phone: newUser.phone,
+        role: newUser.role,
+        status: newUser.status,
+        memberRank: newUser.memberRank
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi đăng ký tài khoản.', details: error.message });
+  }
+});
+
+// ==========================================
+// 2. ĐĂNG NHẬP HỆ THỐNG
+// POST /api/auth/login
+// ==========================================
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Vui lòng điền đầy đủ email và mật khẩu.' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+
+    // Tìm user theo email, nếu chưa có thì kiểm tra trong collection Customer (Section 3.7)
+    let user = await User.findOne({ email: cleanEmail });
+    if (!user) {
+      const Customer = require('../models/Customer');
+      const customer = await Customer.findOne({ email: cleanEmail });
+      if (customer && customer.password) {
+        let isCustMatch = false;
+        if (customer.password.startsWith('$2a$') || customer.password.startsWith('$2b$')) {
+          isCustMatch = await bcrypt.compare(password, customer.password);
+        } else {
+          isCustMatch = (password === customer.password);
+        }
+
+        if (isCustMatch) {
+          const salt = await bcrypt.genSalt(10);
+          const hashedPassword = await bcrypt.hash(password, salt);
+          user = await User.create({
+            name: customer.name || 'Khách hàng',
+            email: customer.email,
+            password: hashedPassword,
+            phone: customer.phone || '',
+            avatar: customer.avatar || '/images/avatar/default.png',
+            role: 'user',
+            status: customer.status === 'inactive' ? 'locked' : 'active'
+          });
+          customer.userId = user._id;
+          await customer.save();
+        }
+      }
+    }
+
+    if (!user) {
+      return res.status(400).json({ error: 'Tài khoản hoặc mật khẩu không chính xác.' });
+    }
+
+    // So khớp mật khẩu (Hỗ trợ bcrypt hash và tự động băm nâng cấp nếu tài khoản được import thô)
+    let isMatch = false;
+    if (user.password.startsWith('$2a$') || user.password.startsWith('$2b$')) {
+      isMatch = await bcrypt.compare(password, user.password);
+    } else {
+      isMatch = (password === user.password);
+      if (isMatch) {
+        // Tự động băm lại mật khẩu theo chuẩn bảo mật
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
+        await user.save();
+      }
+    }
+
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Tài khoản hoặc mật khẩu không chính xác.' });
+    }
+
+    // Yêu cầu Prompt 3.1: Không cho tài khoản bị khóa thực hiện đăng nhập và thao tác
+    if (user.status === 'locked') {
+      return res.status(403).json({
+        error: 'Tài khoản của bạn đã bị khóa bởi Quản trị viên. Vui lòng liên hệ CSKH để được hỗ trợ.',
+        isLocked: true
+      });
+    }
+
+    // Tạo JWT Token
+    const token = jwt.sign(
+      { id: user._id, role: user.role, shopId: user.shopId },
+      process.env.JWT_SECRET || 'GEARTECH_VALORANT_EDITION_SECRET_2026',
+      { expiresIn: '7d' }
+    );
+
+    // Trả về dữ liệu sạch (loại bỏ mật khẩu)
+    return res.json({
+      message: 'Đăng nhập thành công!',
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        status: user.status,
+        avatar: user.avatar,
+        shopId: user.shopId,
+        memberRank: user.memberRank,
+        points: user.points
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi xử lý đăng nhập.', details: error.message });
+  }
+});
+
+// ==========================================
+// 3. ĐĂNG XUẤT HỆ THỐNG
+// POST /api/auth/logout
+// ==========================================
+router.post('/logout', auth, async (req, res) => {
+  // Với JWT không lưu session ở DB, endpoint này thông báo hoàn tất đăng xuất
+  return res.json({ message: 'Đăng xuất khỏi hệ thống thành công!' });
+});
+
+// ==========================================
+// 4. LẤY THÔNG TIN TÀI KHOẢN ĐANG ĐĂNG NHẬP
+// GET /api/auth/profile
+// ==========================================
+router.get('/profile', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'Không tìm thấy thông tin người dùng.' });
+    }
+
+    // Nếu là tài khoản đối tác shop, bổ sung dữ liệu gian hàng
+    if (user.role === 'shop' && user.shopId) {
+      const shop = await Shop.findById(user.shopId);
+      return res.json({ user, shop });
+    }
+
+    return res.json({ user });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi lấy thông tin tài khoản.', details: error.message });
+  }
+});
+
+// ==========================================
+// 5. CẬP NHẬT THÔNG TIN TÀI KHOẢN
+// PUT /api/auth/profile
+// ==========================================
+router.put('/profile', auth, async (req, res) => {
+  try {
+    const { name, phone, address, gender, birthday } = req.body;
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ error: 'Người dùng không tồn tại.' });
+    }
+
+    // Chỉ cho phép cập nhật thông tin cá nhân, tuyệt đối không cho phép tự đổi role hoặc status
+    if (name) user.name = name.trim();
+    if (phone) user.phone = phone.trim();
+    if (gender) user.gender = gender;
+    if (birthday) user.birthday = birthday;
+
+    if (address) {
+      const defaultAddr = user.addresses.find(addr => addr.isDefault);
+      if (defaultAddr) {
+        defaultAddr.detailAddress = address;
+        defaultAddr.receiverName = name || user.name;
+        defaultAddr.receiverPhone = phone || user.phone || '000000000';
+      } else {
+        user.addresses.push({
+          title: 'Mặc định',
+          receiverName: name || user.name,
+          receiverPhone: phone || user.phone || '000000000',
+          detailAddress: address,
+          isDefault: true
+        });
+      }
+    }
+
+    await user.save();
+
+    // Tự động đồng bộ hồ sơ sang Customer (Section 3.7: customers)
+    try {
+      const Customer = require('../models/Customer');
+      const updateFields = {
+        name: user.name,
+        phone: user.phone
+      };
+      if (address) {
+        updateFields.shippingAddress = {
+          receiverName: user.name,
+          receiverPhone: user.phone,
+          detailAddress: address
+        };
+      }
+      await Customer.findOneAndUpdate(
+        { $or: [{ userId: user._id }, { email: user.email }] },
+        { $set: updateFields },
+        { upsert: true }
+      );
+    } catch (err) {
+      console.error('Lỗi đồng bộ hồ sơ sang Customer:', err);
+    }
+
+    return res.json({ message: 'Cập nhật hồ sơ tài khoản thành công!', user });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi cập nhật hồ sơ.', details: error.message });
+  }
+});
+
+// ==========================================
+// 6. ADMIN LẤY DANH SÁCH NGƯỜI DÙNG (KÈM TÌM KIẾM, LỌC & PHÂN TRANG)
+// GET /api/auth/users
+// ==========================================
+router.get('/users', auth, checkRole(['admin']), async (req, res) => {
+  try {
+    const { search, role, status, page = 1, limit = 10 } = req.query;
+
+    const query = {};
+
+    // Lọc theo từ khóa tìm kiếm (Tên, Email hoặc Số điện thoại)
+    if (search && search.trim()) {
+      const q = search.trim();
+      query.$or = [
+        { name: { $regex: q, $options: 'i' } },
+        { email: { $regex: q, $options: 'i' } },
+        { phone: { $regex: q, $options: 'i' } }
+      ];
+    }
+
+    // Lọc theo vai trò (Role)
+    if (role && role !== 'all') {
+      query.role = role;
+    }
+
+    // Lọc theo trạng thái tài khoản (Status)
+    if (status && status !== 'all') {
+      query.status = status;
+    }
+
+    const currentPage = Math.max(1, Number(page));
+    const itemsPerPage = Math.max(1, Number(limit));
+    const skip = (currentPage - 1) * itemsPerPage;
+
+    const [users, total] = await Promise.all([
+      User.find(query)
+        .select('-password')
+        .populate('shopId', 'name logo category')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(itemsPerPage),
+      User.countDocuments(query)
+    ]);
+
+    return res.json({
+      users,
+      total,
+      page: currentPage,
+      totalPages: Math.ceil(total / itemsPerPage)
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi tải danh sách người dùng.', details: error.message });
+  }
+});
+
+// ==========================================
+// 7. ADMIN KHÓA HOẶC MỞ KHÓA TÀI KHOẢN
+// PUT /api/auth/users/:id/status
+// ==========================================
+router.put('/users/:id/status', auth, checkRole(['admin']), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!['active', 'locked'].includes(status)) {
+      return res.status(400).json({ error: "Trạng thái không hợp lệ. Chỉ chấp nhận 'active' hoặc 'locked'." });
+    }
+
+    // Không cho phép Admin tự khóa tài khoản của chính mình
+    if (req.user._id.toString() === id) {
+      return res.status(400).json({ error: 'Quản trị viên không thể tự khóa tài khoản của chính mình!' });
+    }
+
+    const targetUser = await User.findById(id);
+    if (!targetUser) {
+      return res.status(404).json({ error: 'Không tìm thấy người dùng cần thao tác.' });
+    }
+
+    targetUser.status = status;
+    await targetUser.save();
+
+    const actionText = status === 'locked' ? 'Khóa' : 'Mở khóa';
+
+    return res.json({
+      message: `${actionText} tài khoản thành công!`,
+      user: {
+        id: targetUser._id,
+        name: targetUser.name,
+        email: targetUser.email,
+        role: targetUser.role,
+        status: targetUser.status
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi cập nhật trạng thái tài khoản.', details: error.message });
+  }
+});
+
+// ==========================================
+// 8. ADMIN CẤP TÀI KHOẢN CHO ĐỐI TÁC DOANH NGHIỆP
+// POST /api/auth/register-shop
+// ==========================================
+router.post('/register-shop', auth, checkRole(['admin']), async (req, res) => {
+  try {
+    const { name, email, password, phone, shopName, logo, category, bgClass } = req.body;
+
+    let existingUser = await User.findOne({ email: email.trim().toLowerCase() });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email đối tác đã được sử dụng.' });
+    }
+
+    let existingShop = await Shop.findOne({ name: shopName.toUpperCase().trim() });
+    if (existingShop) {
+      return res.status(400).json({ error: 'Tên cửa hàng (Shop) này đã tồn tại.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newShop = new Shop({
+      name: shopName.trim(),
+      logo: logo || '🏬',
+      category: category || 'Đối tác phân phối thiết bị',
+      bgClass: bgClass || 'from-zinc-900 to-black'
+    });
+
+    const newUser = new User({
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password: hashedPassword,
+      phone: phone ? phone.trim() : '',
+      role: 'shop',
+      status: 'active',
+      shopId: newShop._id
+    });
+
+    await newUser.save();
+
+    newShop.ownerId = newUser._id;
+    await newShop.save();
+
+    return res.status(201).json({
+      message: 'Cấp tài khoản doanh nghiệp thành công!',
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        status: newUser.status,
+        shopId: newUser.shopId
+      },
+      shop: newShop
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi tạo tài khoản doanh nghiệp.', details: error.message });
+  }
+});
+
+module.exports = router;
