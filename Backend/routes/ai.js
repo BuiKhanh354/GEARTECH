@@ -48,22 +48,34 @@ router.post('/chat', async (req, res) => {
       return res.status(400).json({ error: 'Danh sách tin nhắn không được rỗng.' });
     }
 
-    // Lấy tối đa 15 sản phẩm thực tế đang active trên sàn GEAR TECH để làm ngữ cảnh
+    // Lấy toàn bộ sản phẩm thực tế đang active trên sàn GEAR TECH
     let productCatalogText = '';
     let products = [];
     try {
       products = await Product.find({ status: 'active' })
         .select('name price discountPrice category brand slug description stock')
         .populate('category', 'name')
-        .limit(15)
         .lean();
 
-      if (products.length > 0) {
-        productCatalogText = products.map((p, index) => {
+      // Sắp xếp ưu tiên các sản phẩm khớp với câu hỏi của khách hàng
+      const lastUserMsg = messages.filter(m => m.role === 'user').pop()?.content?.toLowerCase() || '';
+      
+      const prioritizedProducts = [...products].sort((a, b) => {
+        const aMatch = lastUserMsg.includes(a.name.toLowerCase()) || 
+                       (a.category?.name && lastUserMsg.includes(a.category.name.toLowerCase()));
+        const bMatch = lastUserMsg.includes(b.name.toLowerCase()) || 
+                       (b.category?.name && lastUserMsg.includes(b.category.name.toLowerCase()));
+        if (aMatch && !bMatch) return -1;
+        if (!aMatch && bMatch) return 1;
+        return 0;
+      });
+
+      if (prioritizedProducts.length > 0) {
+        productCatalogText = prioritizedProducts.map((p, index) => {
           const priceStr = new Intl.NumberFormat('vi-VN').format(p.price);
-          const discountStr = p.discountPrice ? ` (Khuyến mãi: ${new Intl.NumberFormat('vi-VN').format(p.discountPrice)}₫)` : '';
-          const catName = p.category?.name || 'Công nghệ';
-          return `${index + 1}. [${p.name}] - Giá: ${priceStr}₫${discountStr} | Danh mục: ${catName} | Còn: ${p.stock} cái | Slug: ${p.slug}`;
+          const discountStr = p.discountPrice ? ` (Giá KM: ${new Intl.NumberFormat('vi-VN').format(p.discountPrice)}₫)` : '';
+          const catName = p.category?.name || 'Thiết bị Gear';
+          return `- [${p.name}] | Giá: ${priceStr}₫${discountStr} | Danh mục: ${catName} | Còn: ${p.stock} cái | Slug: ${p.slug}`;
         }).join('\n');
       }
     } catch (dbErr) {
@@ -76,34 +88,31 @@ router.post('/chat', async (req, res) => {
       try {
         const currentP = await Product.findById(productId).populate('category', 'name').lean();
         if (currentP) {
-          currentProductInfo = `\nKHÁCH HÀNG ĐANG XEM SẢN PHẨM NÀY:\n- Tên: ${currentP.name}\n- Giá: ${new Intl.NumberFormat('vi-VN').format(currentP.price)}₫\n- Mô tả: ${currentP.description || 'Chất lượng cao'}\n- Tồn kho: ${currentP.stock} cái\n`;
+          currentProductInfo = `\nKHÁCH HÀNG ĐANG XEM TRỰC TIẾP SẢN PHẨM NÀY:\n- Tên: ${currentP.name}\n- Giá: ${new Intl.NumberFormat('vi-VN').format(currentP.price)}₫\n- Mô tả: ${currentP.description || 'Chất lượng cao'}\n- Tồn kho: ${currentP.stock} cái\n`;
         }
       } catch (e) {}
     }
 
-    // Xây dựng System Prompt chuyên nghiệp
-    const systemPrompt = `Bạn là "GearTech AI" - Chuyên gia tư vấn thiết bị công nghệ & Gaming Gear hàng đầu của sàn thương mại điện tử GEAR TECH.
-Nhiệm vụ của bạn là giải đáp thắc mắc, tư vấn lựa chọn bàn phím cơ, chuột gaming, tai nghe, màn hình và linh kiện PC cho khách hàng.
-
-PHONG CÁCH TƯ VẤN:
-- BẮT BUỘC TRẢ LỜI 100% BẰNG TIẾNG VIỆT THÂN THIỆN, LỊCH SỰ, RÕ RÀNG.
-- ĐI THẲNG VÀO CÂU TRẢ LỜI NGAY LẬP TỨC, KHÔNG VIẾT SUY NGHĨ TIẾNG ANH.
-- Trình bày mạch lạc, dùng gạch đầu dòng rõ ràng, thêm emoji công nghệ (🖱️, ⌨️, 🎧, ⚡, 💻) để sinh động.
-- Trả lời ngắn gọn 2 - 4 câu, đúng trọng tâm câu hỏi của khách hàng.
+    // Xây dựng System Prompt với nguyên tắc chống bịa đặt (Zero Hallucination)
+    const systemPrompt = `Bạn là "GearTech AI" - Chuyên gia tư vấn thiết bị công nghệ & Gaming Gear của sàn thương mại điện tử GEAR TECH.
+Nhiệm vụ của bạn là tư vấn đúng nhu cầu mua sắm và cung cấp thông số kỹ thuật cho khách hàng.
 
 ${currentProductInfo}
 
-DANH SÁCH SẢN PHẨM ĐANG BÁN TRÊN SÀN GEAR TECH:
-${productCatalogText || 'Hiện tại sàn đang có nhiều mẫu bàn phím cơ, chuột gaming, tai nghe và màn hình.'}
+DANH SÁCH TẤT CẢ SẢN PHẨM THỰC TẾ ĐANG BÁN TRÊN SÀN GEAR TECH:
+${productCatalogText || 'Hiện tại sàn đang có nhiều sản phẩm chính hãng.'}
 
-QUY TẮC BẮT BUỘC:
-1. TRẢ LỜI BẰNG TIẾNG VIỆT. Khi khách hỏi mua sản phẩm theo tầm giá hoặc nhu cầu, HÃY GỢI Ý CÁC SẢN PHẨM TRÊN KÈM THEO GIÁ TIỀN CHÍNH XÁC.
-2. Nếu khách hỏi kiến thức phần cứng (như switch bấm, polling rate, cảm biến quang học, tấm nền IPS...), hãy giải thích dễ hiểu.
-3. Luôn sẵn sàng hướng dẫn khách thêm vào giỏ hàng hoặc xem chi tiết sản phẩm.`;
+QUY TẮC BẮT BUỘC (TUYỆT ĐỐI KHÔNG BỊA ĐẶT THÔNG TIN):
+1. BẠN CHỈ ĐƯỢC PHÉP gợi ý các sản phẩm CÓ TÊN CHÍNH XÁC trong danh sách "DANH SÁCH TẤT CẢ SẢN PHẨM THỰC TẾ ĐANG BÁN TRÊN SÀN GEAR TECH" ở trên.
+2. TUYỆT ĐỐI KHÔNG TỰ BỊA RA TÊN BẤT KỲ SẢN PHẨM NÀO KHÁC (như Akko, Razer, Logitech, Corsair, Microsoft...) nếu tên đó không nằm trong danh sách trên!
+3. Luôn trích dẫn chính xác Tên sản phẩm trong ngoặc vuông và Giá tiền theo danh sách.
+4. Nếu khách hàng hỏi một món đồ mà trong danh sách trên KHÔNG CÓ (ví dụ khách tìm "bàn phím dưới 1 triệu" nhưng sàn chỉ có mẫu 12.990.000₫), HÃY THÀNH THẬT BÁO:
+   "Hiện tại sàn GearTech chỉ có mẫu [Tên sản phẩm] giá [Giá tiền], chưa có mẫu [loại khách tìm] bạn nhé."
+5. BẮT BUỘC TRẢ LỜI 100% BẰNG TIẾNG VIỆT, đi thẳng vào câu trả lời, ngắn gọn từ 2 - 4 câu.`;
 
     const chatPayloadMessages = [
       { role: 'system', content: systemPrompt },
-      ...messages.slice(-6) // Lấy tối đa 6 tin nhắn gần nhất để giữ ngữ cảnh hội thoại
+      ...messages.slice(-4) // Lấy 4 tin nhắn gần nhất để giữ tốc độ nhanh
     ];
 
     // Gọi Ollama Chat API
@@ -115,9 +124,9 @@ QUY TẮC BẮT BUỘC:
         messages: chatPayloadMessages,
         stream: false,
         options: {
-          temperature: 0.5,
-          top_p: 0.9,
-          num_predict: 1000
+          temperature: 0.3, // Nhiệt độ thấp giúp AI trả lời chính xác dữ liệu thật, không sáng tạo bịa đặt
+          top_p: 0.8,
+          num_predict: 250 // Giới hạn 250 tokens giúp phản hồi siêu nhanh trong 1-3 giây ngay cả trên máy yếu
         }
       })
     });
