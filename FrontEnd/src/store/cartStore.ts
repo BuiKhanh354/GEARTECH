@@ -41,6 +41,9 @@ interface CartState {
   getTotalCount: () => number
 }
 
+// In-flight tracker để chống bấm double-click hoặc gọi trùng hàm thêm vào giỏ
+const inFlightAddSet = new Set<string>()
+
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
@@ -97,48 +100,57 @@ export const useCartStore = create<CartState>()(
         }
       },
 
-      // 2. Thêm sản phẩm vào giỏ
-      addItem: async (product, quantity = 1, variant = 'Tiêu chuẩn / Chính hãng') => {
-        const pId = product._id || product.id
+      // 2. Thêm sản phẩm vào giỏ (chống gọi trùng, chuẩn hóa số lượng và giới hạn tồn kho)
+      addItem: async (product, quantity, variant = 'Tiêu chuẩn / Chính hãng') => {
+        const pId = product._id || product.id || product.productId
+        if (!pId) return
+
+        // Chống gọi trùng / race-condition do double click
+        if (inFlightAddSet.has(pId)) return
+        inFlightAddSet.add(pId)
+
+        const numQty = Math.max(1, (quantity !== undefined && quantity !== null) ? Number(quantity) : Number(product.quantity || 1))
+        const maxStock = product.stock !== undefined ? product.stock : 999
         const token = localStorage.getItem('token')
 
-        // Cập nhật optimistic local
-        set((state) => {
-          const existingIndex = state.items.findIndex((item) => item.productId === pId)
-          if (existingIndex > -1) {
-            const updated = [...state.items]
-            updated[existingIndex].quantity += quantity
-            updated[existingIndex].selected = true
-            return { items: updated }
-          } else {
-            const shopName = product.shopId?.name || product.shop?.name || 'GEARTECH OFFICIAL'
-            const isPromo = Boolean(product.oldPrice && product.oldPrice > product.price)
-            const newItem: CartStoreItem = {
-              id: pId,
-              productId: pId,
-              title: product.title || product.name,
-              price: product.price,
-              oldPrice: product.oldPrice,
-              originalPrice: isPromo ? product.oldPrice : product.price,
-              isPriceLocked: isPromo,
-              promotionNote: isPromo ? 'Giữ giá ưu đãi 48 giờ' : undefined,
-              imageEmoji: product.imageEmoji || '📦',
-              categoryName: product.categoryName || 'Linh kiện',
-              shopName,
-              quantity,
-              selected: true,
-              variant,
-              stock: product.stock,
-              isAvailable: product.status === 'active' && product.stock > 0
+        try {
+          // Cập nhật optimistic local
+          set((state) => {
+            const existingIndex = state.items.findIndex((item) => item.productId === pId)
+            if (existingIndex > -1) {
+              const updated = [...state.items]
+              const currentQty = updated[existingIndex].quantity
+              updated[existingIndex].quantity = Math.min(maxStock, currentQty + numQty)
+              updated[existingIndex].selected = true
+              return { items: updated }
+            } else {
+              const shopName = product.shopId?.name || product.shopId?.shopName || product.shop?.name || (typeof product.shop === 'string' ? product.shop : 'GEARTECH OFFICIAL')
+              const isPromo = Boolean(product.oldPrice && product.oldPrice > product.price)
+              const newItem: CartStoreItem = {
+                id: pId,
+                productId: pId,
+                title: product.title || product.name,
+                price: product.price,
+                oldPrice: product.oldPrice,
+                originalPrice: isPromo ? product.oldPrice : product.price,
+                isPriceLocked: isPromo,
+                promotionNote: isPromo ? 'Giữ giá ưu đãi 48 giờ' : undefined,
+                imageEmoji: product.imageEmoji || product.image || product.imageUrl || '📦',
+                categoryName: product.categoryName || 'Linh kiện',
+                shopName,
+                quantity: Math.min(maxStock, numQty),
+                selected: true,
+                variant,
+                stock: product.stock,
+                isAvailable: product.status === 'active' && (product.stock === undefined || product.stock > 0)
+              }
+              return { items: [...state.items, newItem] }
             }
-            return { items: [...state.items, newItem] }
-          }
-        })
+          })
 
-        // Đồng bộ server nếu đã đăng nhập
-        if (token) {
-          try {
-            await cartService.addToCart(pId, quantity, variant)
+          // Đồng bộ server nếu đã đăng nhập
+          if (token) {
+            await cartService.addToCart(pId, numQty, variant)
             // Lấy lại dữ liệu chính xác từ Backend
             const freshCart = await cartService.getCart()
             if (freshCart && Array.isArray(freshCart.items)) {
@@ -167,9 +179,11 @@ export const useCartStore = create<CartState>()(
                 }))
               })
             }
-          } catch (err) {
-            console.error('Lỗi đồng bộ thêm sản phẩm lên server:', err)
           }
+        } catch (err) {
+          console.error('Lỗi khi thêm sản phẩm vào giỏ:', err)
+        } finally {
+          inFlightAddSet.delete(pId)
         }
       },
 

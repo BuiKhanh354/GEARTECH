@@ -88,7 +88,7 @@ const paymentMethods = [
 ]
 
 export default function CheckoutPage() {
-  const { items, clearCart } = useCartStore()
+  const { items, removeSelected } = useCartStore()
   // Lấy các sản phẩm đã được chọn trong giỏ hàng
   const cartItems = items.filter((item) => item.selected)
 
@@ -253,6 +253,7 @@ export default function CheckoutPage() {
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (isSubmitting) return
     setErrorMessage(null)
 
     if (cartItems.length === 0) {
@@ -300,7 +301,7 @@ export default function CheckoutPage() {
       const res = await orderService.createOrder(payload)
 
       setOrderId(res.order?._id || res.order?.id || 'GT-' + Math.floor(100000 + Math.random() * 900000))
-      clearCart()
+      await removeSelected()
       localStorage.removeItem('geartech_applied_voucher')
       setIsSuccess(true)
     } catch (err: any) {

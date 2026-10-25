@@ -61,14 +61,21 @@ const HomePage: React.FC = () => {
 
   // Cart Add Toast Notification
   const [addedToast, setAddedToast] = useState<string | null>(null)
+  const [addingId, setAddingId] = useState<string | null>(null)
   const handleAddToCart = async (e: React.MouseEvent, prod: ProductItem) => {
     e.stopPropagation()
+    const pId = prod.id || prod._id
+    if (!pId || addingId === pId) return
+
+    setAddingId(pId)
     try {
-      await useCartStore.getState().addItem(prod)
+      await useCartStore.getState().addItem(prod, 1)
       setAddedToast(`Đã thêm "${prod.title}" vào giỏ hàng!`)
       setTimeout(() => setAddedToast(null), 2500)
     } catch {
       // ignore
+    } finally {
+      setAddingId(null)
     }
   }
 

@@ -29,6 +29,12 @@ const UserSchema = new mongoose.Schema({
   lockExpiresAt: { type: Date, default: null }, // Thời điểm hết hạn khóa (null = vô thời hạn)
   lockReason: { type: String, default: '' }, // Lý do khóa tài khoản
 
+  // Section 8: Khóa riêng quyền đặt hàng của khách hàng (vẫn cho đăng nhập & xem hàng)
+  isOrderLocked: { type: Boolean, default: false },
+  orderLockedAt: { type: Date, default: null },
+  orderLockExpiresAt: { type: Date, default: null },
+  orderLockReason: { type: String, default: '' },
+
   shopId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shop', default: null }, // Liên kết tới Shop (dành cho tài khoản doanh nghiệp)
   memberRank: { type: String, enum: ['THUONG', 'DONG', 'BAC', 'VANG', 'KIM_CUONG'], default: 'THUONG' },
   points: { type: Number, default: 0, min: 0 },

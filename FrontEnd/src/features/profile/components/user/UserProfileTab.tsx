@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { PencilSimple, FloppyDisk, Storefront, CheckCircle, X, Plus } from '@phosphor-icons/react'
 import { shopService } from '../../../../services/shopService'
+import apiClient from '../../../../api/client'
 
 interface UserProfileTabProps {
   token: string | null;
@@ -9,7 +10,7 @@ interface UserProfileTabProps {
   onRefresh: (updatedUser: any) => void;
 }
 
-export default function UserProfileTab({ token, currentUser, onRefresh }: UserProfileTabProps) {
+export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTabProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -58,24 +59,15 @@ export default function UserProfileTab({ token, currentUser, onRefresh }: UserPr
     setSuccess(null)
     setSubmitting(true)
     try {
-      const res = await fetch('http://localhost:5000/api/auth/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(profileForm)
-      })
-
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error)
+      const res = await apiClient.put('/auth/profile', profileForm)
+      const data = res.data
 
       localStorage.setItem('user', JSON.stringify(data.user))
       setIsEditing(false)
       setSuccess('Cập nhật hồ sơ tài khoản thành công!')
       onRefresh(data.user)
     } catch (err: any) {
-      setError(err.message)
+      setError(err.response?.data?.error || err.message || 'Lỗi cập nhật hồ sơ.')
     } finally {
       setSubmitting(false)
     }

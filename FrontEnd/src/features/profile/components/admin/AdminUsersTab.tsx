@@ -29,11 +29,15 @@ function formatLockRemaining(expiresAt?: string) {
   return `còn ${hours}h ${minutes}m`
 }
 
-export default function AdminUsersTab() {
+interface AdminUsersTabProps {
+  initialRole?: string;
+}
+
+export default function AdminUsersTab({ initialRole }: AdminUsersTabProps) {
   const [users, setUsers] = useState<UserItem[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [search, setSearch] = useState<string>('')
-  const [roleFilter, setRoleFilter] = useState<string>('all')
+  const [roleFilter, setRoleFilter] = useState<string>(initialRole || 'all')
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [page, setPage] = useState<number>(1)
   const [totalPages, setTotalPages] = useState<number>(1)

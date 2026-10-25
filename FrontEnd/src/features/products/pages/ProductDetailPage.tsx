@@ -178,28 +178,44 @@ export default function ProductDetailPage() {
     setQuantity(prev => Math.max(1, prev - 1))
   }
 
-  const handleAddToCart = () => {
-    if (!product) return
+  const [isAdding, setIsAdding] = useState(false)
+
+  const handleAddToCart = async () => {
+    if (!product || isAdding) return
+    if (product.status !== 'active' || product.stock <= 0) {
+      setToastMessage('Sản phẩm hiện không thể đặt mua.')
+      return
+    }
     const finalPrice = product.price
     const imageUrl = productImages.length > 0 ? productImages[0] : (product.imageEmoji || '📦')
+    const finalQty = Math.min(product.stock || 999, Math.max(1, quantity))
 
-    addItem({
-      id: product._id || product.id || String(Date.now()),
-      productId: product._id || product.id,
-      title: product.title,
-      price: finalPrice,
-      originalPrice: product.oldPrice,
-      image: imageUrl,
-      quantity: quantity,
-      shop: typeof product.shopId === 'object' ? (product.shopId.shopName || product.shopId.name || 'GEARTECH') : 'GEARTECH',
-      brand: product.brand || 'CHÍNH HÃNG'
-    })
+    setIsAdding(true)
+    try {
+      await addItem({
+        id: product._id || product.id,
+        productId: product._id || product.id,
+        title: product.title,
+        price: finalPrice,
+        oldPrice: product.oldPrice,
+        originalPrice: product.oldPrice,
+        imageEmoji: imageUrl,
+        quantity: finalQty,
+        shop: typeof product.shopId === 'object' ? (product.shopId.shopName || product.shopId.name || 'GEARTECH') : 'GEARTECH',
+        brand: product.brand || 'CHÍNH HÃNG',
+        stock: product.stock,
+        status: product.status
+      }, finalQty, 'Tiêu chuẩn / Chính hãng')
 
-    setToastMessage(`Đã thêm ${quantity} sản phẩm vào giỏ hàng!`)
+      setToastMessage(`Đã thêm ${finalQty} sản phẩm vào giỏ hàng!`)
+    } finally {
+      setIsAdding(false)
+    }
   }
 
-  const handleBuyNow = () => {
-    handleAddToCart()
+  const handleBuyNow = async () => {
+    if (isAdding) return
+    await handleAddToCart()
     navigate('/cart')
   }
 
@@ -416,17 +432,19 @@ export default function ProductDetailPage() {
                 <button 
                   type="button"
                   onClick={handleAddToCart}
-                  className="flex-1 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 text-zinc-800 dark:text-zinc-200 font-black text-xs uppercase tracking-widest px-6 py-4 rounded-xl transition-all flex items-center justify-center gap-2 group active:scale-98 shadow-sm"
+                  disabled={isAdding}
+                  className="flex-1 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 text-zinc-800 dark:text-zinc-200 font-black text-xs uppercase tracking-widest px-6 py-4 rounded-xl transition-all flex items-center justify-center gap-2 group active:scale-98 shadow-sm cursor-pointer"
                 >
-                  <ShoppingCart size={17} weight="bold" className="text-[#ff4655]" /> THÊM VÀO GIỎ
+                  <ShoppingCart size={17} weight="bold" className="text-[#ff4655]" /> {isAdding ? 'ĐANG THÊM...' : 'THÊM VÀO GIỎ'}
                 </button>
                 
                 <button 
                   type="button"
                   onClick={handleBuyNow}
-                  className="flex-1 bg-[#ff4655] hover:bg-[#e03d4b] text-white font-black text-xs uppercase tracking-widest px-6 py-4 rounded-xl transition-all shadow-lg shadow-[#ff4655]/25 hover:shadow-xl hover:shadow-[#ff4655]/40 flex items-center justify-center gap-2 active:scale-98"
+                  disabled={isAdding}
+                  className="flex-1 bg-[#ff4655] hover:bg-[#e03d4b] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black text-xs uppercase tracking-widest px-6 py-4 rounded-xl transition-all shadow-lg shadow-[#ff4655]/25 hover:shadow-xl hover:shadow-[#ff4655]/40 flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
                 >
-                  <ShoppingBag size={17} weight="bold" /> MUA NGAY
+                  <ShoppingBag size={17} weight="bold" /> {isAdding ? 'ĐANG XỬ LÝ...' : 'MUA NGAY'}
                 </button>
               </div>
             )}

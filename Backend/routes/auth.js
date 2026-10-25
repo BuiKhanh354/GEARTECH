@@ -349,7 +349,7 @@ router.get('/users', auth, checkRole(['admin']), async (req, res) => {
 router.put('/users/:id/status', auth, checkRole(['admin']), async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, lockDurationHours, lockExpiresAt: customExpiresAt, lockReason } = req.body;
+    const { status, lockDurationHours, lockExpiresAt: customExpiresAt, lockReason, scope = 'all' } = req.body;
 
     if (!['active', 'locked'].includes(status)) {
       return res.status(400).json({ error: "Trạng thái không hợp lệ. Chỉ chấp nhận 'active' hoặc 'locked'." });
@@ -370,23 +370,45 @@ router.put('/users/:id/status', auth, checkRole(['admin']), async (req, res) => 
       return res.status(400).json({ error: 'Không thể khóa tài khoản quản trị viên!' });
     }
 
-    targetUser.status = status;
+    if (scope === 'order') {
+      // Khóa riêng quyền đặt hàng (Section 8 cus.md: không chặn quyền truy cập website)
+      if (status === 'locked') {
+        targetUser.isOrderLocked = true;
+        targetUser.orderLockedAt = new Date();
+        targetUser.orderLockReason = lockReason ? lockReason.trim() : 'Khóa quyền đặt hàng bởi Quản trị viên';
 
-    if (status === 'locked') {
-      targetUser.lockedAt = new Date();
-      targetUser.lockReason = lockReason ? lockReason.trim() : 'Khóa bởi Quản trị viên';
-
-      if (customExpiresAt) {
-        targetUser.lockExpiresAt = new Date(customExpiresAt);
-      } else if (lockDurationHours && Number(lockDurationHours) > 0) {
-        targetUser.lockExpiresAt = new Date(Date.now() + Number(lockDurationHours) * 3600 * 1000);
+        if (customExpiresAt) {
+          targetUser.orderLockExpiresAt = new Date(customExpiresAt);
+        } else if (lockDurationHours && Number(lockDurationHours) > 0) {
+          targetUser.orderLockExpiresAt = new Date(Date.now() + Number(lockDurationHours) * 3600 * 1000);
+        } else {
+          targetUser.orderLockExpiresAt = null;
+        }
       } else {
-        targetUser.lockExpiresAt = null; // Khóa vô thời hạn
+        targetUser.isOrderLocked = false;
+        targetUser.orderLockedAt = null;
+        targetUser.orderLockExpiresAt = null;
+        targetUser.orderLockReason = '';
       }
     } else {
-      targetUser.lockedAt = null;
-      targetUser.lockExpiresAt = null;
-      targetUser.lockReason = '';
+      targetUser.status = status;
+
+      if (status === 'locked') {
+        targetUser.lockedAt = new Date();
+        targetUser.lockReason = lockReason ? lockReason.trim() : 'Khóa bởi Quản trị viên';
+
+        if (customExpiresAt) {
+          targetUser.lockExpiresAt = new Date(customExpiresAt);
+        } else if (lockDurationHours && Number(lockDurationHours) > 0) {
+          targetUser.lockExpiresAt = new Date(Date.now() + Number(lockDurationHours) * 3600 * 1000);
+        } else {
+          targetUser.lockExpiresAt = null; // Khóa vô thời hạn
+        }
+      } else {
+        targetUser.lockedAt = null;
+        targetUser.lockExpiresAt = null;
+        targetUser.lockReason = '';
+      }
     }
 
     await targetUser.save();
@@ -423,6 +445,135 @@ router.put('/users/:id/status', auth, checkRole(['admin']), async (req, res) => 
     });
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi cập nhật trạng thái tài khoản.', details: error.message });
+  }
+});
+
+// ==========================================
+// 7B. ADMIN DASHBOARD: THỐNG KÊ TỔNG QUAN TOÀN SÀN (dữ liệu thật MongoDB)
+// GET /api/auth/admin/overview?days=7|30
+// Phân biệt rõ: Tổng giá trị đơn hàng (toàn bộ đơn) và Giá trị đơn hoàn tất
+// (doanh thu bán hàng của các shop). Nền tảng CHƯA có quy tắc tính phí/hoa hồng
+// (Shop.commission_rate chỉ là tham số chưa có luồng ghi nhận) nên KHÔNG
+// trình bày "doanh thu nền tảng" — chỉ báo cáo giá trị đơn theo trạng thái.
+// ==========================================
+router.get('/admin/overview', auth, checkRole(['admin']), async (req, res) => {
+  try {
+    const days = [7, 30].includes(Number(req.query.days)) ? Number(req.query.days) : 7;
+    const since = new Date();
+    since.setHours(0, 0, 0, 0);
+    since.setDate(since.getDate() - (days - 1));
+
+    const Order = require('../models/Order');
+    const Product = require('../models/Product');
+    const ShopModel = require('../models/Shop');
+    const CustomerModel = require('../models/Customer');
+
+    const orderAmount = (o) =>
+      Number(o.finalAmount ?? (o.final_amount ? parseFloat(o.final_amount.toString()) : 0)) || 0;
+    const normStatus = (o) => (o.orderStatus || o.order_status || 'pending').toLowerCase();
+
+    // ---- 1. Đếm tổng thể (chạy song song) ----
+    const [
+      totalUsers, totalCustomers, totalShopOwners, totalShops, totalProducts,
+      totalOrders, lockedUsers, pendingShopsCount, activeShopsCount
+    ] = await Promise.all([
+      User.countDocuments({}),
+      User.countDocuments({ role: 'user' }),
+      User.countDocuments({ role: 'shop' }),
+      ShopModel.countDocuments({}),
+      Product.countDocuments({}),
+      Order.countDocuments({}),
+      User.countDocuments({ status: 'locked' }),
+      ShopModel.countDocuments({ status: 'pending' }),
+      ShopModel.countDocuments({ status: 'active' })
+    ]);
+
+    // ---- 2. Giá trị đơn hàng theo trạng thái (toàn sàn, mọi thời gian) ----
+    const valueAgg = await Order.aggregate([
+      { $group: {
+          _id: { $ifNull: ['$orderStatus', '$order_status'] },
+          count: { $sum: 1 },
+          value: { $sum: { $ifNull: ['$finalAmount', { $toDouble: { $ifNull: ['$final_amount', 0] } }] } }
+      } }
+    ]);
+    const orderStatus = { pending: 0, confirmed: 0, shipping: 0, completed: 0, cancelled: 0 };
+    const statusValue = { ...orderStatus };
+    let totalOrderValueAll = 0;
+    for (const row of valueAgg) {
+      const k = String(row._id || 'pending').toLowerCase();
+      if (orderStatus[k] === undefined) continue;
+      orderStatus[k] = row.count;
+      statusValue[k] = Math.round(row.value || 0);
+      totalOrderValueAll += Math.round(row.value || 0);
+    }
+    const completedOrderValue = statusValue.completed; // doanh thu bán hàng của các shop
+
+    // ---- 3. Chuỗi theo ngày: đơn mới + giá trị đơn hoàn tất + tài khoản mới ----
+    const periodOrders = await Order.find({ created_at: { $gte: since } })
+      .select('order_status orderStatus final_amount finalAmount created_at').lean();
+    const newUsers = await User.find({ createdAt: { $gte: since } })
+      .select('createdAt role').lean();
+
+    const seriesMap = new Map();
+    for (let i = 0; i < days; i++) {
+      const d = new Date(since);
+      d.setDate(since.getDate() + i);
+      seriesMap.set(d.toISOString().slice(0, 10), { date: d.toISOString().slice(0, 10), revenue: 0, orders: 0, newUsers: 0 });
+    }
+    for (const o of periodOrders) {
+      const bucket = seriesMap.get(new Date(o.created_at).toISOString().slice(0, 10));
+      if (!bucket) continue;
+      bucket.orders += 1;
+      if (normStatus(o) === 'completed') bucket.revenue += orderAmount(o);
+    }
+    for (const u of newUsers) {
+      const bucket = seriesMap.get(new Date(u.createdAt).toISOString().slice(0, 10));
+      if (bucket) bucket.newUsers += 1;
+    }
+    const series = Array.from(seriesMap.values());
+
+    // ---- 4. Cảnh báo nghiệp vụ ----
+    const pendingShops = await ShopModel.find({ status: 'pending' })
+      .select('name shop_name createdAt ownerId').populate('ownerId', 'name email').lean();
+
+    // ---- 5. Bảng dữ liệu nhanh ----
+    const [recentOrders, recentShops, recentUsers, recentProducts] = await Promise.all([
+      Order.find({}).sort({ created_at: -1 }).limit(6)
+        .select('created_at order_status orderStatus final_amount finalAmount items').lean(),
+      ShopModel.find({}).sort({ createdAt: -1 }).limit(5)
+        .select('name shop_name status createdAt total_products').lean(),
+      User.find({}).sort({ createdAt: -1 }).limit(6)
+        .select('name email role status createdAt').lean(),
+      Product.find({}).sort({ createdAt: -1 }).limit(5)
+        .select('title price stock status createdAt shopId').populate('shopId', 'name').lean()
+    ]);
+
+    return res.json({
+      counts: {
+        totalUsers, totalCustomers, totalShopOwners, totalShops, totalProducts, totalOrders,
+        lockedUsers, pendingShops: pendingShopsCount, activeShops: activeShopsCount
+      },
+      orderStatus,
+      orderValue: {
+        totalAll: totalOrderValueAll,
+        completed: completedOrderValue,
+        note: 'Nền tảng chưa có quy tắc tính phí/hoa hồng nên không hiển thị doanh thu nền tảng'
+      },
+      period: { days, since },
+      series,
+      alerts: { pendingShops },
+      recent: {
+        orders: recentOrders.map(o => ({
+          _id: o._id, createdAt: o.created_at, status: normStatus(o), total: orderAmount(o),
+          itemCount: (o.items || []).length
+        })),
+        shops: recentShops,
+        users: recentUsers,
+        products: recentProducts
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi lấy thống kê tổng quan.', details: error.message });
   }
 });
 

@@ -8,9 +8,21 @@ import ProfilePage from './pages/ProfilePage'
 import LoginPage from './pages/LoginPage'
 import CheckoutPage from './pages/CheckoutPage'
 import CartPage from './pages/CartPage'
-import AdminPage from './pages/AdminPage'
 import ShopDetailPage from './pages/ShopDetailPage'
 import MainLayout from './layouts/Mainlayout'
+
+// Admin Centre (Kênh Quản trị) - layout dashboard riêng cho vai trò Admin
+import AdminLayout from './features/admin/pages/AdminLayout'
+import AdminDashboardPage from './features/admin/pages/AdminDashboardPage'
+import AdminAnalyticsPage from './features/admin/pages/AdminAnalyticsPage'
+import AdminUsersPage from './features/admin/pages/AdminUsersPage'
+import AdminShopsPage from './features/admin/pages/AdminShopsPage'
+import AdminProductsPage from './features/admin/pages/AdminProductsPage'
+import AdminCategoriesPage from './features/admin/pages/AdminCategoriesPage'
+import AdminBrandsPage from './features/admin/pages/AdminBrandsPage'
+import AdminOrdersPage from './features/admin/pages/AdminOrdersPage'
+import AdminVouchersPage from './features/admin/pages/AdminVouchersPage'
+import AdminShowroomsPage from './features/admin/pages/AdminShowroomsPage'
 
 // Seller Centre (Kênh Người Bán) - layout dashboard riêng, không dùng chrome trang công khai
 import SellerLayout from './features/shop/pages/SellerLayout'
@@ -54,6 +66,23 @@ function App() {
         </Route>
 
         {/* ============================================================
+            ADMIN CENTRE — Khu vực Quản trị viên (layout dashboard riêng)
+            Backend chặn mọi API quản trị bằng checkRole(['admin']).
+        ============================================================ */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="analytics" element={<AdminAnalyticsPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          <Route path="shops" element={<AdminShopsPage />} />
+          <Route path="products" element={<AdminProductsPage />} />
+          <Route path="categories" element={<AdminCategoriesPage />} />
+          <Route path="brands" element={<AdminBrandsPage />} />
+          <Route path="orders" element={<AdminOrdersPage />} />
+          <Route path="vouchers" element={<AdminVouchersPage />} />
+          <Route path="showrooms" element={<AdminShowroomsPage />} />
+        </Route>
+
+        {/* ============================================================
             SITE CÔNG KHAI — giữ nguyên layout hiện có
         ============================================================ */}
         <Route element={<SiteLayout />}>
@@ -72,8 +101,7 @@ function App() {
           <Route path="/gio-hang" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/thanh-toan" element={<CheckoutPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/quan-tri" element={<Navigate to="/admin" replace />} />
           {/* Route cũ của khu Chủ shop -> chuyển hướng sang Seller Centre mới */}
           <Route path="/shop-manager" element={<Navigate to="/shop" replace />} />
           <Route path="/quan-ly-shop" element={<Navigate to="/shop" replace />} />

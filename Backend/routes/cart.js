@@ -4,6 +4,7 @@ const Cart = require('../models/Cart');
 const CartItem = require('../models/CartItem');
 const Product = require('../models/Product');
 const Customer = require('../models/Customer');
+const User = require('../models/User');
 const { auth } = require('../middleware/auth');
 
 /**
@@ -552,6 +553,26 @@ router.get('/validate', auth, async (req, res) => {
     const issues = [];
     let verifiedTotal = 0;
     const now = new Date();
+
+    // Kiểm tra trạng thái tài khoản và quyền đặt hàng của khách hàng (Section 8 cus.md)
+    const currentUser = await User.findById(req.user._id);
+    if (currentUser) {
+      if (currentUser.status === 'locked') {
+        if (!currentUser.lockExpiresAt || currentUser.lockExpiresAt > now) {
+          const remainingStr = currentUser.lockExpiresAt ? ` đến ${new Date(currentUser.lockExpiresAt).toLocaleString('vi-VN')}` : '';
+          issues.push({
+            error: `Tài khoản của bạn đang bị khóa${remainingStr}. Lý do: ${currentUser.lockReason || 'Vi phạm chính sách'}. Không thể tiến hành đặt hàng.`
+          });
+        }
+      } else if (currentUser.isOrderLocked) {
+        if (!currentUser.orderLockExpiresAt || currentUser.orderLockExpiresAt > now) {
+          const remainingStr = currentUser.orderLockExpiresAt ? ` đến ${new Date(currentUser.orderLockExpiresAt).toLocaleString('vi-VN')}` : '';
+          issues.push({
+            error: `Quyền đặt hàng của tài khoản đang bị tạm khóa${remainingStr}. Lý do: ${currentUser.orderLockReason || 'Tạm dừng đặt hàng theo quyết định quản trị viên'}.`
+          });
+        }
+      }
+    }
 
     for (const item of selectedItems) {
       const product = await Product.findById(item.productId).populate('shopId');

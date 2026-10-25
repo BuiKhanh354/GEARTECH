@@ -201,13 +201,15 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).json({ error: 'Vui lòng cung cấp địa chỉ nhận hàng và số điện thoại liên lạc.' });
     }
 
-    // 1. Kiểm tra trạng thái tài khoản người dùng (Phần D1 prompt.md)
+    // 1. Kiểm tra trạng thái tài khoản người dùng (Phần D1 prompt.md & Section 8 cus.md)
     const currentUser = await User.findById(req.user.id || req.user._id);
     if (!currentUser) {
       return res.status(404).json({ error: 'Người dùng không tồn tại.' });
     }
+    const now = new Date();
+
+    // 1.1 Khóa tài khoản chung
     if (currentUser.status === 'locked') {
-      const now = new Date();
       if (currentUser.lockExpiresAt && currentUser.lockExpiresAt <= now) {
         currentUser.status = 'active';
         currentUser.lockExpiresAt = null;
@@ -217,6 +219,21 @@ router.post('/', auth, async (req, res) => {
         const remainingStr = currentUser.lockExpiresAt ? ` đến ${new Date(currentUser.lockExpiresAt).toLocaleString('vi-VN')}` : '';
         return res.status(403).json({
           error: `Tài khoản của bạn đang bị khóa${remainingStr}. Lý do: ${currentUser.lockReason || 'Vi phạm điều khoản chính sách'}. Không thể thực hiện mua hàng hoặc thanh toán.`
+        });
+      }
+    }
+
+    // 1.2 Khóa riêng quyền đặt hàng (khách hàng vẫn xem được web nhưng không được checkout)
+    if (currentUser.isOrderLocked) {
+      if (currentUser.orderLockExpiresAt && currentUser.orderLockExpiresAt <= now) {
+        currentUser.isOrderLocked = false;
+        currentUser.orderLockExpiresAt = null;
+        currentUser.orderLockReason = '';
+        await currentUser.save();
+      } else {
+        const remainingStr = currentUser.orderLockExpiresAt ? ` đến ${new Date(currentUser.orderLockExpiresAt).toLocaleString('vi-VN')}` : '';
+        return res.status(403).json({
+          error: `Quyền đặt hàng của tài khoản đang bị tạm khóa${remainingStr}. Lý do: ${currentUser.orderLockReason || 'Tạm dừng đặt hàng theo quyết định quản trị viên'}. Bạn vẫn có thể xem sản phẩm và cập nhật giỏ hàng nhưng chưa thể đặt hàng lúc này.`
         });
       }
     }
