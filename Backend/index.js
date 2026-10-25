@@ -46,6 +46,7 @@ app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/favorites', require('./routes/favorites'));
 app.use('/api/shop-followers', require('./routes/shopFollowers'));
 app.use('/api/upload', require('./routes/upload'));
+app.use('/api/homepage', require('./routes/homepage'));
 
 // Middleware xử lý lỗi 404 (Không tìm thấy Route)
 app.use((req, res, next) => {

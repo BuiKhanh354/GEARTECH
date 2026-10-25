@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import {
   SquaresFour, ChartLineUp, Users, Storefront, Package, TreeStructure,
   Tag, Receipt, MapPin, CaretLeft, List, X, SignOut, User,
-  ArrowSquareOut, Gear
+  ArrowSquareOut, Gear, Browsers
 } from '@phosphor-icons/react'
 import apiClient from '../../../api/client'
 
@@ -69,6 +69,12 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     ]
   },
   {
+    label: 'Giao diện & Nội dung',
+    items: [
+      { to: '/admin/homepage', end: true, icon: Browsers, label: 'Bố cục trang chủ' }
+    ]
+  },
+  {
     label: 'Hệ thống',
     items: [
       { to: '/admin/showrooms', end: true, icon: MapPin, label: 'Showroom GPS' }
@@ -87,6 +93,7 @@ function breadcrumbFor(pathname: string): string {
     '/admin/brands': 'Thương hiệu',
     '/admin/orders': 'Quản lý đơn hàng',
     '/admin/vouchers': 'Khuyến mãi',
+    '/admin/homepage': 'Quản lý bố cục trang chủ',
     '/admin/showrooms': 'Showroom GPS'
   }
   return map[pathname] || 'Quản trị hệ thống'

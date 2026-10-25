@@ -23,6 +23,7 @@ import AdminBrandsPage from './features/admin/pages/AdminBrandsPage'
 import AdminOrdersPage from './features/admin/pages/AdminOrdersPage'
 import AdminVouchersPage from './features/admin/pages/AdminVouchersPage'
 import AdminShowroomsPage from './features/admin/pages/AdminShowroomsPage'
+import AdminHomepageBuilderPage from './features/admin/pages/AdminHomepageBuilderPage'
 
 // Seller Centre (Kênh Người Bán) - layout dashboard riêng, không dùng chrome trang công khai
 import SellerLayout from './features/shop/pages/SellerLayout'
@@ -80,6 +81,7 @@ function App() {
           <Route path="orders" element={<AdminOrdersPage />} />
           <Route path="vouchers" element={<AdminVouchersPage />} />
           <Route path="showrooms" element={<AdminShowroomsPage />} />
+          <Route path="homepage" element={<AdminHomepageBuilderPage />} />
         </Route>
 
         {/* ============================================================

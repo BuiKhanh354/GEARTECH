@@ -170,6 +170,51 @@ router.post('/category-icon', auth, categoryUpload.single('icon'), (req, res) =>
   }
 });
 
+// ==========================================================================
+// HOMEPAGE BUILDER: UPLOAD BANNER QUẢNG BÁ TRANG CHỦ
+// POST /api/upload/homepage-banner (field: 'banner', 1 file, max 10MB)
+// ==========================================================================
+const bannerUploadDir = path.join(__dirname, '..', 'public', 'uploads', 'banners');
+if (!fs.existsSync(bannerUploadDir)) {
+  fs.mkdirSync(bannerUploadDir, { recursive: true });
+}
+
+const bannerStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, bannerUploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const ext = path.extname(file.originalname);
+    cb(null, `banner-${uniqueSuffix}${ext}`);
+  }
+});
+
+const bannerUpload = multer({
+  storage: bannerStorage,
+  fileFilter,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB
+    files: 1
+  }
+});
+
+router.post('/homepage-banner', auth, bannerUpload.single('banner'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'Vui lòng chọn 1 ảnh banner để tải lên.' });
+    }
+
+    const url = `http://localhost:5000/uploads/banners/${req.file.filename}`;
+    res.json({
+      message: 'Tải lên ảnh banner trang chủ thành công!',
+      url
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Lỗi tải lên ảnh banner trang chủ.', details: error.message });
+  }
+});
+
 // Middleware xử lý lỗi Multer
 router.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

@@ -20,6 +20,7 @@ import {
 import { productService, type ProductItem } from '../../../services/productService'
 import { categoryService } from '../../../services/categoryService'
 import { shopService, type ShopItem } from '../../../services/shopService'
+import { homepageService, type PopulatedSection } from '../../../services/homepageService'
 import { useCartStore } from '../../../store/cartStore'
 import { SafeProductImage } from '../../../components/common/ProductImage'
 import backgroundVideo from '../../../assets/video/BackgroundLoop.mp4'
@@ -40,6 +41,7 @@ const HomePage: React.FC = () => {
   // Real data states from Backend API
   const [allProducts, setAllProducts] = useState<ProductItem[]>([])
   const [featuredShops, setFeaturedShops] = useState<ShopItem[]>([])
+  const [publishedSections, setPublishedSections] = useState<PopulatedSection[]>([])
   const [loading, setLoading] = useState(true)
 
   // Interactive Category Filter on Homepage
@@ -83,15 +85,22 @@ const HomePage: React.FC = () => {
     const fetchData = async () => {
       try {
         setLoading(true)
-        const [productRes, shopRes] = await Promise.all([
+        const [productRes, shopRes, homepageRes] = await Promise.all([
           productService.getProducts({ limit: 20 }),
-          shopService.getShops()
+          shopService.getShops(),
+          homepageService.getPublicHomepage().catch(err => {
+            console.error('Lỗi nạp cấu hình homepage động:', err)
+            return null
+          })
         ])
         if (productRes && Array.isArray(productRes.products)) {
           setAllProducts(productRes.products)
         }
         if (Array.isArray(shopRes)) {
           setFeaturedShops(shopRes)
+        }
+        if (homepageRes && homepageRes.success && Array.isArray(homepageRes.sections)) {
+          setPublishedSections(homepageRes.sections)
         }
       } catch (err) {
         console.error('Lỗi tải dữ liệu trang chủ:', err)
@@ -306,315 +315,604 @@ const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       <div id="main-content" className="max-w-full px-6 lg:px-12 py-12 space-y-16 bg-grid-pattern">
         
-        {/* SECTION A: CYBER PODS - 3 TRỤ CỘT DỊCH VỤ CÔNG NGHỆ */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          
-          <motion.div 
-            whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.6)' }}
-            className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ff4655]"></div>
-            <div className="space-y-3 pl-2">
-              <div className="flex items-center justify-between">
-                <span className="w-10 h-10 rounded-lg bg-[#ff4655]/10 border border-[#ff4655]/30 flex items-center justify-center text-[#ff4655] shadow-sm group-hover:scale-105 transition-transform">
-                  <Wrench size={20} weight="fill" />
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-[#ff4655]/10 text-[#ff4655] border border-[#ff4655]/30 uppercase">
-                  LÃI SUẤT 0%
-                </span>
-              </div>
-              <div>
-                <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-[#ff4655] transition-colors">
-                  Build PC & Cấu Hình Đồ Họa
-                </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
-                  Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.
-                </p>
-              </div>
-            </div>
-            <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-[#ff4655] tracking-wider">
-              <span>BẮT ĐẦU BUILD NGAY</span>
-              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-            </div>
-          </motion.div>
-
-          <motion.div 
-            whileHover={{ y: -5, borderColor: 'rgba(37, 99, 235, 0.6)' }}
-            className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
-            <div className="space-y-3 pl-2">
-              <div className="flex items-center justify-between">
-                <span className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 shadow-sm group-hover:scale-105 transition-transform">
-                  <ShieldCheck size={20} weight="fill" />
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-blue-500/10 text-blue-500 border border-blue-500/30 uppercase">
-                  30 NGÀY VIP
-                </span>
-              </div>
-              <div>
-                <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-blue-500 transition-colors">
-                  Bảo Hành 1 Đổi 1 Tận Nơi
-                </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
-                  Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.
-                </p>
-              </div>
-            </div>
-            <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-blue-500 tracking-wider">
-              <span>TRA CỨU BẢO HÀNH</span>
-              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-            </div>
-          </motion.div>
-
-          <motion.div 
-            whileHover={{ y: -5, borderColor: 'rgba(16, 185, 129, 0.6)' }}
-            className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
-            <div className="space-y-3 pl-2">
-              <div className="flex items-center justify-between">
-                <span className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 shadow-sm group-hover:scale-105 transition-transform">
-                  <Truck size={20} weight="fill" />
-                </span>
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 uppercase">
-                  SIÊU TỐC 2H
-                </span>
-              </div>
-              <div>
-                <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-emerald-500 transition-colors">
-                  Giao Hàng Hỏa Tốc & Miễn Phí
-                </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
-                  Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.
-                </p>
-              </div>
-            </div>
-            <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-emerald-500 tracking-wider">
-              <span>XEM CHÍNH SÁCH SHIP</span>
-              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-            </div>
-          </motion.div>
-
-        </section>
-
-        {/* SECTION B: BỘ SƯU TẬP CHIẾN HẠM 2026 (DUAL BATTLE STATION PROMO BANNERS) */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          {/* Banner 1: ROG & MSI Gaming Arena */}
-          <div 
-            onClick={() => navigate('/ProductPage?category=desktops')}
-            className="group relative overflow-hidden rounded-2xl p-7 bg-gradient-to-br from-zinc-950 via-zinc-900 to-black border border-zinc-800 hover:border-[#ff4655]/70 transition-all duration-300 cursor-pointer shadow-lg flex flex-col justify-between min-h-[230px]"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff4655]/15 rounded-full blur-3xl group-hover:bg-[#ff4655]/25 transition-all pointer-events-none"></div>
-            <div className="relative z-10 space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded bg-[#ff4655] text-white text-[9px] font-black uppercase tracking-widest shadow-sm">
-                  ROG // TITAN SERIES 2026
-                </span>
-                <span className="text-[10px] font-mono font-bold text-zinc-400">FPS 240+ RAY TRACING</span>
-              </div>
-              <h3 className="text-xl font-black uppercase text-white tracking-tight group-hover:text-[#ff4655] transition-colors max-w-md">
-                CHIẾN HẠM PC GAMING ĐỈNH CAO THI ĐẤU ESPORTS
-              </h3>
-              <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
-                Trang bị cấu hình GeForce RTX 4090, Intel Core Ultra 9 và bo mạch chủ ROG Strix tối tân nhất.
-              </p>
-            </div>
-            <div className="relative z-10 pt-4 flex items-center justify-between">
-              <span className="text-xs font-black text-[#ff4655] uppercase tracking-wider">Giá từ 28.990.000₫</span>
-              <span className="px-4 py-2 bg-white text-zinc-950 group-hover:bg-[#ff4655] group-hover:text-white rounded text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center gap-1.5">
-                Khám phá ngay <ArrowUpRight size={13} weight="bold" />
-              </span>
-            </div>
-          </div>
-
-          {/* Banner 2: AI Workstation & Watercooling */}
-          <div 
-            onClick={() => navigate('/ProductPage?category=components')}
-            className="group relative overflow-hidden rounded-2xl p-7 bg-gradient-to-br from-zinc-950 via-zinc-900 to-[#071324] border border-zinc-800 hover:border-blue-500/70 transition-all duration-300 cursor-pointer shadow-lg flex flex-col justify-between min-h-[230px]"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/15 rounded-full blur-3xl group-hover:bg-blue-500/25 transition-all pointer-events-none"></div>
-            <div className="relative z-10 space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded bg-blue-600 text-white text-[9px] font-black uppercase tracking-widest shadow-sm">
-                  AI WORKSTATION & CUSTOM WATERCOOL
-                </span>
-                <span className="text-[10px] font-mono font-bold text-zinc-400">RENDER 8K // TRAINING AI</span>
-              </div>
-              <h3 className="text-xl font-black uppercase text-white tracking-tight group-hover:text-blue-400 transition-colors max-w-md">
-                HỆ THỐNG ĐỒ HỌA CHUYÊN NGHIỆP & TẢN NƯỚC ĐỘC BẢN
-              </h3>
-              <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
-                Hỗ trợ Dual GPU, tản nhiệt nước ống đồng mạ niken tối ưu nhiệt độ hoạt động 24/7 không giới hạn.
-              </p>
-            </div>
-            <div className="relative z-10 pt-4 flex items-center justify-between">
-              <span className="text-xs font-black text-blue-400 uppercase tracking-wider">Tùy biến theo yêu cầu</span>
-              <span className="px-4 py-2 bg-white text-zinc-950 group-hover:bg-blue-600 group-hover:text-white rounded text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center gap-1.5">
-                Nhận tư vấn <ArrowUpRight size={13} weight="bold" />
-              </span>
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION C: 10 PHÂN KHU CHUYÊN SÂU - MODERN TECH GLASS PODS */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
-            <div className="flex items-center gap-2.5">
-              <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
-              <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">// DANH MỤC THIẾT BỊ CÔNG NGHỆ CHUYÊN SÂU</h3>
-            </div>
-            <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider hidden sm:inline">10 PHÂN KHU THI ĐẤU</span>
-          </div>
-          
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-3"
-          >
-            {categories.map((cat) => (
-              <motion.div
-                key={cat.id}
-                variants={itemVariants}
-                whileHover={{ y: -5, scale: 1.02 }}
-                onClick={() => navigate(`/ProductPage?category=${cat.slug}`)}
-                className="bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/60 hover:shadow-[0_0_20px_rgba(255,70,85,0.25)] rounded-xl p-3.5 flex flex-col items-center justify-between text-center cursor-pointer shadow-sm transition-all duration-300 group min-h-[125px]"
-              >
-                <div className="w-11 h-11 rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/80 text-[#ff4655] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#ff4655] group-hover:text-white transition-all shadow-inner">
-                  {cat.icon}
-                </div>
-                <div className="mt-2 space-y-0.5">
-                  <span className="text-[10px] font-black text-zinc-800 dark:text-zinc-200 leading-tight uppercase tracking-wider block group-hover:text-[#ff4655] transition-colors line-clamp-1">
-                    {cat.name}
-                  </span>
-                  <span className="text-[8px] font-mono text-zinc-400 dark:text-zinc-500 block uppercase">
-                    {cat.subtitle}
-                  </span>
-                </div>
-              </motion.div>
+        {loading && publishedSections.length === 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 animate-pulse">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-44 bg-zinc-200 dark:bg-zinc-900 rounded-xl" />
             ))}
-          </motion.div>
-        </section>
-
-        {/* SECTION D: GIỜ VÀNG CHIẾN ĐẤU (FLASH SALE CYBER HUD) */}
-        <section className="bg-white dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm dark:shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-2 h-full bg-[#ff4655]"></div>
-
-          {/* Cyber HUD Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-zinc-200 dark:border-zinc-800/80 pl-2">
-            <div className="flex items-center gap-3 flex-wrap">
-              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#ff4655] text-white shadow-[0_0_15px_rgba(255,70,85,0.5)] animate-pulse">
-                <Flame size={18} weight="fill" />
-              </span>
-              <div>
-                <h3 className="text-sm font-black tracking-widest text-zinc-900 dark:text-white uppercase flex items-center gap-2">
-                  // GIỜ VÀNG CHIẾN ĐẤU // FLASH DEALS
-                </h3>
-                <span className="text-[10px] text-zinc-400 font-mono">CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ</span>
-              </div>
-
-              {/* HUD Live Countdown */}
-              <div className="flex items-center gap-1.5 sm:ml-4 bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                <Clock size={14} className="text-[#ff4655]" weight="bold" />
-                <span className="text-[10px] font-mono font-bold text-zinc-500 uppercase mr-1">KẾT THÚC TRONG:</span>
-                <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
-                  {String(timeLeft.hours).padStart(2, '0')}
-                </span>
-                <span className="text-[#ff4655] font-black">:</span>
-                <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
-                  {String(timeLeft.minutes).padStart(2, '0')}
-                </span>
-                <span className="text-[#ff4655] font-black">:</span>
-                <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
-                  {String(timeLeft.seconds).padStart(2, '0')}
-                </span>
-              </div>
-            </div>
-
-            <button 
-              onClick={() => navigate('/ProductPage?search=sale')}
-              className="text-xs font-black text-[#ff4655] hover:text-[#e03d4b] uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
-            >
-              Xem toàn bộ ưu đãi &raquo;
-            </button>
           </div>
+        )}
 
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-72 bg-zinc-100 dark:bg-zinc-900/60 rounded-xl animate-pulse border border-zinc-200 dark:border-zinc-800" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {flashSaleProducts.map((prod) => (
-                <motion.div 
-                  key={prod._id || prod.id} 
-                  whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.5)' }}
-                  onClick={() => navigate(`/product/${prod._id || prod.id}`)}
-                  className="group bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/90 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
-                >
-                  <div className="h-44 bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center text-4xl relative border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden">
-                    <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    
-                    {/* Badge Giảm Giá Góc Gaming */}
-                    <span className="absolute top-2.5 left-2.5 bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded-sm shadow-md flex items-center gap-1">
-                      <Flame size={10} weight="fill" />
-                      {prod.discount || '-15%'}
-                    </span>
-
-                    {/* Quick Add Button */}
-                    <button
-                      onClick={(e) => handleAddToCart(e, prod)}
-                      title="Thêm vào giỏ hàng ngay"
-                      className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-lg bg-zinc-900/80 hover:bg-[#ff4655] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-md backdrop-blur-sm cursor-pointer"
+        {/* ========================================================================= */}
+        {/* DYNAMIC SECTIONS RENDERED FROM PUBLISHED HOMEPAGE CONFIG                   */}
+        {/* ========================================================================= */}
+        {publishedSections.length > 0 ? (
+          publishedSections.map((sec) => {
+            switch (sec.type) {
+              case 'service_features':
+                return (
+                  <section key={sec.sectionKey} className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <motion.div 
+                      whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.6)' }}
+                      className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
                     >
-                      <ShoppingCart size={15} weight="bold" />
-                    </button>
-                  </div>
+                      <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ff4655]"></div>
+                      <div className="space-y-3 pl-2">
+                        <div className="flex items-center justify-between">
+                          <span className="w-10 h-10 rounded-lg bg-[#ff4655]/10 border border-[#ff4655]/30 flex items-center justify-center text-[#ff4655] shadow-sm group-hover:scale-105 transition-transform">
+                            <Wrench size={20} weight="fill" />
+                          </span>
+                          <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-[#ff4655]/10 text-[#ff4655] border border-[#ff4655]/30 uppercase">
+                            LÃI SUẤT 0%
+                          </span>
+                        </div>
+                        <div>
+                          <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-[#ff4655] transition-colors">
+                            Build PC & Cấu Hình Đồ Họa
+                          </h3>
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
+                            Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-[#ff4655] tracking-wider">
+                        <span>BẮT ĐẦU BUILD NGAY</span>
+                        <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </motion.div>
 
-                  <div className="p-4 space-y-3">
-                    <div className="flex items-center gap-1.5">
-                      <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 uppercase">
-                        {prod.categoryName || prod.category}
+                    <motion.div 
+                      whileHover={{ y: -5, borderColor: 'rgba(37, 99, 235, 0.6)' }}
+                      className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
+                    >
+                      <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
+                      <div className="space-y-3 pl-2">
+                        <div className="flex items-center justify-between">
+                          <span className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 shadow-sm group-hover:scale-105 transition-transform">
+                            <ShieldCheck size={20} weight="fill" />
+                          </span>
+                          <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-blue-500/10 text-blue-500 border border-blue-500/30 uppercase">
+                            30 NGÀY VIP
+                          </span>
+                        </div>
+                        <div>
+                          <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-blue-500 transition-colors">
+                            Bảo Hành 1 Đổi 1 Tận Nơi
+                          </h3>
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
+                            Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-blue-500 tracking-wider">
+                        <span>TRA CỨU BẢO HÀNH</span>
+                        <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </motion.div>
+
+                    <motion.div 
+                      whileHover={{ y: -5, borderColor: 'rgba(16, 185, 129, 0.6)' }}
+                      className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
+                    >
+                      <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
+                      <div className="space-y-3 pl-2">
+                        <div className="flex items-center justify-between">
+                          <span className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 shadow-sm group-hover:scale-105 transition-transform">
+                            <Truck size={20} weight="fill" />
+                          </span>
+                          <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 uppercase">
+                            SIÊU TỐC 2H
+                          </span>
+                        </div>
+                        <div>
+                          <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-emerald-500 transition-colors">
+                            Giao Hàng Hỏa Tốc & Miễn Phí
+                          </h3>
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
+                            Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-emerald-500 tracking-wider">
+                        <span>XEM CHÍNH SÁCH SHIP</span>
+                        <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </motion.div>
+                  </section>
+                )
+
+              case 'banner_slider':
+                return (
+                  <section key={sec.sectionKey} className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                    {(sec.populatedData?.banners || sec.config?.banners || []).map((banner, bIdx) => (
+                      <div 
+                        key={bIdx}
+                        onClick={() => navigate(banner.link || '/ProductPage')}
+                        className={`group relative overflow-hidden rounded-2xl p-7 bg-gradient-to-br ${banner.bgGradient || 'from-zinc-950 via-zinc-900 to-black'} border border-zinc-800 hover:border-[#ff4655]/70 transition-all duration-300 cursor-pointer shadow-lg flex flex-col justify-between min-h-[230px]`}
+                      >
+                        {banner.imageUrl && (
+                          <img
+                            src={banner.imageUrl}
+                            alt={banner.title}
+                            className="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:opacity-45 transition-opacity pointer-events-none"
+                          />
+                        )}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-[#ff4655]/15 rounded-full blur-3xl group-hover:bg-[#ff4655]/25 transition-all pointer-events-none"></div>
+                        <div className="relative z-10 space-y-3">
+                          <div className="flex items-center gap-2">
+                            {banner.badge && (
+                              <span className="px-2.5 py-1 rounded bg-[#ff4655] text-white text-[9px] font-black uppercase tracking-widest shadow-sm">
+                                {banner.badge}
+                              </span>
+                            )}
+                            {banner.subtitle && (
+                              <span className="text-[10px] font-mono font-bold text-zinc-400">{banner.subtitle}</span>
+                            )}
+                          </div>
+                          <h3 className="text-xl font-black uppercase text-white tracking-tight group-hover:text-[#ff4655] transition-colors max-w-md">
+                            {banner.title}
+                          </h3>
+                          {banner.description && (
+                            <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">
+                              {banner.description}
+                            </p>
+                          )}
+                        </div>
+                        <div className="relative z-10 pt-4 flex items-center justify-between">
+                          <span className="text-xs font-black text-[#ff4655] uppercase tracking-wider">{banner.priceTag}</span>
+                          <span className="px-4 py-2 bg-white text-zinc-950 group-hover:bg-[#ff4655] group-hover:text-white rounded text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center gap-1.5">
+                            {banner.ctaText || 'Khám phá ngay'} <ArrowUpRight size={13} weight="bold" />
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </section>
+                )
+
+              case 'category_grid':
+                return (
+                  <section key={sec.sectionKey} className="space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
+                        <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">
+                          // {sec.title}
+                        </h3>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider hidden sm:inline">
+                        {sec.subtitle || 'PHÂN KHU CÔNG NGHỆ CHUYÊN SÂU'}
                       </span>
-                      {prod.brand && (
-                        <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-purple-500/10 text-purple-500 border border-purple-500/20 uppercase">
-                          {prod.brand}
+                    </div>
+                    
+                    <motion.div 
+                      variants={containerVariants}
+                      initial="hidden"
+                      animate="show"
+                      className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-3"
+                    >
+                      {categories.slice(0, sec.config?.limit || 10).map((cat) => (
+                        <motion.div
+                          key={cat.id}
+                          variants={itemVariants}
+                          whileHover={{ y: -5, scale: 1.02 }}
+                          onClick={() => navigate(`/ProductPage?category=${cat.slug}`)}
+                          className="bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/60 hover:shadow-[0_0_20px_rgba(255,70,85,0.25)] rounded-xl p-3.5 flex flex-col items-center justify-between text-center cursor-pointer shadow-sm transition-all duration-300 group min-h-[125px]"
+                        >
+                          <div className="w-11 h-11 rounded-lg bg-zinc-50 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/80 text-[#ff4655] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#ff4655] group-hover:text-white transition-all shadow-inner">
+                            {cat.icon}
+                          </div>
+                          <div className="mt-2 space-y-0.5">
+                            <span className="text-[10px] font-black text-zinc-800 dark:text-zinc-200 leading-tight uppercase tracking-wider block group-hover:text-[#ff4655] transition-colors line-clamp-1">
+                              {cat.name}
+                            </span>
+                            <span className="text-[8px] font-mono text-zinc-400 dark:text-zinc-500 block uppercase">
+                              {cat.subtitle}
+                            </span>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  </section>
+                )
+
+              case 'flash_sale': {
+                const flashProducts = sec.populatedData?.products && sec.populatedData.products.length > 0
+                  ? sec.populatedData.products
+                  : flashSaleProducts
+
+                return (
+                  <section key={sec.sectionKey} className="bg-white dark:bg-zinc-950/90 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm dark:shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-2 h-full bg-[#ff4655]"></div>
+
+                    {/* Cyber HUD Header */}
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-zinc-200 dark:border-zinc-800/80 pl-2">
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#ff4655] text-white shadow-[0_0_15px_rgba(255,70,85,0.5)] animate-pulse">
+                          <Flame size={18} weight="fill" />
                         </span>
+                        <div>
+                          <h3 className="text-sm font-black tracking-widest text-zinc-900 dark:text-white uppercase flex items-center gap-2">
+                            // {sec.title}
+                          </h3>
+                          <span className="text-[10px] text-zinc-400 font-mono">
+                            {sec.config?.tagline || 'CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ'}
+                          </span>
+                        </div>
+
+                        {/* HUD Live Countdown */}
+                        <div className="flex items-center gap-1.5 sm:ml-4 bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+                          <Clock size={14} className="text-[#ff4655]" weight="bold" />
+                          <span className="text-[10px] font-mono font-bold text-zinc-500 uppercase mr-1">KẾT THÚC TRONG:</span>
+                          <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+                            {String(timeLeft.hours).padStart(2, '0')}
+                          </span>
+                          <span className="text-[#ff4655] font-black">:</span>
+                          <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+                            {String(timeLeft.minutes).padStart(2, '0')}
+                          </span>
+                          <span className="text-[#ff4655] font-black">:</span>
+                          <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+                            {String(timeLeft.seconds).padStart(2, '0')}
+                          </span>
+                        </div>
+                      </div>
+
+                      <button 
+                        onClick={() => navigate('/ProductPage?search=sale')}
+                        className="text-xs font-black text-[#ff4655] hover:text-[#e03d4b] uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        Xem toàn bộ ưu đãi &raquo;
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                      {flashProducts.map((prod) => (
+                        <motion.div 
+                          key={prod._id || prod.id} 
+                          whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.5)' }}
+                          onClick={() => navigate(`/product/${prod._id || prod.id}`)}
+                          className="group bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/90 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
+                        >
+                          <div className="h-44 bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center text-4xl relative border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden">
+                            <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <span className="absolute top-2.5 left-2.5 bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded-sm shadow-md flex items-center gap-1">
+                              <Flame size={10} weight="fill" />
+                              {prod.discount || '-15%'}
+                            </span>
+                            <button
+                              onClick={(e) => handleAddToCart(e, prod)}
+                              title="Thêm vào giỏ hàng ngay"
+                              className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-lg bg-zinc-900/80 hover:bg-[#ff4655] text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-md backdrop-blur-sm cursor-pointer"
+                            >
+                              <ShoppingCart size={15} weight="bold" />
+                            </button>
+                          </div>
+
+                          <div className="p-4 space-y-3">
+                            <div className="flex items-center gap-1.5">
+                              <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 uppercase">
+                                {prod.categoryName || prod.category}
+                              </span>
+                              {prod.brand && (
+                                <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-purple-500/10 text-purple-500 border border-purple-500/20 uppercase">
+                                  {prod.brand}
+                                </span>
+                              )}
+                            </div>
+
+                            <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-200 line-clamp-2 min-h-[32px] group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
+                              {prod.title}
+                            </h4>
+
+                            <div className="space-y-1">
+                              <div className="flex justify-between text-[9px] font-mono font-bold text-zinc-400">
+                                <span className="text-[#ff4655] flex items-center gap-0.5">
+                                  <Flame size={10} weight="fill" /> ĐÃ BÁN {prod.soldCount ?? 0}
+                                </span>
+                                <span>{(prod.stock ?? 0) > 0 ? `CÒN ${prod.stock} SẢN PHẨM` : 'HẾT HÀNG'}</span>
+                              </div>
+                            </div>
+
+                            <div className="pt-1">
+                              <div className="flex items-baseline gap-2">
+                                <span className="current-price text-sm font-black text-[#ff4655]">{formatPrice(prod.price)}</span>
+                                {prod.oldPrice && (
+                                  <span className="old-price text-[10px] text-zinc-400 line-through">{formatPrice(prod.oldPrice)}</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </section>
+                )
+              }
+
+              case 'category_products': {
+                const shelfProducts = sec.populatedData?.products || []
+                if (shelfProducts.length === 0 && !sec.config?.showOutOfStock) {
+                  return null // Ẩn khu vực nếu không có sản phẩm nào
+                }
+
+                return (
+                  <section key={sec.sectionKey} className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-200 dark:border-zinc-800">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
+                        <div>
+                          <h3 className="text-xs sm:text-sm font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase flex items-center gap-2">
+                            // {sec.title}
+                          </h3>
+                          {sec.subtitle && (
+                            <p className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-0.5">{sec.subtitle}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {sec.config?.showViewAll && (
+                        <button
+                          onClick={() => navigate(sec.config?.viewAllLink || `/ProductPage?category=${sec.config?.categorySlug || ''}`)}
+                          className="text-xs font-black text-[#ff4655] hover:text-[#e03d4b] uppercase tracking-wider flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          Xem tất cả &raquo;
+                        </button>
                       )}
                     </div>
 
-                    <h4 className="text-xs font-bold text-zinc-800 dark:text-zinc-200 line-clamp-2 min-h-[32px] group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
-                      {prod.title}
-                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {shelfProducts.map((prod) => (
+                        <motion.div 
+                          key={prod._id || prod.id} 
+                          whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.45)' }}
+                          onClick={() => navigate(`/product/${prod._id || prod.id}`)}
+                          className="group bg-white dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between relative"
+                        >
+                          <div className="h-44 bg-zinc-50 dark:bg-zinc-900/60 flex items-center justify-center text-3xl border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden relative">
+                            <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            {prod.discount && (
+                              <span className="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-mono font-black px-1.5 py-0.5 rounded shadow">
+                                {prod.discount}
+                              </span>
+                            )}
+                            <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
+                              <Star size={10} weight="fill" /> {prod.rating || 5.0}
+                            </span>
+                          </div>
 
-                    {/* Số lượng đã bán THẬT từ database (soldCount) */}
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-[9px] font-mono font-bold text-zinc-400">
-                        <span className="text-[#ff4655] flex items-center gap-0.5">
-                          <Flame size={10} weight="fill" /> ĐÃ BÁN {prod.soldCount ?? 0}
-                        </span>
-                        <span>{(prod.stock ?? 0) > 0 ? `CÒN ${prod.stock} SẢN PHẨM` : 'HẾT HÀNG'}</span>
+                          <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
+                            <div className="space-y-1.5">
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 uppercase">
+                                  {prod.categoryName || prod.category}
+                                </span>
+                                {prod.brand && (
+                                  <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-blue-500/10 text-blue-500 border border-blue-500/20 uppercase">
+                                    {prod.brand}
+                                  </span>
+                                )}
+                              </div>
+
+                              <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
+                                {prod.title}
+                              </h4>
+
+                              <div className="flex items-center justify-between text-[9px] font-mono text-zinc-400">
+                                <span className="text-[#ff4655] font-bold">ĐÃ BÁN {prod.soldCount ?? 0}</span>
+                                <span>{(prod.stock ?? 0) > 0 ? `CÒN ${prod.stock}` : 'HẾT HÀNG'}</span>
+                              </div>
+                            </div>
+
+                            <div className="pt-2 border-t border-zinc-100 dark:border-zinc-900 flex items-center justify-between gap-2">
+                              <div>
+                                <span className="text-sm font-black text-[#ff4655] block">
+                                  {formatPrice(prod.price)}
+                                </span>
+                                {prod.oldPrice && (
+                                  <span className="text-[9px] text-zinc-400 line-through block">
+                                    {formatPrice(prod.oldPrice)}
+                                  </span>
+                                )}
+                              </div>
+
+                              <button
+                                onClick={(e) => handleAddToCart(e, prod)}
+                                title="Thêm vào giỏ"
+                                className="px-2.5 py-1.5 bg-zinc-900 dark:bg-zinc-800 hover:bg-[#ff4655] text-white text-[10px] font-black rounded uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer"
+                              >
+                                <ShoppingCart size={13} weight="bold" />
+                                <span>+ Giỏ</span>
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </section>
+                )
+              }
+
+              case 'featured_products': {
+                return (
+                  <section key={sec.sectionKey} className="space-y-6">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-zinc-200 dark:border-zinc-800">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
+                        <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">
+                          // {sec.title}
+                        </h3>
+                      </div>
+
+                      {/* Category Filter Pills */}
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {[
+                          { id: 'all', label: 'TẤT CẢ' },
+                          { id: 'laptops', label: 'LAPTOP' },
+                          { id: 'desktops', label: 'PC & WORKSTATION' },
+                          { id: 'components', label: 'LINH KIỆN' },
+                          { id: 'peripherals', label: 'GEAR CHIẾN ĐẤU' },
+                          { id: 'monitors', label: 'MÀN HÌNH' }
+                        ].map(tab => (
+                          <button
+                            key={tab.id}
+                            onClick={() => setActiveCategoryFilter(tab.id)}
+                            className={`px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                              activeCategoryFilter === tab.id
+                                ? 'bg-[#ff4655] text-white shadow-[0_0_12px_rgba(255,70,85,0.4)]'
+                                : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-zinc-800'
+                            }`}
+                          >
+                            {tab.label}
+                          </button>
+                        ))}
                       </div>
                     </div>
 
-                    {/* Price Block */}
-                    <div className="pt-1">
-                      <div className="flex items-baseline gap-2">
-                        <span className="current-price text-sm font-black text-[#ff4655]">{formatPrice(prod.price)}</span>
-                        {prod.oldPrice && (
-                          <span className="old-price text-[10px] text-zinc-400 line-through">{formatPrice(prod.oldPrice)}</span>
-                        )}
-                      </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {showcaseProducts.map((prod) => (
+                        <motion.div 
+                          key={prod._id || prod.id} 
+                          whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.45)' }}
+                          onClick={() => navigate(`/product/${prod._id || prod.id}`)}
+                          className="group bg-white dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between relative"
+                        >
+                          <div className="h-44 bg-zinc-50 dark:bg-zinc-900/60 flex items-center justify-center text-3xl border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden relative">
+                            <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            {prod.discount && (
+                              <span className="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-mono font-black px-1.5 py-0.5 rounded shadow">
+                                {prod.discount}
+                              </span>
+                            )}
+                            <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
+                              <Star size={10} weight="fill" /> {prod.rating || 5.0}
+                            </span>
+                          </div>
+
+                          <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
+                            <div className="space-y-1.5">
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 uppercase">
+                                  {prod.categoryName || prod.category}
+                                </span>
+                                {prod.brand && (
+                                  <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-blue-500/10 text-blue-500 border border-blue-500/20 uppercase">
+                                    {prod.brand}
+                                  </span>
+                                )}
+                              </div>
+
+                              <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
+                                {prod.title}
+                              </h4>
+
+                              <p className="text-[10px] text-zinc-400 font-mono">
+                                Kho: <strong className="text-zinc-900 dark:text-white">{prod.stock}</strong> cái | SKU: {prod.sku || 'CHÍNH HÃNG'}
+                              </p>
+                            </div>
+
+                            <div className="pt-2 border-t border-zinc-100 dark:border-zinc-900 flex items-center justify-between gap-2">
+                              <div>
+                                <span className="text-sm font-black text-[#ff4655] block">
+                                  {formatPrice(prod.price)}
+                                </span>
+                                {prod.oldPrice && (
+                                  <span className="text-[9px] text-zinc-400 line-through block">
+                                    {formatPrice(prod.oldPrice)}
+                                  </span>
+                                )}
+                              </div>
+
+                              <button
+                                onClick={(e) => handleAddToCart(e, prod)}
+                                title="Thêm vào giỏ"
+                                className="px-2.5 py-1.5 bg-zinc-900 dark:bg-zinc-800 hover:bg-[#ff4655] text-white text-[10px] font-black rounded uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer"
+                              >
+                                <ShoppingCart size={13} weight="bold" />
+                                <span>+ Giỏ</span>
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
                     </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </section>
+                  </section>
+                )
+              }
+
+              case 'featured_shops': {
+                const shopList = sec.populatedData?.shops && sec.populatedData.shops.length > 0
+                  ? sec.populatedData.shops
+                  : featuredShops
+
+                return (
+                  <section key={sec.sectionKey} className="space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
+                        <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">// {sec.title}</h3>
+                      </div>
+                      <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider hidden sm:inline">100% GIAN HÀNG CHÍNH HÃNG</span>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {shopList.map((shop) => (
+                        <motion.div
+                          key={shop._id}
+                          whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.5)' }}
+                          onClick={() => navigate(`/shop/${shop._id || shop.id}`)}
+                          className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${shop.bgClass || 'from-zinc-900 to-black'} p-5 flex flex-col justify-between min-h-[170px] shadow-sm hover:shadow-xl border border-zinc-800 transition-all duration-300 cursor-pointer group text-white`}
+                        >
+                          <div className="absolute right-0 bottom-0 text-7xl opacity-5 group-hover:scale-110 transition-transform duration-300 select-none">
+                            {shop.logo}
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-3">
+                              <span className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center text-2xl backdrop-blur-sm shrink-0 border border-white/10 shadow-inner group-hover:scale-105 transition-transform">
+                                {shop.logo}
+                              </span>
+                              <div>
+                                <div className="flex items-center gap-1.5">
+                                  <h4 className="text-xs font-black tracking-wider uppercase text-white group-hover:text-[#ff4655] transition-colors">{shop.name}</h4>
+                                  <CheckCircle size={12} weight="fill" className="text-blue-400" />
+                                </div>
+                                <p className="text-[9px] text-zinc-400 font-semibold uppercase mt-0.5">{shop.category}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center pt-4 border-t border-white/10 mt-2 z-10">
+                            <div className="flex gap-3 text-[10px] font-bold">
+                              <span className="flex items-center gap-1 text-amber-400">
+                                <Star size={12} weight="fill" /> {shop.rating || 5.0}
+                              </span>
+                              <span className="text-zinc-400 uppercase tracking-wide">{shop.followers || '1.2K'} Follower</span>
+                            </div>
+                            <span className="text-[9px] font-black bg-white text-zinc-950 group-hover:bg-[#ff4655] group-hover:text-white px-3 py-1.5 rounded transition-all uppercase tracking-widest shadow-sm flex items-center gap-1">
+                              Ghé thăm <ArrowUpRight size={11} weight="bold" />
+                            </span>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </section>
+                )
+              }
+
+              default:
+                return null
+            }
+          })
+        ) : (
+          /* FALLBACK SECTIONS NẾU CHƯA LOAD ĐƯỢC CONFIG XUẤT BẢN */
+          <>
+            {/* Fallback A: 3 Trụ Cột Dịch Vụ */}
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6">
+                <h3 className="text-base font-black text-zinc-900 dark:text-white uppercase">Build PC Chuyên Nghiệp</h3>
+                <p className="text-xs text-zinc-400 mt-1">Trả góp 0% qua thẻ tín dụng và CCCD.</p>
+              </div>
+            </section>
+          </>
+        )}
 
         {/* SECTION E: BỘ LỌC CẤU HÌNH THEO NGÂN SÁCH (QUICK BUDGET CONFIGURATOR WIDGET) */}
         <section className="p-6 bg-gradient-to-r from-zinc-900/90 via-zinc-950/90 to-zinc-900/90 border border-zinc-800 rounded-2xl shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
@@ -652,166 +950,6 @@ const HomePage: React.FC = () => {
                   {budget.desc}
                 </span>
               </button>
-            ))}
-          </div>
-        </section>
-
-        {/* SECTION F: SHOWCASE SẢN PHẨM CÔNG NGHỆ CHỌN LỌC (INTERACTIVE TABS) */}
-        <section className="space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-zinc-200 dark:border-zinc-800">
-            <div className="flex items-center gap-2.5">
-              <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
-              <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">
-                // BỘ SƯU TẬP THIẾT BỊ HÀNG ĐẦU // FLAGSHIP SERIES
-              </h3>
-            </div>
-
-            {/* Category Filter Pills on Homepage */}
-            <div className="flex flex-wrap items-center gap-1.5">
-              {[
-                { id: 'all', label: 'TẤT CẢ' },
-                { id: 'laptops', label: 'LAPTOP' },
-                { id: 'desktops', label: 'PC & WORKSTATION' },
-                { id: 'components', label: 'LINH KIỆN' },
-                { id: 'peripherals', label: 'GEAR CHIẾN ĐẤU' },
-                { id: 'monitors', label: 'MÀN HÌNH' }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveCategoryFilter(tab.id)}
-                  className={`px-3 py-1.5 rounded-sm text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
-                    activeCategoryFilter === tab.id
-                      ? 'bg-[#ff4655] text-white shadow-[0_0_12px_rgba(255,70,85,0.4)]'
-                      : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-zinc-800'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Grid Products with Quick Add to Cart */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {showcaseProducts.map((prod) => (
-              <motion.div 
-                key={prod._id || prod.id} 
-                whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.45)' }}
-                onClick={() => navigate(`/product/${prod._id || prod.id}`)}
-                className="group bg-white dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between relative"
-              >
-                <div className="h-44 bg-zinc-50 dark:bg-zinc-900/60 flex items-center justify-center text-3xl border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden relative">
-                  <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  
-                  {prod.discount && (
-                    <span className="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-mono font-black px-1.5 py-0.5 rounded shadow">
-                      {prod.discount}
-                    </span>
-                  )}
-
-                  {/* Star Rating Badge */}
-                  <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
-                    <Star size={10} weight="fill" /> {prod.rating || 5.0}
-                  </span>
-                </div>
-
-                <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
-                  <div className="space-y-1.5">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 uppercase">
-                        {prod.categoryName || prod.category}
-                      </span>
-                      {prod.brand && (
-                        <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-blue-500/10 text-blue-500 border border-blue-500/20 uppercase">
-                          {prod.brand}
-                        </span>
-                      )}
-                    </div>
-
-                    <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 group-hover:text-[#ff4655] transition-colors uppercase tracking-wide">
-                      {prod.title}
-                    </h4>
-
-                    <p className="text-[10px] text-zinc-400 font-mono">
-                      Kho: <strong className="text-zinc-900 dark:text-white">{prod.stock}</strong> cái | SKU: {prod.sku || 'CHÍNH HÃNG'}
-                    </p>
-                  </div>
-
-                  {/* Price and Add to Cart Action */}
-                  <div className="pt-2 border-t border-zinc-100 dark:border-zinc-900 flex items-center justify-between gap-2">
-                    <div>
-                      <span className="text-sm font-black text-[#ff4655] block">
-                        {formatPrice(prod.price)}
-                      </span>
-                      {prod.oldPrice && (
-                        <span className="text-[9px] text-zinc-400 line-through block">
-                          {formatPrice(prod.oldPrice)}
-                        </span>
-                      )}
-                    </div>
-
-                    <button
-                      onClick={(e) => handleAddToCart(e, prod)}
-                      title="Thêm vào giỏ"
-                      className="px-2.5 py-1.5 bg-zinc-900 dark:bg-zinc-800 hover:bg-[#ff4655] text-white text-[10px] font-black rounded uppercase tracking-wider flex items-center gap-1 transition-colors cursor-pointer"
-                    >
-                      <ShoppingCart size={13} weight="bold" />
-                      <span>+ Giỏ</span>
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
-        {/* SECTION G: ĐỐI TÁC CÔNG NGHỆ LIÊN MINH (ALLIED PARTNERS) */}
-        <section className="space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-zinc-800">
-            <div className="flex items-center gap-2.5">
-              <span className="w-1.5 h-4 bg-[#ff4655] rounded-xs"></span>
-              <h3 className="text-xs font-black tracking-[0.2em] text-zinc-900 dark:text-white uppercase">// ĐỐI TÁC CÔNG NGHỆ LIÊN MINH</h3>
-            </div>
-            <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider hidden sm:inline">100% GIAN HÀNG CHÍNH HÃNG</span>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {featuredShops.map((shop) => (
-              <motion.div
-                key={shop._id}
-                whileHover={{ y: -4, borderColor: 'rgba(255, 70, 85, 0.5)' }}
-                onClick={() => navigate(`/shop/${shop._id || shop.id}`)}
-                className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${shop.bgClass || 'from-zinc-900 to-black'} p-5 flex flex-col justify-between min-h-[170px] shadow-sm hover:shadow-xl border border-zinc-800 transition-all duration-300 cursor-pointer group text-white`}
-              >
-                <div className="absolute right-0 bottom-0 text-7xl opacity-5 group-hover:scale-110 transition-transform duration-300 select-none">
-                  {shop.logo}
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <span className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center text-2xl backdrop-blur-sm shrink-0 border border-white/10 shadow-inner group-hover:scale-105 transition-transform">
-                      {shop.logo}
-                    </span>
-                    <div>
-                      <div className="flex items-center gap-1.5">
-                        <h4 className="text-xs font-black tracking-wider uppercase text-white group-hover:text-[#ff4655] transition-colors">{shop.name}</h4>
-                        <CheckCircle size={12} weight="fill" className="text-blue-400" />
-                      </div>
-                      <p className="text-[9px] text-zinc-400 font-semibold uppercase mt-0.5">{shop.category}</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex justify-between items-center pt-4 border-t border-white/10 mt-2 z-10">
-                  <div className="flex gap-3 text-[10px] font-bold">
-                    <span className="flex items-center gap-1 text-amber-400">
-                      <Star size={12} weight="fill" /> {shop.rating || 5.0}
-                    </span>
-                    <span className="text-zinc-400 uppercase tracking-wide">{shop.followers || '1.2K'} Follower</span>
-                  </div>
-                  <span className="text-[9px] font-black bg-white text-zinc-950 group-hover:bg-[#ff4655] group-hover:text-white px-3 py-1.5 rounded transition-all uppercase tracking-widest shadow-sm flex items-center gap-1">
-                    Ghé thăm <ArrowUpRight size={11} weight="bold" />
-                  </span>
-                </div>
-              </motion.div>
             ))}
           </div>
         </section>
