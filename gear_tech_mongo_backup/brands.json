@@ -1,0 +1,296 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "name": "ASUS",
+    "slug": "asus",
+    "logo": "⌨️",
+    "description": "Thương hiệu phần cứng máy tính",
+    "status": "active",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792843231939"
+      }
+    },
+    "order": {
+      "$numberInt": "0"
+    },
+    "website": ""
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73410"
+    },
+    "name": "RAZER",
+    "slug": "razer",
+    "logo": "🐍",
+    "description": "Biểu tượng phong cách Gaming Gear đỉnh cao thế giới",
+    "website": "https://www.razer.com",
+    "status": "active",
+    "order": {
+      "$numberInt": "2"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079652"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079652"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73411"
+    },
+    "name": "LOGITECH",
+    "slug": "logitech",
+    "logo": "🖱️",
+    "description": "Thiết bị ngoại vi, chuột không dây Lightspeed & bàn phím cơ",
+    "website": "https://www.logitechg.com",
+    "status": "active",
+    "order": {
+      "$numberInt": "3"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079655"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079655"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73412"
+    },
+    "name": "APPLE",
+    "slug": "apple",
+    "logo": "🍎",
+    "description": "Hệ sinh thái MacBook Apple Silicon, màn hình Retina đẳng cấp",
+    "website": "https://www.apple.com",
+    "status": "active",
+    "order": {
+      "$numberInt": "4"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079657"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079657"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73413"
+    },
+    "name": "CORSAIR",
+    "slug": "corsair",
+    "logo": "⛵",
+    "description": "Bộ nhớ RAM Dominator, nguồn công suất cao và tản nhiệt nước",
+    "website": "https://www.corsair.com",
+    "status": "active",
+    "order": {
+      "$numberInt": "5"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079658"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079658"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73414"
+    },
+    "name": "SONY",
+    "slug": "sony",
+    "logo": "🎧",
+    "description": "Âm thanh phòng thu Hi-Res Audio, tai nghe chống ồn WH-1000XM",
+    "website": "https://www.sony.com.vn",
+    "status": "active",
+    "order": {
+      "$numberInt": "6"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079660"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079660"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73415"
+    },
+    "name": "DELL",
+    "slug": "dell",
+    "logo": "🖥️",
+    "description": "Màn hình chuyên nghiệp UltraSharp và máy trạm đồ họa",
+    "website": "https://www.dell.com",
+    "status": "active",
+    "order": {
+      "$numberInt": "7"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079662"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079662"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73416"
+    },
+    "name": "SAMSUNG",
+    "slug": "samsung",
+    "logo": "🌟",
+    "description": "Màn hình OLED Odyssey, ổ cứng SSD NVMe 990 PRO siêu tốc",
+    "website": "https://www.samsung.com",
+    "status": "active",
+    "order": {
+      "$numberInt": "8"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079664"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079664"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73417"
+    },
+    "name": "MSI",
+    "slug": "msi",
+    "logo": "🐉",
+    "description": "Rồng đỏ gaming - card đồ họa Suprim, mainboard Tomahawk",
+    "website": "https://www.msi.com",
+    "status": "active",
+    "order": {
+      "$numberInt": "9"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079665"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079665"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "name": "ACER",
+    "slug": "acer",
+    "logo": "⚡",
+    "description": "Predator & Nitro - cỗ máy chiến game hiệu năng vô địch",
+    "website": "https://www.acer.com",
+    "status": "active",
+    "order": {
+      "$numberInt": "10"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792461079667"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792461079667"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad740cdf285ccfae2389c8a"
+    },
+    "name": "Lenovo",
+    "slug": "lenovo",
+    "logo": "🏷️",
+    "description": "",
+    "website": "https://www.lenovo.com/vn/vi/?Redirect=False",
+    "status": "active",
+    "order": {
+      "$numberInt": "11"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792491725194"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792491725194"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

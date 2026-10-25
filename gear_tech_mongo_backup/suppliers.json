@@ -1,0 +1,26 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11fbf2de58adcc60f3c78"
+    },
+    "shop_id": {
+      "$oid": "000000000000000000000002"
+    },
+    "name": "Nhà cung cấp linh kiện ABC",
+    "contact_name": "Nguyễn Văn B",
+    "phone": "0909876543",
+    "email": "supplier@gmail.com",
+    "address": "TP. Hồ Chí Minh",
+    "status": "active",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  }
+]

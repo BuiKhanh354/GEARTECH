@@ -1,0 +1,29 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11f932de58adcc60f3c6c"
+    },
+    "cart_id": {
+      "$oid": "000000000000000000000007"
+    },
+    "product_id": {
+      "$oid": "000000000000000000000005"
+    },
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "price": {
+      "$numberDecimal": "15990000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  }
+]

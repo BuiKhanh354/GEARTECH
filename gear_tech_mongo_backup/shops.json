@@ -1,0 +1,2823 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "user_id": {
+      "$oid": "000000000000000000000001"
+    },
+    "shop_name": "Gear Tech Store",
+    "description": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầuuuuuu.",
+    "logo": "🎰",
+    "phone": "0901234567",
+    "email": "shop@geartech.vn",
+    "address": "TP. Hồ Chí Minh",
+    "commission_rate": {
+      "$numberDecimal": "5.00"
+    },
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "total_products": {
+      "$numberInt": "3"
+    },
+    "status": "active",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "followers": "0",
+    "name": "Gear Tech Store",
+    "ownerId": {
+      "$oid": "6ad72341d88dc9f0a82e919e"
+    },
+    "rejectReason": "",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792894292687"
+      }
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792894292687"
+      }
+    },
+    "storefrontDraft": {
+      "template": "gaming",
+      "primaryColor": "#10b981",
+      "secondaryColor": "#18181b",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầuuuuuu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "gaming",
+      "primaryColor": "#10b981",
+      "secondaryColor": "#18181b",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầuuuuuu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "name": "HACKED SHOP",
+    "shop_name": "HACKED SHOP",
+    "description": "Cập nhật: Đã nâng cấp chính sách bảo hành 24 tháng 1 đổi 1",
+    "logo": "⚡",
+    "category": "Tản nhiệt Custom & Modding",
+    "phone": "0981112233",
+    "email": "shop_applicant_1792423895416@geartech.com",
+    "address": "Việt Nam",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "1"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad637d76ed58eb4b05e5d7f"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792423895555"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938349510"
+      }
+    },
+    "user_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d7f"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938349510"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db2d98e7e671780c06ec"
+    },
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "Hà Nội",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db2d98e7e671780c06eb"
+    },
+    "name": "CỬA HÀNG CÔNG NGHỆ",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465709290"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938350879"
+      }
+    },
+    "shop_name": "CỬA HÀNG CÔNG NGHỆ",
+    "user_id": {
+      "$oid": "6ad6db2d98e7e671780c06eb"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938350879"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db40654a8d77a3d80b62"
+    },
+    "name": "Tech Store Alpha 1792465728592",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "Hà Nội",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db40654a8d77a3d80b61"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465728607"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938352136"
+      }
+    },
+    "shop_name": "Tech Store Alpha 1792465728592",
+    "user_id": {
+      "$oid": "6ad6db40654a8d77a3d80b61"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938352136"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db40654a8d77a3d80b64"
+    },
+    "name": "Tech Store Beta 1792465728592",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "TP. HCM",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db40654a8d77a3d80b63"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465728625"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938353568"
+      }
+    },
+    "shop_name": "Tech Store Beta 1792465728592",
+    "user_id": {
+      "$oid": "6ad6db40654a8d77a3d80b63"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938353568"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c6e"
+    },
+    "name": "Tech Store Alpha 1792465750949",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "Hà Nội",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db5663ee301d7a3c8c6d"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750968"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938354985"
+      }
+    },
+    "shop_name": "Tech Store Alpha 1792465750949",
+    "user_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c6d"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938354985"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c70"
+    },
+    "name": "Tech Store Beta 1792465750949",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "TP. HCM",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db5663ee301d7a3c8c6f"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750987"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938356440"
+      }
+    },
+    "shop_name": "Tech Store Beta 1792465750949",
+    "user_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c6f"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938356440"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17b4"
+    },
+    "name": "Tech Store Alpha 1792465763030",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "Hà Nội",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db6391dada42db9b17b3"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763049"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938357636"
+      }
+    },
+    "shop_name": "Tech Store Alpha 1792465763030",
+    "user_id": {
+      "$oid": "6ad6db6391dada42db9b17b3"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938357636"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17b6"
+    },
+    "name": "Tech Store Beta 1792465763030",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "TP. HCM",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db6391dada42db9b17b5"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763070"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938359960"
+      }
+    },
+    "shop_name": "Tech Store Beta 1792465763030",
+    "user_id": {
+      "$oid": "6ad6db6391dada42db9b17b5"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938359960"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cef"
+    },
+    "name": "Tech Store Alpha 1792465777068",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "Hà Nội",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db71d5c52f3af8ee0cee"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777087"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938361230"
+      }
+    },
+    "shop_name": "Tech Store Alpha 1792465777068",
+    "user_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cee"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938361230"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf1"
+    },
+    "name": "Tech Store Beta 1792465777068",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "TP. HCM",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777102"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938362864"
+      }
+    },
+    "shop_name": "Tech Store Beta 1792465777068",
+    "user_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf0"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938362864"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb4900f"
+    },
+    "name": "Tech Store Alpha 1792465804243",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "Hà Nội",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db8cf15476018bb4900e"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804260"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938365773"
+      }
+    },
+    "shop_name": "Tech Store Alpha 1792465804243",
+    "user_id": {
+      "$oid": "6ad6db8cf15476018bb4900e"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938365773"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb49011"
+    },
+    "name": "Tech Store Beta 1792465804243",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "address": "TP. HCM",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad6db8cf15476018bb49010"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804282"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938364250"
+      }
+    },
+    "shop_name": "Tech Store Beta 1792465804243",
+    "user_id": {
+      "$oid": "6ad6db8cf15476018bb49010"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792938364250"
+      }
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad7297add502f77afc0c85b"
+    },
+    "name": "ASUS ROG Pavilion Shop",
+    "description": "",
+    "logo": "🏬",
+    "category": "Cửa hàng máy tính & linh kiện công nghệ",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "0"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ad7297add502f77afc0c85a"
+    },
+    "storefrontDraft": {
+      "template": "minimal",
+      "primaryColor": "#ff0000",
+      "secondaryColor": "#18181b",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "",
+      "introText": "",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792485754044"
+      }
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792485754044"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938367583"
+      }
+    },
+    "shop_name": "ASUS ROG Pavilion Shop",
+    "user_id": {
+      "$oid": "6ad7297add502f77afc0c85a"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a32"
+    },
+    "name": "Shop Cyber 1792937897054",
+    "shop_name": "Shop Cyber 1792937897054",
+    "description": "Chuyên cung cấp gear esports",
+    "logo": "🏬",
+    "category": "Đối tác phần cứng công nghệ",
+    "phone": "0933333333",
+    "email": "test_cust_a_1792937897054@geartech.test",
+    "address": "Quận 7, TP.HCM",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "1"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792937897738"
+      }
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937897738"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938368850"
+      }
+    },
+    "user_id": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620aa2"
+    },
+    "name": "Shop Cyber 1792937948371",
+    "shop_name": "Shop Cyber 1792937948371",
+    "description": "Chuyên cung cấp gear esports",
+    "logo": "🏬",
+    "category": "Đối tác phần cứng công nghệ",
+    "phone": "0933333333",
+    "email": "test_cust_a_1792937948371@geartech.test",
+    "address": "Quận 7, TP.HCM",
+    "commission_rate": {
+      "$numberInt": "5"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "followers": "0",
+    "total_products": {
+      "$numberInt": "1"
+    },
+    "bgClass": "from-zinc-900 to-black",
+    "status": "locked",
+    "rejectReason": "",
+    "ownerId": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "storefrontDraft": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "storefrontPublished": {
+      "template": "modern-tech",
+      "primaryColor": "#ff4655",
+      "secondaryColor": "#18181b",
+      "textColor": "#ffffff",
+      "bannerUrl": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80",
+      "logoUrl": "",
+      "announcement": "Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.",
+      "introText": "Chúng tôi chuyên cung cấp máy tính, linh kiện PC và phụ kiện công nghệ cao cấp với tiêu chuẩn chất lượng hàng đầu.",
+      "productColumns": {
+        "$numberInt": "4"
+      },
+      "productViewMode": "grid",
+      "sections": [
+        {
+          "id": "banner",
+          "title": "Banner Đầu Trang",
+          "enabled": true,
+          "order": {
+            "$numberInt": "1"
+          }
+        },
+        {
+          "id": "intro",
+          "title": "Giới Thiệu Gian Hàng",
+          "enabled": true,
+          "order": {
+            "$numberInt": "2"
+          }
+        },
+        {
+          "id": "featured",
+          "title": "Sản Phẩm Nổi Bật",
+          "enabled": true,
+          "order": {
+            "$numberInt": "3"
+          }
+        },
+        {
+          "id": "newest",
+          "title": "Hàng Mới Về",
+          "enabled": true,
+          "order": {
+            "$numberInt": "4"
+          }
+        },
+        {
+          "id": "bestseller",
+          "title": "Bán Chạy Nhất",
+          "enabled": true,
+          "order": {
+            "$numberInt": "5"
+          }
+        },
+        {
+          "id": "catalog",
+          "title": "Toàn Bộ Sản Phẩm",
+          "enabled": true,
+          "order": {
+            "$numberInt": "6"
+          }
+        }
+      ]
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792937948988"
+      }
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937948988"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792938370474"
+      }
+    },
+    "user_id": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

@@ -1,0 +1,712 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11fd02de58adcc60f3c7b"
+    },
+    "shop_id": {
+      "$oid": "000000000000000000000002"
+    },
+    "product_id": {
+      "$oid": "000000000000000000000005"
+    },
+    "supplier_id": {
+      "$oid": "000000000000000000000009"
+    },
+    "type": "import",
+    "quantity": {
+      "$numberInt": "20"
+    },
+    "unit_cost": {
+      "$numberDecimal": "12000000"
+    },
+    "reference": "PN001",
+    "note": "Nhập GPU",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8c962247a81a62542c"
+    },
+    "shop_id": {
+      "$oid": "6ad6db8cf15476018bb4900f"
+    },
+    "product_id": {
+      "$oid": "6ad6db8cf15476018bb49014"
+    },
+    "supplier_id": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_cost": {
+      "$numberDecimal": "2000000"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792465804513"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6dd45a4dbee2dfc1aefeb"
+    },
+    "shop_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c6e"
+    },
+    "product_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c73"
+    },
+    "supplier_id": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_cost": {
+      "$numberDecimal": "2000000"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792466245818"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc979e9813e60615ce5278"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_id": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "productId": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "import",
+    "quantity": {
+      "$numberInt": "10"
+    },
+    "unit_cost": {
+      "$numberDecimal": "20000000"
+    },
+    "unitCost": {
+      "$numberInt": "20000000"
+    },
+    "reference": "PN-609043",
+    "note": "test",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792841630433"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc98549813e60615ce5279"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_id": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "productId": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "import",
+    "quantity": {
+      "$numberInt": "20"
+    },
+    "unit_cost": {
+      "$numberDecimal": "20000000"
+    },
+    "unitCost": {
+      "$numberInt": "20000000"
+    },
+    "reference": "PN-769248",
+    "note": "test-2",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792841812750"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc993b9813e60615ce5293"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_id": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_cost": {
+      "$numberDecimal": "38990000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792842043185"
+      }
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "productId": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca2089813e60615ce531b"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_id": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "import",
+    "quantity": {
+      "$numberInt": "20"
+    },
+    "unit_cost": {
+      "$numberDecimal": "6490000"
+    },
+    "unitCost": {
+      "$numberInt": "6490000"
+    },
+    "reference": "PN-272874",
+    "note": "Biến động kho kiểu import",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792844296578"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca2f39813e60615ce5375"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_id": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_cost": {
+      "$numberDecimal": "75000000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792844531243"
+      }
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcb1aa18d7b415e2ab47f0"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_id": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "import",
+    "quantity": {
+      "$numberInt": "7"
+    },
+    "unit_cost": {
+      "$numberDecimal": "0"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "TESTIMP-ce531a",
+    "note": "Test nhap kho",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792848298311"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcb1aa18d7b415e2ab47f1"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_id": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "list",
+    "quantity": {
+      "$numberInt": "3"
+    },
+    "unit_cost": {
+      "$numberDecimal": "0"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "TESTLIST-ce531a",
+    "note": "Test dang ban",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792848298320"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcb22518d7b415e2ab4826"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_id": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_cost": {
+      "$numberDecimal": "12990000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792848421177"
+      }
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "productId": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a1f"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_cost": {
+      "$numberDecimal": "4500000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897510"
+      }
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a25"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_cost": {
+      "$numberDecimal": "4500000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897673"
+      }
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a2b"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_cost": {
+      "$numberDecimal": "4500000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897710"
+      }
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a31"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "return",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_cost": {
+      "$numberDecimal": "0"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Khách hàng hủy đơn hàng chờ xác nhận 6ade0fa9527d955568620a2c",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897730"
+      }
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a8f"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_cost": {
+      "$numberDecimal": "4500000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948896"
+      }
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a95"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_cost": {
+      "$numberDecimal": "4500000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948922"
+      }
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a9b"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "sale",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_cost": {
+      "$numberDecimal": "4500000"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Xuất kho bán hàng qua đơn đặt hàng mới",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948959"
+      }
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620aa1"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "supplier_id": null,
+    "supplierId": null,
+    "type": "return",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_cost": {
+      "$numberDecimal": "0"
+    },
+    "unitCost": {
+      "$numberInt": "0"
+    },
+    "reference": "",
+    "note": "Khách hàng hủy đơn hàng chờ xác nhận 6ade0fdc527d955568620a9c",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948980"
+      }
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

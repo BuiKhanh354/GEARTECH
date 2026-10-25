@@ -1,0 +1,359 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11fa82de58adcc60f3c72"
+    },
+    "order_id": {
+      "$oid": "000000000000000000000008"
+    },
+    "product_id": {
+      "$oid": "000000000000000000000005"
+    },
+    "product_name": "ASUS GeForce RTX Gaming",
+    "sku": "GPU-ASUS-001",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_price": {
+      "$numberDecimal": "15990000"
+    },
+    "subtotal": {
+      "$numberDecimal": "31980000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6dd45a4dbee2dfc1aefee"
+    },
+    "order_id": {
+      "$oid": "6ad6dd45a4dbee2dfc1aefec"
+    },
+    "product_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c73"
+    },
+    "shop_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c6e"
+    },
+    "product_name": "Chuột Không Dây Gaming 1792465750949",
+    "sku": "MOUSE-1792465750949",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_price": {
+      "$numberDecimal": "2000000"
+    },
+    "subtotal": {
+      "$numberDecimal": "4000000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792466245822"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc993b9813e60615ce5296"
+    },
+    "order_id": {
+      "$oid": "6adc993b9813e60615ce5294"
+    },
+    "product_id": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_name": "ROG Swift OLED PG34WCDN",
+    "sku": "GT-MVGLR6C8",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_price": {
+      "$numberDecimal": "38990000"
+    },
+    "subtotal": {
+      "$numberDecimal": "38990000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792842043229"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca2f39813e60615ce5378"
+    },
+    "order_id": {
+      "$oid": "6adca2f39813e60615ce5376"
+    },
+    "product_id": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_name": "TUF GAMING VG259Q",
+    "sku": "GT-MVMD6OEE",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_price": {
+      "$numberDecimal": "75000000"
+    },
+    "subtotal": {
+      "$numberDecimal": "75000000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792844531247"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcb22518d7b415e2ab4829"
+    },
+    "order_id": {
+      "$oid": "6adcb22518d7b415e2ab4827"
+    },
+    "product_id": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "product_name": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+    "sku": "GT-MVG2K0IA",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_price": {
+      "$numberDecimal": "12990000"
+    },
+    "subtotal": {
+      "$numberDecimal": "12990000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792848421185"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a22"
+    },
+    "order_id": {
+      "$oid": "6ade0fa9527d955568620a20"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+    "sku": "",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_price": {
+      "$numberDecimal": "4500000"
+    },
+    "subtotal": {
+      "$numberDecimal": "4500000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897587"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a28"
+    },
+    "order_id": {
+      "$oid": "6ade0fa9527d955568620a26"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+    "sku": "",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_price": {
+      "$numberDecimal": "4500000"
+    },
+    "subtotal": {
+      "$numberDecimal": "4500000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897677"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a2e"
+    },
+    "order_id": {
+      "$oid": "6ade0fa9527d955568620a2c"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+    "sku": "",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_price": {
+      "$numberDecimal": "4500000"
+    },
+    "subtotal": {
+      "$numberDecimal": "9000000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897714"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a92"
+    },
+    "order_id": {
+      "$oid": "6ade0fdc527d955568620a90"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+    "sku": "GT-MVNWXJWG",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_price": {
+      "$numberDecimal": "4500000"
+    },
+    "subtotal": {
+      "$numberDecimal": "4500000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948901"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a98"
+    },
+    "order_id": {
+      "$oid": "6ade0fdc527d955568620a96"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+    "sku": "GT-MVNWXJWG",
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "unit_price": {
+      "$numberDecimal": "4500000"
+    },
+    "subtotal": {
+      "$numberDecimal": "4500000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948927"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a9e"
+    },
+    "order_id": {
+      "$oid": "6ade0fdc527d955568620a9c"
+    },
+    "product_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+    "sku": "GT-MVNWXJWG",
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "unit_price": {
+      "$numberDecimal": "4500000"
+    },
+    "subtotal": {
+      "$numberDecimal": "9000000"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948965"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

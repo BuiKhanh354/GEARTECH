@@ -1,0 +1,28 @@
+{
+  "database": "gear_tech",
+  "exportedAt": "2026-10-25T15:36:16.010Z",
+  "collections": {
+    "stock_movements": 19,
+    "users": 43,
+    "customers": 10,
+    "suppliers": 1,
+    "homepageconfigs": 2,
+    "brands": 11,
+    "productimages": 16,
+    "cartitems": 4,
+    "carts": 14,
+    "favorites": 3,
+    "categories": 11,
+    "products": 24,
+    "order_items": 11,
+    "payments": 11,
+    "cart_items": 1,
+    "vouchers": 2,
+    "showrooms": 0,
+    "reviews": 2,
+    "orders": 11,
+    "shop_followers": 3,
+    "shops": 16,
+    "product_images": 1
+  }
+}

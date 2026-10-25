@@ -1,0 +1,68 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac120262de58adcc60f3c89"
+    },
+    "customer_id": {
+      "$oid": "000000000000000000000006"
+    },
+    "shop_id": {
+      "$oid": "000000000000000000000002"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6addffc565ba1ed1824adefe"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792933829365"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6addffc765ba1ed1824adeff"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919e"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919e"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792933831594"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

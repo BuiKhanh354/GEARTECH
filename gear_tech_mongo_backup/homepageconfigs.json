@@ -1,0 +1,872 @@
+[
+  {
+    "_id": {
+      "$oid": "6ade012fcdafcb29695cab5a"
+    },
+    "state": "published",
+    "version": {
+      "$numberInt": "19"
+    },
+    "publishedAt": {
+      "$date": {
+        "$numberLong": "1792937949171"
+      }
+    },
+    "publishedBy": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "updatedBy": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "sections": [
+      {
+        "sectionKey": "sec_service_features",
+        "title": "Trụ cột dịch vụ & Đặc quyền GearTech",
+        "subtitle": "Build PC trả góp 0%, bảo hành 1 đổi 1 trong 30 ngày, giao hỏa tốc 2H",
+        "type": "service_features",
+        "status": "active",
+        "order": {
+          "$numberInt": "0"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb013"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_battle_station_banners",
+        "title": "Bộ sưu tập chiến hạm 2026",
+        "subtitle": "Trang bị cấu hình GeForce RTX 4090 & AI Workstation độc bản",
+        "type": "banner_slider",
+        "status": "active",
+        "order": {
+          "$numberInt": "1"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [
+            {
+              "title": "CHIẾN HẠM PC GAMING ĐỈNH CAO THI ĐẤU ESPORTS",
+              "badge": "ROG // TITAN SERIES 2026",
+              "subtitle": "FPS 240+ RAY TRACING",
+              "description": "Trang bị cấu hình GeForce RTX 4090, Intel Core Ultra 9 và bo mạch chủ ROG Strix tối tân nhất.",
+              "priceTag": "Giá từ 28.990.000₫",
+              "ctaText": "Khám phá ngay",
+              "link": "/ProductPage?category=desktops",
+              "imageUrl": "",
+              "bgGradient": "from-zinc-950 via-zinc-900 to-black",
+              "status": "active",
+              "startDate": null,
+              "endDate": null,
+              "_id": {
+                "$oid": "6ade0711cdafcb29695cb015"
+              }
+            },
+            {
+              "title": "HỆ THỐNG ĐỒ HỌA CHUYÊN NGHIỆP & TẢN NƯỚC ĐỘC BẢN",
+              "badge": "AI WORKSTATION & CUSTOM WATERCOOL",
+              "subtitle": "RENDER 8K // TRAINING AI",
+              "description": "Hỗ trợ Dual GPU, tản nhiệt nước ống đồng mạ niken tối ưu nhiệt độ hoạt động 24/7 không giới hạn.",
+              "priceTag": "Tùy biến theo yêu cầu",
+              "ctaText": "Nhận tư vấn",
+              "link": "/ProductPage?category=components",
+              "imageUrl": "",
+              "bgGradient": "from-zinc-950 via-zinc-900 to-[#071324]",
+              "status": "active",
+              "startDate": null,
+              "endDate": null,
+              "_id": {
+                "$oid": "6ade0711cdafcb29695cb016"
+              }
+            }
+          ],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb014"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_category_grid",
+        "title": "Danh mục thiết bị công nghệ chuyên sâu",
+        "subtitle": "10 Phân khu thi đấu & trải nghiệm công nghệ cao cấp",
+        "type": "category_grid",
+        "status": "active",
+        "order": {
+          "$numberInt": "2"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "10"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb017"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_flash_sale",
+        "title": "Giờ vàng chiến đấu // Flash Deals",
+        "subtitle": "Cập nhật giá sốc mỗi 24 giờ với ưu đãi độc quyền",
+        "type": "flash_sale",
+        "status": "active",
+        "order": {
+          "$numberInt": "3"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "10"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": {
+            "$date": {
+              "$numberLong": "1793022097904"
+            }
+          },
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb018"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_pc_gaming",
+        "title": "PC Gaming & Workstation Chiến Hạm",
+        "subtitle": "Cấu hình thi đấu tối tân, tản nhiệt hiệu năng cao sẵn sàng cho mọi tựa game AAA",
+        "type": "category_products",
+        "status": "active",
+        "order": {
+          "$numberInt": "4"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": {
+            "$oid": "6ad6c432a4d565be918bd288"
+          },
+          "categorySlug": "desktops",
+          "categoryName": "PC & WORKSTATION",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "/ProductPage?category=desktops",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb019"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_laptops_flagship",
+        "title": "Laptop Gaming & MacBook Đồ Họa",
+        "subtitle": "Sức mạnh đồ họa di động, màn hình tần số quét cao cho game thủ & creator",
+        "type": "category_products",
+        "status": "inactive",
+        "order": {
+          "$numberInt": "5"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": {
+            "$oid": "6ad6c432a4d565be918bd287"
+          },
+          "categorySlug": "laptops",
+          "categoryName": "LAPTOP & MACBOOK",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "/ProductPage?category=laptops",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb01a"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_featured_products",
+        "title": "Bộ sưu tập thiết bị hàng đầu // Flagship Series",
+        "subtitle": "Tuyển tập linh kiện, màn hình và phụ kiện Esports đạt chứng chỉ thi đấu",
+        "type": "featured_products",
+        "status": "active",
+        "order": {
+          "$numberInt": "6"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb01b"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_featured_shops",
+        "title": "Đối tác công nghệ liên minh",
+        "subtitle": "100% gian hàng chính hãng được ủy quyền trên GearTech",
+        "type": "featured_shops",
+        "status": "active",
+        "order": {
+          "$numberInt": "7"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "4"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb01c"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792937949171"
+          }
+        }
+      }
+    ],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792934191052"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937949171"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade012fdea2f6e7655e4a0a"
+    },
+    "state": "draft",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792934191055"
+      }
+    },
+    "publishedAt": null,
+    "publishedBy": null,
+    "sections": [
+      {
+        "sectionKey": "sec_service_features",
+        "title": "Trụ cột dịch vụ & Đặc quyền GearTech",
+        "subtitle": "Build PC trả góp 0%, bảo hành 1 đổi 1 trong 30 ngày, giao hỏa tốc 2H",
+        "type": "service_features",
+        "status": "active",
+        "order": {
+          "$numberInt": "0"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb013"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_battle_station_banners",
+        "title": "Bộ sưu tập chiến hạm 2026",
+        "subtitle": "Trang bị cấu hình GeForce RTX 4090 & AI Workstation độc bản",
+        "type": "banner_slider",
+        "status": "active",
+        "order": {
+          "$numberInt": "1"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [
+            {
+              "title": "CHIẾN HẠM PC GAMING ĐỈNH CAO THI ĐẤU ESPORTS",
+              "badge": "ROG // TITAN SERIES 2026",
+              "subtitle": "FPS 240+ RAY TRACING",
+              "description": "Trang bị cấu hình GeForce RTX 4090, Intel Core Ultra 9 và bo mạch chủ ROG Strix tối tân nhất.",
+              "priceTag": "Giá từ 28.990.000₫",
+              "ctaText": "Khám phá ngay",
+              "link": "/ProductPage?category=desktops",
+              "imageUrl": "",
+              "bgGradient": "from-zinc-950 via-zinc-900 to-black",
+              "status": "active",
+              "startDate": null,
+              "endDate": null,
+              "_id": {
+                "$oid": "6ade0711cdafcb29695cb015"
+              }
+            },
+            {
+              "title": "HỆ THỐNG ĐỒ HỌA CHUYÊN NGHIỆP & TẢN NƯỚC ĐỘC BẢN",
+              "badge": "AI WORKSTATION & CUSTOM WATERCOOL",
+              "subtitle": "RENDER 8K // TRAINING AI",
+              "description": "Hỗ trợ Dual GPU, tản nhiệt nước ống đồng mạ niken tối ưu nhiệt độ hoạt động 24/7 không giới hạn.",
+              "priceTag": "Tùy biến theo yêu cầu",
+              "ctaText": "Nhận tư vấn",
+              "link": "/ProductPage?category=components",
+              "imageUrl": "",
+              "bgGradient": "from-zinc-950 via-zinc-900 to-[#071324]",
+              "status": "active",
+              "startDate": null,
+              "endDate": null,
+              "_id": {
+                "$oid": "6ade0711cdafcb29695cb016"
+              }
+            }
+          ],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb014"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_category_grid",
+        "title": "Danh mục thiết bị công nghệ chuyên sâu",
+        "subtitle": "10 Phân khu thi đấu & trải nghiệm công nghệ cao cấp",
+        "type": "category_grid",
+        "status": "active",
+        "order": {
+          "$numberInt": "2"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "10"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb017"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_flash_sale",
+        "title": "Giờ vàng chiến đấu // Flash Deals",
+        "subtitle": "Cập nhật giá sốc mỗi 24 giờ với ưu đãi độc quyền",
+        "type": "flash_sale",
+        "status": "active",
+        "order": {
+          "$numberInt": "3"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "10"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": {
+            "$date": {
+              "$numberLong": "1793022097904"
+            }
+          },
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb018"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_pc_gaming",
+        "title": "PC Gaming & Workstation Chiến Hạm",
+        "subtitle": "Cấu hình thi đấu tối tân, tản nhiệt hiệu năng cao sẵn sàng cho mọi tựa game AAA",
+        "type": "category_products",
+        "status": "active",
+        "order": {
+          "$numberInt": "4"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": {
+            "$oid": "6ad6c432a4d565be918bd288"
+          },
+          "categorySlug": "desktops",
+          "categoryName": "PC & WORKSTATION",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "/ProductPage?category=desktops",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb019"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_laptops_flagship",
+        "title": "Laptop Gaming & MacBook Đồ Họa",
+        "subtitle": "Sức mạnh đồ họa di động, màn hình tần số quét cao cho game thủ & creator",
+        "type": "category_products",
+        "status": "inactive",
+        "order": {
+          "$numberInt": "5"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": {
+            "$oid": "6ad6c432a4d565be918bd287"
+          },
+          "categorySlug": "laptops",
+          "categoryName": "LAPTOP & MACBOOK",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "/ProductPage?category=laptops",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb01a"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_featured_products",
+        "title": "Bộ sưu tập thiết bị hàng đầu // Flagship Series",
+        "subtitle": "Tuyển tập linh kiện, màn hình và phụ kiện Esports đạt chứng chỉ thi đấu",
+        "type": "featured_products",
+        "status": "active",
+        "order": {
+          "$numberInt": "6"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb01b"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_featured_shops",
+        "title": "Đối tác công nghệ liên minh",
+        "subtitle": "100% gian hàng chính hãng được ủy quyền trên GearTech",
+        "type": "featured_shops",
+        "status": "active",
+        "order": {
+          "$numberInt": "7"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "4"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": []
+        },
+        "_id": {
+          "$oid": "6ade0711cdafcb29695cb01c"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1792936898540"
+          }
+        }
+      }
+    ],
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792936898540"
+      }
+    },
+    "updatedBy": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "version": {
+      "$numberInt": "1"
+    }
+  }
+]

@@ -1,0 +1,313 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "name": "Nguyễn Văn A",
+    "email": "customer@gmail.com",
+    "password": "123456",
+    "phone": "0912345678",
+    "avatar": "/images/avatar/default.png",
+    "status": "active",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "addresses": [],
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792464430662"
+      }
+    },
+    "userId": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "user_id": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8c962247a81a62542b"
+    },
+    "userId": {
+      "$oid": "6ad6db8cf15476018bb49012"
+    },
+    "user_id": {
+      "$oid": "6ad6db8cf15476018bb49012"
+    },
+    "name": "Khách hàng Một",
+    "email": "cust1_1792465804243@test.com",
+    "phone": "0988111222",
+    "avatar": "/images/avatar/default.png",
+    "status": "active",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804451"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465804451"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6dd24a4dbee2dfc1aefea"
+    },
+    "userId": {
+      "$oid": "6ad634b31fd2e94b807260dc"
+    },
+    "name": "Admin GearTech",
+    "email": "admin@geartech.com",
+    "phone": "",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "status": "active",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792466212224"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792466212224"
+      }
+    },
+    "user_id": {
+      "$oid": "6ad634b31fd2e94b807260dc"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "avatar": "/images/avatar/default.png",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792484161802"
+      }
+    },
+    "email": "customer@geartech.vn",
+    "name": "Nguyễn Văn Khách",
+    "phone": "0912345678",
+    "status": "active",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792933076829"
+      }
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Khách",
+      "receiverPhone": "0912345678",
+      "detailAddress": "18A/1 Cộng Hoà"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcb1aa18d7b415e2ab47ef"
+    },
+    "userId": {
+      "$oid": "6adcb1aa18d7b415e2ab47ee"
+    },
+    "name": "Tai khoan Test",
+    "email": "testuser2744@geartech.test",
+    "phone": "0900000001",
+    "avatar": "/images/avatar/default.png",
+    "status": "active",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792848298034"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792848298205"
+      }
+    },
+    "user_id": {
+      "$oid": "6adcb1aa18d7b415e2ab47ee"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6add61a41cf79b4cea218cbe"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "name": "admin",
+    "email": "admin@geartech.vn",
+    "phone": "",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "status": "active",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792893348829"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792893348829"
+      }
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a17"
+    },
+    "userId": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "name": "Nguyễn Văn Test A",
+    "email": "test_cust_a_1792937897054@geartech.test",
+    "phone": "0912345678",
+    "avatar": "/images/avatar/default.png",
+    "status": "active",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937897140"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937897140"
+      }
+    },
+    "user_id": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a19"
+    },
+    "userId": {
+      "$oid": "6ade0fa9527d955568620a18"
+    },
+    "name": "Trần Thị Test B",
+    "email": "test_cust_b_1792937897054@geartech.test",
+    "phone": "0987654321",
+    "avatar": "/images/avatar/default.png",
+    "status": "active",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937897310"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937897860"
+      }
+    },
+    "user_id": {
+      "$oid": "6ade0fa9527d955568620a18"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a87"
+    },
+    "userId": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "name": "Nguyễn Văn Test A",
+    "email": "test_cust_a_1792937948371@geartech.test",
+    "phone": "0912345678",
+    "avatar": "/images/avatar/default.png",
+    "status": "active",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937948485"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937948485"
+      }
+    },
+    "user_id": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a89"
+    },
+    "userId": {
+      "$oid": "6ade0fdc527d955568620a88"
+    },
+    "name": "Trần Thị Test B",
+    "email": "test_cust_b_1792937948371@geartech.test",
+    "phone": "0987654321",
+    "avatar": "/images/avatar/default.png",
+    "status": "active",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937948624"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937949083"
+      }
+    },
+    "user_id": {
+      "$oid": "6ade0fdc527d955568620a88"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

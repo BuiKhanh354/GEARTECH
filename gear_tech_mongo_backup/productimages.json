@@ -1,0 +1,450 @@
+[
+  {
+    "_id": {
+      "$oid": "6ad6d2fef1afb591c8fa3023"
+    },
+    "productId": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "imageUrl": "https://geartech.vn/images/azoth-side.jpg",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "0"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792463614510"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792489544159"
+      }
+    },
+    "image_url": "https://geartech.vn/images/azoth-side.jpg",
+    "is_primary": true,
+    "product_id": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "sort_order": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6d2fef1afb591c8fa3024"
+    },
+    "productId": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "imageUrl": "https://geartech.vn/images/azoth-oled.jpg",
+    "isPrimary": true,
+    "sortOrder": {
+      "$numberInt": "1"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792463614510"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792489544160"
+      }
+    },
+    "image_url": "https://geartech.vn/images/azoth-oled.jpg",
+    "is_primary": true,
+    "product_id": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "sort_order": {
+      "$numberInt": "1"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6d2fef1afb591c8fa3025"
+    },
+    "productId": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "imageUrl": "https://geartech.vn/images/azoth-box.jpg",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "2"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792463614510"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792489544159"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad74c5cc53fd0e9dc938826"
+    },
+    "productId": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792494684595-617650336.webp",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "1"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792494684605"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792494696048"
+      }
+    },
+    "image_url": "http://localhost:5000/uploads/products/product-1792494684595-617650336.webp",
+    "is_primary": true,
+    "product_id": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "sort_order": {
+      "$numberInt": "1"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad74c5cc53fd0e9dc938827"
+    },
+    "productId": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792494684595-423938267.webp",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "2"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792494684605"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792494696048"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad74c5cc53fd0e9dc938828"
+    },
+    "productId": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792494684596-254563534.webp",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "3"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792494684605"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792494696048"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad74c5cc53fd0e9dc938829"
+    },
+    "productId": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792494684596-726687502.webp",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "4"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792494684605"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792494696048"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad74c5cc53fd0e9dc93882a"
+    },
+    "productId": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792494684596-126067145.webp",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "5"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792494684605"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792494696048"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad74c62c53fd0e9dc93882b"
+    },
+    "productId": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792494690671-775416417.webp",
+    "isPrimary": true,
+    "sortOrder": {
+      "$numberInt": "5"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792494690681"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792494696053"
+      }
+    },
+    "image_url": "http://localhost:5000/uploads/products/product-1792494690671-775416417.webp",
+    "is_primary": true,
+    "product_id": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "sort_order": {
+      "$numberInt": "5"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad75107c53fd0e9dc938838"
+    },
+    "productId": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792495796427-971742525.jpg",
+    "isPrimary": true,
+    "sortOrder": {
+      "$numberInt": "0"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792495879294"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792495879294"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad75107c53fd0e9dc938839"
+    },
+    "productId": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792495796427-531540240.jpg",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "1"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792495879294"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792495879294"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad75107c53fd0e9dc93883a"
+    },
+    "productId": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792495796428-777679648.jpg",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "2"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792495879294"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792495879294"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca21d9813e60615ce5322"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792844201796-48482336.png",
+    "isPrimary": true,
+    "sortOrder": {
+      "$numberInt": "0"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792844317548"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792844317548"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca21d9813e60615ce5323"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792844201799-65048688.png",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "1"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792844317549"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792844317549"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca21d9813e60615ce5324"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792844201801-776003701.png",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "2"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792844317549"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792844317549"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca21d9813e60615ce5325"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/product-1792844201802-143767828.png",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "3"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792844317549"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792844317549"
+      }
+    }
+  }
+]

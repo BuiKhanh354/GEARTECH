@@ -1,0 +1,1507 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11f462de58adcc60f3c5e"
+    },
+    "shop_id": {
+      "$oid": "000000000000000000000002"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "brand_id": {
+      "$oid": "000000000000000000000004"
+    },
+    "name": "ASUS GeForce RTX Gaming",
+    "slug": "asus-geforce-rtx-gaming",
+    "description": "Card màn hình dành cho gaming",
+    "price": {
+      "$numberDecimal": "15990000"
+    },
+    "original_price": {
+      "$numberDecimal": "16990000"
+    },
+    "stock_quantity": {
+      "$numberInt": "20"
+    },
+    "sku": "GPU-ASUS-001",
+    "specifications": {
+      "vram": "12GB",
+      "memory_type": "GDDR7",
+      "interface": "PCIe 5.0",
+      "recommended_psu": "650W"
+    },
+    "status": "active",
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "review_count": {
+      "$numberInt": "25"
+    },
+    "sold_count": {
+      "$numberInt": "100"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "brand": "asus",
+    "category": "components",
+    "categoryName": "LINH KIỆN MÁY TÍNH",
+    "title": "ASUS GeForce RTX Gaming",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920800"
+      }
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "0"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "title": "Block Nước GPU RTX 4090 Custom Edition",
+    "description": "Linh kiện tản nhiệt mạ niken bóng loáng",
+    "price": {
+      "$numberInt": "4500000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "components",
+    "categoryName": "LINH KIỆN MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "11"
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "specs": {},
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792423895683"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937948979"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "status": "active",
+    "name": "Block Nước GPU RTX 4090 Custom Edition",
+    "sku": "GT-MVNWXJWG",
+    "slug": "block-nuoc-gpu-rtx-4090-custom-edition"
+  },
+  {
+    "_id": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "title": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+    "description": "Bàn phím cơ không dây custom cao cấp",
+    "price": {
+      "$numberInt": "12990000"
+    },
+    "imageEmoji": "https://geartech.vn/images/azoth-oled.jpg",
+    "gallery": [
+      "https://geartech.vn/images/azoth-oled.jpg",
+      "https://geartech.vn/images/azoth-side.jpg",
+      "https://geartech.vn/images/azoth-box.jpg"
+    ],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "1"
+    },
+    "salesCount": "ĐÃ BÁN 1",
+    "stock": {
+      "$numberInt": "19"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+    "slug": "ban-phim-gaming-rog-azoth-extreme-1792463614354",
+    "sku": "GT-MVG2K0IA",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792463614355"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "16"
+    },
+    "soldCount": {
+      "$numberInt": "1"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "20"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c73"
+    },
+    "title": "Chuột Không Dây Gaming 1792465750949",
+    "sku": "MOUSE-1792465750949",
+    "description": "Chuột siêu nhẹ",
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 2",
+    "stock": {
+      "$numberInt": "8"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db5663ee301d7a3c8c6e"
+    },
+    "name": "Chuột Không Dây Gaming 1792465750949",
+    "slug": "chuot-khong-day-gaming-1792465750949",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750995"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "2"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "8"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c74"
+    },
+    "title": "Màn Hình Cong 4K 1792465750949",
+    "sku": "MONITOR-1792465750949",
+    "description": "Màn hình OLED 240Hz",
+    "price": {
+      "$numberInt": "5000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db5663ee301d7a3c8c70"
+    },
+    "name": "Màn Hình Cong 4K 1792465750949",
+    "slug": "man-hinh-cong-4k-1792465750949",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750997"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17b9"
+    },
+    "title": "Chuột Không Dây Gaming 1792465763030",
+    "sku": "MOUSE-1792465763030",
+    "description": "Chuột siêu nhẹ",
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "10"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db6391dada42db9b17b4"
+    },
+    "name": "Chuột Không Dây Gaming 1792465763030",
+    "slug": "chuot-khong-day-gaming-1792465763030",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763078"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "10"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17ba"
+    },
+    "title": "Màn Hình Cong 4K 1792465763030",
+    "sku": "MONITOR-1792465763030",
+    "description": "Màn hình OLED 240Hz",
+    "price": {
+      "$numberInt": "5000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db6391dada42db9b17b6"
+    },
+    "name": "Màn Hình Cong 4K 1792465763030",
+    "slug": "man-hinh-cong-4k-1792465763030",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763080"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf4"
+    },
+    "title": "Chuột Không Dây Gaming 1792465777068",
+    "sku": "MOUSE-1792465777068",
+    "description": "Chuột siêu nhẹ",
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "10"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db71d5c52f3af8ee0cef"
+    },
+    "name": "Chuột Không Dây Gaming 1792465777068",
+    "slug": "chuot-khong-day-gaming-1792465777068",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777110"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "10"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf5"
+    },
+    "title": "Màn Hình Cong 4K 1792465777068",
+    "sku": "MONITOR-1792465777068",
+    "description": "Màn hình OLED 240Hz",
+    "price": {
+      "$numberInt": "5000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf1"
+    },
+    "name": "Màn Hình Cong 4K 1792465777068",
+    "slug": "man-hinh-cong-4k-1792465777068",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777111"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb49014"
+    },
+    "title": "Chuột Không Dây Gaming 1792465804243",
+    "sku": "MOUSE-1792465804243",
+    "description": "Chuột siêu nhẹ",
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "8"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db8cf15476018bb4900f"
+    },
+    "name": "Chuột Không Dây Gaming 1792465804243",
+    "slug": "chuot-khong-day-gaming-1792465804243",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804291"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "8"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb49015"
+    },
+    "title": "Màn Hình Cong 4K 1792465804243",
+    "sku": "MONITOR-1792465804243",
+    "description": "Màn hình OLED 240Hz",
+    "price": {
+      "$numberInt": "5000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db8cf15476018bb49011"
+    },
+    "name": "Màn Hình Cong 4K 1792465804243",
+    "slug": "man-hinh-cong-4k-1792465804243",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804293"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "title": "Màn hình ASUS ProArt",
+    "name": "Màn hình ASUS ProArt",
+    "description": "Test-2",
+    "price": {
+      "$numberInt": "1500000"
+    },
+    "oldPrice": {
+      "$numberInt": "1800000"
+    },
+    "discount": "16%",
+    "imageEmoji": "http://localhost:5000/uploads/products/product-1792494690671-775416417.webp",
+    "gallery": [
+      "http://localhost:5000/uploads/products/product-1792494690671-775416417.webp",
+      "http://localhost:5000/uploads/products/product-1792494684595-617650336.webp",
+      "http://localhost:5000/uploads/products/product-1792494684595-423938267.webp",
+      "http://localhost:5000/uploads/products/product-1792494684596-254563534.webp",
+      "http://localhost:5000/uploads/products/product-1792494684596-726687502.webp",
+      "http://localhost:5000/uploads/products/product-1792494684596-126067145.webp"
+    ],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "20"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specs": {},
+    "slug": "man-hinh-asus-proart",
+    "sku": "GT-MVGKQJ7V",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792494151630"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "4"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "20"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "title": "ROG Swift OLED PG34WCDN",
+    "name": "ROG Swift OLED PG34WCDN",
+    "description": "Kiểu dáng màn hình: Cong 1800R\nTỉ lệ khung hình: 21:9\nKích thước mặc định: 34 inch\nCông nghệ tấm nền: QD-OLED\nPhân giải điểm ảnh: 3440x1440\nĐộ sáng hiển thị: 1.300 cd/㎡\nTần số quét màn: 360Hz\nThời gian đáp ứng: 0.03ms(GTG)\nChỉ số màu sắc: 1073.7M (10 bit) - 135% sRGB - 99% DCI-P3\nĐộ chính xác màu sắc:△E≦ 2\nCổng cắm kết nối: DisplayPort, HDMI, USB-C\nNPP: VS",
+    "price": {
+      "$numberInt": "38990000"
+    },
+    "oldPrice": {
+      "$numberInt": "40990000"
+    },
+    "discount": "16%",
+    "imageEmoji": "http://localhost:5000/uploads/products/product-1792495796427-971742525.jpg",
+    "gallery": [
+      "http://localhost:5000/uploads/products/product-1792495796427-971742525.jpg",
+      "http://localhost:5000/uploads/products/product-1792495796427-531540240.jpg",
+      "http://localhost:5000/uploads/products/product-1792495796428-777679648.jpg"
+    ],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 1",
+    "stock": {
+      "$numberInt": "29"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specs": {},
+    "slug": "rog-swift-oled-pg34wcdn",
+    "sku": "GT-MVGLR6C8",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792495861209"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "1"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "29"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "title": "TUF GAMING VG259Q",
+    "name": "TUF GAMING VG259Q",
+    "description": "Thương hiệu\tAsus\nBảo hành\t36 Tháng\nKích thước\t24.5 inch\nĐộ phân giải\t1920 x 1080 ( 16 : 9 )\nTấm nền\tIPS\nTần số quét\t144Hz\nThời gian phản hồi\t1ms\nKiểu màn hình ( phẳng / cong )\tPhẳng \nĐộ sáng\t400 cd/m2\nGóc nhìn\t178 (H) / 178 (V)\nKhả năng hiển thị màu sắc\t16.7 triệu màu, sRGB 99%\nĐộ tương phản tĩnh\t1000 : 1 \nĐộ tương phản động\t100.000.000 : 1 \nCổng xuất hình\t\nDisplayPort 1.2 x 1\nHDMI(v1.4) x 2\nJack tai nghe\n\nTính năng đặc biệt\t\nCác lựa chọn tông màu: 3 chế độ\nCác lựa chọn nhiệt độ màu: 4 chế độ\nGamePlus (chế độ) : Có (Ngắm/Hẹn giờ/Bộ đếm FPS/Màn hình hiển thị dạng lưới)\nHỗ trợ HDCP\nTần suất Ánh sáng Xanh Thấp : Có\nGameVisual :7 chế độ(Cảnh vật/Đua xe/Rạp/RTS/RPG/FPS/Chế độ sRGB/Chế độ MOBA)\nHỗ trợ công nghệ Adaptive-Sync :Có\nTương thích với G-SYNC\nCông nghệ GameFast Input\nExtreme Low Motion Blur\nCông nghệ Shadow Boost\n\nKhối lượng\t5.1  kg (có chân đế)\n2.9 kg (không có chân đế)\nTiêu thụ điện\tĐiện năng tiêu thụ < 40W**\nChế độ tiết kiệm điện <0.5W\nChế độ tắt nguồn <0.5W\nKích thước chuẩn\tGồm chân đế 563 x ( 356~486) x 211mm\nKhông gồm chân đế 563 x 329 x 52mm\nPhụ kiện đi kèm\tDây nguồn\nSạc nguồn\nCáp DisplayPort (Có thể có)\nSách hướng dẫn\nCáp HDMI (Có thể có)\nPhiếu bảo hành",
+    "price": {
+      "$numberInt": "75000000"
+    },
+    "oldPrice": {
+      "$numberInt": "80000000"
+    },
+    "discount": "16%",
+    "imageEmoji": "http://localhost:5000/uploads/products/product-1792844201796-48482336.png",
+    "gallery": [
+      "http://localhost:5000/uploads/products/product-1792844201796-48482336.png",
+      "http://localhost:5000/uploads/products/product-1792844201799-65048688.png",
+      "http://localhost:5000/uploads/products/product-1792844201801-776003701.png",
+      "http://localhost:5000/uploads/products/product-1792844201802-143767828.png"
+    ],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 1",
+    "stock": {
+      "$numberInt": "22"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specs": {},
+    "slug": "tuf-gaming-vg259q",
+    "sku": "GT-MVMD6OEE",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792844264966"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "1"
+    },
+    "warehouseStock": {
+      "$numberInt": "4"
+    },
+    "listedQty": {
+      "$numberInt": "22"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c73"
+    },
+    "title": "PC Gaming GearTech Battle Station Core i5-14400F / RTX 4060 Ti 8GB",
+    "description": "Cấu hình quốc dân tối ưu cho game thủ Esports, chiến mượt mà Valorant 400+ FPS, CS2, LMHT, PUBG ở độ phân giải Full HD & 2K. Bảo hành 1 đổi 1 trong 30 ngày.",
+    "price": {
+      "$numberInt": "23990000"
+    },
+    "oldPrice": {
+      "$numberInt": "26500000"
+    },
+    "discount": "-9%",
+    "imageEmoji": "🎯",
+    "gallery": [],
+    "category": "desktops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "brand": "geartech",
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "reviewsCount": {
+      "$numberInt": "36"
+    },
+    "salesCount": "ĐÃ BÁN 85",
+    "soldCount": {
+      "$numberInt": "85"
+    },
+    "stock": {
+      "$numberInt": "15"
+    },
+    "warehouseStock": {
+      "$numberInt": "25"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "PC Gaming GearTech Battle Station Core i5-14400F / RTX 4060 Ti 8GB",
+    "slug": "pc-gaming-geartech-battle-station-core-i5-14400f-rtx-4060-ti-8gb",
+    "sku": "GT-MVNVR6I2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c70"
+    },
+    "title": "PC Gaming ROG Hyperion GR701 Intel i9-14900K / RTX 4090 / 64GB DDR5",
+    "description": "Cỗ máy chiến hạm đỉnh cao Esports với vỏ ROG Hyperion GR701, tản nhiệt nước Custom EKWB, card đồ họa ROG Strix GeForce RTX 4090 OC 24GB và vi xử lý Intel Core i9-14900K thế hệ 14.",
+    "price": {
+      "$numberInt": "125990000"
+    },
+    "oldPrice": {
+      "$numberInt": "139000000"
+    },
+    "discount": "-9%",
+    "imageEmoji": "🖥️",
+    "gallery": [],
+    "category": "desktops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "brand": "asus rog",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "18"
+    },
+    "salesCount": "ĐÃ BÁN 24",
+    "soldCount": {
+      "$numberInt": "24"
+    },
+    "stock": {
+      "$numberInt": "6"
+    },
+    "warehouseStock": {
+      "$numberInt": "10"
+    },
+    "listedQty": {
+      "$numberInt": "6"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "PC Gaming ROG Hyperion GR701 Intel i9-14900K / RTX 4090 / 64GB DDR5",
+    "slug": "pc-gaming-rog-hyperion-gr701-intel-i9-14900k-rtx-4090-64gb-ddr5",
+    "sku": "GT-MVNVR6I2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920812"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920812"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c71"
+    },
+    "title": "PC Gaming MSI Meg Trident X2 Intel i7-14700KF / RTX 4080 Super / 32GB",
+    "description": "Thiết kế HMI cảm ứng độc quyền phía trước máy, tản nhiệt Silent Storm Cooling 3 riêng biệt, card đồ họa MSI GeForce RTX 4080 Super 16GB mạnh mẽ đáp ứng game 4K Ray Tracing mượt mà.",
+    "price": {
+      "$numberInt": "79990000"
+    },
+    "oldPrice": {
+      "$numberInt": "88500000"
+    },
+    "discount": "-10%",
+    "imageEmoji": "⚡",
+    "gallery": [],
+    "category": "desktops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "brand": "msi",
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "14"
+    },
+    "salesCount": "ĐÃ BÁN 19",
+    "soldCount": {
+      "$numberInt": "19"
+    },
+    "stock": {
+      "$numberInt": "8"
+    },
+    "warehouseStock": {
+      "$numberInt": "12"
+    },
+    "listedQty": {
+      "$numberInt": "8"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "PC Gaming MSI Meg Trident X2 Intel i7-14700KF / RTX 4080 Super / 32GB",
+    "slug": "pc-gaming-msi-meg-trident-x2-intel-i7-14700kf-rtx-4080-super-32gb",
+    "sku": "GT-MVNVR6I2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c72"
+    },
+    "title": "PC Workstation ASUS ProArt PA602 Dual RTX 4090 / AMD Threadripper 7970X",
+    "description": "Hệ thống máy trạm chuyên nghiệp dành cho đồ họa 3D, Render 8K, đào tạo AI Machine Learning với vi xử lý AMD Threadripper 7970X 32 nhân 64 luồng và 128GB RAM ECC.",
+    "price": {
+      "$numberInt": "215000000"
+    },
+    "oldPrice": {
+      "$numberInt": "230000000"
+    },
+    "discount": "-7%",
+    "imageEmoji": "🎛️",
+    "gallery": [],
+    "category": "desktops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "brand": "asus proart",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "9"
+    },
+    "salesCount": "ĐÃ BÁN 12",
+    "soldCount": {
+      "$numberInt": "12"
+    },
+    "stock": {
+      "$numberInt": "3"
+    },
+    "warehouseStock": {
+      "$numberInt": "5"
+    },
+    "listedQty": {
+      "$numberInt": "3"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "PC Workstation ASUS ProArt PA602 Dual RTX 4090 / AMD Threadripper 7970X",
+    "slug": "pc-workstation-asus-proart-pa602-dual-rtx-4090-amd-threadripper-7970x",
+    "sku": "GT-MVNVR6I2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c74"
+    },
+    "title": "Laptop ASUS ROG Zephyrus G16 OLED (2024) Intel Core Ultra 9 / RTX 4080 / 32GB",
+    "description": "Đỉnh cao laptop gaming mỏng nhẹ với màn hình ROG Nebula OLED 2.5K 240Hz 0.2ms chuẩn màu DCI-P3 100%, khung nhôm CNC nguyên khối với dải đèn Slash Lighting độc đáo.",
+    "price": {
+      "$numberInt": "79990000"
+    },
+    "oldPrice": {
+      "$numberInt": "85000000"
+    },
+    "discount": "-6%",
+    "imageEmoji": "💻",
+    "gallery": [],
+    "category": "laptops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "brand": "asus rog",
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "22"
+    },
+    "salesCount": "ĐÃ BÁN 45",
+    "soldCount": {
+      "$numberInt": "45"
+    },
+    "stock": {
+      "$numberInt": "7"
+    },
+    "warehouseStock": {
+      "$numberInt": "10"
+    },
+    "listedQty": {
+      "$numberInt": "7"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Laptop ASUS ROG Zephyrus G16 OLED (2024) Intel Core Ultra 9 / RTX 4080 / 32GB",
+    "slug": "laptop-asus-rog-zephyrus-g16-oled-2024-intel-core-ultra-9-rtx-4080-32gb",
+    "sku": "GT-MVNVR6J3",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c75"
+    },
+    "title": "MacBook Pro 16 inch M3 Max (16 CPU / 40 GPU / 48GB Unified Memory / 1TB SSD)",
+    "description": "Sức mạnh quái vật từ chip Apple M3 Max, màn hình Liquid Retina XDR 120Hz ProMotion 1600 nits, thời lượng pin 22 giờ liên tục. Lựa chọn số 1 cho lập trình viên và dựng phim chuyên nghiệp.",
+    "price": {
+      "$numberInt": "99990000"
+    },
+    "oldPrice": {
+      "$numberInt": "105000000"
+    },
+    "discount": "-5%",
+    "imageEmoji": "🍎",
+    "gallery": [],
+    "category": "laptops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "brand": "apple",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "31"
+    },
+    "salesCount": "ĐÃ BÁN 62",
+    "soldCount": {
+      "$numberInt": "62"
+    },
+    "stock": {
+      "$numberInt": "5"
+    },
+    "warehouseStock": {
+      "$numberInt": "8"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "MacBook Pro 16 inch M3 Max (16 CPU / 40 GPU / 48GB Unified Memory / 1TB SSD)",
+    "slug": "macbook-pro-16-inch-m3-max-16-cpu-40-gpu-48gb-unified-memory-1tb-ssd",
+    "sku": "GT-MVNVR6J3",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c77"
+    },
+    "title": "Laptop Acer Predator Helios 16 Intel Core i7-14700HX / RTX 4070 8GB / 16GB DDR5",
+    "description": "Màn hình 16 inch WQXGA 240Hz 500 nits G-Sync, 2 quạt AeroBlade 3D thế hệ 5 kim loại và keo tản nhiệt kim loại lỏng. Đạt chứng chỉ GearTech Esports Certified.",
+    "price": {
+      "$numberInt": "49990000"
+    },
+    "oldPrice": {
+      "$numberInt": "54990000"
+    },
+    "discount": "-9%",
+    "imageEmoji": "🚀",
+    "gallery": [],
+    "category": "laptops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "brand": "acer predator",
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "reviewsCount": {
+      "$numberInt": "19"
+    },
+    "salesCount": "ĐÃ BÁN 40",
+    "soldCount": {
+      "$numberInt": "40"
+    },
+    "stock": {
+      "$numberInt": "12"
+    },
+    "warehouseStock": {
+      "$numberInt": "18"
+    },
+    "listedQty": {
+      "$numberInt": "12"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Laptop Acer Predator Helios 16 Intel Core i7-14700HX / RTX 4070 8GB / 16GB DDR5",
+    "slug": "laptop-acer-predator-helios-16-intel-core-i7-14700hx-rtx-4070-8gb-16gb-ddr5",
+    "sku": "GT-MVNVR6J3",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c76"
+    },
+    "title": "Laptop Gaming Lenovo Legion Pro 7i Gen 9 Intel i9-14900HX / RTX 4090 / 32GB",
+    "description": "Hệ thống tản nhiệt buồng hơi Legion Coldfront Vapor kết hợp chip AI Lenovo LA-2Q tối ưu hóa FPS tự động theo thời gian thực. Bàn phím Legion TrueStrike RGB từng phím.",
+    "price": {
+      "$numberInt": "88990000"
+    },
+    "oldPrice": {
+      "$numberInt": "94000000"
+    },
+    "discount": "-5%",
+    "imageEmoji": "🔥",
+    "gallery": [],
+    "category": "laptops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "brand": "lenovo",
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "16"
+    },
+    "salesCount": "ĐÃ BÁN 28",
+    "soldCount": {
+      "$numberInt": "28"
+    },
+    "stock": {
+      "$numberInt": "4"
+    },
+    "warehouseStock": {
+      "$numberInt": "6"
+    },
+    "listedQty": {
+      "$numberInt": "4"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Laptop Gaming Lenovo Legion Pro 7i Gen 9 Intel i9-14900HX / RTX 4090 / 32GB",
+    "slug": "laptop-gaming-lenovo-legion-pro-7i-gen-9-intel-i9-14900hx-rtx-4090-32gb",
+    "sku": "GT-MVNVR6J3",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a33"
+    },
+    "title": "Chuột Esports Predator 1792937897054",
+    "name": "Chuột Esports Predator 1792937897054",
+    "description": "Thiết bị công nghệ cao cấp",
+    "price": {
+      "$numberInt": "1250000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [
+      "📦"
+    ],
+    "category": "peripherals",
+    "categoryName": "Phụ kiện công nghệ",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "15"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ade0fa9527d955568620a32"
+    },
+    "specs": {},
+    "slug": "chuot-esports-predator-1792937897054",
+    "sku": "GT-MVNWXJZI",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937897838"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937897838"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdd527d955568620aa3"
+    },
+    "title": "Chuột Esports Predator 1792937948371",
+    "name": "Chuột Esports Predator 1792937948371",
+    "description": "Thiết bị công nghệ cao cấp",
+    "price": {
+      "$numberInt": "1250000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [
+      "📦"
+    ],
+    "category": "peripherals",
+    "categoryName": "Phụ kiện công nghệ",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "15"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ade0fdc527d955568620aa2"
+    },
+    "specs": {},
+    "slug": "chuot-esports-predator-1792937948371",
+    "sku": "GT-MVNWYNIH",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937949066"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937949066"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

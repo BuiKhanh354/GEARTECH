@@ -1,0 +1,326 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11f192de58adcc60f3c58"
+    },
+    "name": "GPU",
+    "slug": "gpu",
+    "parent_id": null,
+    "description": "Card màn hình",
+    "image": "/images/categories/gpu.jpg",
+    "status": "active",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "icon": "💻",
+    "order": {
+      "$numberInt": "0"
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935719927"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "name": "LAPTOP & MACBOOK",
+    "slug": "laptops",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "Laptop Gaming, MacBook Apple Silicon, Workstation di động",
+    "image": "",
+    "icon": "💻",
+    "status": "active",
+    "order": {
+      "$numberInt": "1"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792459826837"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792459826837"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "name": "PC & WORKSTATION",
+    "slug": "desktops",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "Máy bộ Gaming, PC Đồ họa 3D, Máy chủ cấu hình cao",
+    "image": "",
+    "icon": "🖥️",
+    "status": "active",
+    "order": {
+      "$numberInt": "2"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792459826843"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792932889387"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "name": "LINH KIỆN MÁY TÍNH",
+    "slug": "components",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "Mainboard, CPU, RAM, Ổ cứng SSD, Nguồn PSU, Tản nhiệt",
+    "image": "",
+    "icon": "⚙️",
+    "status": "active",
+    "order": {
+      "$numberInt": "3"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792459826846"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792932888299"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "name": "MÀN HÌNH MÁY TÍNH",
+    "slug": "monitors",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "Màn hình 2K, 4K, Tần số quét cao 144Hz - 360Hz",
+    "image": "",
+    "icon": "📺",
+    "status": "active",
+    "order": {
+      "$numberInt": "4"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792459826848"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792844444750"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "name": "BÀN PHÍM & CHUỘT",
+    "slug": "peripherals",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "Bàn phím cơ Custom, Chuột Gaming siêu nhẹ không dây",
+    "image": "",
+    "icon": "⌨️",
+    "status": "active",
+    "order": {
+      "$numberInt": "5"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792459826851"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935703503"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c432a4d565be918bd28c"
+    },
+    "name": "TAI NGHE & LOA",
+    "slug": "audio",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "Tai nghe Gaming 7.1, Loa vi tính Hi-Res Audio, DAC/AMP",
+    "image": "",
+    "icon": "🎧",
+    "status": "active",
+    "order": {
+      "$numberInt": "6"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792459826855"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935704066"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c432a4d565be918bd28d"
+    },
+    "name": "THIẾT BỊ THÔNG MINH",
+    "slug": "smart-devices",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "Đồng hồ thông minh, Thiết bị nhà thông minh, VR headset",
+    "image": "",
+    "icon": "📱",
+    "status": "active",
+    "order": {
+      "$numberInt": "7"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792459826858"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935702975"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6c432a4d565be918bd28e"
+    },
+    "name": "PHỤ KIỆN CÔNG NGHỆ",
+    "slug": "accessories",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "Cáp sạc, Hub chuyển đổi, Balo laptop, Giá đỡ màn hình",
+    "image": "",
+    "icon": "🎒",
+    "status": "active",
+    "order": {
+      "$numberInt": "8"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792459826861"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792847659947"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc9d0d9813e60615ce5314"
+    },
+    "name": "test",
+    "slug": "test",
+    "parent_id": null,
+    "parent_category_id": null,
+    "description": "test",
+    "image": "",
+    "icon": "💻",
+    "status": "active",
+    "order": {
+      "$numberInt": "9"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792843021632"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792843033069"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc9d5a9813e60615ce5315"
+    },
+    "name": "danh mục con",
+    "slug": "danh-muc-con",
+    "parent_id": {
+      "$oid": "6adc9d0d9813e60615ce5314"
+    },
+    "parent_category_id": {
+      "$oid": "6adc9d0d9813e60615ce5314"
+    },
+    "description": "",
+    "image": "",
+    "icon": "💻",
+    "status": "active",
+    "order": {
+      "$numberInt": "10"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792843098567"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792843123544"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

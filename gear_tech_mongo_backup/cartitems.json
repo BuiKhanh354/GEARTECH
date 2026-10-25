@@ -1,0 +1,154 @@
+[
+  {
+    "_id": {
+      "$oid": "6add730c2f18ca2fbd0a577c"
+    },
+    "productId": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "cartId": {
+      "$oid": "6ad72ae48041ff668a6ea396"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792897804544"
+      }
+    },
+    "originalPrice": {
+      "$numberInt": "12990000"
+    },
+    "price": {
+      "$numberInt": "12990000"
+    },
+    "priceLockExpiresAt": null,
+    "priceLockedAt": null,
+    "promotionNote": null,
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "selected": true,
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792897804544"
+      }
+    },
+    "variant": "Tiêu chuẩn / Chính hãng"
+  },
+  {
+    "_id": {
+      "$oid": "6ade086fdea2f6e7655e4a0b"
+    },
+    "productId": {
+      "$oid": "6ad6db5663ee301d7a3c8c73"
+    },
+    "cartId": {
+      "$oid": "6ad72ae48041ff668a6ea396"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792936047434"
+      }
+    },
+    "originalPrice": {
+      "$numberInt": "2000000"
+    },
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "priceLockExpiresAt": null,
+    "priceLockedAt": null,
+    "promotionNote": null,
+    "quantity": {
+      "$numberInt": "1"
+    },
+    "selected": true,
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792936047434"
+      }
+    },
+    "variant": "Tiêu chuẩn / Chính hãng"
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9dea2f6e7655e4a0c"
+    },
+    "cartId": {
+      "$oid": "6ade0fa9527d955568620a1a"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897482"
+      }
+    },
+    "originalPrice": {
+      "$numberInt": "4500000"
+    },
+    "price": {
+      "$numberInt": "4500000"
+    },
+    "priceLockExpiresAt": null,
+    "priceLockedAt": null,
+    "promotionNote": null,
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "selected": true,
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792937897482"
+      }
+    },
+    "variant": "Tiêu chuẩn / Chính hãng"
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdcdea2f6e7655e4a0d"
+    },
+    "productId": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "cartId": {
+      "$oid": "6ade0fdc527d955568620a8a"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948870"
+      }
+    },
+    "originalPrice": {
+      "$numberInt": "4500000"
+    },
+    "price": {
+      "$numberInt": "4500000"
+    },
+    "priceLockExpiresAt": null,
+    "priceLockedAt": null,
+    "promotionNote": null,
+    "quantity": {
+      "$numberInt": "2"
+    },
+    "selected": true,
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792937948870"
+      }
+    },
+    "variant": "Tiêu chuẩn / Chính hãng"
+  }
+]

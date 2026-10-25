@@ -1,0 +1,74 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11ff22de58adcc60f3c7f"
+    },
+    "customer_id": {
+      "$oid": "000000000000000000000006"
+    },
+    "product_id": {
+      "$oid": "000000000000000000000005"
+    },
+    "order_id": {
+      "$oid": "000000000000000000000008"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "comment": "Sản phẩm rất tốt",
+    "images": [],
+    "status": "approved",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcbcce18d7b415e2ab4880"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "product_id": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "productId": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "order_id": {
+      "$oid": "6adcb22518d7b415e2ab4827"
+    },
+    "orderId": {
+      "$oid": "6adcb22518d7b415e2ab4827"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "comment": "test",
+    "images": [],
+    "status": "approved",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792851150707"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792851150707"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

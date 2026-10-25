@@ -1,0 +1,1469 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "username": "admin",
+    "email": "admin@geartech.vn",
+    "password": "$2b$10$Tmwbb0PbnsTK2lQYf3gf6.r.l0jd66SPeeLBK8gEn5tKGvPJjNjS2",
+    "role": "admin",
+    "status": "active",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "addresses": [],
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "memberRank": "THUONG",
+    "name": "admin",
+    "points": {
+      "$numberInt": "0"
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792484161741"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad63367fe40d72d2ec5078a"
+    },
+    "name": "Nguyen Van Test",
+    "email": "testuser_1792422759156@geartech.com",
+    "password": "$2b$10$RJ28n1QO4bU0lzQNeBwJaO027a8Bv/LWXYiFjeFqLbKDuCKcFO7.2",
+    "phone": "0987654321",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792422759263"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792422759263"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad633a48bc4a45f5ca9320b"
+    },
+    "name": "Nguyen Van Test",
+    "email": "testuser_1792422820287@geartech.com",
+    "password": "$2b$10$X2i3qDA7gYnJh0TFURvIjOW.8/gHbbZL7Bd/9UdcFp.0KcXFsjNjG",
+    "phone": "0987654321",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792422820408"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792422820408"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad633e9281d2886b7951c31"
+    },
+    "name": "Nguyen Van Test",
+    "email": "testuser_1792422889280@geartech.com",
+    "password": "$2b$10$MQEjlt3SfM6ByroIlB2/muNVbIZy2M6Yj328qlr2DpEXzmhPD8HZu",
+    "phone": "0987654321",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792422889380"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792422889593"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad634b31fd2e94b807260dc"
+    },
+    "name": "Admin GearTech",
+    "email": "admin@geartech.com",
+    "password": "$2b$10$XeIEtwt0rF44GDYCWpZ3Zu7z2AdhtII0yg1L.5O/Dxi2GJ.6wy.9q",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "admin",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "KIM_CUONG",
+    "points": {
+      "$numberInt": "100403"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792423091216"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792466245828"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6379f04f84ba2a95a81a4"
+    },
+    "name": "Chủ Shop Test",
+    "email": "shop_applicant_1792423839432@geartech.com",
+    "password": "$2b$10$p9U0H0mPkUKrsO89xPH8UO290ExiftFxYRsFCS/RySDMBUHSCN/5O",
+    "phone": "0981112233",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792423839499"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792423839499"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad637a604f84ba2a95a81a6"
+    },
+    "name": "Test",
+    "email": "test_1792423846252@geartech.com",
+    "password": "$2b$10$SF3YD34SHFW4iDNWUzgm5uBnDF2erC3VKE6htpjNLLm3nIkLUeGKq",
+    "phone": "",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792423846351"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792423846351"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d7f"
+    },
+    "name": "Chủ Shop Test",
+    "email": "shop_applicant_1792423895416@geartech.com",
+    "password": "$2b$10$bnWUi1.91LcP4DmCZDdKiOT/Pm5eJSbbnv6PZ8o9Dn9bv6koWIFR6",
+    "phone": "0981112233",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792423895480"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792423895762"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad637e06ed58eb4b05e5d82"
+    },
+    "name": "Hacker",
+    "email": "hacker_1792423904365@geartech.com",
+    "password": "$2b$10$owAxY/4qBQzwrU6g4Oikq.QLjkZJjWif/R.DDlLrR.W8p7c8nlzHu",
+    "phone": "",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792423904467"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792423904467"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6d0371f42f71b50e8c75f"
+    },
+    "email": "test_shop_a_35@geartech.com",
+    "password": "$2a$10$abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "name": "Người dùng GearTech",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792462903873"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792462903873"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6d0371f42f71b50e8c760"
+    },
+    "email": "test_shop_b_35@geartech.com",
+    "password": "$2a$10$abcdefghijklmnopqrstuvwxyz1234567890abcdefghijklmnopqr",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "name": "Người dùng GearTech",
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792462903876"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792462903876"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "name": "Nguyễn Văn A",
+    "email": "customer@gmail.com",
+    "password": "$2b$10$Tmwbb0PbnsTK2lQYf3gf6.r.l0jd66SPeeLBK8gEn5tKGvPJjNjS2",
+    "phone": "0912345678",
+    "avatar": "/images/avatar/default.png",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792464430658"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792484161894"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db2d98e7e671780c06eb"
+    },
+    "name": "Chủ Shop 1",
+    "username": "owner1_1792465709272",
+    "email": "owner1_1792465709272@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db2d98e7e671780c06ec"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465709279"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465709297"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db2d98e7e671780c06ed"
+    },
+    "name": "Chủ Shop 2",
+    "username": "owner2_1792465709272",
+    "email": "owner2_1792465709272@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465709307"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465709307"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db40654a8d77a3d80b61"
+    },
+    "name": "Chủ Shop 1",
+    "username": "owner1_1792465728592",
+    "email": "owner1_1792465728592@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db40654a8d77a3d80b62"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465728598"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465728615"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db40654a8d77a3d80b63"
+    },
+    "name": "Chủ Shop 2",
+    "username": "owner2_1792465728592",
+    "email": "owner2_1792465728592@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db40654a8d77a3d80b64"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465728622"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465728626"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db40654a8d77a3d80b65"
+    },
+    "name": "Khách hàng Một",
+    "username": "cust1_1792465728592",
+    "email": "cust1_1792465728592@test.com",
+    "password": "Password123!",
+    "phone": "0988111222",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465728627"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465728627"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db40654a8d77a3d80b66"
+    },
+    "name": "Khách hàng Hai",
+    "username": "cust2_1792465728592",
+    "email": "cust2_1792465728592@test.com",
+    "password": "Password123!",
+    "phone": "0988333444",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465728630"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465728630"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c6d"
+    },
+    "name": "Chủ Shop 1",
+    "username": "owner1_1792465750949",
+    "email": "owner1_1792465750949@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db5663ee301d7a3c8c6e"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750955"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465750974"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c6f"
+    },
+    "name": "Chủ Shop 2",
+    "username": "owner2_1792465750949",
+    "email": "owner2_1792465750949@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db5663ee301d7a3c8c70"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750982"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465750988"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c71"
+    },
+    "name": "Khách hàng Một",
+    "username": "cust1_1792465750949",
+    "email": "cust1_1792465750949@test.com",
+    "password": "Password123!",
+    "phone": "0988111222",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750989"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465750989"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c72"
+    },
+    "name": "Khách hàng Hai",
+    "username": "cust2_1792465750949",
+    "email": "cust2_1792465750949@test.com",
+    "password": "Password123!",
+    "phone": "0988333444",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750992"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465750992"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17b3"
+    },
+    "name": "Chủ Shop 1",
+    "username": "owner1_1792465763030",
+    "email": "owner1_1792465763030@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db6391dada42db9b17b4"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763037"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465763055"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17b5"
+    },
+    "name": "Chủ Shop 2",
+    "username": "owner2_1792465763030",
+    "email": "owner2_1792465763030@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db6391dada42db9b17b6"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763066"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465763072"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17b7"
+    },
+    "name": "Khách hàng Một",
+    "username": "cust1_1792465763030",
+    "email": "cust1_1792465763030@test.com",
+    "password": "Password123!",
+    "phone": "0988111222",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763073"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465763073"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17b8"
+    },
+    "name": "Khách hàng Hai",
+    "username": "cust2_1792465763030",
+    "email": "cust2_1792465763030@test.com",
+    "password": "Password123!",
+    "phone": "0988333444",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763076"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465763076"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cee"
+    },
+    "name": "Chủ Shop 1",
+    "username": "owner1_1792465777068",
+    "email": "owner1_1792465777068@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db71d5c52f3af8ee0cef"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777074"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465777093"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf0"
+    },
+    "name": "Chủ Shop 2",
+    "username": "owner2_1792465777068",
+    "email": "owner2_1792465777068@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf1"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777099"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465777104"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf2"
+    },
+    "name": "Khách hàng Một",
+    "username": "cust1_1792465777068",
+    "email": "cust1_1792465777068@test.com",
+    "password": "Password123!",
+    "phone": "0988111222",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777105"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465777105"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf3"
+    },
+    "name": "Khách hàng Hai",
+    "username": "cust2_1792465777068",
+    "email": "cust2_1792465777068@test.com",
+    "password": "Password123!",
+    "phone": "0988333444",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777108"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465777108"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb4900e"
+    },
+    "name": "Chủ Shop 1",
+    "username": "owner1_1792465804243",
+    "email": "owner1_1792465804243@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db8cf15476018bb4900f"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804250"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465804269"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb49010"
+    },
+    "name": "Chủ Shop 2",
+    "username": "owner2_1792465804243",
+    "email": "owner2_1792465804243@test.com",
+    "password": "Password123!",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db8cf15476018bb49011"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804279"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465804284"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb49012"
+    },
+    "name": "Khách hàng Một",
+    "username": "cust1_1792465804243",
+    "email": "cust1_1792465804243@test.com",
+    "password": "Password123!",
+    "phone": "0988111222",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804285"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465804285"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb49013"
+    },
+    "name": "Khách hàng Hai",
+    "username": "cust2_1792465804243",
+    "email": "cust2_1792465804243@test.com",
+    "password": "Password123!",
+    "phone": "0988333444",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804289"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792465804289"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad72341d88dc9f0a82e919e"
+    },
+    "name": "Chủ Gian Hàng GearTech",
+    "email": "shop@geartech.vn",
+    "phone": "0988776655",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "password": "$2b$10$Tmwbb0PbnsTK2lQYf3gf6.r.l0jd66SPeeLBK8gEn5tKGvPJjNjS2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792484161766"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792484161766"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "name": "Nguyễn Văn Khách",
+    "email": "customer@geartech.vn",
+    "phone": "0912345678",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "KIM_CUONG",
+    "points": {
+      "$numberInt": "15197"
+    },
+    "addresses": [
+      {
+        "title": "Nhà riêng",
+        "receiverName": "Nguyễn Văn Khách",
+        "receiverPhone": "0912345678",
+        "detailAddress": "18A/1 Cộng Hoà",
+        "isDefault": true,
+        "_id": {
+          "$oid": "6ad72341d88dc9f0a82e91a0"
+        }
+      }
+    ],
+    "password": "$2b$10$Tmwbb0PbnsTK2lQYf3gf6.r.l0jd66SPeeLBK8gEn5tKGvPJjNjS2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792484161801"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792933076827"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "lockReason": ""
+  },
+  {
+    "_id": {
+      "$oid": "6ad7297add502f77afc0c85a"
+    },
+    "name": "Chủ Shop B",
+    "email": "shop_b_decor@geartech.vn",
+    "password": "hashed",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792485754040"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792485754040"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcb1aa18d7b415e2ab47ee"
+    },
+    "name": "Tai khoan Test",
+    "email": "testuser2744@geartech.test",
+    "password": "$2b$10$6L477IlZbVmGIhYulqM5MO3DvxTwzWY7e/OW1JK030U7jonO.jyHy",
+    "phone": "0900000001",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792848298029"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792848298204"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6addfbabc8e9f563f9a5dbdc"
+    },
+    "name": "Khách Hàng Test",
+    "email": "customer_test@geartech.vn",
+    "password": "password123",
+    "phone": "0987654321",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "lockedAt": null,
+    "lockExpiresAt": null,
+    "lockReason": "",
+    "isOrderLocked": false,
+    "orderLockedAt": null,
+    "orderLockExpiresAt": null,
+    "orderLockReason": "",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792932779694"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792932779745"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "name": "Nguyễn Văn Test A",
+    "email": "test_cust_a_1792937897054@geartech.test",
+    "password": "$2b$10$V1Z.1UBS5/PYD4.C.rBSsuGLXAKxONJDjoSl3dcOWOaElkoRtcODO",
+    "phone": "0912345678",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "lockedAt": null,
+    "lockExpiresAt": null,
+    "lockReason": "",
+    "isOrderLocked": false,
+    "orderLockedAt": null,
+    "orderLockExpiresAt": null,
+    "orderLockReason": "",
+    "shopId": {
+      "$oid": "6ade0fa9527d955568620a32"
+    },
+    "memberRank": "DONG",
+    "points": {
+      "$numberInt": "1809"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937897136"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937897751"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a18"
+    },
+    "name": "Trần Thị Test B",
+    "email": "test_cust_b_1792937897054@geartech.test",
+    "password": "$2b$10$eEIUzF0vQ.mBTFSJXHBfmevpHLUcoXNQwiAEtVwCq82FmtU08Y2MW",
+    "phone": "0987654321",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "lockedAt": null,
+    "lockExpiresAt": null,
+    "lockReason": "",
+    "isOrderLocked": false,
+    "orderLockedAt": null,
+    "orderLockExpiresAt": null,
+    "orderLockReason": "",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937897309"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937897859"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "name": "Nguyễn Văn Test A",
+    "email": "test_cust_a_1792937948371@geartech.test",
+    "password": "$2b$10$QVT4FgFAUrED3tkY4VQd3uUVwroKRNdtHayJeNS5IuSHdTB5IgXfW",
+    "phone": "0912345678",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "shop",
+    "status": "active",
+    "lockedAt": null,
+    "lockExpiresAt": null,
+    "lockReason": "",
+    "isOrderLocked": false,
+    "orderLockedAt": null,
+    "orderLockExpiresAt": null,
+    "orderLockReason": "",
+    "shopId": {
+      "$oid": "6ade0fdc527d955568620aa2"
+    },
+    "memberRank": "DONG",
+    "points": {
+      "$numberInt": "1809"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937948484"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937948998"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a88"
+    },
+    "name": "Trần Thị Test B",
+    "email": "test_cust_b_1792937948371@geartech.test",
+    "password": "$2b$10$9Zv06jvslASAJPXQTxtiLuMXeVqFvG2iwbaPJRLGvhU3PZJxC5hRm",
+    "phone": "0987654321",
+    "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+    "gender": "Khác",
+    "role": "user",
+    "status": "active",
+    "lockedAt": null,
+    "lockExpiresAt": null,
+    "lockReason": "",
+    "isOrderLocked": false,
+    "orderLockedAt": null,
+    "orderLockExpiresAt": null,
+    "orderLockReason": "",
+    "shopId": null,
+    "memberRank": "THUONG",
+    "points": {
+      "$numberInt": "0"
+    },
+    "addresses": [],
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937948623"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937949082"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

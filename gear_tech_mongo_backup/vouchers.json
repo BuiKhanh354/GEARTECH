@@ -1,0 +1,157 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac1201a2de58adcc60f3c86"
+    },
+    "shop_id": {
+      "$oid": "000000000000000000000002"
+    },
+    "code": "GEAR10",
+    "name": "Giảm 10%",
+    "discount_type": "fixed",
+    "discount_value": {
+      "$numberDecimal": "10.00"
+    },
+    "min_order_amount": {
+      "$numberDecimal": "1000000"
+    },
+    "max_discount": {
+      "$numberDecimal": "100000"
+    },
+    "quantity": {
+      "$numberInt": "100"
+    },
+    "used_count": {
+      "$numberInt": "1"
+    },
+    "start_date": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "end_date": {
+      "$date": {
+        "$numberLong": "1798761599000"
+      }
+    },
+    "status": "inactive",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792845372381"
+      }
+    },
+    "description": "Giảm 10%",
+    "discountType": "fixed",
+    "discountValue": {
+      "$numberInt": "10"
+    },
+    "emoji": "🎫",
+    "expiryDate": {
+      "$date": {
+        "$numberLong": "1798761599000"
+      }
+    },
+    "maxDiscount": {
+      "$numberInt": "0"
+    },
+    "maxUses": {
+      "$numberInt": "100"
+    },
+    "minOrderValue": {
+      "$numberInt": "0"
+    },
+    "shopId": {
+      "$oid": "000000000000000000000002"
+    },
+    "startDate": {
+      "$date": {
+        "$numberLong": "1792842043174"
+      }
+    },
+    "usesCount": {
+      "$numberInt": "1"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca6559813e60615ce53b3"
+    },
+    "shop_id": null,
+    "shopId": null,
+    "code": "TEST",
+    "name": "TEST Voucher",
+    "description": "TEST Voucher",
+    "discountType": "fixed",
+    "discountValue": {
+      "$numberInt": "100000"
+    },
+    "minOrderValue": {
+      "$numberInt": "500000"
+    },
+    "maxDiscount": {
+      "$numberInt": "200000"
+    },
+    "quantity": {
+      "$numberInt": "100"
+    },
+    "maxUses": {
+      "$numberInt": "100"
+    },
+    "used_count": {
+      "$numberInt": "0"
+    },
+    "usesCount": {
+      "$numberInt": "0"
+    },
+    "startDate": {
+      "$date": {
+        "$numberLong": "1792845397310"
+      }
+    },
+    "expiryDate": {
+      "$date": {
+        "$numberLong": "1798675200000"
+      }
+    },
+    "status": "active",
+    "emoji": "🎫",
+    "start_date": {
+      "$date": {
+        "$numberLong": "1792845397316"
+      }
+    },
+    "discount_type": "fixed",
+    "discount_value": {
+      "$numberDecimal": "100000"
+    },
+    "min_order_amount": {
+      "$numberDecimal": "500000"
+    },
+    "max_discount": {
+      "$numberDecimal": "200000"
+    },
+    "end_date": {
+      "$date": {
+        "$numberLong": "1798675200000"
+      }
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792845397316"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792845397316"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]
