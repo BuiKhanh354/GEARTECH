@@ -672,9 +672,9 @@ export default function Header() {
 
                         {/* Chỉ Chủ Shop mới thấy menu Kênh người bán */}
                         {currentUser.role === 'shop' && (
-                          <Link to="/shop" className="px-4 py-2 text-xs font-black text-amber-500 hover:bg-amber-500/10 transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
+                          <Link to="/shop" className="px-4 py-2 text-xs font-black text-[#ff4655] hover:bg-[#ff4655]/10 transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
                             <Storefront size={14} weight="bold" />
-                            Kênh Shop
+                            Kênh Người Bán
                           </Link>
                         )}
 

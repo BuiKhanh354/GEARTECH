@@ -30,9 +30,10 @@ interface ShopProductsTabProps {
   token: string | null;
   allProducts: any[];
   onRefresh: () => void;
+  initialStatus?: string;
 }
 
-export default function ShopProductsTab({ token, allProducts, onRefresh }: ShopProductsTabProps) {
+export default function ShopProductsTab({ token, allProducts, onRefresh, initialStatus }: ShopProductsTabProps) {
   // New Product Form State
   const [productForm, setProductForm] = useState({
     title: '',
@@ -61,7 +62,7 @@ export default function ShopProductsTab({ token, allProducts, onRefresh }: ShopP
 
   // Filter & Search State for Shop Products
   const [productSearch, setProductSearch] = useState<string>('')
-  const [statusFilter, setStatusFilter] = useState<string>('all')
+  const [statusFilter, setStatusFilter] = useState<string>(initialStatus || 'all')
 
   // Edit Modal State
   const [editingProduct, setEditingProduct] = useState<ProductItem | null>(null)

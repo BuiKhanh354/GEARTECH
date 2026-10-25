@@ -1,5 +1,6 @@
-import ProfilePage from '../features/profile/pages/ProfilePage'
+import SellerLayout from '../features/shop/pages/SellerLayout'
 
 export default function ShopManagerPage() {
-  return <ProfilePage initialRole="shop" />
+  return <SellerLayout />
 }
+

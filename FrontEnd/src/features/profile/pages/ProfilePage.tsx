@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { ArrowLeft, House } from '@phosphor-icons/react'
+import { ArrowLeft, House, ArrowRight } from '@phosphor-icons/react'
 import apiClient from '../../../api/client'
 import { productService } from '../../../services/productService'
 
@@ -305,6 +305,29 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
           </span>
         </div>
       </div>
+
+      {isShop && (
+        <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-[#ff4655]/10 to-transparent border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">🏬</span>
+            <div>
+              <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white">
+                Kênh Người Bán Chuyên Nghiệp (Seller Centre)
+              </h4>
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                Trải nghiệm hệ thống quản trị gian hàng chuẩn Shopee Seller Centre với bảng thống kê doanh thu, việc cần xử lý và quản lý đơn hàng thông minh.
+              </p>
+            </div>
+          </div>
+          <Link
+            to="/shop"
+            className="px-4 py-2 bg-[#ff4655] hover:bg-[#e03d4b] text-white text-xs font-black uppercase tracking-wider rounded-lg transition-all shrink-0 flex items-center gap-1.5 shadow-sm shadow-[#ff4655]/20"
+          >
+            <span>Vào Kênh Người Bán</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <ProfileSidebar 

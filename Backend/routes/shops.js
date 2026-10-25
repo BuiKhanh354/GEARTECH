@@ -3,6 +3,8 @@ const router = express.Router();
 const Shop = require('../models/Shop');
 const User = require('../models/User');
 const Product = require('../models/Product');
+const Voucher = require('../models/Voucher');
+const Order = require('../models/Order');
 const ShopFollower = require('../models/ShopFollower');
 const { auth, checkRole } = require('../middleware/auth');
 
@@ -150,6 +152,153 @@ router.get('/my-shop', auth, async (req, res) => {
     return res.json({ shop });
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi tải thông tin gian hàng của bạn.', details: error.message });
+  }
+});
+
+// =========================================================================
+// SELLER CENTRE: THỐNG KÊ KINH DOANH CỦA SHOP (dữ liệu thật từ MongoDB)
+// GET /api/shops/me/analytics?days=1|7|30
+// - Doanh thu: tổng finalAmount của đơn COMPLETED trong kỳ (nhất quán với
+//   trạng thái hoàn tất và chính sách tính tiền hiện tại)
+// - Hàng đợi công việc: đếm đơn theo trạng thái Ở MỌI THỜI GIAN (khối lượng
+//   công việc hiện tại), không giới hạn trong kỳ
+// =========================================================================
+router.get('/me/analytics', auth, async (req, res) => {
+  try {
+    if (req.user.role !== 'shop' && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Từ chối: Chỉ chủ shop hoặc quản trị viên mới được xem thống kê.' });
+    }
+
+    let shop = null;
+    if (req.user.shopId) {
+      shop = await Shop.findById(req.user.shopId);
+    }
+    if (!shop) {
+      shop = await Shop.findOne({ ownerId: req.user._id });
+    }
+    if (!shop) {
+      return res.status(404).json({ error: 'Bạn chưa có cửa hàng nào trên hệ thống.' });
+    }
+
+    const shopMatch = { $or: [{ shop_id: shop._id }, { shopId: shop._id }] };
+
+    // ---- Kỳ thống kê (mặc định 7 ngày, cho phép 1 = hôm nay, 30) ----
+    const days = [1, 7, 30].includes(Number(req.query.days)) ? Number(req.query.days) : 7;
+    const since = new Date();
+    since.setHours(0, 0, 0, 0);
+    since.setDate(since.getDate() - (days - 1));
+
+    // ---- 1. Đơn hàng trong kỳ ----
+    const periodOrders = await Order.find({
+      ...shopMatch,
+      created_at: { $gte: since }
+    }).select('order_status orderStatus final_amount finalAmount items created_at').lean();
+
+    const normStatus = (o) => (o.orderStatus || o.order_status || 'pending').toLowerCase();
+    const amount = (o) => Number(o.finalAmount ?? (o.final_amount ? parseFloat(o.final_amount.toString()) : 0)) || 0;
+
+    const completedInPeriod = periodOrders.filter(o => normStatus(o) === 'completed');
+    const revenue = completedInPeriod.reduce((sum, o) => sum + amount(o), 0);
+    const itemsSold = completedInPeriod.reduce((sum, o) =>
+      sum + (o.items || []).reduce((s, it) => s + (Number(it.quantity ?? it.qty ?? 0) || 0), 0), 0);
+    const aov = completedInPeriod.length > 0 ? Math.round(revenue / completedInPeriod.length) : 0;
+
+    // ---- 2. Chuỗi dữ liệu theo ngày (doanh thu đơn hoàn tất + số đơn mới) ----
+    const seriesMap = new Map();
+    for (let i = 0; i < days; i++) {
+      const d = new Date(since);
+      d.setDate(since.getDate() + i);
+      seriesMap.set(d.toISOString().slice(0, 10), { date: d.toISOString().slice(0, 10), revenue: 0, orders: 0 });
+    }
+    for (const o of periodOrders) {
+      const key = new Date(o.created_at).toISOString().slice(0, 10);
+      const bucket = seriesMap.get(key);
+      if (!bucket) continue;
+      bucket.orders += 1;
+      if (normStatus(o) === 'completed') bucket.revenue += amount(o);
+    }
+    const series = Array.from(seriesMap.values());
+
+    // ---- 3. Hàng đợi công việc: trạng thái hiện có của TẤT CẢ đơn thuộc shop ----
+    const statusAgg = await Order.aggregate([
+      { $match: { $and: [shopMatch] } },
+      { $group: {
+          _id: { $ifNull: ['$orderStatus', '$order_status'] },
+          count: { $sum: 1 }
+      } }
+    ]);
+    const statusCounts = { pending: 0, confirmed: 0, shipping: 0, completed: 0, cancelled: 0 };
+    for (const row of statusAgg) {
+      const k = String(row._id || 'pending').toLowerCase();
+      if (statusCounts[k] !== undefined) statusCounts[k] = row.count;
+    }
+
+    // ---- 4. Tồn kho cảnh báo + sản phẩm bán chạy (dựa trên soldCount thật) ----
+    const products = await Product.find(
+      { shopId: shop._id, status: { $in: ['active', 'out_of_stock'] } },
+      'title price imageEmoji stock soldCount status'
+    ).sort({ soldCount: -1 }).lean();
+
+    const lowStockProducts = products.filter(p => p.stock > 0 && p.stock <= 5);
+    const outOfStockProducts = products.filter(p => p.stock === 0 || p.status === 'out_of_stock');
+
+    // ---- 5. Người theo dõi shop (thực tế từ shop_followers) ----
+    const ShopFollower = require('../models/ShopFollower');
+    const followersCount = await ShopFollower.countDocuments(shopMatch);
+
+    // ---- 6. Voucher của shop sắp hết hạn trong 7 ngày tới ----
+    const soon = new Date();
+    soon.setDate(soon.getDate() + 7);
+    const expiringVouchers = await Voucher.find({
+      ...shopMatch,
+      status: 'active',
+      expiryDate: { $gte: new Date(), $lte: soon }
+    }).select('code description expiryDate').lean();
+
+    // ---- 7. Đơn hàng gần đây (che dữ liệu nhạy cảm của khách) ----
+    const recentOrders = await Order.find(shopMatch)
+      .sort({ created_at: -1 })
+      .limit(8)
+      .select('created_at order_status orderStatus final_amount finalAmount items')
+      .lean();
+    const recent = recentOrders.map(o => ({
+      _id: o._id,
+      createdAt: o.created_at,
+      status: normStatus(o),
+      total: amount(o),
+      itemCount: (o.items || []).length,
+      itemNames: (o.items || []).slice(0, 2).map(it => it.title || it.product_name || 'Sản phẩm')
+    }));
+
+    return res.json({
+      shop: { _id: shop._id, name: shop.name || shop.shop_name, status: shop.status },
+      period: { days, since },
+      kpis: {
+        revenue,
+        completedCount: completedInPeriod.length,
+        ordersCount: periodOrders.length,
+        itemsSold,
+        aov,
+        followersCount
+      },
+      statusCounts,
+      series,
+      topProducts: products.slice(0, 5).map(p => ({
+        _id: p._id, title: p.title, price: p.price,
+        imageEmoji: p.imageEmoji, soldCount: p.soldCount || 0, stock: p.stock
+      })),
+      inventoryAlerts: {
+        lowStockCount: lowStockProducts.length,
+        outOfStockCount: outOfStockProducts.length,
+        lowStock: lowStockProducts.slice(0, 5).map(p => ({ _id: p._id, title: p.title, stock: p.stock })),
+        outOfStock: outOfStockProducts.slice(0, 5).map(p => ({ _id: p._id, title: p.title }))
+      },
+      expiringVouchers,
+      recentOrders: recent
+    });
+  } catch (error) {
+    console.error('Lỗi thống kê shop:', error);
+    return res.status(500).json({ error: 'Lỗi lấy thống kê kinh doanh.', details: error.message });
   }
 });
 

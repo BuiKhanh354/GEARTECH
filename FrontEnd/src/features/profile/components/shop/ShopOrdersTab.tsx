@@ -7,12 +7,16 @@ import {
 import { formatPrice } from '../../../../utils/format'
 import { orderService } from '../../../../services/orderService'
 
-export default function ShopOrdersTab() {
+interface ShopOrdersTabProps {
+  initialStatus?: string;
+}
+
+export default function ShopOrdersTab({ initialStatus }: ShopOrdersTabProps) {
   const [orders, setOrders] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
-  const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [filterStatus, setFilterStatus] = useState<string>(initialStatus || 'all')
   const [updatingId, setUpdatingId] = useState<string | null>(null)
 
   const fetchShopOrders = async () => {
@@ -31,6 +35,12 @@ export default function ShopOrdersTab() {
   useEffect(() => {
     fetchShopOrders()
   }, [])
+
+  useEffect(() => {
+    if (initialStatus) {
+      setFilterStatus(initialStatus)
+    }
+  }, [initialStatus])
 
   const handleUpdateStatus = async (orderId: string, newStatus: string) => {
     try {

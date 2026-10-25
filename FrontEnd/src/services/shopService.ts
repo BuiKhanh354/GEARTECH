@@ -29,7 +29,38 @@ export interface ShopItem {
   updatedAt?: string
 }
 
+// Kết quả thống kê kinh doanh từ GET /api/shops/me/analytics
+export interface ShopAnalytics {
+  shop: { _id: string; name: string; status: string }
+  period: { days: number; since: string }
+  kpis: {
+    revenue: number
+    completedCount: number
+    ordersCount: number
+    itemsSold: number
+    aov: number
+    followersCount: number
+  }
+  statusCounts: { pending: number; confirmed: number; shipping: number; completed: number; cancelled: number }
+  series: { date: string; revenue: number; orders: number }[]
+  topProducts: { _id: string; title: string; price: number; imageEmoji: string; soldCount: number; stock: number }[]
+  inventoryAlerts: {
+    lowStockCount: number
+    outOfStockCount: number
+    lowStock: { _id: string; title: string; stock: number }[]
+    outOfStock: { _id: string; title: string }[]
+  }
+  expiringVouchers: { _id: string; code: string; description: string; expiryDate: string }[]
+  recentOrders: { _id: string; createdAt: string; status: string; total: number; itemCount: number; itemNames: string[] }[]
+}
+
 export const shopService = {
+  // Thống kê kinh doanh của shop đang đăng nhập (doanh thu, đơn hàng, tồn kho, bán chạy)
+  getMyAnalytics: async (days?: number): Promise<ShopAnalytics> => {
+    const res = await apiClient.get<ShopAnalytics>('/shops/me/analytics', { params: days ? { days } : undefined })
+    return res.data
+  },
+
   // 1. Lấy danh sách shop đang hoạt động (công khai cho khách hàng)
   getShops: async (params?: { search?: string; limit?: number; page?: number }): Promise<ShopItem[]> => {
     const res = await apiClient.get<ShopItem[]>('/shops', { params })
@@ -82,6 +113,12 @@ export const shopService = {
     rejectReason?: string
   ): Promise<{ message: string; shop: ShopItem }> => {
     const res = await apiClient.put<{ message: string; shop: ShopItem }>(`/shops/${shopId}/status`, { status, rejectReason })
+    return res.data
+  },
+
+  // 8. Seller Centre: Lấy thống kê kinh doanh thực tế từ MongoDB
+  getShopAnalytics: async (days: number = 7): Promise<any> => {
+    const res = await apiClient.get('/shops/me/analytics', { params: { days } })
     return res.data
   }
 }
