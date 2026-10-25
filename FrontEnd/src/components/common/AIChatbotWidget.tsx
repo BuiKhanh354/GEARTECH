@@ -92,7 +92,7 @@ export default function AIChatbotWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 select-none">
+    <div className="fixed bottom-6 right-6 z-50 select-none">
       
       {/* 1. Chat Window Pop-up */}
       <AnimatePresence>
@@ -222,7 +222,7 @@ export default function AIChatbotWidget() {
         )}
       </AnimatePresence>
 
-      {/* 2. Floating Action Button (Góc Trái Màn Hình) */}
+      {/* 2. Floating Action Button (Góc Phải Màn Hình) */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}

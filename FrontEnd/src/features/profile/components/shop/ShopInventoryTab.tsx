@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { 
-  Package, ArrowDownLeft, ArrowUpRight, ArrowClockwise, Warning, CheckCircle, 
-  Plus, Buildings, X
+import {
+  Package, ArrowDownLeft, ArrowUpRight, ArrowClockwise, Warning, CheckCircle,
+  Plus, Buildings, X, Tag
 } from '@phosphor-icons/react'
 import { formatPrice } from '../../../../utils/format'
 import { stockMovementService } from '../../../../services/stockMovementService'
@@ -24,7 +24,8 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
 
   // Modal State
   const [showModal, setShowModal] = useState(false)
-  const [modalMode, setModalMode] = useState<'import' | 'export' | 'adjustment'>('import')
+  // C3: 'list' = chọn số lượng ĐĂNG BÁN từ kho vật lý (phân biệt với nhập kho)
+  const [modalMode, setModalMode] = useState<'import' | 'export' | 'adjustment' | 'list'>('import')
   const [selectedProductId, setSelectedProductId] = useState('')
   const [quantity, setQuantity] = useState(1)
   const [unitCost, setUnitCost] = useState(0)
@@ -57,14 +58,14 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
     fetchData()
   }, [filterType])
 
-  const handleOpenModal = (mode: 'import' | 'export' | 'adjustment') => {
+  const handleOpenModal = (mode: 'import' | 'export' | 'adjustment' | 'list') => {
     setModalMode(mode)
     if (allProducts.length > 0 && !selectedProductId) {
       setSelectedProductId(allProducts[0]._id || allProducts[0].id)
     }
     setQuantity(10)
     setUnitCost(0)
-    setReference(`PN-${Date.now().toString().slice(-6)}`)
+    setReference(`${mode === 'list' ? 'PB' : 'PN'}-${Date.now().toString().slice(-6)}`)
     setNote('')
     setShowModal(true)
   }
@@ -74,6 +75,20 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
     if (!selectedProductId) {
       setErrorMsg('Vui lòng chọn sản phẩm.')
       return
+    }
+
+    // C3: chặn phía client - số lượng đăng bán không được vượt kho vật lý
+    const selectedProduct = allProducts.find((p) => (p._id || p.id) === selectedProductId)
+    if (modalMode === 'list' && selectedProduct) {
+      const warehouse = Number(selectedProduct.warehouseStock || 0)
+      if (warehouse <= 0) {
+        setErrorMsg(`Sản phẩm "${selectedProduct.title}" không có hàng trong kho vật lý. Vui lòng nhập kho trước!`)
+        return
+      }
+      if (Number(quantity) > warehouse) {
+        setErrorMsg(`Số lượng đăng bán (${quantity}) không được lớn hơn số lượng đang có trong kho (${warehouse}).`)
+        return
+      }
     }
 
     try {
@@ -109,8 +124,10 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
     }
   }
 
-  const getTypeBadge = (type: string) => {
-    switch (type) {
+  // Sản phẩm đang chọn trong modal (dùng cho gợi ý tồn kho và validate số lượng)
+  const selectedProduct = allProducts.find((p) => (p._id || p.id) === selectedProductId)
+
+  const getTypeBadge = (type: string) => {    switch (type) {
       case 'import':
         return (
           <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-1 w-fit">
@@ -140,6 +157,12 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
         return (
           <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider text-purple-500 bg-purple-500/10 border border-purple-500/20 flex items-center gap-1 w-fit">
             <ArrowClockwise size={11} weight="bold" /> Kiểm kê
+          </span>
+        )
+      case 'list':
+        return (
+          <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider text-indigo-500 bg-indigo-500/10 border border-indigo-500/20 flex items-center gap-1 w-fit">
+            <Tag size={11} weight="bold" /> Đăng bán
           </span>
         )
     }
@@ -173,6 +196,12 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
             <Plus size={13} weight="bold" /> Nhập kho
           </button>
           <button
+            onClick={() => handleOpenModal('list')}
+            className="px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded text-[10px] font-black uppercase tracking-wider flex items-center gap-1 shadow-sm transition-all"
+          >
+            <Tag size={13} weight="bold" /> Đăng bán
+          </button>
+          <button
             onClick={() => handleOpenModal('adjustment')}
             className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-850 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-200 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 transition-all"
           >
@@ -183,11 +212,17 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
 
       {/* Summary KPI Cards */}
       {summary && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-850 rounded-lg">
-            <span className="text-[9px] font-mono text-zinc-400 block uppercase">TỔNG TỒN KHẢ DỤNG</span>
+            <span className="text-[9px] font-mono text-zinc-400 block uppercase">CÓ THỂ BÁN</span>
             <span className="text-xl font-black text-emerald-500 mt-1 block">
               {summary.currentTotalStock} <span className="text-xs font-normal text-zinc-400">cái</span>
+            </span>
+          </div>
+          <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-850 rounded-lg">
+            <span className="text-[9px] font-mono text-zinc-400 block uppercase">KHO VẬT LÝ</span>
+            <span className="text-xl font-black text-cyan-600 mt-1 block">
+              {summary.totalWarehouseStock ?? 0} <span className="text-xs font-normal text-zinc-400">chưa bán</span>
             </span>
           </div>
           <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-850 rounded-lg">
@@ -208,6 +243,12 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
               +{summary.totalReturned} <span className="text-xs font-normal text-zinc-400">cái</span>
             </span>
           </div>
+          <div className="p-3 bg-zinc-50 dark:bg-zinc-900/40 border border-zinc-200/80 dark:border-zinc-850 rounded-lg">
+            <span className="text-[9px] font-mono text-zinc-400 block uppercase">ĐÃ BÁN THÀNH CÔNG</span>
+            <span className="text-xl font-black text-indigo-500 mt-1 block">
+              {summary.totalSoldCount ?? 0} <span className="text-xs font-normal text-zinc-400">cái</span>
+            </span>
+          </div>
         </div>
       )}
 
@@ -216,6 +257,7 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
         {[
           { key: 'all', label: 'Tất cả biến động' },
           { key: 'import', label: 'Nhập kho' },
+          { key: 'list', label: 'Đăng bán' },
           { key: 'sale', label: 'Bán hàng' },
           { key: 'return', label: 'Hoàn trả' },
           { key: 'export', label: 'Xuất hủy' },
@@ -329,7 +371,7 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
               <div className="flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-3">
                 <h4 className="text-sm font-black uppercase text-zinc-900 dark:text-white flex items-center gap-2">
                   <Package size={18} className="text-[#ff4655]" />
-                  {modalMode === 'import' ? 'Nhập kho sản phẩm' : modalMode === 'adjustment' ? 'Kiểm kê điều chỉnh kho' : 'Xuất kho sản phẩm'}
+                  {modalMode === 'import' ? 'Nhập kho sản phẩm' : modalMode === 'list' ? 'Đăng bán từ kho' : modalMode === 'adjustment' ? 'Kiểm kê điều chỉnh kho' : 'Xuất kho sản phẩm'}
                 </h4>
                 <button onClick={() => setShowModal(false)} className="text-zinc-400 hover:text-white p-1 rounded">
                   <X size={16} />
@@ -348,11 +390,22 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
                   >
                     {allProducts.map((p) => (
                       <option key={p._id || p.id} value={p._id || p.id}>
-                        {p.title} (Tồn hiện tại: {p.stock})
+                        {p.title} (Đăng bán: {p.stock} / Kho: {p.warehouseStock ?? 0})
                       </option>
                     ))}
                   </select>
                 </div>
+
+                {/* C3: gợi ý số lượng phân bổ đang có của sản phẩm được chọn */}
+                {modalMode === 'list' && selectedProduct && (
+                  <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 rounded-lg text-[10px] text-indigo-600 dark:text-indigo-300 font-bold space-y-0.5">
+                    <div>📦 Kho vật lý chưa phân bổ: <span className="text-indigo-500">{Number(selectedProduct.warehouseStock || 0)} cái</span></div>
+                    <div>🛒 Đang đăng bán (có thể bán): <span className="text-indigo-500">{selectedProduct.stock} cái</span></div>
+                    {Number(selectedProduct.warehouseStock || 0) === 0 && (
+                      <div className="text-amber-500">⚠️ Kho vật lý trống — hãy "Nhập kho" trước khi đăng bán thêm!</div>
+                    )}
+                  </div>
+                )}
 
                 {modalMode === 'adjustment' ? (
                   <div>
@@ -371,11 +424,12 @@ export default function ShopInventoryTab({ allProducts, onRefreshProducts }: Sho
                 ) : (
                   <div>
                     <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">
-                      Số lượng {modalMode === 'import' ? 'nhập' : 'xuất'} *
+                      Số lượng {modalMode === 'import' ? 'nhập' : modalMode === 'list' ? 'đăng bán' : 'xuất'} *
                     </label>
                     <input
                       type="number"
                       min="1"
+                      max={modalMode === 'list' && selectedProduct ? Number(selectedProduct.warehouseStock || 0) : undefined}
                       value={quantity}
                       onChange={(e) => setQuantity(Number(e.target.value))}
                       className="w-full p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white"

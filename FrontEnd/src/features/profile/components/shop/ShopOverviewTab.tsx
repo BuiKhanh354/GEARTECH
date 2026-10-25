@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Storefront, CheckCircle, WarningCircle, FloppyDisk, PencilSimple, Clock, Lock, XCircle } from '@phosphor-icons/react'
+import { Storefront, CheckCircle, WarningCircle, FloppyDisk, PencilSimple, Clock, Lock, XCircle, Star, ChatCircleText, User } from '@phosphor-icons/react'
 import { shopService, type ShopItem } from '../../../../services/shopService'
+import apiClient from '../../../../api/client'
 
 interface ShopOverviewTabProps {
   currentUser: any;
@@ -15,6 +16,11 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
   const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
+  // C2: Số lượng follower thực tế và danh sách đánh giá của shop
+  const [realFollowerCount, setRealFollowerCount] = useState<number>(0)
+  const [recentReviews, setRecentReviews] = useState<any[]>([])
+  const [averageRating, setAverageRating] = useState<number>(5.0)
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -25,6 +31,8 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
     logo: '🏬',
     bgClass: 'from-zinc-900 to-black'
   })
+
+  const shopId = shop?._id || shop?.id || currentShop?._id || currentShop?.id || currentUser?.shopId
 
   useEffect(() => {
     if (currentShop) {
@@ -42,9 +50,32 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
     }
   }, [currentShop])
 
+  // C2: Tải follower thực tế và đánh giá thật từ backend
+  useEffect(() => {
+    if (!shopId) return
+
+    // Tải follower count
+    apiClient.get(`/shop-followers/check/${shopId}`)
+      .then(res => {
+        if (res.data && res.data.followersCount !== undefined) {
+          setRealFollowerCount(res.data.followersCount)
+        }
+      })
+      .catch(err => console.warn('Lỗi lấy followers:', err))
+
+    // Tải danh sách đánh giá shop
+    apiClient.get(`/reviews/shop/${shopId}`)
+      .then(res => {
+        if (res.data) {
+          setRecentReviews(res.data.reviews || [])
+          if (res.data.averageRating) setAverageRating(res.data.averageRating)
+        }
+      })
+      .catch(err => console.warn('Lỗi lấy đánh giá shop:', err))
+  }, [shopId])
+
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
-    const shopId = shop?._id || shop?.id || currentUser?.shopId
     if (!shopId) return
 
     setLoading(true)
@@ -72,7 +103,7 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 15 }}
-      className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6 shadow-sm dark:shadow-xl space-y-6"
+      className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm dark:shadow-xl space-y-6"
     >
       <div className="border-b border-zinc-100 dark:border-zinc-900 pb-3 flex justify-between items-center">
         <div>
@@ -81,13 +112,13 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
             QUẢN LÝ THÔNG TIN GIAN HÀNG DOANH NGHIỆP
           </h3>
           <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
-            Chủ shop cập nhật hồ sơ, thông tin liên hệ và hình ảnh đại diện thương hiệu
+            Chủ shop cập nhật hồ sơ, thông tin liên hệ và theo dõi thống kê người theo dõi, đánh giá
           </p>
         </div>
 
         <button
           onClick={() => setIsEditing(!isEditing)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-black uppercase tracking-wider bg-zinc-100 dark:bg-zinc-900 hover:text-[#ff4655] border border-zinc-200 dark:border-zinc-800 transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-zinc-100 dark:bg-zinc-900 hover:text-[#ff4655] border border-zinc-200 dark:border-zinc-800 transition-colors cursor-pointer"
         >
           <PencilSimple size={14} />
           {isEditing ? 'Hủy sửa' : 'Chỉnh sửa'}
@@ -100,7 +131,7 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-3.5 rounded text-xs font-bold flex items-center justify-between ${
+            className={`p-3.5 rounded-xl text-xs font-bold flex items-center justify-between ${
               alert.type === 'success' 
                 ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' 
                 : 'bg-red-500/10 text-[#ff4655] border border-red-500/20'
@@ -110,14 +141,14 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
               {alert.type === 'success' ? <CheckCircle size={16} weight="fill" /> : <WarningCircle size={16} weight="fill" />}
               <span>{alert.message}</span>
             </div>
-            <button onClick={() => setAlert(null)} className="text-[10px] uppercase underline ml-3">Đóng</button>
+            <button onClick={() => setAlert(null)} className="text-[10px] uppercase underline ml-3 cursor-pointer">Đóng</button>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Shop Status Banner */}
       {isPending && (
-        <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-500 flex items-center gap-3">
+        <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500 flex items-center gap-3">
           <Clock size={24} weight="fill" className="shrink-0" />
           <div className="text-xs">
             <h5 className="font-black uppercase">Gian hàng đang chờ Admin xét duyệt</h5>
@@ -129,7 +160,7 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
       )}
 
       {isLocked && (
-        <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-500 flex items-center gap-3">
+        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500 flex items-center gap-3">
           <Lock size={24} weight="fill" className="shrink-0" />
           <div className="text-xs">
             <h5 className="font-black uppercase">Gian hàng đang bị tạm khóa</h5>
@@ -141,7 +172,7 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
       )}
 
       {isRejected && (
-        <div className="p-4 rounded-lg bg-zinc-500/10 border border-zinc-500/30 text-zinc-400 flex items-center gap-3">
+        <div className="p-4 rounded-xl bg-zinc-500/10 border border-zinc-500/30 text-zinc-400 flex items-center gap-3">
           <XCircle size={24} weight="fill" className="shrink-0 text-red-500" />
           <div className="text-xs">
             <h5 className="font-black uppercase text-red-500">Yêu cầu mở gian hàng bị từ chối</h5>
@@ -154,10 +185,10 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
         </div>
       )}
 
-      {/* Shop Detail Hero Presentation */}
-      <div className={`p-6 rounded-lg bg-gradient-to-r ${shop?.bgClass || 'from-zinc-900 to-black'} text-white space-y-4 shadow-xl border border-zinc-800`}>
+      {/* Shop Detail Hero Presentation (C2: Hiển thị Follower & Đánh giá thật) */}
+      <div className={`p-6 rounded-2xl bg-gradient-to-r ${shop?.bgClass || 'from-zinc-900 to-black'} text-white space-y-4 shadow-xl border border-zinc-800`}>
         <div className="flex items-center gap-4">
-          <span className="w-16 h-16 rounded-md bg-white/10 backdrop-blur-md text-4xl flex items-center justify-center border border-white/20 shadow-inner">
+          <span className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md text-4xl flex items-center justify-center border border-white/20 shadow-inner">
             {shop?.logo || '🏬'}
           </span>
           <div>
@@ -181,11 +212,15 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
         <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/10 text-center">
           <div>
             <span className="text-[9px] text-white/50 block uppercase tracking-wider">ĐÁNH GIÁ SHOP</span>
-            <span className="text-xs font-black text-amber-400 mt-1 block">⭐ {shop?.rating || 5.0} / 5.0</span>
+            <span className="text-xs font-black text-amber-400 mt-1 block flex items-center justify-center gap-1">
+              <Star size={13} weight="fill" /> {averageRating.toFixed(1)} / 5.0 ({recentReviews.length})
+            </span>
           </div>
           <div>
             <span className="text-[9px] text-white/50 block uppercase tracking-wider">NGƯỜI THEO DÕI</span>
-            <span className="text-xs font-black mt-1 block">{shop?.followers || '0'}</span>
+            <span className="text-xs font-black text-[#ff4655] mt-1 block">
+              {realFollowerCount} người
+            </span>
           </div>
           <div>
             <span className="text-[9px] text-white/50 block uppercase tracking-wider">THIẾT BỊ ĐĂNG BÁN</span>
@@ -194,54 +229,105 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
         </div>
       </div>
 
+      {/* C2: Danh sách các đánh giá mới nhất của gian hàng */}
+      <div className="bg-zinc-50 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 space-y-4">
+        <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div className="flex items-center gap-2">
+            <ChatCircleText size={18} className="text-[#ff4655]" weight="bold" />
+            <h4 className="text-xs font-black uppercase text-zinc-900 dark:text-white tracking-wider">
+              ĐÁNH GIÁ MỚI NHẤT TỪ KHÁCH HÀNG ({recentReviews.length})
+            </h4>
+          </div>
+          <span className="text-[10px] text-zinc-400 font-mono">Điểm trung bình: {averageRating.toFixed(1)} ⭐</span>
+        </div>
+
+        {recentReviews.length === 0 ? (
+          <div className="py-8 text-center text-zinc-400 text-xs">
+            <Star size={24} className="mx-auto mb-1.5 opacity-40 text-amber-500" />
+            <span>Chưa có đánh giá nào từ khách hàng cho gian hàng này.</span>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {recentReviews.slice(0, 5).map((rev) => {
+              const u = rev.user_id || rev.userId || {}
+              return (
+                <div key={rev._id} className="p-3.5 bg-white dark:bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800 rounded-xl space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center gap-2">
+                      {u.avatar ? (
+                        <img src={u.avatar} alt={u.name} className="w-6 h-6 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center">
+                          <User size={12} />
+                        </div>
+                      )}
+                      <span className="font-bold text-zinc-900 dark:text-white">{u.name || 'Khách hàng ẩn danh'}</span>
+                    </div>
+                    <div className="flex items-center text-amber-400 text-xs gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={12} weight={i < rev.rating ? 'fill' : 'regular'} />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-xs text-zinc-600 dark:text-zinc-300 pl-8 leading-relaxed">
+                    {rev.comment}
+                  </p>
+                  <div className="pl-8 text-[10px] text-zinc-400 font-mono">
+                    {rev.created_at ? new Date(rev.created_at).toLocaleString('vi-VN') : ''}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
       {/* Edit Form */}
       {isEditing && (
-        <form onSubmit={handleUpdate} className="p-5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg space-y-4">
+        <form onSubmit={handleUpdate} className="p-5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl space-y-4">
           <h4 className="text-xs font-black text-[#ff4655] uppercase tracking-wider flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-2">
-            <PencilSimple size={16} /> CẬP NHẬT THÔNG TIN CỬA HÀNG
+            <PencilSimple size={16} /> CẬP NHẬT HỒ SƠ DOANH NGHIỆP
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Tên cửa hàng</label>
+              <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Tên gian hàng / Doanh nghiệp</label>
               <input
                 type="text"
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white uppercase focus:outline-none focus:border-[#ff4655]"
+                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Emoji / Logo</label>
+              <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Biểu tượng / Emoji Shop</label>
               <input
                 type="text"
-                required
                 value={formData.logo}
                 onChange={(e) => setFormData({ ...formData, logo: e.target.value })}
-                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
               />
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Mô tả giới thiệu cửa hàng</label>
+              <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Mô tả giới thiệu gian hàng</label>
               <textarea
                 rows={2}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Giới thiệu về thế mạnh sản phẩm, chính sách bảo hành của shop..."
-                className="w-full text-xs px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Phân khúc sản phẩm</label>
+              <label className="block text-[11px] font-bold text-zinc-500 uppercase mb-1">Chuyên ngành / Danh mục</label>
               <input
                 type="text"
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
               />
             </div>
 
@@ -251,7 +337,7 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
                 type="text"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
               />
             </div>
 
@@ -261,7 +347,7 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
               />
             </div>
 
@@ -271,7 +357,7 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
                 type="text"
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-800 rounded-xl bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
               />
             </div>
           </div>
@@ -280,14 +366,14 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
             <button
               type="button"
               onClick={() => setIsEditing(false)}
-              className="px-4 py-2 text-xs font-bold uppercase rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
+              className="px-4 py-2 text-xs font-bold uppercase rounded-xl bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 cursor-pointer"
             >
               Hủy
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-5 py-2 text-xs font-black uppercase rounded bg-[#ff4655] hover:bg-[#e03d4b] text-white flex items-center gap-1.5 shadow-md shadow-[#ff4655]/20"
+              className="px-5 py-2 text-xs font-black uppercase rounded-xl bg-[#ff4655] hover:bg-[#e03d4b] text-white flex items-center gap-1.5 shadow-md shadow-[#ff4655]/20 cursor-pointer"
             >
               <FloppyDisk size={14} weight="bold" />
               {loading ? 'ĐANG LƯU...' : 'LƯU THAY ĐỔI'}

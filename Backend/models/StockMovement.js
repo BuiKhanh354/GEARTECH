@@ -7,10 +7,10 @@ const StockMovementSchema = new mongoose.Schema({
   productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
   supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier', default: null },
   supplierId: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier', default: null },
-  type: { 
-    type: String, 
-    enum: ['import', 'export', 'sale', 'return', 'adjustment'], 
-    required: true 
+  type: {
+    type: String,
+    enum: ['import', 'export', 'sale', 'return', 'adjustment', 'list'],
+    required: true
   },
   quantity: { type: Number, required: true },
   unit_cost: { type: mongoose.Schema.Types.Decimal128, default: 0 },

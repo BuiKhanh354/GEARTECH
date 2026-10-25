@@ -24,6 +24,17 @@ import { cartService } from '../../../services/cartService'
 import { SafeProductImage } from '../../../components/common/ProductImage'
 import { formatPrice } from '../../../utils/format'
 
+function formatRemainingTime(ms?: number) {
+  if (!ms || ms <= 0) return 'sắp hết hạn'
+  const totalMinutes = Math.floor(ms / (1000 * 60))
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+  if (hours > 0) {
+    return `${hours} giờ ${minutes} phút`
+  }
+  return `${minutes} phút`
+}
+
 export default function CartPage() {
   const navigate = useNavigate()
   
@@ -274,6 +285,13 @@ export default function CartPage() {
                             >
                               {item.title}
                             </Link>
+                            {item.isPriceLocked && (
+                              <div className="mt-1">
+                                <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-rose-500 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
+                                  <ShieldCheck size={10} weight="bold" /> Giữ giá: còn {formatRemainingTime(item.priceLockRemainingMs)}
+                                </span>
+                              </div>
+                            )}
                             {item.unavailableReason && (
                               <span className="inline-flex items-center gap-1 text-[9px] font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20 mt-0.5">
                                 <Warning size={10} weight="bold" /> {item.unavailableReason}
@@ -302,6 +320,18 @@ export default function CartPage() {
                           >
                             {item.title}
                           </Link>
+                          {item.isPriceLocked && (
+                            <div className="mt-1 flex flex-wrap items-center gap-2">
+                              <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-rose-500 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20">
+                                <ShieldCheck size={12} weight="bold" /> Giữ giá ưu đãi: còn {formatRemainingTime(item.priceLockRemainingMs)}
+                              </span>
+                              {item.originalPrice && item.originalPrice > item.price && (
+                                <span className="text-[10px] font-bold text-emerald-500">
+                                  Tiết kiệm {formatPrice(item.originalPrice - item.price)}/sp
+                                </span>
+                              )}
+                            </div>
+                          )}
                           {item.unavailableReason && (
                             <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 mt-1">
                               <Warning size={12} weight="bold" /> {item.unavailableReason}

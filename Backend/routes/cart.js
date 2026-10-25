@@ -26,12 +26,15 @@ async function getOrCreateCart(userId) {
 /**
  * Hàm kiểm tra tính hợp lệ và định dạng giỏ hàng trả về cho client
  * - Tự động đối chiếu với giá bán hiện tại và số lượng tồn kho thực tế trong CSDL
+ * - Áp dụng chính sách bảo lưu giá khuyến mãi 48 giờ (Phần E prompt.md)
  * - Cảnh báo nếu sản phẩm hết hàng, bị ẩn hoặc shop bị khóa
  */
 async function formatCartDetails(cart) {
   const formattedItems = [];
   let calculatedSubtotal = 0;
   let hasUnavailableItems = false;
+  let cartNeedsSave = false;
+  const now = new Date();
 
   for (const item of cart.items) {
     const product = await Product.findById(item.productId).populate('shopId', 'name status logo');
@@ -46,7 +49,8 @@ async function formatCartDetails(cart) {
         selected: false,
         variant: item.variant,
         isAvailable: false,
-        unavailableReason: 'Sản phẩm đã bị xóa khỏi hệ thống'
+        unavailableReason: 'Sản phẩm đã bị xóa khỏi hệ thống',
+        isPriceLocked: false
       });
       hasUnavailableItems = true;
       continue;
@@ -57,16 +61,67 @@ async function formatCartDetails(cart) {
     const isOutOfStock = product.stock <= 0 || product.status === 'out_of_stock';
     const isExceedingStock = item.quantity > product.stock;
 
+    // =========================================================================
+    // PHẦN E: CHÍNH SÁCH BẢO LƯU GIÁ KHUYẾN MÃI (48 GIỜ)
+    // =========================================================================
+    let isPriceLocked = false;
+    let priceLockRemainingMs = 0;
+    let effectivePrice = product.price;
+    let originalPrice = item.originalPrice || product.oldPrice || product.price;
+
+    if (item.priceLockExpiresAt) {
+      const expiresAt = new Date(item.priceLockExpiresAt);
+      if (now <= expiresAt) {
+        // Vẫn còn trong 48 giờ bảo lưu
+        isPriceLocked = true;
+        priceLockRemainingMs = Math.max(0, expiresAt.getTime() - now.getTime());
+        // Giữ giá khuyến mãi đã lưu dù giá niêm yết hiện tại có tăng hoặc hết khuyến mãi
+        effectivePrice = item.price;
+        originalPrice = item.originalPrice || product.oldPrice || product.price;
+      } else {
+        // Đã hết 48 giờ bảo lưu: Cập nhật lại giá theo giá niêm yết hiện hành
+        item.price = product.price;
+        item.priceLockedAt = null;
+        item.priceLockExpiresAt = null;
+        item.promotionNote = null;
+        effectivePrice = product.price;
+        originalPrice = product.oldPrice || product.price;
+        isPriceLocked = false;
+        cartNeedsSave = true;
+      }
+    } else {
+      // Nếu sản phẩm đang có khuyến mãi mới và chưa được set khóa giá
+      if (product.oldPrice && product.oldPrice > product.price) {
+        item.originalPrice = product.oldPrice;
+        item.price = product.price;
+        item.priceLockedAt = now;
+        item.priceLockExpiresAt = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+        item.promotionNote = 'Giữ giá ưu đãi 48 giờ';
+        isPriceLocked = true;
+        priceLockRemainingMs = 48 * 60 * 60 * 1000;
+        effectivePrice = product.price;
+        originalPrice = product.oldPrice;
+        cartNeedsSave = true;
+      } else {
+        effectivePrice = product.price;
+        originalPrice = product.price;
+      }
+    }
+
     let isAvailable = isShopActive && isProductActive && !isOutOfStock;
     let reason = '';
     if (!isShopActive) reason = 'Gian hàng sở hữu sản phẩm đang tạm dừng hoạt động';
     else if (!isProductActive) reason = 'Sản phẩm đã ngừng kinh doanh hoặc đang tạm ẩn';
-    else if (isOutOfStock) reason = 'Sản phẩm hiện đang hết hàng trong kho';
-    else if (isExceedingStock) reason = `Số lượng trong giỏ (${item.quantity}) vượt quá tồn kho thực tế (${product.stock} cái)`;
+    else if (isOutOfStock) {
+      reason = isPriceLocked 
+        ? 'Sản phẩm tạm hết hàng trong kho (Mức giá ưu đãi vẫn được giữ khi có hàng lại nếu còn hạn)'
+        : 'Sản phẩm hiện đang hết hàng trong kho';
+    } else if (isExceedingStock) {
+      reason = `Số lượng trong giỏ (${item.quantity}) vượt quá tồn kho thực tế (${product.stock} cái)`;
+    }
 
-    // Luôn áp dụng giá bán thực tế mới nhất từ Backend (chống gian lận giá)
-    const currentPrice = product.price;
-    const lineTotal = currentPrice * item.quantity;
+    const lineTotal = effectivePrice * item.quantity;
+    const savings = Math.max(0, (originalPrice - effectivePrice) * item.quantity);
 
     if (isAvailable && item.selected) {
       calculatedSubtotal += lineTotal;
@@ -79,8 +134,15 @@ async function formatCartDetails(cart) {
       slug: product.slug,
       sku: product.sku,
       imageEmoji: product.imageEmoji || '📦',
-      currentPrice,
-      oldPrice: product.oldPrice,
+      currentPrice: effectivePrice,
+      price: effectivePrice,
+      oldPrice: originalPrice > effectivePrice ? originalPrice : undefined,
+      originalPrice,
+      savings,
+      isPriceLocked,
+      priceLockExpiresAt: item.priceLockExpiresAt,
+      priceLockRemainingMs,
+      promotionNote: item.promotionNote,
       stock: product.stock,
       quantity: item.quantity,
       selected: item.selected !== false,
@@ -96,6 +158,14 @@ async function formatCartDetails(cart) {
       isExceedingStock,
       unavailableReason: reason
     });
+  }
+
+  if (cartNeedsSave) {
+    try {
+      await cart.save();
+    } catch (saveErr) {
+      console.warn('Không thể tự động lưu cập nhật giỏ hàng:', saveErr.message);
+    }
   }
 
   return {
@@ -129,6 +199,7 @@ router.get('/', auth, async (req, res) => {
 // 2. THÊM SẢN PHẨM VÀO GIỎ HÀNG
 // POST /api/cart/items
 // Kiểm tra: tồn tại, còn bán, số lượng >= 1 và không vượt tồn kho
+// Thiết lập bảo lưu giá khuyến mãi 48 giờ nếu sản phẩm có ưu đãi
 // ==========================================
 router.post('/items', auth, async (req, res) => {
   try {
@@ -175,12 +246,24 @@ router.post('/items', auth, async (req, res) => {
       });
     }
 
-    // 4. Giá luôn được lấy từ Backend
+    // 4. Thiết lập giá và chính sách bảo lưu giá khuyến mãi 48 giờ
     const backendPrice = product.price;
+    const now = new Date();
+    const isPromo = Boolean(product.oldPrice && product.oldPrice > backendPrice);
+    const priceLockExpiresAt = isPromo ? new Date(now.getTime() + 48 * 60 * 60 * 1000) : null;
+    const originalPrice = isPromo ? product.oldPrice : backendPrice;
+    const promotionNote = isPromo ? 'Giữ giá ưu đãi 48 giờ' : null;
 
     if (existingIndex > -1) {
       cart.items[existingIndex].quantity = finalQty;
-      cart.items[existingIndex].price = backendPrice;
+      // Nếu chưa có khóa giá hoặc đã hết hạn, cập nhật theo trạng thái mới
+      if (!cart.items[existingIndex].priceLockExpiresAt || new Date(cart.items[existingIndex].priceLockExpiresAt) <= now) {
+        cart.items[existingIndex].price = backendPrice;
+        cart.items[existingIndex].originalPrice = originalPrice;
+        cart.items[existingIndex].priceLockedAt = isPromo ? now : null;
+        cart.items[existingIndex].priceLockExpiresAt = priceLockExpiresAt;
+        cart.items[existingIndex].promotionNote = promotionNote;
+      }
       cart.items[existingIndex].selected = true;
       if (variant) cart.items[existingIndex].variant = variant;
     } else {
@@ -188,6 +271,10 @@ router.post('/items', auth, async (req, res) => {
         productId: product._id,
         quantity: numQty,
         price: backendPrice,
+        originalPrice,
+        priceLockedAt: isPromo ? now : null,
+        priceLockExpiresAt,
+        promotionNote,
         selected: true,
         variant
       });
@@ -195,13 +282,17 @@ router.post('/items', auth, async (req, res) => {
 
     await cart.save();
 
-    // Đồng bộ sang collection CartItem (tương thích SQL)
+    // Đồng bộ sang collection CartItem
     await CartItem.findOneAndUpdate(
       { cartId: cart._id, productId: product._id },
       { 
         $set: { 
           quantity: finalQty, 
-          price: backendPrice, 
+          price: backendPrice,
+          originalPrice,
+          priceLockedAt: isPromo ? now : null,
+          priceLockExpiresAt,
+          promotionNote,
           selected: true, 
           variant 
         } 
@@ -237,6 +328,10 @@ router.put('/items/:productId', auth, async (req, res) => {
       return res.status(404).json({ error: 'Không tìm thấy sản phẩm trong giỏ hàng.' });
     }
 
+    const currentItem = cart.items[itemIndex];
+    const now = new Date();
+    const isLocked = currentItem.priceLockExpiresAt && new Date(currentItem.priceLockExpiresAt) > now;
+
     // Nếu cập nhật số lượng
     if (quantity !== undefined) {
       const numQty = Number(quantity);
@@ -245,7 +340,7 @@ router.put('/items/:productId', auth, async (req, res) => {
       }
 
       // Kiểm tra tồn kho từ database
-      const product = await Product.findById(cart.items[itemIndex].productId);
+      const product = await Product.findById(currentItem.productId);
       if (product) {
         if (numQty > product.stock) {
           return res.status(400).json({ 
@@ -253,30 +348,33 @@ router.put('/items/:productId', auth, async (req, res) => {
             availableStock: product.stock 
           });
         }
-        cart.items[itemIndex].price = product.price; // Cập nhật lại giá nếu có thay đổi
+        // Chỉ cập nhật lại giá nếu không bị khóa giá khuyến mãi
+        if (!isLocked) {
+          currentItem.price = product.price;
+        }
       }
 
-      cart.items[itemIndex].quantity = numQty;
+      currentItem.quantity = numQty;
     }
 
     // Nếu cập nhật trạng thái chọn mua
     if (selected !== undefined) {
-      cart.items[itemIndex].selected = Boolean(selected);
+      currentItem.selected = Boolean(selected);
     }
 
     if (variant !== undefined) {
-      cart.items[itemIndex].variant = variant;
+      currentItem.variant = variant;
     }
 
     await cart.save();
 
     // Đồng bộ sang CartItem
     await CartItem.findOneAndUpdate(
-      { cartId: cart._id, productId: cart.items[itemIndex].productId },
+      { cartId: cart._id, productId: currentItem.productId },
       { 
         $set: { 
-          quantity: cart.items[itemIndex].quantity, 
-          selected: cart.items[itemIndex].selected 
+          quantity: currentItem.quantity, 
+          selected: currentItem.selected 
         } 
       }
     );
@@ -296,7 +394,6 @@ router.put('/items/:productId', auth, async (req, res) => {
 // ==========================================
 // 4. XÓA SẢN PHẨM KHỎI GIỎ HÀNG
 // DELETE /api/cart/items/:productId
-// Chỉ xóa dòng tương ứng của giỏ hàng thuộc khách hàng hiện tại
 // ==========================================
 router.delete('/items/:productId', auth, async (req, res) => {
   try {
@@ -314,7 +411,6 @@ router.delete('/items/:productId', auth, async (req, res) => {
 
     await cart.save();
 
-    // Xóa trong collection CartItem
     await CartItem.deleteOne({ 
       cartId: cart._id, 
       $or: [{ productId }, { _id: productId }] 
@@ -367,7 +463,8 @@ router.delete('/clear', auth, async (req, res) => {
 // ==========================================
 // 6. ĐỒNG BỘ DỮ LIỆU GIỎ HÀNG KHI ĐĂNG NHẬP
 // POST /api/cart/sync
-// Đồng bộ giỏ hàng offline (localStorage) lên database khi khách hàng đăng nhập
+// SỬA TRIỆT ĐỂ LỖI D6 (Tự tăng số lượng +2 khi đồng bộ):
+// Tuyệt đối không cộng dồn (existingQty + desiredQty) khi đồng bộ, mà gán chính xác desiredQty!
 // ==========================================
 router.post('/sync', auth, async (req, res) => {
   try {
@@ -379,6 +476,7 @@ router.post('/sync', auth, async (req, res) => {
     }
 
     const cart = await getOrCreateCart(req.user._id);
+    const now = new Date();
 
     for (const localItem of localItems) {
       const pId = localItem.productId || localItem.id;
@@ -389,18 +487,32 @@ router.post('/sync', auth, async (req, res) => {
 
       const existingIndex = cart.items.findIndex(item => item.productId.toString() === pId.toString());
       const desiredQty = Math.max(1, Number(localItem.quantity || 1));
-      
+      const isPromo = Boolean(product.oldPrice && product.oldPrice > product.price);
+      const priceLockExpiresAt = isPromo ? new Date(now.getTime() + 48 * 60 * 60 * 1000) : null;
+      const originalPrice = isPromo ? product.oldPrice : product.price;
+
       if (existingIndex > -1) {
-        // Hợp nhất số lượng nhưng không vượt tồn kho
-        const newQty = Math.min(product.stock, cart.items[existingIndex].quantity + desiredQty);
-        cart.items[existingIndex].quantity = newQty;
-        cart.items[existingIndex].price = product.price;
+        // KHÔNG CỘNG DỒN NỮA: Giữ số lượng chính xác người dùng mong muốn, tối đa là tồn kho
+        const exactQty = Math.min(product.stock, desiredQty);
+        cart.items[existingIndex].quantity = exactQty;
+        // Bảo lưu giá nếu chưa hết hạn
+        if (!cart.items[existingIndex].priceLockExpiresAt || new Date(cart.items[existingIndex].priceLockExpiresAt) <= now) {
+          cart.items[existingIndex].price = product.price;
+          cart.items[existingIndex].originalPrice = originalPrice;
+          cart.items[existingIndex].priceLockedAt = isPromo ? now : null;
+          cart.items[existingIndex].priceLockExpiresAt = priceLockExpiresAt;
+          cart.items[existingIndex].promotionNote = isPromo ? 'Giữ giá ưu đãi 48 giờ' : null;
+        }
       } else {
         const initialQty = Math.min(product.stock, desiredQty);
         cart.items.push({
           productId: product._id,
           quantity: initialQty,
           price: product.price,
+          originalPrice,
+          priceLockedAt: isPromo ? now : null,
+          priceLockExpiresAt,
+          promotionNote: isPromo ? 'Giữ giá ưu đãi 48 giờ' : null,
           selected: localItem.selected !== false,
           variant: localItem.variant || 'Tiêu chuẩn / Chính hãng'
         });
@@ -439,6 +551,7 @@ router.get('/validate', auth, async (req, res) => {
 
     const issues = [];
     let verifiedTotal = 0;
+    const now = new Date();
 
     for (const item of selectedItems) {
       const product = await Product.findById(item.productId).populate('shopId');
@@ -479,7 +592,13 @@ router.get('/validate', auth, async (req, res) => {
         continue;
       }
 
-      verifiedTotal += (product.price * item.quantity);
+      // Xác định giá: nếu có khóa giá khuyến mãi còn hiệu lực thì tính theo giá khóa
+      let effectivePrice = product.price;
+      if (item.priceLockExpiresAt && new Date(item.priceLockExpiresAt) > now) {
+        effectivePrice = item.price;
+      }
+
+      verifiedTotal += (effectivePrice * item.quantity);
     }
 
     const isValid = issues.length === 0;

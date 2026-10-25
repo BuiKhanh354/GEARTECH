@@ -3,25 +3,19 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { formatPrice } from '../../utils/format'
 import { useCartStore } from '../../store/cartStore'
-import { 
-  MagnifyingGlass, 
-  ShoppingCart, 
-  List, 
-  X, 
-  CaretDown, 
-  User, 
-  Receipt, 
-  Gear, 
+import { categoryService, type CategoryItem } from '../../services/categoryService'
+import { brandService, type BrandItem } from '../../services/brandService'
+import {
+  MagnifyingGlass,
+  ShoppingCart,
+  List,
+  X,
+  CaretDown,
+  User,
+  Receipt,
+  Gear,
   SignOut,
   GameController,
-  Laptop,
-  Desktop,
-  Cpu,
-  Monitor,
-  Keyboard,
-  Headphones,
-  Watch,
-  Plug,
   Lightning,
   Sun,
   Moon,
@@ -38,6 +32,93 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [categoryHovered, setCategoryHovered] = useState(false)
   const [activeCategoryTab, setActiveCategoryTab] = useState('all')
+  const [mobileCategoryOpen, setMobileCategoryOpen] = useState(false)
+  const [mobileExpandedCat, setMobileExpandedCat] = useState<string | null>(null)
+  const categoryHoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleCategoryMouseEnter = () => {
+    if (categoryHoverTimeoutRef.current) {
+      clearTimeout(categoryHoverTimeoutRef.current)
+      categoryHoverTimeoutRef.current = null
+    }
+    setCategoryHovered(true)
+  }
+
+  const handleCategoryMouseLeave = () => {
+    if (categoryHoverTimeoutRef.current) {
+      clearTimeout(categoryHoverTimeoutRef.current)
+    }
+    categoryHoverTimeoutRef.current = setTimeout(() => {
+      setCategoryHovered(false)
+    }, 200)
+  }
+
+  // ==========================================================================
+  // A1: DANH MỤC ĐỘNG TỪ MONGODB — lấy qua API thay cho dữ liệu hardcode.
+  // Admin thêm/sửa/vô hiệu hóa danh mục sẽ tự động phản ánh lên navbar.
+  // ==========================================================================
+  const [dbCategories, setDbCategories] = useState<CategoryItem[]>([])
+  const [categoriesLoading, setCategoriesLoading] = useState(true)
+  const [categoriesError, setCategoriesError] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    const fetchCategories = async () => {
+      try {
+        setCategoriesLoading(true)
+        setCategoriesError(false)
+        // tree=true: backend dựng cây cha/con, chỉ trả danh mục status=active (công khai)
+        const tree = await categoryService.getCategories({ tree: true })
+        if (!cancelled) setDbCategories(tree)
+      } catch {
+        if (!cancelled) setCategoriesError(true)
+      } finally {
+        if (!cancelled) setCategoriesLoading(false)
+      }
+    }
+    fetchCategories()
+    return () => { cancelled = true }
+  }, [])
+
+  const renderCatIcon = (iconStr: string | undefined, fallback = '💻') => {
+    const icon = iconStr || fallback
+    if (typeof icon === 'string' && (icon.startsWith('http://') || icon.startsWith('https://') || icon.startsWith('/uploads'))) {
+      return <img src={icon} alt="icon" className="w-4 h-4 object-contain inline-block" />
+    }
+    return icon
+  }
+
+  // Map danh mục động: value là slug để lọc sản phẩm, icon dùng icon do Admin cấu hình
+  const dynamicCategories: { value: string; label: string; desc: string; icon: React.ReactNode; category?: CategoryItem }[] = [
+    { value: 'all', label: 'TẤT CẢ SẢN PHẨM', desc: 'Xem toàn bộ thiết bị đang có tại GearTech', icon: <Lightning size={18} /> },
+    ...dbCategories.map((cat) => ({
+      value: cat.slug,
+      label: cat.name,
+      desc: cat.description || `Sản phẩm thuộc danh mục ${cat.name}`,
+      icon: <span className="text-base leading-none flex items-center justify-center">{renderCatIcon(cat.icon)}</span>,
+      category: cat
+    })),
+    { value: 'brand', label: 'THƯƠNG HIỆU NỔI TIẾNG', desc: 'Các hãng công nghệ liên minh hàng đầu', icon: <GameController size={18} /> }
+  ]
+
+  // Danh sách danh mục con hiển thị ở khung phải (chỉ tab động có children mới sinh card)
+  const dynamicSubItems = (cat: CategoryItem | undefined) => {
+    if (!cat) return []
+    const children = (cat.children || []).filter((c) => c.status === 'active')
+    if (children.length > 0) {
+      return children.map((child) => ({
+        label: child.name,
+        to: `/ProductPage?category=${child.slug}`,
+        icon: renderCatIcon(child.icon, '📦')
+      }))
+    }
+    // Danh mục lá: hiển thị một card dẫn tới toàn bộ sản phẩm của danh mục
+    return [{
+      label: `Xem tất cả ${cat.name}`,
+      to: `/ProductPage?category=${cat.slug}`,
+      icon: renderCatIcon(cat.icon, '💻')
+    }]
+  }
 
   const [currentUser, setCurrentUser] = useState<any>(() => {
     const userStr = localStorage.getItem('user')
@@ -52,86 +133,34 @@ export default function Header() {
     window.location.href = '/Trang-chu'
   }
 
-  const techBrands = [
-    { name: 'APPLE', desc: 'Hệ sinh thái MacBook & Apple Silicon', logo: '🍎', search: 'Apple' },
-    { name: 'ASUS ROG', desc: 'Laptop Gaming & Linh kiện Republic of Gamers', logo: '👹', search: 'Asus' },
-    { name: 'LOGITECH G', desc: 'Chuột gaming Lightspeed & Phím cơ PRO', logo: '👾', search: 'Logitech' },
-    { name: 'RAZER', desc: 'Chuột, bàn phím & tai nghe rắn ba đầu siêu cấp', logo: '🐍', search: 'Razer' },
-    { name: 'KEYCHRON', desc: 'Bàn phím cơ custom đa kết nối cao cấp', logo: '⌨️', search: 'Keychron' },
-    { name: 'SONY', desc: 'Tai nghe chụp tai chống ồn chủ động ANC đỉnh cao', logo: '🎵', search: 'Sony' },
-    { name: 'INTEL', desc: 'Bộ vi xử lý Core i9 thế hệ mới Raptor Lake', logo: '💎', search: 'Intel' },
-    { name: 'NVIDIA', desc: 'Card đồ họa GeForce RTX dòng 40-series cực khủng', logo: '💚', search: 'RTX' }
-  ]
+  // Danh sách thương hiệu hợp tác hiển thị ở tab "Thương hiệu nổi tiếng"
+  // được lấy THẬT từ MongoDB qua /api/brands (Admin quản lý tại tab Thương hiệu)
+  const [dbBrands, setDbBrands] = useState<BrandItem[]>([])
+  const [brandsLoading, setBrandsLoading] = useState(true)
+  const [brandsError, setBrandsError] = useState(false)
 
+  useEffect(() => {
+    let cancelled = false
+    brandService.getBrands()
+      .then((list) => {
+        if (cancelled) return
+        setDbBrands(Array.isArray(list) ? list.filter(b => b.status === 'active') : [])
+        setBrandsError(false)
+      })
+      .catch(() => { if (!cancelled) setBrandsError(true) })
+      .finally(() => { if (!cancelled) setBrandsLoading(false) })
+    return () => { cancelled = true }
+  }, [])
+
+  // Các liên kết nhanh của tab "TẤT CẢ SẢN PHẨM" (tab đặc biệt, không phải danh mục DB)
   const categorySubItems: Record<string, { label: string; to: string; icon: string; brands?: { name: string; to: string }[] }[]> = {
     all: [
       { label: 'TẤT CẢ THIẾT BỊ', to: '/ProductPage', icon: '⚡' },
       { label: 'SẢN PHẨM KHUYẾN MÃI', to: '/ProductPage?search=giảm', icon: '🏷️' },
       { label: 'ĐÁNH GIÁ 5 SAO', to: '/ProductPage?sortBy=popular', icon: '⭐' },
       { label: 'GIÁ TỐT NHẤT', to: '/ProductPage?sortBy=priceAsc', icon: '💸' }
-    ],
-    laptops: [
-      { label: 'MacBook Apple', to: '/ProductPage?search=MacBook', icon: '🍎', brands: [{ name: 'Pro', to: '/ProductPage?search=MacBook+Pro' }, { name: 'Air', to: '/ProductPage?search=MacBook+Air' }] },
-      { label: 'Laptop ASUS', to: '/ProductPage?search=Asus', icon: '👹', brands: [{ name: 'ROG', to: '/ProductPage?search=ROG' }, { name: 'TUF', to: '/ProductPage?search=TUF' }] },
-      { label: 'Laptop Acer', to: '/ProductPage?search=Acer', icon: '⚡', brands: [{ name: 'Predator', to: '/ProductPage?search=Predator' }, { name: 'Nitro', to: '/ProductPage?search=Nitro' }] },
-      { label: 'Laptop Lenovo', to: '/ProductPage?search=Lenovo', icon: '💻', brands: [{ name: 'Legion', to: '/ProductPage?search=Legion' }, { name: 'IdeaPad', to: '/ProductPage?search=Lenovo' }] }
-    ],
-    desktops: [
-      { label: 'PC Gaming', to: '/ProductPage?search=PC+Gaming', icon: '🎮', brands: [{ name: 'Asus ROG', to: '/ProductPage?search=ROG' }, { name: 'MSI', to: '/ProductPage?search=MSI' }] },
-      { label: 'Workstation', to: '/ProductPage?search=Workstation', icon: '⚙️', brands: [{ name: 'Intel', to: '/ProductPage?search=Intel' }, { name: 'AMD', to: '/ProductPage?search=AMD' }] },
-      { label: 'Mini PC', to: '/ProductPage?search=Mini', icon: '📦', brands: [{ name: 'Intel NUC', to: '/ProductPage?search=Mini' }, { name: 'Mac Mini', to: '/ProductPage?search=Mac+Mini' }] },
-      { label: 'AI Server', to: '/ProductPage?search=Server', icon: '🧠', brands: [{ name: 'NVIDIA', to: '/ProductPage?search=NVIDIA' }, { name: 'RTX 4090', to: '/ProductPage?search=RTX' }] }
-    ],
-    components: [
-      { label: 'CPU BỘ VI XỬ LÝ', to: '/ProductPage?search=CPU', icon: '🧠', brands: [{ name: 'Intel', to: '/ProductPage?search=Intel' }, { name: 'AMD', to: '/ProductPage?search=AMD' }] },
-      { label: 'VGA CARD MÀN HÌNH', to: '/ProductPage?search=GeForce', icon: '🔌', brands: [{ name: 'NVIDIA', to: '/ProductPage?search=RTX' }, { name: 'AMD Radeon', to: '/ProductPage?search=Radeon' }] },
-      { label: 'RAM BỘ NHỚ', to: '/ProductPage?search=RAM', icon: '⚡', brands: [{ name: 'Corsair', to: '/ProductPage?search=Corsair' }, { name: 'Kingston', to: '/ProductPage?search=Kingston' }] },
-      { label: 'Ổ CỨNG SSD', to: '/ProductPage?search=SSD', icon: '💾', brands: [{ name: 'Samsung', to: '/ProductPage?search=SSD' }, { name: 'WD Blue', to: '/ProductPage?search=SSD' }] }
-    ],
-    monitors: [
-      { label: 'Màn hình đồ họa', to: '/ProductPage?search=ProArt', icon: '🎨', brands: [{ name: 'ASUS', to: '/ProductPage?search=ASUS' }, { name: 'Dell', to: '/ProductPage?search=Dell' }] },
-      { label: 'Màn hình Gaming', to: '/ProductPage?search=Hz', icon: '📺', brands: [{ name: '240Hz', to: '/ProductPage?search=Hz' }, { name: 'OLED', to: '/ProductPage?search=Hz' }] },
-      { label: 'Màn hình UltraWide', to: '/ProductPage?search=ASUS', icon: '🖥️', brands: [{ name: '21:9', to: '/ProductPage?search=ASUS' }, { name: 'Curved', to: '/ProductPage?search=ASUS' }] },
-      { label: 'Màn hình 4K', to: '/ProductPage?search=PA279CV', icon: '🌟', brands: [{ name: 'ProArt', to: '/ProductPage?search=PA279CV' }, { name: 'IPS', to: '/ProductPage?search=PA279CV' }] }
-    ],
-    peripherals: [
-      { label: 'BÀN PHÍM CƠ', to: '/ProductPage?search=Keychron', icon: '⌨️', brands: [{ name: 'Keychron', to: '/ProductPage?search=Keychron' }, { name: 'Corsair', to: '/ProductPage?search=Corsair' }] },
-      { label: 'CHUỘT GAMING', to: '/ProductPage?search=Superlight', icon: '🖱️', brands: [{ name: 'Logitech', to: '/ProductPage?search=Logitech' }, { name: 'Razer', to: '/ProductPage?search=Razer' }] },
-      { label: 'Keycaps & Custom', to: '/ProductPage?search=Custom', icon: '🔌', brands: [{ name: 'Switches', to: '/ProductPage?search=Custom' }, { name: 'PBT', to: '/ProductPage?search=Custom' }] },
-      { label: 'Bàn di chuột', to: '/ProductPage?search=pad', icon: '👾', brands: [{ name: 'Corsair', to: '/ProductPage?search=pad' }, { name: 'Razer Pad', to: '/ProductPage?search=pad' }] }
-    ],
-    audio: [
-      { label: 'Tai nghe chụp tai', to: '/ProductPage?search=Sony', icon: '🎧', brands: [{ name: 'Sony WH', to: '/ProductPage?search=Sony' }, { name: 'Sennheiser', to: '/ProductPage?search=Sennheiser' }] },
-      { label: 'Tai nghe chống ồn', to: '/ProductPage?search=ANC', icon: '🔇', brands: [{ name: 'ANC', to: '/ProductPage?search=ANC' }, { name: 'TWS', to: '/ProductPage?search=ANC' }] },
-      { label: 'Tai nghe gaming', to: '/ProductPage?search=gaming+headset', icon: '🎵', brands: [{ name: 'ROG', to: '/ProductPage?search=ROG' }, { name: 'Razer Kraken', to: '/ProductPage?search=Razer' }] },
-      { label: 'Hệ thống âm thanh', to: '/ProductPage?search=Audio', icon: '🎙️', brands: [{ name: 'Sony Audio', to: '/ProductPage?search=Sony' }, { name: 'Bose', to: '/ProductPage?search=Bose' }] }
-    ],
-    'smart-devices': [
-      { label: 'Apple Watch', to: '/ProductPage?search=Apple+Watch', icon: '⌚', brands: [{ name: 'Ultra 2', to: '/ProductPage?search=Ultra' }, { name: 'Series 9', to: '/ProductPage?search=Apple' }] },
-      { label: 'Đồng hồ thể thao', to: '/ProductPage?search=Ultra', icon: '🏔️', brands: [{ name: 'Titanium', to: '/ProductPage?search=Ultra' }, { name: 'Garmin', to: '/ProductPage?search=Garmin' }] },
-      { label: 'Thiết bị định vị', to: '/ProductPage?search=GPS', icon: '🌊', brands: [{ name: 'GPS', to: '/ProductPage?search=GPS' }, { name: 'Cellular', to: '/ProductPage?search=Cellular' }] },
-      { label: 'Thiết bị Smarthome', to: '/ProductPage?search=IoT', icon: '🔋', brands: [{ name: 'IoT', to: '/ProductPage?search=IoT' }, { name: 'Xiaomi', to: '/ProductPage?search=Xiaomi' }] }
-    ],
-    accessories: [
-      { label: 'Cáp sạc đa năng', to: '/ProductPage?search=HyperDrive', icon: '🔌', brands: [{ name: 'HyperDrive', to: '/ProductPage?search=HyperDrive' }, { name: 'Anker', to: '/ProductPage?search=Anker' }] },
-      { label: 'Hub chuyển đổi', to: '/ProductPage?search=Hub', icon: '📺', brands: [{ name: '9-in-1', to: '/ProductPage?search=Hub' }, { name: 'Type-C', to: '/ProductPage?search=Hub' }] },
-      { label: 'Củ sạc nhanh PD', to: '/ProductPage?search=Power', icon: '⚡', brands: [{ name: 'PD 100W', to: '/ProductPage?search=Power' }, { name: 'GaN', to: '/ProductPage?search=Power' }] },
-      { label: 'Phụ kiện nhôm', to: '/ProductPage?search=USB-C', icon: '📦', brands: [{ name: 'Hyper', to: '/ProductPage?search=USB-C' }, { name: 'Baseus', to: '/ProductPage?search=Baseus' }] }
     ]
   }
-
-  const categoriesList = [
-    { value: 'all', label: 'TẤT CẢ SẢN PHẨM', desc: 'Xem toàn bộ thiết bị đang có tại GearTech', icon: <Lightning size={18} /> },
-    { value: 'laptops', label: 'LAPTOP & MACBOOK', desc: 'MacBook Pro, Air & Laptop Gaming cao cấp', icon: <Laptop size={18} /> },
-    { value: 'desktops', label: 'PC & WORKSTATION', desc: 'PC Gaming chuyên nghiệp & máy trạm đồ họa', icon: <Desktop size={18} /> },
-    { value: 'brand', label: 'THƯƠNG HIỆU NỔI TIẾNG', desc: 'Các hãng công nghệ liên minh hàng đầu', icon: <GameController size={18} /> },
-    { value: 'components', label: 'LINH KIỆN MÁY TÍNH', desc: 'CPU, VGA RTX, RAM & ổ cứng SSD siêu tốc', icon: <Cpu size={18} /> },
-    { value: 'monitors', label: 'MÀN HÌNH MÁY TÍNH', desc: 'Màn hình đồ họa 4K & màn gaming 240Hz OLED', icon: <Monitor size={18} /> },
-    { value: 'peripherals', label: 'BÀN PHÍM & CHUỘT', desc: 'Bàn phím cơ Custom & chuột gaming siêu nhẹ', icon: <Keyboard size={18} /> },
-    { value: 'audio', label: 'TAI NGHE & LOA', desc: 'Tai nghe chụp tai ANC & loa thanh âm thanh vòm', icon: <Headphones size={18} /> },
-    { value: 'smart-devices', label: 'THIẾT BỊ THÔNG MINH', desc: 'Apple Watch, Smartwatch & Smarthome IoT', icon: <Watch size={18} /> },
-    { value: 'accessories', label: 'PHỤ KIỆN CÔNG NGHỆ', desc: 'Cáp chuyển đổi Hub USB-C, củ sạc nhanh PD', icon: <Plug size={18} /> }
-  ]
 
   const searchRef = useRef<HTMLDivElement>(null)
 
@@ -278,11 +307,11 @@ export default function Header() {
                 Trang chủ
               </Link>
               
-              {/* Dropdown-enabled Categories Link */}
+              {/* Dropdown-enabled Categories Link (D4 Fixed: Hover bridge & debounce) */}
               <div 
                 className="relative py-2"
-                onMouseEnter={() => setCategoryHovered(true)}
-                onMouseLeave={() => setCategoryHovered(false)}
+                onMouseEnter={handleCategoryMouseEnter}
+                onMouseLeave={handleCategoryMouseLeave}
               >
                 <Link to="/ProductPage" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-1">
                   Danh Mục <CaretDown size={10} className={`transition-transform duration-200 ${categoryHovered ? 'rotate-180 text-[#ff4655]' : ''}`} />
@@ -295,13 +324,41 @@ export default function Header() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.15 }}
-                      className="fixed top-16 left-0 w-full bg-white/98 dark:bg-zinc-950/98 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800 shadow-2xl z-40 py-8 px-6 lg:px-12"
+                      onMouseEnter={handleCategoryMouseEnter}
+                      onMouseLeave={handleCategoryMouseLeave}
+                      className="fixed top-16 left-0 w-full bg-white/98 dark:bg-zinc-950/98 backdrop-blur-xl border-b border-zinc-200 dark:border-zinc-800 shadow-2xl z-40 py-8 px-6 lg:px-12 before:content-[''] before:absolute before:-top-6 before:left-0 before:w-full before:h-6 before:pointer-events-auto"
                     >
                       <div className="max-w-7xl mx-auto grid grid-cols-12 gap-8">
                         {/* Left Pane: Vertical Categories List (3 cols) */}
                         <div className="col-span-3 border-r border-zinc-200 dark:border-zinc-800 pr-6 space-y-1">
                           <span className="text-[8px] font-mono text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.25em] pl-2 block mb-2">// CATEGORIES</span>
-                          {categoriesList.map((cat) => (
+                          {categoriesLoading && (
+                            <div className="px-3.5 py-3 space-y-2.5">
+                              {[0, 1, 2, 3, 4].map((i) => (
+                                <div key={i} className="h-7 rounded-lg bg-zinc-100 dark:bg-zinc-900 animate-pulse" />
+                              ))}
+                              <span className="block text-[9px] text-zinc-400 font-mono pl-1">ĐANG TẢI DANH MỤC...</span>
+                            </div>
+                          )}
+                          {!categoriesLoading && categoriesError && (
+                            <div className="px-3.5 py-3 text-[9px] font-bold text-red-500 uppercase tracking-wider">
+                              ⚠️ Không tải được danh mục.
+                              <button
+                                onClick={() => {
+                                  setCategoriesError(false)
+                                  setCategoriesLoading(true)
+                                  categoryService.getCategories({ tree: true })
+                                    .then((tree) => { setDbCategories(tree); setCategoriesError(false) })
+                                    .catch(() => setCategoriesError(true))
+                                    .finally(() => setCategoriesLoading(false))
+                                }}
+                                className="block mt-1.5 underline hover:text-[#ff4655] cursor-pointer"
+                              >
+                                Thử lại
+                              </button>
+                            </div>
+                          )}
+                          {!categoriesLoading && !categoriesError && dynamicCategories.map((cat) => (
                             <button
                               key={cat.value}
                               onMouseEnter={() => setActiveCategoryTab(cat.value)}
@@ -317,44 +374,68 @@ export default function Header() {
                                   : 'border-l-transparent text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-white'
                               }`}
                             >
-                              <span className={activeCategoryTab === cat.value ? 'text-[#ff4655]' : 'text-zinc-400 dark:text-zinc-500'}>
+                              <span className={`flex items-center ${activeCategoryTab === cat.value ? 'text-[#ff4655]' : 'text-zinc-400 dark:text-zinc-500'}`}>
                                 {cat.icon}
                               </span>
                               {cat.label}
                             </button>
                           ))}
+                          {!categoriesLoading && !categoriesError && dynamicCategories.length <= 2 && (
+                            <span className="block px-3.5 py-2 text-[9px] text-zinc-400 font-mono italic">
+                              // Chưa có danh mục nào được cấu hình
+                            </span>
+                          )}
                         </div>
 
                         {/* Right Pane: Dynamic Feature Area (9 cols) */}
                         <div className="col-span-9 pl-2 space-y-4">
                           
-                          {/* 1. Dynamic Brands Grid when Tab is "brand" */}
+                          {/* 1. Dynamic Brands Grid when Tab is "brand" — dữ liệu thật từ MongoDB */}
                           {activeCategoryTab === 'brand' && (
                             <div className="space-y-4">
                               <div className="flex items-center gap-2 pb-2 border-b border-zinc-100 dark:border-zinc-900">
                                 <span className="w-1.5 h-3.5 bg-[#ff4655]"></span>
                                 <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">THƯƠNG HIỆU HỢP TÁC HÀNG ĐẦU</span>
                               </div>
-                              
-                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                {techBrands.map((brand) => (
-                                  <Link
-                                    key={brand.name}
-                                    to={`/ProductPage?search=${encodeURIComponent(brand.search)}`}
-                                    onClick={() => setCategoryHovered(false)}
-                                    className="group p-4 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/40 dark:hover:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 rounded-xl transition-all duration-200 flex flex-col justify-between min-h-[90px] relative overflow-hidden"
-                                  >
-                                    <div className="absolute right-2 bottom-0 text-5xl opacity-5 group-hover:scale-105 transition-transform select-none">{brand.logo}</div>
-                                    <div className="flex items-center gap-2 z-10">
-                                      <span className="w-7 h-7 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-base flex items-center justify-center shrink-0 shadow-sm">
-                                        {brand.logo}
-                                      </span>
-                                      <h4 className="text-[10px] font-black text-zinc-900 dark:text-white uppercase tracking-wider group-hover:text-[#ff4655] transition-colors">{brand.name}</h4>
-                                    </div>
-                                    <p className="text-[9px] text-zinc-500 dark:text-zinc-400 font-medium leading-normal mt-2 z-10">{brand.desc}</p>
-                                  </Link>
-                                ))}
-                              </div>
+
+                              {brandsLoading && (
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                  {[0, 1, 2, 3].map((i) => (
+                                    <div key={i} className="h-[90px] rounded-xl bg-zinc-100 dark:bg-zinc-900 animate-pulse" />
+                                  ))}
+                                </div>
+                              )}
+                              {!brandsLoading && brandsError && (
+                                <div className="p-4 text-[10px] font-bold text-red-500 uppercase tracking-wider border border-dashed border-red-500/30 rounded-xl">
+                                  ⚠️ Không tải được danh sách thương hiệu. Vui lòng thử lại sau.
+                                </div>
+                              )}
+                              {!brandsLoading && !brandsError && dbBrands.length === 0 && (
+                                <div className="p-4 text-[10px] text-zinc-400 font-mono italic border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl">
+                                  // Chưa có thương hiệu nào được cấu hình trên hệ thống
+                                </div>
+                              )}
+                              {!brandsLoading && !brandsError && dbBrands.length > 0 && (
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                  {dbBrands.map((brand) => (
+                                    <Link
+                                      key={brand._id || brand.id}
+                                      to={`/ProductPage?search=${encodeURIComponent(brand.name)}`}
+                                      onClick={() => setCategoryHovered(false)}
+                                      className="group p-4 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/40 dark:hover:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 rounded-xl transition-all duration-200 flex flex-col justify-between min-h-[90px] relative overflow-hidden"
+                                    >
+                                      <div className="absolute right-2 bottom-0 text-5xl opacity-5 group-hover:scale-105 transition-transform select-none">{brand.logo || '🏷️'}</div>
+                                      <div className="flex items-center gap-2 z-10">
+                                        <span className="w-7 h-7 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-base flex items-center justify-center shrink-0 shadow-sm">
+                                          {brand.logo || '🏷️'}
+                                        </span>
+                                        <h4 className="text-[10px] font-black text-zinc-900 dark:text-white uppercase tracking-wider group-hover:text-[#ff4655] transition-colors">{brand.name}</h4>
+                                      </div>
+                                      <p className="text-[9px] text-zinc-500 dark:text-zinc-400 font-medium leading-normal mt-2 z-10">{brand.description || `Sản phẩm chính hãng ${brand.name}`}</p>
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           )}
 
@@ -364,49 +445,66 @@ export default function Header() {
                               <div className="flex items-center gap-2 pb-2 border-b border-zinc-100 dark:border-zinc-900">
                                 <span className="w-1.5 h-3.5 bg-[#ff4655]"></span>
                                 <span className="text-[10px] font-black uppercase tracking-widest text-zinc-900 dark:text-white">
-                                  DANH MỤC THIẾT BỊ // {categoriesList.find(c => c.value === activeCategoryTab)?.label}
+                                  DANH MỤC THIẾT BỊ // {dynamicCategories.find(c => c.value === activeCategoryTab)?.label || ''}
                                 </span>
                               </div>
-                              
+
                               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                {categorySubItems[activeCategoryTab]?.map((sub) => (
-                                  <Link
-                                    key={sub.label}
-                                    to={sub.to}
-                                    onClick={() => setCategoryHovered(false)}
-                                    className="group p-4 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/40 dark:hover:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 rounded-xl transition-all duration-200 flex flex-col justify-between min-h-[90px] relative overflow-hidden text-left"
-                                  >
-                                    <div className="absolute right-2 bottom-0 text-5xl opacity-5 group-hover:scale-105 transition-transform select-none">{sub.icon}</div>
-                                    <div className="flex items-center gap-2 z-10">
-                                      <span className="w-7 h-7 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-base flex items-center justify-center shrink-0 shadow-sm">
-                                        {sub.icon}
+                                {(() => {
+                                  // Tab động từ MongoDB: hiển thị danh mục con đúng cấp bậc
+                                  const activeCat = dynamicCategories.find(c => c.value === activeCategoryTab)?.category
+                                  const dynamicItems = activeCat ? dynamicSubItems(activeCat) : []
+                                  const items = dynamicItems.length > 0
+                                    ? dynamicItems.map((s) => ({ label: s.label, to: s.to, icon: s.icon, brands: undefined as undefined | { name: string; to: string }[] }))
+                                    : (categorySubItems[activeCategoryTab] || []).map((s) => ({ ...s }))
+
+                                  if (items.length === 0) {
+                                    return (
+                                      <span className="col-span-4 text-[10px] text-zinc-400 font-mono italic py-4">
+                                        // Chưa có danh mục con. Vui lòng chọn danh mục khác.
                                       </span>
-                                      <h4 className="text-[10px] font-black text-zinc-900 dark:text-white uppercase tracking-wider group-hover:text-[#ff4655] transition-colors">{sub.label}</h4>
-                                    </div>
-                                    {sub.brands && sub.brands.length > 0 ? (
-                                      <div className="flex flex-wrap gap-1 mt-3.5 z-10">
-                                        {sub.brands.map((br) => (
-                                          <button
-                                            key={br.name}
-                                            onClick={(e) => {
-                                              e.preventDefault()
-                                              e.stopPropagation()
-                                              setCategoryHovered(false)
-                                              navigate(br.to)
-                                            }}
-                                            className="px-2 py-0.5 rounded bg-zinc-200 hover:bg-[#ff4655] hover:text-white dark:bg-zinc-800 dark:hover:bg-[#ff4655] dark:hover:text-white text-zinc-700 dark:text-zinc-300 text-[9px] font-black uppercase tracking-wider transition-all cursor-pointer"
-                                          >
-                                            {br.name}
-                                          </button>
-                                        ))}
+                                    )
+                                  }
+
+                                  return items.map((sub) => (
+                                    <Link
+                                      key={sub.label}
+                                      to={sub.to}
+                                      onClick={() => setCategoryHovered(false)}
+                                      className="group p-4 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-900/40 dark:hover:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 rounded-xl transition-all duration-200 flex flex-col justify-between min-h-[90px] relative overflow-hidden text-left"
+                                    >
+                                      <div className="absolute right-2 bottom-0 text-5xl opacity-5 group-hover:scale-105 transition-transform select-none">{sub.icon}</div>
+                                      <div className="flex items-center gap-2 z-10">
+                                        <span className="w-7 h-7 rounded bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-base flex items-center justify-center shrink-0 shadow-sm">
+                                          {sub.icon}
+                                        </span>
+                                        <h4 className="text-[10px] font-black text-zinc-900 dark:text-white uppercase tracking-wider group-hover:text-[#ff4655] transition-colors">{sub.label}</h4>
                                       </div>
-                                    ) : (
-                                      <span className="text-[9px] font-black text-[#ff4655] mt-3 group-hover:underline flex items-center gap-1 z-10 uppercase tracking-widest">
-                                        Khám phá &raquo;
-                                      </span>
-                                    )}
-                                  </Link>
-                                ))}
+                                      {sub.brands && sub.brands.length > 0 ? (
+                                        <div className="flex flex-wrap gap-1 mt-3.5 z-10">
+                                          {sub.brands.map((br) => (
+                                            <button
+                                              key={br.name}
+                                              onClick={(e) => {
+                                                e.preventDefault()
+                                                e.stopPropagation()
+                                                setCategoryHovered(false)
+                                                navigate(br.to)
+                                              }}
+                                              className="px-2 py-0.5 rounded bg-zinc-200 hover:bg-[#ff4655] hover:text-white dark:bg-zinc-800 dark:hover:bg-[#ff4655] dark:hover:text-white text-zinc-700 dark:text-zinc-300 text-[9px] font-black uppercase tracking-wider transition-all cursor-pointer"
+                                            >
+                                              {br.name}
+                                            </button>
+                                          ))}
+                                        </div>
+                                      ) : (
+                                        <span className="text-[9px] font-black text-[#ff4655] mt-3 group-hover:underline flex items-center gap-1 z-10 uppercase tracking-widest">
+                                          Khám phá &raquo;
+                                        </span>
+                                      )}
+                                    </Link>
+                                  ))
+                                })()}
                               </div>
                             </div>
                           )}
@@ -639,9 +737,89 @@ export default function Header() {
               <Link to="/Trang-chu" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
                 Trang chủ
               </Link>
-              <Link to="/ProductPage" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
-                Danh Mục
-              </Link>
+
+              {/* Mobile Category Accordion (A2) */}
+              <div className="rounded-lg overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setMobileCategoryOpen(prev => !prev)}
+                  className="w-full px-3.5 py-2.5 text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center justify-between uppercase tracking-widest cursor-pointer"
+                >
+                  <span className="flex items-center gap-2">
+                    <List size={14} className="text-[#ff4655]" />
+                    Danh Mục Sản Phẩm
+                  </span>
+                  <CaretDown size={12} className={`transition-transform duration-200 ${mobileCategoryOpen ? 'rotate-180 text-[#ff4655]' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {mobileCategoryOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="pl-4 pr-2 py-2 space-y-1 bg-zinc-50 dark:bg-zinc-900/50 rounded-b-lg border-l-2 border-[#ff4655]"
+                    >
+                      <Link
+                        to="/ProductPage"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block px-3 py-1.5 text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-[#ff4655]"
+                      >
+                        ⚡ Tất cả sản phẩm
+                      </Link>
+
+                      {dbCategories.map((parent) => {
+                        const hasChildren = parent.children && parent.children.length > 0
+                        const isExpanded = mobileExpandedCat === parent._id
+
+                        return (
+                          <div key={parent._id} className="space-y-1">
+                            <div className="flex items-center justify-between">
+                              <Link
+                                to={`/ProductPage?category=${parent.slug}`}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="px-3 py-1.5 text-xs font-bold text-zinc-800 dark:text-zinc-200 hover:text-[#ff4655] flex items-center gap-1.5"
+                              >
+                                <span>{parent.icon || '📦'}</span>
+                                <span>{parent.name}</span>
+                              </Link>
+                              {hasChildren && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    setMobileExpandedCat(isExpanded ? null : parent._id)
+                                  }}
+                                  className="p-1.5 text-zinc-400 hover:text-[#ff4655] cursor-pointer"
+                                >
+                                  <CaretDown size={11} className={`transition-transform ${isExpanded ? 'rotate-180 text-[#ff4655]' : ''}`} />
+                                </button>
+                              )}
+                            </div>
+
+                            {/* Subcategories list */}
+                            {hasChildren && isExpanded && (
+                              <div className="pl-6 space-y-1 border-l border-zinc-200 dark:border-zinc-800 ml-3">
+                                {parent.children!.map((child) => (
+                                  <Link
+                                    key={child._id}
+                                    to={`/ProductPage?category=${child.slug}`}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="block px-3 py-1 text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-[#ff4655]"
+                                  >
+                                    {child.icon || '•'} {child.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               <Link to="/tintuc" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
                 Tin tức
               </Link>

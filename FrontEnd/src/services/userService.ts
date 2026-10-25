@@ -9,6 +9,9 @@ export interface UserItem {
   avatar?: string
   role: 'user' | 'shop' | 'admin'
   status: 'active' | 'locked'
+  lockedAt?: string
+  lockExpiresAt?: string
+  lockReason?: string
   memberRank?: string
   points?: number
   shopId?: {
@@ -43,9 +46,22 @@ export const userService = {
     return res.data
   },
 
-  // Khóa hoặc mở khóa tài khoản người dùng
-  updateUserStatus: async (userId: string, status: 'active' | 'locked'): Promise<{ message: string; user: UserItem }> => {
-    const res = await apiClient.put<{ message: string; user: UserItem }>(`/auth/users/${userId}/status`, { status })
+  // D2: Admin tạo tài khoản mới (khi người dùng không thể tự đăng ký)
+  createUser: async (payload: { name: string; email: string; phone?: string; password: string; role?: string }): Promise<{ message: string; user: UserItem }> => {
+    const res = await apiClient.post<{ message: string; user: UserItem }>('/auth/users', payload)
+    return res.data
+  },
+
+  // Khóa hoặc mở khóa tài khoản người dùng (hỗ trợ khóa có thời hạn D1)
+  updateUserStatus: async (
+    userId: string, 
+    status: 'active' | 'locked',
+    lockOptions?: { lockDurationHours?: number; lockExpiresAt?: string; lockReason?: string }
+  ): Promise<{ message: string; user: UserItem }> => {
+    const res = await apiClient.put<{ message: string; user: UserItem }>(`/auth/users/${userId}/status`, { 
+      status,
+      ...lockOptions
+    })
     return res.data
   },
 

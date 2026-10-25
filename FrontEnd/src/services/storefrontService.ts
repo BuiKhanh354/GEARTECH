@@ -11,7 +11,9 @@ export interface StorefrontConfig {
   template: 'modern-tech' | 'minimal' | 'gaming'
   primaryColor: string
   secondaryColor: string
+  textColor?: string
   bannerUrl: string
+  logoUrl?: string
   introText: string
   viewMode: 'grid' | 'list'
   columns: 3 | 4
@@ -81,7 +83,23 @@ export const storefrontService = {
     return res.data
   },
 
-  // 5. Khách hàng xem giao diện công khai của gian hàng
+  // 4b. C1: Chủ shop hủy thay đổi (khôi phục từ bản đã xuất bản gần nhất)
+  discardDraft: async (): Promise<{ message: string; storefrontDraft: StorefrontConfig }> => {
+    const res = await apiClient.post<{ message: string; storefrontDraft: StorefrontConfig }>('/shops/me/storefront/discard')
+    return res.data
+  },
+
+  // 5. Upload ảnh giao diện cửa hàng (banner / logo) - trả về URL tĩnh lưu trữ tại backend
+  uploadShopImage: async (file: File): Promise<{ message: string; url: string }> => {
+    const formData = new FormData()
+    formData.append('image', file)
+    const res = await apiClient.post<{ message: string; url: string }>('/upload/shop-images', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    return res.data
+  },
+
+  // 6. Khách hàng xem giao diện công khai của gian hàng
   getPublicStorefront: async (shopId: string): Promise<PublicStorefrontResponse> => {
     const res = await apiClient.get<PublicStorefrontResponse>(`/shops/${shopId}/storefront`)
     return res.data

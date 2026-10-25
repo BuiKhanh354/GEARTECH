@@ -21,6 +21,10 @@ const CartSchema = new mongoose.Schema({
     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
     quantity: { type: Number, required: true, min: [1, 'Số lượng tối thiểu là 1'], default: 1 },
     price: { type: Number, required: true, min: 0 },
+    originalPrice: { type: Number, min: 0 }, // Giá niêm yết/gốc tại thời điểm thêm
+    priceLockedAt: { type: Date, default: Date.now }, // Thời điểm chốt giá
+    priceLockExpiresAt: { type: Date }, // Thời điểm hết hạn giữ giá khuyến mãi (mặc định 48h)
+    promotionNote: { type: String, default: '' }, // Ghi chú chương trình ưu đãi
     selected: { type: Boolean, default: true },
     variant: { type: String, default: 'Tiêu chuẩn / Chính hãng' }
   }],

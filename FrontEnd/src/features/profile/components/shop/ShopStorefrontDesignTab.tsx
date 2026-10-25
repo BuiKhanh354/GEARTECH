@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react'
-import { 
-  Palette, 
-  FloppyDisk, 
-  RocketLaunch, 
-  ArrowCounterClockwise, 
-  Eye, 
-  Desktop, 
-  DeviceMobile, 
-  CheckCircle, 
-  ArrowUp, 
-  ArrowDown, 
-  GridFour, 
-  ListBullets, 
+import {
+  Palette,
+  FloppyDisk,
+  RocketLaunch,
+  ArrowCounterClockwise,
+  Eye,
+  Desktop,
+  DeviceMobile,
+  CheckCircle,
+  ArrowUp,
+  ArrowDown,
+  GridFour,
+  ListBullets,
   Sparkle,
   ShieldCheck,
   Star,
   Package,
-  Storefront
+  Storefront,
+  UploadSimple
 } from '@phosphor-icons/react'
 import { storefrontService, type StorefrontConfig } from '../../../../services/storefrontService'
 import { formatPrice } from '../../../../utils/format'
@@ -108,6 +109,46 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
       return () => clearTimeout(timer)
     }
   }, [statusMsg])
+
+  // ==========================================================================
+  // C1: UPLOAD ẢNH TỪ THIẾT BỊ (banner / logo)
+  // - Kiểm tra loại file (JPEG/PNG/GIF/WEBP) và dung lượng (<= 5MB) phía client
+  // - Gửi lên backend lưu vào thư mục uploads/shops, nhận lại URL tĩnh ổn định
+  //   (không phải blob: tạm thời), gán vào cấu hình rồi lưu qua API storefront
+  // ==========================================================================
+  const [uploadingTarget, setUploadingTarget] = useState<'banner' | 'logo' | null>(null)
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: 'banner' | 'logo') => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // cho phép chọn lại cùng một file
+    if (!file) return
+
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      setStatusMsg({ type: 'error', text: 'Chỉ hỗ trợ ảnh JPEG, PNG, GIF hoặc WEBP.' })
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setStatusMsg({ type: 'error', text: 'Dung lượng ảnh tối đa 5MB.' })
+      return
+    }
+
+    try {
+      setUploadingTarget(target)
+      setStatusMsg(null)
+      const res = await storefrontService.uploadShopImage(file)
+      if (target === 'banner') {
+        setConfig((prev) => ({ ...prev, bannerUrl: res.url }))
+      } else {
+        setConfig((prev) => ({ ...prev, logoUrl: res.url }))
+      }
+      setStatusMsg({ type: 'success', text: `Tải lên ${target === 'banner' ? 'ảnh banner' : 'logo'} thành công! Nhớ bấm "Lưu nháp" để giữ thay đổi.` })
+    } catch (err: any) {
+      setStatusMsg({ type: 'error', text: err.response?.data?.error || 'Lỗi tải lên ảnh. Vui lòng thử lại.' })
+    } finally {
+      setUploadingTarget(null)
+    }
+  }
 
   // Save Draft handler
   const handleSaveDraft = async () => {
@@ -368,6 +409,62 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
                 className="w-full px-3 py-2 text-xs rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
                 placeholder="https://example.com/banner.jpg"
               />
+
+              {/* C1: Upload banner từ máy tính với xem trước */}
+              <div className="flex items-center gap-3 pt-1">
+                <label
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded cursor-pointer transition-all ${
+                    uploadingTarget === 'banner'
+                      ? 'bg-zinc-300 dark:bg-zinc-700 text-zinc-500 pointer-events-none'
+                      : 'bg-[#ff4655] hover:bg-[#e03d4b] text-white shadow-sm'
+                  }`}
+                >
+                  <UploadSimple size={13} weight="bold" />
+                  {uploadingTarget === 'banner' ? 'Đang tải lên...' : 'Chọn ảnh từ máy'}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                    className="hidden"
+                    onChange={(e) => handleImageUpload(e, 'banner')}
+                  />
+                </label>
+                {config.bannerUrl && (
+                  <img
+                    src={config.bannerUrl}
+                    alt="Xem trước banner"
+                    className="h-10 w-24 object-cover rounded border border-zinc-200 dark:border-zinc-800"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+                  />
+                )}
+              </div>
+
+              {/* C1: Upload logo từ máy tính */}
+              <div className="flex items-center gap-3 pt-1">
+                <label
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-wider rounded cursor-pointer transition-all ${
+                    uploadingTarget === 'logo'
+                      ? 'bg-zinc-300 dark:bg-zinc-700 text-zinc-500 pointer-events-none'
+                      : 'bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655]/40 text-zinc-700 dark:text-zinc-300'
+                  }`}
+                >
+                  <UploadSimple size={13} weight="bold" />
+                  {uploadingTarget === 'logo' ? 'Đang tải lên...' : 'Tải logo từ máy'}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+                    className="hidden"
+                    onChange={(e) => handleImageUpload(e, 'logo')}
+                  />
+                </label>
+                {config.logoUrl && (
+                  <img
+                    src={config.logoUrl}
+                    alt="Xem trước logo"
+                    className="h-10 w-10 object-contain rounded border border-zinc-200 dark:border-zinc-800 bg-white"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+                  />
+                )}
+              </div>
 
               {/* Banner Presets */}
               <div className="space-y-1 pt-1">

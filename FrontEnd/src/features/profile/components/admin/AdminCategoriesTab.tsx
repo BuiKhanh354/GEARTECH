@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { 
   FolderSimple, 
@@ -13,9 +13,11 @@ import {
   WarningCircle, 
   TreeStructure, 
   X,
-  Package
+  Package,
+  UploadSimple
 } from '@phosphor-icons/react'
 import { categoryService, type CategoryItem } from '../../../../services/categoryService'
+import apiClient from '../../../../api/client'
 
 export default function AdminCategoriesTab() {
   const [categories, setCategories] = useState<CategoryItem[]>([])
@@ -24,6 +26,11 @@ export default function AdminCategoriesTab() {
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [alertInfo, setAlertInfo] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null)
+
+  // Icon upload state (D3)
+  const iconFileInputRef = useRef<HTMLInputElement>(null)
+  const [iconUploading, setIconUploading] = useState<boolean>(false)
+  const [iconUploadError, setIconUploadError] = useState<string | null>(null)
 
   // Modal State for Add / Edit
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -55,6 +62,44 @@ export default function AdminCategoriesTab() {
       .replace(/[^a-z0-9\s-]/g, '')
       .trim()
       .replace(/\s+/g, '-')
+  }
+
+  // D3: Tải ảnh icon từ máy tính
+  const handleIconUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setIconUploadError(null)
+
+    // Giới hạn dung lượng tối đa 2MB
+    if (file.size > 2 * 1024 * 1024) {
+      setIconUploadError('Dung lượng file icon không được vượt quá 2MB.')
+      return
+    }
+
+    // Kiểm tra định dạng (PNG, JPG, SVG, WEBP)
+    const allowed = ['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']
+    if (!allowed.includes(file.type) && !file.name.toLowerCase().endsWith('.svg')) {
+      setIconUploadError('Chỉ hỗ trợ file icon PNG, SVG, WEBP hoặc JPG.')
+      return
+    }
+
+    const uploadData = new FormData()
+    uploadData.append('icon', file)
+
+    try {
+      setIconUploading(true)
+      const res = await apiClient.post<{ message: string; url: string }>('/upload/category-icon', uploadData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      if (res.data?.url) {
+        setFormData(prev => ({ ...prev, icon: res.data.url }))
+      }
+    } catch (err: any) {
+      setIconUploadError(err.response?.data?.error || 'Lỗi khi tải ảnh icon lên.')
+    } finally {
+      setIconUploading(false)
+      if (iconFileInputRef.current) iconFileInputRef.current.value = ''
+    }
   }
 
   // Load danh sách danh mục (gọi endpoint admin)
@@ -410,8 +455,12 @@ export default function AdminCategoriesTab() {
                     {/* Name & Icon */}
                     <td className="py-3.5 px-4">
                       <div className="flex items-center gap-2.5">
-                        <span className="w-8 h-8 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-sm">
-                          {cat.icon || '💻'}
+                        <span className="w-8 h-8 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-sm overflow-hidden shrink-0">
+                          {cat.icon && (cat.icon.startsWith('http') || cat.icon.startsWith('/uploads')) ? (
+                            <img src={cat.icon} alt={cat.name} className="w-5 h-5 object-contain" />
+                          ) : (
+                            cat.icon || '💻'
+                          )}
                         </span>
                         <div>
                           <div className="flex items-center gap-2">
@@ -585,33 +634,103 @@ export default function AdminCategoriesTab() {
                   />
                 </div>
 
-                {/* Slug & Icon */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="sm:col-span-2">
-                    <label className="block text-[10px] font-mono uppercase text-zinc-500 mb-1">
-                      Đường dẫn định danh (Slug) <span className="text-red-500">*</span>
+                {/* Slug */}
+                <div>
+                  <label className="block text-[10px] font-mono uppercase text-zinc-500 mb-1">
+                    Đường dẫn định danh (Slug) <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.slug}
+                    onChange={e => setFormData(prev => ({ ...prev, slug: e.target.value.toLowerCase().trim() }))}
+                    placeholder="vd: laptops, ban-phim-co"
+                    className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-mono text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                  />
+                </div>
+
+                {/* Biểu tượng (Icon / Tải từ máy tính - D3) */}
+                <div className="bg-zinc-100/60 dark:bg-zinc-900/60 p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-mono uppercase text-zinc-500 font-bold">
+                      Biểu tượng danh mục (Icon / Emoji / Tải từ máy tính)
                     </label>
-                    <input
-                      type="text"
-                      required
-                      value={formData.slug}
-                      onChange={e => setFormData(prev => ({ ...prev, slug: e.target.value.toLowerCase().trim() }))}
-                      placeholder="vd: laptops, ban-phim-co"
-                      className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-mono text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
-                    />
+                    {formData.icon && (formData.icon.startsWith('http') || formData.icon.startsWith('/uploads')) && (
+                      <button
+                        type="button"
+                        onClick={() => setFormData(prev => ({ ...prev, icon: '💻' }))}
+                        className="text-[10px] text-zinc-400 hover:text-[#ff4655] underline cursor-pointer"
+                      >
+                        Đặt lại icon mặc định
+                      </button>
+                    )}
                   </div>
 
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase text-zinc-500 mb-1">
-                      Biểu tượng (Icon/Emoji)
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.icon}
-                      onChange={e => setFormData(prev => ({ ...prev, icon: e.target.value }))}
-                      placeholder="💻"
-                      className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded text-center text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
-                    />
+                  <div className="flex items-center gap-3.5">
+                    {/* Live Preview Box */}
+                    <div className="w-12 h-12 rounded-lg bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center shrink-0 shadow-inner overflow-hidden">
+                      {formData.icon && (formData.icon.startsWith('http') || formData.icon.startsWith('/uploads')) ? (
+                        <img src={formData.icon} alt="preview" className="w-8 h-8 object-contain" />
+                      ) : (
+                        <span className="text-2xl">{formData.icon || '💻'}</span>
+                      )}
+                    </div>
+
+                    <div className="flex-1 space-y-2">
+                      {/* Nút Upload từ máy tính */}
+                      <input
+                        type="file"
+                        ref={iconFileInputRef}
+                        accept="image/png,image/jpeg,image/svg+xml,image/webp"
+                        onChange={handleIconUpload}
+                        className="hidden"
+                      />
+
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button
+                          type="button"
+                          disabled={iconUploading}
+                          onClick={() => iconFileInputRef.current?.click()}
+                          className="px-3 py-1.5 bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-200 rounded text-xs font-bold transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
+                        >
+                          <UploadSimple size={14} className={iconUploading ? 'animate-bounce text-[#ff4655]' : ''} />
+                          {iconUploading ? 'Đang tải lên...' : 'Chọn ảnh icon từ máy tính (PNG, SVG, WEBP)'}
+                        </button>
+
+                        <input
+                          type="text"
+                          value={formData.icon}
+                          onChange={e => setFormData(prev => ({ ...prev, icon: e.target.value }))}
+                          placeholder="Hoặc nhập emoji / URL..."
+                          className="flex-1 min-w-[130px] px-2.5 py-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                        />
+                      </div>
+
+                      {iconUploadError && (
+                        <p className="text-[10px] text-[#ff4655] font-semibold">{iconUploadError}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Preset Library Emojis */}
+                  <div className="pt-2 border-t border-zinc-200/60 dark:border-zinc-800/60">
+                    <span className="text-[9px] font-mono text-zinc-400 block mb-1.5">Gợi ý biểu tượng công nghệ phổ biến:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {['💻', '⌨️', '🖱️', '🎧', '🖥️', '⚡', '🎮', '🔌', '📦', '🔊', '📱', '💾', '🔧', '🛡️'].map(emoji => (
+                        <button
+                          key={emoji}
+                          type="button"
+                          onClick={() => setFormData(prev => ({ ...prev, icon: emoji }))}
+                          className={`w-7 h-7 rounded text-sm flex items-center justify-center border transition-all cursor-pointer ${
+                            formData.icon === emoji
+                              ? 'bg-[#ff4655]/20 border-[#ff4655] text-white scale-110'
+                              : 'bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 hover:border-[#ff4655]/50'
+                          }`}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 

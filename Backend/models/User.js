@@ -23,6 +23,12 @@ const UserSchema = new mongoose.Schema({
   birthday: { type: Date },
   role: { type: String, enum: ['user', 'admin', 'shop'], default: 'user' }, // Phân quyền: user (khách hàng), shop (chủ shop), admin (quản trị)
   status: { type: String, enum: ['active', 'locked'], default: 'active' }, // Trạng thái: active (hoạt động), locked (bị khóa)
+  
+  // D1: Khóa tài khoản khách hàng theo khoảng thời gian
+  lockedAt: { type: Date, default: null }, // Thời điểm khóa
+  lockExpiresAt: { type: Date, default: null }, // Thời điểm hết hạn khóa (null = vô thời hạn)
+  lockReason: { type: String, default: '' }, // Lý do khóa tài khoản
+
   shopId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shop', default: null }, // Liên kết tới Shop (dành cho tài khoản doanh nghiệp)
   memberRank: { type: String, enum: ['THUONG', 'DONG', 'BAC', 'VANG', 'KIM_CUONG'], default: 'THUONG' },
   points: { type: Number, default: 0, min: 0 },
@@ -47,5 +53,6 @@ UserSchema.set('toObject', {
 // Đánh chỉ mục để tìm kiếm nhanh
 UserSchema.index({ role: 1 });
 UserSchema.index({ status: 1 });
+UserSchema.index({ lockExpiresAt: 1 });
 
 module.exports = mongoose.model('User', UserSchema);

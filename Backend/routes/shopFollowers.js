@@ -39,8 +39,10 @@ router.get('/check/:shopId', async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'GEARTECH_VALORANT_EDITION_SECRET_2026');
         if (decoded && decoded.id) {
           const exists = await ShopFollower.findOne({
-            $or: [{ user_id: decoded.id }, { userId: decoded.id }],
-            $or: [{ shop_id: shopId }, { shopId: shopId }]
+            $and: [
+              { $or: [{ user_id: decoded.id }, { userId: decoded.id }] },
+              { $or: [{ shop_id: shopId }, { shopId: shopId }] }
+            ]
           });
           isFollowing = !!exists;
         }
@@ -76,8 +78,10 @@ router.post('/:shopId', auth, async (req, res) => {
 
     // Ngăn theo dõi cùng 1 shop nhiều lần
     let follower = await ShopFollower.findOne({
-      $or: [{ user_id: req.user.id }, { userId: req.user.id }],
-      $or: [{ shop_id: shop._id }, { shopId: shop._id }]
+      $and: [
+        { $or: [{ user_id: req.user.id }, { userId: req.user.id }] },
+        { $or: [{ shop_id: shop._id }, { shopId: shop._id }] }
+      ]
     });
 
     if (follower) {
@@ -137,6 +141,35 @@ router.delete('/:shopId', auth, async (req, res) => {
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi bỏ theo dõi cửa hàng.', details: error.message });
   }
+});
+
+// Alias routes theo yêu cầu prompt C2
+router.post('/follow/:shopId', auth, async (req, res, next) => {
+  req.url = `/${req.params.shopId}`;
+  return router.handle(req, res, next);
+});
+
+router.post('/follow', auth, async (req, res, next) => {
+  const shopId = req.body.shopId || req.body.shop_id;
+  if (!shopId) return res.status(400).json({ error: 'Vui lòng cung cấp shopId.' });
+  req.params.shopId = shopId;
+  req.url = `/${shopId}`;
+  return router.handle(req, res, next);
+});
+
+router.post('/unfollow/:shopId', auth, async (req, res, next) => {
+  req.method = 'DELETE';
+  req.url = `/${req.params.shopId}`;
+  return router.handle(req, res, next);
+});
+
+router.post('/unfollow', auth, async (req, res, next) => {
+  const shopId = req.body.shopId || req.body.shop_id;
+  if (!shopId) return res.status(400).json({ error: 'Vui lòng cung cấp shopId.' });
+  req.method = 'DELETE';
+  req.params.shopId = shopId;
+  req.url = `/${shopId}`;
+  return router.handle(req, res, next);
 });
 
 module.exports = router;

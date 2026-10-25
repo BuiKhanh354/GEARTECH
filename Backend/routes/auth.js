@@ -349,7 +349,7 @@ router.get('/users', auth, checkRole(['admin']), async (req, res) => {
 router.put('/users/:id/status', auth, checkRole(['admin']), async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, lockDurationHours, lockExpiresAt: customExpiresAt, lockReason } = req.body;
 
     if (!['active', 'locked'].includes(status)) {
       return res.status(400).json({ error: "Trạng thái không hợp lệ. Chỉ chấp nhận 'active' hoặc 'locked'." });
@@ -365,19 +365,60 @@ router.put('/users/:id/status', auth, checkRole(['admin']), async (req, res) => 
       return res.status(404).json({ error: 'Không tìm thấy người dùng cần thao tác.' });
     }
 
+    // Không cho tự khóa tài khoản Admin khác
+    if (targetUser.role === 'admin' && status === 'locked') {
+      return res.status(400).json({ error: 'Không thể khóa tài khoản quản trị viên!' });
+    }
+
     targetUser.status = status;
+
+    if (status === 'locked') {
+      targetUser.lockedAt = new Date();
+      targetUser.lockReason = lockReason ? lockReason.trim() : 'Khóa bởi Quản trị viên';
+
+      if (customExpiresAt) {
+        targetUser.lockExpiresAt = new Date(customExpiresAt);
+      } else if (lockDurationHours && Number(lockDurationHours) > 0) {
+        targetUser.lockExpiresAt = new Date(Date.now() + Number(lockDurationHours) * 3600 * 1000);
+      } else {
+        targetUser.lockExpiresAt = null; // Khóa vô thời hạn
+      }
+    } else {
+      targetUser.lockedAt = null;
+      targetUser.lockExpiresAt = null;
+      targetUser.lockReason = '';
+    }
+
     await targetUser.save();
 
-    const actionText = status === 'locked' ? 'Khóa' : 'Mở khóa';
+    // Đồng bộ trạng thái sang hồ sơ Customer liên kết để dữ liệu nhất quán
+    try {
+      const Customer = require('../models/Customer');
+      await Customer.findOneAndUpdate(
+        { $or: [{ userId: targetUser._id }, { email: targetUser.email }] },
+        { $set: { status: status === 'locked' ? 'inactive' : 'active' } }
+      );
+    } catch (syncErr) {
+      console.error('Lỗi đồng bộ trạng thái Customer:', syncErr.message);
+    }
+
+    const actionText = status === 'locked' 
+      ? (targetUser.lockExpiresAt 
+          ? `Đã khóa tài khoản đến ${new Date(targetUser.lockExpiresAt).toLocaleString('vi-VN')}` 
+          : 'Đã khóa tài khoản vĩnh viễn')
+      : 'Đã mở khóa tài khoản';
 
     return res.json({
-      message: `${actionText} tài khoản thành công!`,
+      message: `${actionText} thành công!`,
       user: {
         id: targetUser._id,
         name: targetUser.name,
         email: targetUser.email,
         role: targetUser.role,
-        status: targetUser.status
+        status: targetUser.status,
+        lockedAt: targetUser.lockedAt,
+        lockExpiresAt: targetUser.lockExpiresAt,
+        lockReason: targetUser.lockReason
       }
     });
   } catch (error) {
@@ -386,7 +427,100 @@ router.put('/users/:id/status', auth, checkRole(['admin']), async (req, res) => 
 });
 
 // ==========================================
-// 8. ADMIN CẤP TÀI KHOẢN CHO ĐỐI TÁC DOANH NGHIỆP
+// 8. ADMIN TẠO TÀI KHOẢN NGƯỜI DÙNG MỚI (D2)
+// POST /api/auth/users
+// Dùng khi khách hàng không thể tự đăng ký. Mật khẩu tạm được cấp một lần,
+// bắt buộc thay đổi sau khi đăng nhập lần đầu (chức năng đổi mật khẩu đã có ở SecurityTab).
+// ==========================================
+router.post('/users', auth, checkRole(['admin']), async (req, res) => {
+  try {
+    const { name, email, password, phone, role } = req.body;
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: 'Vui lòng cung cấp họ tên người dùng.' });
+    }
+    if (!email || !email.trim()) {
+      return res.status(400).json({ error: 'Vui lòng cung cấp địa chỉ email.' });
+    }
+    if (!password || password.length < 6) {
+      return res.status(400).json({ error: 'Mật khẩu tạm phải có độ dài tối thiểu 6 ký tự.' });
+    }
+
+    const finalRole = ['user', 'shop'].includes(role) ? role : 'user';
+
+    const cleanEmail = email.trim().toLowerCase();
+    const existingUser = await User.findOne({ email: cleanEmail });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email này đã được sử dụng trên hệ thống.' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Tuyệt đối không cho tạo tài khoản Admin qua API này
+    const newUser = await User.create({
+      name: name.trim(),
+      email: cleanEmail,
+      password: hashedPassword,
+      phone: phone ? phone.trim() : '',
+      role: finalRole,
+      status: 'active'
+    });
+
+    // Tự động tạo hồ sơ Customer liên kết cho tài khoản khách hàng
+    if (finalRole === 'user') {
+      try {
+        const Customer = require('../models/Customer');
+        await Customer.create({
+          userId: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+          phone: newUser.phone || '',
+          status: 'active'
+        });
+      } catch (custErr) {
+        console.error('Lỗi tạo Customer cho tài khoản admin tạo mới:', custErr.message);
+      }
+    }
+
+    // Tự động khởi tạo Shop khi tạo tài khoản Chủ Shop (D2)
+    if (finalRole === 'shop') {
+      try {
+        const newShop = await Shop.create({
+          name: `${newUser.name} Store`,
+          shop_name: `${newUser.name} Store`,
+          ownerId: newUser._id,
+          user_id: newUser._id,
+          category: 'Cửa hàng máy tính & linh kiện công nghệ',
+          phone: newUser.phone || '',
+          email: newUser.email,
+          status: 'active'
+        });
+        newUser.shopId = newShop._id;
+        await newUser.save();
+      } catch (shopErr) {
+        console.error('Lỗi tạo Shop cho tài khoản shop mới:', shopErr.message);
+      }
+    }
+
+    return res.status(201).json({
+      message: `Đã tạo tài khoản "${newUser.email}" (${finalRole === 'shop' ? 'Chủ Shop' : 'Khách hàng'}) thành công!`,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        status: newUser.status,
+        shopId: newUser.shopId
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi tạo tài khoản người dùng.', details: error.message });
+  }
+});
+
+// ==========================================
+// 9. ADMIN CẤP TÀI KHOẢN CHO ĐỐI TÁC DOANH NGHIỆP
 // POST /api/auth/register-shop
 // ==========================================
 router.post('/register-shop', auth, checkRole(['admin']), async (req, res) => {

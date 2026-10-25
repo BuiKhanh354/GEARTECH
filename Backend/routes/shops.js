@@ -3,7 +3,20 @@ const router = express.Router();
 const Shop = require('../models/Shop');
 const User = require('../models/User');
 const Product = require('../models/Product');
+const ShopFollower = require('../models/ShopFollower');
 const { auth, checkRole } = require('../middleware/auth');
+
+// Helper: đếm số người theo dõi thực tế từ collection shop_followers
+// (mỗi user chỉ đếm 1 lần cho mỗi shop nhờ unique index user_id + shop_id)
+async function getRealFollowersCount(shopId) {
+  try {
+    return await ShopFollower.countDocuments({
+      $or: [{ shop_id: shopId }, { shopId: shopId }]
+    });
+  } catch {
+    return null; // fallback về dữ liệu legacy trên document Shop
+  }
+}
 
 // ==========================================
 // 1. LẤY DANH SÁCH GIAN HÀNG ĐANG HOẠT ĐỘNG (PUBLIC)
@@ -37,24 +50,29 @@ router.get('/', async (req, res) => {
     ]);
 
     // Chuẩn hóa tên trường cho client
-    const formattedShops = shops.map(s => ({
-      _id: s._id,
-      id: s._id,
-      name: s.name || s.shop_name,
-      shop_name: s.shop_name || s.name,
-      description: s.description,
-      logo: s.logo,
-      category: s.category,
-      phone: s.phone,
-      email: s.email,
-      address: s.address,
-      rating: s.rating,
-      followers: s.followers,
-      total_products: s.total_products,
-      bgClass: s.bgClass,
-      status: s.status,
-      ownerId: s.ownerId,
-      createdAt: s.createdAt
+    const formattedShops = await Promise.all(shops.map(async (s) => {
+      const realFollowers = await getRealFollowersCount(s._id);
+      return {
+        _id: s._id,
+        id: s._id,
+        name: s.name || s.shop_name,
+        shop_name: s.shop_name || s.name,
+        description: s.description,
+        logo: s.logo,
+        category: s.category,
+        phone: s.phone,
+        email: s.email,
+        address: s.address,
+        rating: s.rating,
+        // Số người theo dõi thực tế từ dữ liệu follow; fallback về giá trị legacy nếu lỗi
+        followers: realFollowers !== null ? String(realFollowers) : s.followers,
+        followersCount: realFollowers !== null ? realFollowers : Number(s.followers || 0),
+        total_products: s.total_products,
+        bgClass: s.bgClass,
+        status: s.status,
+        ownerId: s.ownerId,
+        createdAt: s.createdAt
+      };
     }));
 
     return res.json(formattedShops);
@@ -192,6 +210,7 @@ router.put('/me/storefront', auth, async (req, res) => {
       template, 
       primaryColor, 
       secondaryColor, 
+      textColor,
       bannerUrl, 
       logoUrl, 
       announcement, 
@@ -209,6 +228,7 @@ router.put('/me/storefront', auth, async (req, res) => {
     const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
     const validPrimary = (primaryColor && hexColorRegex.test(primaryColor)) ? primaryColor : '#ff4655';
     const validSecondary = (secondaryColor && hexColorRegex.test(secondaryColor)) ? secondaryColor : '#18181b';
+    const validTextColor = (textColor && hexColorRegex.test(textColor)) ? textColor : '#ffffff';
 
     // Validate sections array
     let validSections = Shop.defaultStorefrontConfig.sections;
@@ -225,6 +245,7 @@ router.put('/me/storefront', auth, async (req, res) => {
       template: selectedTemplate,
       primaryColor: validPrimary,
       secondaryColor: validSecondary,
+      textColor: validTextColor,
       bannerUrl: bannerUrl ? String(bannerUrl).trim() : (shop.storefrontDraft?.bannerUrl || Shop.defaultStorefrontConfig.bannerUrl),
       logoUrl: logoUrl ? String(logoUrl).trim() : (shop.storefrontDraft?.logoUrl || ''),
       announcement: announcement ? String(announcement).trim().slice(0, 300) : '',
@@ -320,6 +341,33 @@ router.post('/me/storefront/reset', auth, async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi khôi phục giao diện mặc định.', details: error.message });
+  }
+});
+
+// =========================================================================
+// 4D-2. HỦY CÁC THAY ĐỔI CHƯA LƯU (DISCARD DRAFT -> RESTORE FROM PUBLISHED)
+// POST /api/shops/me/storefront/discard
+// =========================================================================
+router.post('/me/storefront/discard', auth, async (req, res) => {
+  try {
+    const shop = await Shop.findOne({
+      $or: [{ ownerId: req.user._id }, { _id: req.user.shopId }]
+    });
+
+    if (!shop) {
+      return res.status(404).json({ error: 'Không tìm thấy gian hàng của bạn.' });
+    }
+
+    const published = shop.storefrontPublished || Shop.defaultStorefrontConfig;
+    shop.storefrontDraft = JSON.parse(JSON.stringify(published));
+    await shop.save();
+
+    return res.json({
+      message: 'Đã hủy các thay đổi chưa lưu, khôi phục lại cấu hình đã xuất bản gần nhất!',
+      storefrontDraft: shop.storefrontDraft
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi hủy thay đổi.', details: error.message });
   }
 });
 
@@ -427,10 +475,17 @@ router.get('/:id', async (req, res) => {
     // Lấy kèm danh sách sản phẩm đang bán của shop này
     const products = await Product.find({ shopId: shop._id }).limit(50);
 
+    // C2: Số người theo dõi thực tế từ dữ liệu follow (không dùng giá trị mock)
+    const realFollowers = await getRealFollowersCount(shop._id);
+    if (realFollowers !== null) {
+      shop.followers = String(realFollowers);
+    }
+
     return res.json({
       shop,
       products,
-      productsCount: products.length
+      productsCount: products.length,
+      followersCount: realFollowers !== null ? realFollowers : Number(shop.followers || 0)
     });
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi lấy thông tin gian hàng.', details: error.message });

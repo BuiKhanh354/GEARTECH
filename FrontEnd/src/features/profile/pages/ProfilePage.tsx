@@ -21,6 +21,7 @@ import ShopOrdersTab from '../components/shop/ShopOrdersTab'
 import ShopInventoryTab from '../components/shop/ShopInventoryTab'
 import ShopSuppliersTab from '../components/shop/ShopSuppliersTab'
 import ShopStorefrontDesignTab from '../components/shop/ShopStorefrontDesignTab'
+import ShopVouchersTab from '../components/shop/ShopVouchersTab'
 
 import UserProfileTab from '../components/user/UserProfileTab'
 import UserOrdersTab from '../components/user/UserOrdersTab'
@@ -30,7 +31,7 @@ import UserVouchersTab from '../components/user/UserVouchersTab'
 type TabType = 
   | 'profile' | 'orders' | 'vouchers' | 'favorites' | 'security' 
   | 'admin-overview' | 'admin-users' | 'admin-shops' | 'admin-categories' | 'admin-brands' | 'admin-vouchers' | 'admin-showrooms' | 'admin-orders'
-  | 'shop-overview' | 'shop-products' | 'shop-orders' | 'shop-inventory' | 'shop-suppliers' | 'shop-storefront'
+  | 'shop-overview' | 'shop-products' | 'shop-orders' | 'shop-inventory' | 'shop-suppliers' | 'shop-storefront' | 'shop-vouchers'
 
 interface ProfilePageProps {
   initialRole?: 'admin' | 'shop' | 'user'
@@ -78,8 +79,11 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
       const resShops = await apiClient.get('/shops')
       if (resShops.data) setShopsList(resShops.data)
 
-      const resVouchers = await apiClient.get('/vouchers')
-      if (resVouchers.data) setDbVouchers(resVouchers.data)
+      // D4: Admin PHẢI dùng endpoint /vouchers/admin để nhận TẤT CẢ voucher
+      // (bao gồm cả voucher đã vô hiệu hóa). Endpoint công khai /vouchers
+      // chỉ trả voucher active, khiến voucher ẩn mất ngay sau khi vô hiệu hóa.
+      const resVouchers = await apiClient.get('/vouchers/admin')
+      if (resVouchers.data) setDbVouchers(Array.isArray(resVouchers.data) ? resVouchers.data : [])
 
       const resShowrooms = await apiClient.get('/showrooms')
       if (resShowrooms.data) setDbShowrooms(resShowrooms.data)
@@ -322,7 +326,7 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
               {activeTab === 'admin-categories' && <AdminCategoriesTab />}
               {activeTab === 'admin-brands' && <AdminBrandsTab />}
               {activeTab === 'admin-vouchers' && <AdminVouchersTab token={token} dbVouchers={dbVouchers} onRefresh={fetchAdminData} />}
-              {activeTab === 'admin-showrooms' && <AdminShowroomsTab token={token} dbShowrooms={dbShowrooms} onRefresh={fetchAdminData} />}
+              {activeTab === 'admin-showrooms' && <AdminShowroomsTab token={token} dbShowrooms={dbShowrooms} shopsList={shopsList} onRefresh={fetchAdminData} />}
               {activeTab === 'admin-orders' && <AdminOrdersTab />}
             </>
           )}
@@ -336,6 +340,7 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
               {activeTab === 'shop-inventory' && <ShopInventoryTab allProducts={allProducts} />}
               {activeTab === 'shop-suppliers' && <ShopSuppliersTab />}
               {activeTab === 'shop-storefront' && <ShopStorefrontDesignTab currentShop={currentShop} allProducts={allProducts} />}
+              {activeTab === 'shop-vouchers' && <ShopVouchersTab currentShop={currentShop} />}
             </>
           )}
 

@@ -8,7 +8,14 @@ export interface CartItemDetail {
   sku?: string;
   imageEmoji: string;
   currentPrice: number;
+  price?: number;
   oldPrice?: number;
+  originalPrice?: number;
+  savings?: number;
+  isPriceLocked?: boolean;
+  priceLockExpiresAt?: string;
+  priceLockRemainingMs?: number;
+  promotionNote?: string;
   stock: number;
   quantity: number;
   selected: boolean;

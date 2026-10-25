@@ -18,12 +18,29 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ error: 'Người dùng không còn tồn tại trên hệ thống.' });
     }
 
-    // Yêu cầu prompt 3.1: Không cho tài khoản bị khóa thực hiện các thao tác cần xác thực
+    // D1: Kiểm tra trạng thái khóa và thời hạn khóa
     if (user.status === 'locked') {
-      return res.status(403).json({ 
-        error: 'Tài khoản của bạn đã bị khóa bởi Quản trị viên. Mọi thao tác xác thực bị từ chối.',
-        isLocked: true 
-      });
+      const now = new Date();
+      // Nếu đã hết thời hạn khóa, tự động phục hồi tài khoản
+      if (user.lockExpiresAt && new Date(user.lockExpiresAt) <= now) {
+        user.status = 'active';
+        user.lockedAt = null;
+        user.lockExpiresAt = null;
+        user.lockReason = '';
+        await user.save();
+      } else {
+        const expireInfo = user.lockExpiresAt 
+          ? `Thời hạn khóa đến: ${new Date(user.lockExpiresAt).toLocaleString('vi-VN')}.`
+          : 'Thời hạn: Vô thời hạn.';
+        const reasonInfo = user.lockReason ? ` Lý do: ${user.lockReason}.` : '';
+
+        return res.status(403).json({ 
+          error: `Tài khoản của bạn đã bị khóa bởi Quản trị viên. ${expireInfo}${reasonInfo}`,
+          isLocked: true,
+          lockExpiresAt: user.lockExpiresAt,
+          lockReason: user.lockReason
+        });
+      }
     }
 
     // Gán đối tượng user an toàn vào request

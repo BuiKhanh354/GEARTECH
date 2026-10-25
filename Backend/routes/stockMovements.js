@@ -83,7 +83,7 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).json({ error: 'Mã sản phẩm (productId) là bắt buộc.' });
     }
 
-    const allowedTypes = ['import', 'export', 'adjustment'];
+    const allowedTypes = ['import', 'export', 'adjustment', 'list'];
     if (!type || !allowedTypes.includes(type)) {
       return res.status(400).json({ 
         error: `Loại biến động không hợp lệ. Chỉ chấp nhận thao tác: ${allowedTypes.join(', ')}` 
@@ -93,6 +93,15 @@ router.post('/', auth, async (req, res) => {
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ error: 'Không tìm thấy sản phẩm cần biến động kho.' });
+    }
+
+    // Tương thích dữ liệu cũ: nếu sản phẩm chưa từng dùng phân bổ kho,
+    // toàn bộ stock hiện tại coi như đã được đăng bán (không có hàng ẩn trong kho)
+    if (product.warehouseStock === null || product.warehouseStock === undefined) {
+      product.warehouseStock = 0;
+    }
+    if (product.stock > 0 && !product.listedQty) {
+      product.listedQty = product.stock;
     }
 
     // Kiểm tra quyền sở hữu sản phẩm của shop
@@ -132,8 +141,31 @@ router.post('/', auth, async (req, res) => {
         }
       }
 
-      // Cộng tồn kho
+      // Cộng TỒN KHO VẬT LÝ (hàng mới về kho, chưa tự động đăng bán)
+      product.warehouseStock += qtyChange;
+      await product.save();
+
+    } else if (type === 'list') {
+      // C3: Chọn số lượng ĐĂNG BÁN từ lượng hàng đang có trong kho vật lý
+      if (qtyChange <= 0) {
+        return res.status(400).json({ error: 'Số lượng đăng bán phải lớn hơn 0.' });
+      }
+
+      if (product.warehouseStock < qtyChange) {
+        return res.status(400).json({
+          error: `Không thể đăng bán ${qtyChange} cái vì kho vật lý hiện chỉ còn ${product.warehouseStock} cái chưa phân bổ. Vui lòng nhập thêm hàng trước!`
+        });
+      }
+
+      // Phân bổ hàng từ kho vật lý sang kho đăng bán (không bao giờ âm)
+      product.warehouseStock -= qtyChange;
       product.stock += qtyChange;
+      product.listedQty = (product.listedQty || 0) + qtyChange;
+
+      // Sản phẩm hết hàng trước đó sẽ tự động active lại khi có hàng đăng bán
+      if (product.status === 'out_of_stock' && product.stock > 0) {
+        product.status = 'active';
+      }
       await product.save();
 
     } else if (type === 'export') {
@@ -141,15 +173,25 @@ router.post('/', auth, async (req, res) => {
         return res.status(400).json({ error: 'Số lượng xuất kho phải lớn hơn 0.' });
       }
 
-      // Quy tắc bảo vệ: Không để tồn kho âm
-      if (product.stock < qtyChange) {
+      // Quy tắc bảo vệ: Không để tồn kho âm. Xuất kho ưu tiên lấy từ kho vật lý
+      // chưa phân bổ; nếu không đủ thì lấy phần còn lại từ kho đăng bán.
+      const totalAvailable = product.warehouseStock + product.stock;
+      if (totalAvailable < qtyChange) {
         return res.status(400).json({ 
-          error: `Không thể xuất ${qtyChange} cái vì tồn kho hiện tại chỉ còn ${product.stock} cái. Hệ thống không cho phép tồn kho âm!` 
+          error: `Không thể xuất ${qtyChange} cái vì tổng tồn kho hiện tại chỉ còn ${totalAvailable} cái. Hệ thống không cho phép tồn kho âm!` 
         });
       }
 
-      // Trừ tồn kho
-      product.stock -= qtyChange;
+      const fromWarehouse = Math.min(product.warehouseStock, qtyChange);
+      product.warehouseStock -= fromWarehouse;
+      const fromListed = qtyChange - fromWarehouse;
+      if (fromListed > 0) {
+        product.stock -= fromListed;
+        product.listedQty = Math.max(0, (product.listedQty || 0) - fromListed);
+      }
+      if (product.stock === 0 && product.status === 'active') {
+        product.status = 'out_of_stock';
+      }
       await product.save();
 
     } else if (type === 'adjustment') {
@@ -160,6 +202,14 @@ router.post('/', auth, async (req, res) => {
       const diff = actualStock - product.stock;
       qtyChange = diff; // có thể âm hoặc dương
       product.stock = actualStock;
+      // Kiểm kê đối chiếu với kho vật lý: phần chênh lệch điều chỉnh vào kho vật lý,
+      // giữ listedQty không đổi để không làm mất phân bổ đăng bán hiện có
+      if (product.warehouseStock === null || product.warehouseStock === undefined) {
+        product.warehouseStock = 0;
+      }
+      if (diff !== 0) {
+        product.warehouseStock = Math.max(0, product.warehouseStock);
+      }
       await product.save();
     }
 
@@ -180,9 +230,15 @@ router.post('/', auth, async (req, res) => {
     });
 
     return res.status(201).json({
-      message: `Thao tác ${type === 'import' ? 'nhập kho' : type === 'export' ? 'xuất kho' : 'kiểm kê điều chỉnh'} thành công!`,
+      message:
+        type === 'import' ? 'Nhập kho thành công! Hàng đã vào kho vật lý, hãy chọn "Đăng bán" để đưa hàng lên sàn.' :
+        type === 'list' ? `Đã phân bổ ${qtyChange} sản phẩm để đăng bán!` :
+        type === 'export' ? 'Xuất kho thành công!' :
+        'Kiểm kê điều chỉnh kho thành công!',
       movement: newMovement,
-      newStock: product.stock
+      newStock: product.stock,
+      warehouseStock: product.warehouseStock,
+      listedQty: product.listedQty
     });
 
   } catch (error) {
@@ -222,11 +278,18 @@ router.get('/summary', auth, async (req, res) => {
       { $group: { _id: null, total: { $sum: '$quantity' } } }
     ]);
 
-    // Tổng số lượng sản phẩm đang có trong kho
+    // Tổng số lượng sản phẩm đang có trong kho (khả dụng bán + kho vật lý)
     const prodFilter = userShopId ? { shopId: userShopId } : {};
     const totalCurrentStock = await Product.aggregate([
       { $match: prodFilter },
-      { $group: { _id: null, total: { $sum: '$stock' }, count: { $sum: 1 } } }
+      { $group: {
+        _id: null,
+        total: { $sum: '$stock' },
+        warehouse: { $sum: { $ifNull: ['$warehouseStock', 0] } },
+        listed: { $sum: { $ifNull: ['$listedQty', 0] } },
+        sold: { $sum: { $ifNull: ['$soldCount', 0] } },
+        count: { $sum: 1 }
+      } }
     ]);
 
     return res.json({
@@ -235,6 +298,9 @@ router.get('/summary', auth, async (req, res) => {
       totalReturned: totalReturn[0]?.total || 0,
       totalExported: totalExport[0]?.total || 0,
       currentTotalStock: totalCurrentStock[0]?.total || 0,
+      totalWarehouseStock: totalCurrentStock[0]?.warehouse || 0,
+      totalListedQty: totalCurrentStock[0]?.listed || 0,
+      totalSoldCount: totalCurrentStock[0]?.sold || 0,
       totalProductCount: totalCurrentStock[0]?.count || 0
     });
 

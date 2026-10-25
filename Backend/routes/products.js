@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require('../models/Product');
 const Shop = require('../models/Shop');
 const Order = require('../models/Order');
+const Category = require('../models/Category');
 const { auth, checkRole } = require('../middleware/auth');
 
 // Helper: Lấy shopId của user (từ req.user.shopId hoặc tra cứu qua bảng Shop theo ownerId/user_id)
@@ -57,8 +58,47 @@ router.get('/', async (req, res) => {
     }
 
     // C. Lọc theo danh mục (Category)
+    // Chấp nhận: slug danh mục, ID danh mục (bao gồm cả danh mục con), hoặc tên danh mục cũ (string) trên sản phẩm
     if (category && category !== 'all') {
-      query.category = category;
+      let categoryCondition = [{ category: String(category).toLowerCase() }];
+
+      try {
+        const catDoc = /^[0-9a-fA-F]{24}$/.test(category)
+          ? await Category.findById(category).select('_id')
+          : await Category.findOne({
+              $or: [
+                { slug: String(category).toLowerCase() },
+                { name: { $regex: `^${category}$`, $options: 'i' } }
+              ]
+            }).select('_id');
+
+        if (catDoc) {
+          // Gộp cả danh mục con để lọc theo cả cây danh mục cha
+          const children = await Category.find({
+            $or: [{ parent_id: catDoc._id }, { parent_category_id: catDoc._id }]
+          }).select('_id slug name');
+          const childIds = children.map(c => c._id);
+          const childSlugs = children.map(c => c.slug).filter(Boolean);
+
+          categoryCondition = [
+            { categoryId: catDoc._id },
+            { category_id: catDoc._id },
+            { categoryId: { $in: childIds } },
+            { category_id: { $in: childIds } },
+            { category: { $in: [String(category).toLowerCase(), ...childSlugs] } },
+            { category: String(category).toLowerCase() }
+          ];
+        }
+      } catch (catErr) {
+        console.error('Lỗi tra cứu danh mục khi lọc sản phẩm:', catErr.message);
+      }
+
+      if (query.$or) {
+        query.$and = [...(query.$and || []), { $or: query.$or }, { $or: categoryCondition }];
+        delete query.$or;
+      } else {
+        query.$or = categoryCondition;
+      }
     }
 
     // D. Lọc theo thương hiệu (Brand)

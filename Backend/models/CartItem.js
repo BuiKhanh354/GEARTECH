@@ -27,9 +27,13 @@ const CartItemSchema = new mongoose.Schema({
   // Giá tại thời điểm thêm vào giỏ (xác định bởi backend để tính thành tiền)
   price: { 
     type: Number, 
-    required: true,
+    required: true, 
     min: [0, 'Giá không được âm'] 
   },
+  originalPrice: { type: Number, min: 0 },
+  priceLockedAt: { type: Date, default: Date.now },
+  priceLockExpiresAt: { type: Date },
+  promotionNote: { type: String, default: '' },
 
   selected: { 
     type: Boolean, 

@@ -8,6 +8,12 @@ export interface CartStoreItem {
   title: string
   price: number
   oldPrice?: number
+  originalPrice?: number
+  savings?: number
+  isPriceLocked?: boolean
+  priceLockExpiresAt?: string
+  priceLockRemainingMs?: number
+  promotionNote?: string
   imageEmoji: string
   categoryName: string
   shopName: string
@@ -41,21 +47,22 @@ export const useCartStore = create<CartState>()(
       items: [],
       isLoading: false,
 
-      // 1. Đồng bộ giỏ hàng với Backend CSDL
+      // 1. Đồng bộ giỏ hàng với Backend CSDL (Single Source of Truth)
       syncWithBackend: async () => {
         const token = localStorage.getItem('token')
         if (!token) return
 
         try {
           set({ isLoading: true })
-          const localItems = get().items
-          let cartData
           
-          if (localItems.length > 0) {
+          // Lấy dữ liệu giỏ hàng chuẩn từ server trước
+          let cartData = await cartService.getCart()
+
+          // Nếu server trống nhưng client có items (vừa đăng nhập từ chế độ khách), thực hiện sync 1 lần
+          const localItems = get().items
+          if ((!cartData.items || cartData.items.length === 0) && localItems.length > 0) {
             const syncRes = await cartService.syncCart(localItems)
             cartData = syncRes.cart
-          } else {
-            cartData = await cartService.getCart()
           }
 
           if (cartData && Array.isArray(cartData.items)) {
@@ -63,8 +70,14 @@ export const useCartStore = create<CartState>()(
               id: i.productId,
               productId: i.productId,
               title: i.title,
-              price: i.currentPrice,
+              price: i.currentPrice ?? i.price ?? 0,
               oldPrice: i.oldPrice,
+              originalPrice: i.originalPrice,
+              savings: i.savings,
+              isPriceLocked: i.isPriceLocked,
+              priceLockExpiresAt: i.priceLockExpiresAt,
+              priceLockRemainingMs: i.priceLockRemainingMs,
+              promotionNote: i.promotionNote,
               imageEmoji: i.imageEmoji || '📦',
               categoryName: i.categoryName || 'Linh kiện',
               shopName: i.shop?.name || 'GEARTECH OFFICIAL',
@@ -99,12 +112,16 @@ export const useCartStore = create<CartState>()(
             return { items: updated }
           } else {
             const shopName = product.shopId?.name || product.shop?.name || 'GEARTECH OFFICIAL'
+            const isPromo = Boolean(product.oldPrice && product.oldPrice > product.price)
             const newItem: CartStoreItem = {
               id: pId,
               productId: pId,
               title: product.title || product.name,
               price: product.price,
               oldPrice: product.oldPrice,
+              originalPrice: isPromo ? product.oldPrice : product.price,
+              isPriceLocked: isPromo,
+              promotionNote: isPromo ? 'Giữ giá ưu đãi 48 giờ' : undefined,
               imageEmoji: product.imageEmoji || '📦',
               categoryName: product.categoryName || 'Linh kiện',
               shopName,
@@ -122,6 +139,34 @@ export const useCartStore = create<CartState>()(
         if (token) {
           try {
             await cartService.addToCart(pId, quantity, variant)
+            // Lấy lại dữ liệu chính xác từ Backend
+            const freshCart = await cartService.getCart()
+            if (freshCart && Array.isArray(freshCart.items)) {
+              set({
+                items: freshCart.items.map((i) => ({
+                  id: i.productId,
+                  productId: i.productId,
+                  title: i.title,
+                  price: i.currentPrice ?? i.price ?? 0,
+                  oldPrice: i.oldPrice,
+                  originalPrice: i.originalPrice,
+                  savings: i.savings,
+                  isPriceLocked: i.isPriceLocked,
+                  priceLockExpiresAt: i.priceLockExpiresAt,
+                  priceLockRemainingMs: i.priceLockRemainingMs,
+                  promotionNote: i.promotionNote,
+                  imageEmoji: i.imageEmoji || '📦',
+                  categoryName: i.categoryName || 'Linh kiện',
+                  shopName: i.shop?.name || 'GEARTECH OFFICIAL',
+                  quantity: i.quantity,
+                  selected: i.selected,
+                  variant: i.variant || 'Tiêu chuẩn / Chính hãng',
+                  stock: i.stock,
+                  isAvailable: i.isAvailable,
+                  unavailableReason: i.unavailableReason
+                }))
+              })
+            }
           } catch (err) {
             console.error('Lỗi đồng bộ thêm sản phẩm lên server:', err)
           }

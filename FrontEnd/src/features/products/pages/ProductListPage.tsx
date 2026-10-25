@@ -66,35 +66,18 @@ export default function ProductListPage() {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const itemsPerPage = 9
 
-  // Default categories list fallback
-  const defaultCategories = [
-    { value: 'all', label: 'TẤT CẢ SẢN PHẨM' },
-    { value: 'brand', label: 'Hãng máy' },
-    { value: 'laptops', label: 'LAPTOP & MACBOOK' },
-    { value: 'desktops', label: 'PC & WORKSTATION' },
-    { value: 'components', label: 'LINH KIỆN MÁY TÍNH' },
-    { value: 'monitors', label: 'MÀN HÌNH MÁY TÍNH' },
-    { value: 'peripherals', label: 'BÀN PHÍM & CHUỘT' },
-    { value: 'audio', label: 'TAI NGHE & LOA' },
-    { value: 'smart-devices', label: 'THIẾT BỊ THÔNG MINH' },
-    { value: 'accessories', label: 'PHỤ KIỆN CÔNG NGHỆ' }
-  ]
-  const [categoriesList, setCategoriesList] = useState(defaultCategories)
+  // Danh mục phân cấp cha - con lấy THẬT từ MongoDB (A2)
+  const [categoryTree, setCategoryTree] = useState<any[]>([])
 
-  // Fetch dynamic categories from Backend API
+  // Fetch dynamic categories tree from Backend API
   useEffect(() => {
-    categoryService.getCategories()
+    categoryService.getCategories({ tree: true })
       .then(cats => {
-        if (Array.isArray(cats) && cats.length > 0) {
-          const dynamicCats = [
-            { value: 'all', label: 'TẤT CẢ SẢN PHẨM' },
-            { value: 'brand', label: 'Hãng máy' },
-            ...cats.map(c => ({ value: c.slug, label: c.name.toUpperCase() }))
-          ]
-          setCategoriesList(dynamicCats)
+        if (Array.isArray(cats)) {
+          setCategoryTree(cats)
         }
       })
-      .catch(err => console.error('Lỗi nạp danh mục động:', err))
+      .catch(err => console.error('Lỗi nạp cây danh mục:', err))
   }, [])
 
   // Fetch dynamic brands from Backend API - Yêu cầu 3.4
@@ -208,26 +191,80 @@ export default function ProductListPage() {
             )}
           </div>
 
-          {/* Categories Filter */}
+          {/* Categories Filter (A2: Cây danh mục phân cấp cha - con) */}
           <div className="space-y-3 pl-1">
             <h4 className="text-[8px] font-mono text-zinc-400 dark:text-zinc-600 uppercase tracking-widest">// CATEGORIES</h4>
             <div className="flex flex-col space-y-1">
-              {categoriesList.map((cat) => (
-                <button
-                  key={cat.value}
-                  onClick={() => {
-                    setSelectedCategory(cat.value)
-                    setCurrentPage(1)
-                  }}
-                  className={`text-[9px] text-left px-3 py-2.5 rounded-md transition-all duration-150 font-black uppercase tracking-wider border-l-2 ${
-                    selectedCategory === cat.value
-                      ? 'bg-[#ff4655]/5 text-[#ff4655] border-l-[#ff4655] border-y-zinc-900/5 dark:border-y-zinc-800/10 border-r-transparent text-glow'
-                      : 'border-l-transparent text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 hover:text-zinc-900 dark:hover:text-white hover:border-l-zinc-300 dark:hover:border-l-zinc-850'
-                  }`}
-                >
-                  {selectedCategory === cat.value ? `[x] ${cat.label}` : `[ ] ${cat.label}`}
-                </button>
-              ))}
+              <button
+                onClick={() => {
+                  setSelectedCategory('all')
+                  setCurrentPage(1)
+                }}
+                className={`text-[9px] text-left px-3 py-2 rounded-md transition-all font-black uppercase tracking-wider border-l-2 cursor-pointer ${
+                  selectedCategory === 'all'
+                    ? 'bg-[#ff4655]/10 text-[#ff4655] border-l-[#ff4655]'
+                    : 'border-l-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                }`}
+              >
+                {selectedCategory === 'all' ? '[x]' : '[ ]'} TẤT CẢ SẢN PHẨM
+              </button>
+
+              {categoryTree.map((parent) => {
+                const hasChildren = parent.children && parent.children.length > 0
+                const isParentActive = selectedCategory === parent.slug
+                const isChildActive = hasChildren && parent.children.some((c: any) => c.slug === selectedCategory)
+
+                return (
+                  <div key={parent._id} className="space-y-0.5">
+                    <button
+                      onClick={() => {
+                        setSelectedCategory(parent.slug)
+                        setCurrentPage(1)
+                      }}
+                      className={`w-full text-[9px] text-left px-3 py-2 rounded-md transition-all font-black uppercase tracking-wider border-l-2 flex items-center justify-between cursor-pointer ${
+                        isParentActive
+                          ? 'bg-[#ff4655]/10 text-[#ff4655] border-l-[#ff4655]'
+                          : isChildActive
+                          ? 'border-l-[#ff4655]/50 text-zinc-900 dark:text-white font-black'
+                          : 'border-l-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5 truncate">
+                        <span>{parent.icon || '📦'}</span>
+                        <span className="truncate">{parent.name}</span>
+                      </span>
+                      {isParentActive && <span className="text-[8px] font-mono text-[#ff4655]">TẤT CẢ</span>}
+                    </button>
+
+                    {/* Danh mục con (Hierarchical Children) */}
+                    {hasChildren && (
+                      <div className="pl-4 space-y-0.5 border-l border-zinc-200 dark:border-zinc-800 ml-3.5 my-0.5">
+                        {parent.children.map((child: any) => {
+                          const isSelected = selectedCategory === child.slug
+                          return (
+                            <button
+                              key={child._id}
+                              onClick={() => {
+                                setSelectedCategory(child.slug)
+                                setCurrentPage(1)
+                              }}
+                              className={`w-full text-[8.5px] text-left px-2 py-1.5 rounded transition-all font-bold flex items-center gap-1.5 cursor-pointer ${
+                                isSelected
+                                  ? 'bg-[#ff4655] text-white shadow-sm'
+                                  : 'text-zinc-500 hover:text-[#ff4655] hover:bg-zinc-100 dark:hover:bg-zinc-850'
+                              }`}
+                            >
+                              <span className="opacity-50">↳</span>
+                              <span>{child.icon || '•'}</span>
+                              <span className="truncate">{child.name}</span>
+                            </button>
+                          )
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </div>
 

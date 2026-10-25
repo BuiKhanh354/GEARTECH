@@ -8,12 +8,26 @@ import {
   ShieldCheck, 
   Storefront, 
   User, 
-  Funnel,
   CheckCircle,
   WarningCircle,
-  ArrowsClockwise
+  ArrowsClockwise,
+  Plus,
+  X,
+  Clock,
+  Info
 } from '@phosphor-icons/react'
 import { userService, type UserItem } from '../../../../services/userService'
+
+function formatLockRemaining(expiresAt?: string) {
+  if (!expiresAt) return 'Khóa vĩnh viễn'
+  const diff = new Date(expiresAt).getTime() - Date.now()
+  if (diff <= 0) return 'Đã hết hạn khóa'
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  if (days > 0) return `còn ${days} ngày ${hours}h`
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+  return `còn ${hours}h ${minutes}m`
+}
 
 export default function AdminUsersTab() {
   const [users, setUsers] = useState<UserItem[]>([])
@@ -26,6 +40,18 @@ export default function AdminUsersTab() {
   const [totalCount, setTotalCount] = useState<number>(0)
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null)
   const [alertInfo, setAlertInfo] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+
+  // D2: Admin tạo tài khoản mới khi người dùng không thể tự đăng ký
+  const [showCreateModal, setShowCreateModal] = useState(false)
+  const [createSubmitting, setCreateSubmitting] = useState(false)
+  const [createForm, setCreateForm] = useState({ name: '', email: '', phone: '', password: '', role: 'user' })
+
+  // D1: Khóa tài khoản có thời hạn
+  const [lockModalUser, setLockModalUser] = useState<UserItem | null>(null)
+  const [lockDurationType, setLockDurationType] = useState<'24h' | '3d' | '7d' | '30d' | 'custom' | 'permanent'>('24h')
+  const [customLockDate, setCustomLockDate] = useState<string>('')
+  const [lockReason, setLockReason] = useState<string>('')
+  const [lockSubmitting, setLockSubmitting] = useState<boolean>(false)
 
   // Current logged in admin from localStorage
   const currentAdmin = (() => {
@@ -68,43 +94,99 @@ export default function AdminUsersTab() {
     fetchUsers()
   }, [search, roleFilter, statusFilter, page])
 
-  // Xử lý Khóa / Mở khóa tài khoản
-  const handleToggleStatus = async (user: UserItem) => {
+  // Xử lý mở khóa tài khoản
+  const handleUnlockUser = async (user: UserItem) => {
     const targetId = user._id || user.id
     if (!targetId) return
 
-    if (currentAdmin && (currentAdmin.id === targetId || currentAdmin._id === targetId)) {
-      setAlertInfo({
-        type: 'error',
-        message: 'Bạn không thể tự khóa tài khoản của chính mình!'
-      })
-      return
-    }
-
-    const nextStatus: 'active' | 'locked' = user.status === 'locked' ? 'active' : 'locked'
-    const confirmText = nextStatus === 'locked' 
-      ? `Bạn có chắc chắn muốn KHÓA tài khoản ${user.email}? Người dùng này sẽ không thể đăng nhập hoặc mua hàng.`
-      : `Bạn có chắc chắn muốn MỞ KHÓA tài khoản ${user.email}?`
-
-    if (!window.confirm(confirmText)) return
+    if (!window.confirm(`Bạn có chắc chắn muốn MỞ KHÓA tài khoản ${user.email}?`)) return
 
     try {
       setActionLoadingId(targetId)
-      const res = await userService.updateUserStatus(targetId, nextStatus)
+      const res = await userService.updateUserStatus(targetId, 'active')
       setAlertInfo({
         type: 'success',
-        message: res.message || `Đã cập nhật trạng thái người dùng thành công!`
+        message: res.message || 'Đã mở khóa tài khoản thành công!'
       })
-      // Cập nhật state cục bộ
-      setUsers(prev => prev.map(u => (u._id === targetId || u.id === targetId) ? { ...u, status: nextStatus } : u))
+      await fetchUsers()
     } catch (err: any) {
-      console.error('Lỗi cập nhật trạng thái:', err)
       setAlertInfo({
         type: 'error',
-        message: err.response?.data?.error || 'Có lỗi xảy ra khi cập nhật trạng thái tài khoản.'
+        message: err.response?.data?.error || 'Lỗi khi mở khóa tài khoản.'
       })
     } finally {
       setActionLoadingId(null)
+    }
+  }
+
+  // D1: Xử lý xác nhận Khóa tài khoản có thời hạn
+  const handleConfirmLock = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!lockModalUser) return
+    const targetId = lockModalUser._id || lockModalUser.id
+    if (!targetId) return
+
+    setLockSubmitting(true)
+    try {
+      let lockDurationHours: number | undefined
+      let lockExpiresAt: string | undefined
+
+      if (lockDurationType === '24h') lockDurationHours = 24
+      else if (lockDurationType === '3d') lockDurationHours = 72
+      else if (lockDurationType === '7d') lockDurationHours = 168
+      else if (lockDurationType === '30d') lockDurationHours = 720
+      else if (lockDurationType === 'custom' && customLockDate) {
+        lockExpiresAt = new Date(customLockDate).toISOString()
+      } else if (lockDurationType === 'permanent') {
+        lockDurationHours = undefined
+        lockExpiresAt = undefined
+      }
+
+      const res = await userService.updateUserStatus(targetId, 'locked', {
+        lockDurationHours,
+        lockExpiresAt,
+        lockReason: lockReason.trim() || undefined
+      })
+
+      setAlertInfo({ type: 'success', message: res.message || 'Đã khóa tài khoản thành công!' })
+      setLockModalUser(null)
+      setLockReason('')
+      await fetchUsers()
+    } catch (err: any) {
+      setAlertInfo({
+        type: 'error',
+        message: err.response?.data?.error || 'Có lỗi khi khóa tài khoản.'
+      })
+    } finally {
+      setLockSubmitting(false)
+    }
+  }
+
+  // D2: Gửi yêu cầu tạo tài khoản tới backend (POST /api/auth/users)
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setAlertInfo(null)
+    setCreateSubmitting(true)
+    try {
+      const res = await userService.createUser({
+        name: createForm.name.trim(),
+        email: createForm.email.trim(),
+        phone: createForm.phone.trim(),
+        password: createForm.password,
+        role: createForm.role
+      })
+      setAlertInfo({ type: 'success', message: res.message || 'Tạo tài khoản thành công!' })
+      setShowCreateModal(false)
+      setCreateForm({ name: '', email: '', phone: '', password: '', role: 'user' })
+      setPage(1)
+      await fetchUsers()
+    } catch (err: any) {
+      setAlertInfo({
+        type: 'error',
+        message: err.response?.data?.error || 'Không thể tạo tài khoản. Vui lòng kiểm tra lại dữ liệu.'
+      })
+    } finally {
+      setCreateSubmitting(false)
     }
   }
 
@@ -117,7 +199,7 @@ export default function AdminUsersTab() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded border flex items-center justify-between text-xs font-bold ${
+            className={`p-4 rounded-xl border flex items-center justify-between text-xs font-bold ${
               alertInfo.type === 'success'
                 ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500'
                 : 'bg-red-500/10 border-red-500/30 text-[#ff4655]'
@@ -129,7 +211,7 @@ export default function AdminUsersTab() {
             </div>
             <button 
               onClick={() => setAlertInfo(null)}
-              className="text-[10px] uppercase underline hover:opacity-80 ml-4"
+              className="text-[10px] uppercase underline hover:opacity-80 ml-4 cursor-pointer"
             >
               Đóng
             </button>
@@ -138,118 +220,122 @@ export default function AdminUsersTab() {
       </AnimatePresence>
 
       {/* Header & Stats Overview */}
-      <div className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6 shadow-sm">
+      <div className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-100 dark:border-zinc-850">
           <div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#ff4655] animate-ping" />
-              <h2 className="text-base font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-2">
-                <Users size={20} className="text-[#ff4655]" />
-                QUẢN LÝ TÀI KHOẢN & PHÂN QUYỀN
-              </h2>
+              <span className="text-[10px] font-black uppercase tracking-widest text-[#ff4655]">
+                Quản lý Người Dùng
+              </span>
             </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-              Kiểm soát trạng thái tài khoản, phân quyền quản trị viên, chủ shop và khách hàng
+            <h3 className="text-xl font-black text-zinc-900 dark:text-white uppercase tracking-tight mt-1 flex items-center gap-2">
+              <Users size={22} className="text-[#ff4655]" />
+              Danh Sách Tài Khoản Hệ Thống
+            </h3>
+            <p className="text-xs text-zinc-500 mt-0.5">
+              Tra cứu, quản lý phân quyền và kiểm soát trạng thái hoạt động của khách hàng, gian hàng và quản trị viên.
             </p>
           </div>
 
-          <button
-            onClick={() => fetchUsers()}
-            disabled={loading}
-            className="flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase rounded bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:text-[#ff4655] border border-zinc-200 dark:border-zinc-800 transition-colors"
-          >
-            <ArrowsClockwise size={14} className={loading ? 'animate-spin' : ''} />
-            Làm mới
-          </button>
+          <div className="flex items-center gap-2.5">
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#ff4655] hover:bg-[#e03d4b] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff4655]/20 cursor-pointer"
+            >
+              <Plus size={16} weight="bold" />
+              <span>Thêm tài khoản</span>
+            </button>
+
+            <button
+              onClick={fetchUsers}
+              disabled={loading}
+              className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-600 dark:text-zinc-300 transition-colors cursor-pointer"
+              title="Làm mới dữ liệu"
+            >
+              <ArrowsClockwise size={16} className={loading ? 'animate-spin' : ''} />
+            </button>
+          </div>
         </div>
 
-        {/* Filters and search row */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
-          {/* Search box */}
-          <div className="relative">
-            <MagnifyingGlass size={16} className="absolute left-3 top-3 text-zinc-400" />
+        {/* Filters Toolbar */}
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-6">
+          <div className="sm:col-span-6 relative">
+            <MagnifyingGlass size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
             <input
               type="text"
-              placeholder="Tìm theo tên, email, SĐT..."
+              placeholder="Tìm theo tên, email, số điện thoại..."
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value)
                 setPage(1)
               }}
-              className="w-full pl-9 pr-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded text-xs text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-[#ff4655]"
+              className="w-full pl-9 pr-4 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
             />
           </div>
 
-          {/* Role Filter */}
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold text-zinc-400 uppercase shrink-0 flex items-center gap-1">
-              <Funnel size={12} /> Vai trò:
-            </span>
+          <div className="sm:col-span-3">
             <select
               value={roleFilter}
               onChange={(e) => {
                 setRoleFilter(e.target.value)
                 setPage(1)
               }}
-              className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+              className="w-full px-3 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-[#ff4655]"
             >
               <option value="all">Tất cả vai trò</option>
-              <option value="user">Khách hàng (Customer)</option>
-              <option value="shop">Chủ cửa hàng (Shop Owner)</option>
+              <option value="user">Khách hàng (User)</option>
+              <option value="shop">Chủ cửa hàng (Shop)</option>
               <option value="admin">Quản trị viên (Admin)</option>
             </select>
           </div>
 
-          {/* Status Filter */}
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold text-zinc-400 uppercase shrink-0">Trạng thái:</span>
+          <div className="sm:col-span-3">
             <select
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value)
                 setPage(1)
               }}
-              className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded text-xs text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+              className="w-full px-3 py-2.5 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-[#ff4655]"
             >
               <option value="all">Tất cả trạng thái</option>
-              <option value="active">Đang hoạt động (Active)</option>
-              <option value="locked">Bị khóa (Locked)</option>
+              <option value="active">Đang hoạt động</option>
+              <option value="locked">Bị khóa</option>
             </select>
           </div>
         </div>
       </div>
 
-      {/* Users Data Table */}
-      <div className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden shadow-sm">
+      {/* Users Table */}
+      <div className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-zinc-50 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800 text-[10px] font-black uppercase text-zinc-400 tracking-wider">
+          <table className="w-full text-left text-xs text-zinc-600 dark:text-zinc-300">
+            <thead className="bg-zinc-50 dark:bg-zinc-900/60 border-b border-zinc-200 dark:border-zinc-800 text-[10px] uppercase font-black text-zinc-400 tracking-wider">
               <tr>
-                <th className="px-5 py-3">Người dùng</th>
-                <th className="px-5 py-3">Liên hệ</th>
-                <th className="px-5 py-3">Vai trò</th>
-                <th className="px-5 py-3">Trạng thái</th>
-                <th className="px-5 py-3">Ngày tham gia</th>
-                <th className="px-5 py-3 text-right">Thao tác</th>
+                <th className="px-5 py-3.5">Người dùng</th>
+                <th className="px-5 py-3.5">Số điện thoại</th>
+                <th className="px-5 py-3.5">Vai trò</th>
+                <th className="px-5 py-3.5">Trạng thái & Thời hạn khóa</th>
+                <th className="px-5 py-3.5">Ngày tạo</th>
+                <th className="px-5 py-3.5 text-right">Thao tác</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-850 font-medium">
+            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-850">
               {loading ? (
-                [...Array(5)].map((_, i) => (
-                  <tr key={i} className="animate-pulse">
-                    <td className="px-5 py-4"><div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-32" /></td>
-                    <td className="px-5 py-4"><div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-28" /></td>
-                    <td className="px-5 py-4"><div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-16" /></td>
-                    <td className="px-5 py-4"><div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-20" /></td>
-                    <td className="px-5 py-4"><div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-24" /></td>
-                    <td className="px-5 py-4 text-right"><div className="h-6 bg-zinc-200 dark:bg-zinc-800 rounded w-16 ml-auto" /></td>
-                  </tr>
-                ))
+                <tr>
+                  <td colSpan={6} className="px-5 py-12 text-center text-zinc-400">
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="w-6 h-6 border-2 border-[#ff4655] border-t-transparent rounded-full animate-spin" />
+                      <span className="text-xs font-semibold">Đang tải danh sách người dùng...</span>
+                    </div>
+                  </td>
+                </tr>
               ) : users.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-5 py-12 text-center text-zinc-400">
                     <Users size={32} className="mx-auto mb-2 opacity-40" />
-                    <p className="text-xs font-semibold">Không tìm thấy tài khoản người dùng nào phù hợp.</p>
+                    <p className="text-xs font-semibold">Không tìm thấy tài khoản người dùng nào phù hợp</p>
                   </td>
                 </tr>
               ) : (
@@ -307,12 +393,23 @@ export default function AdminUsersTab() {
                         )}
                       </td>
 
-                      {/* Status */}
+                      {/* Status & Lock Info (D1) */}
                       <td className="px-5 py-4">
                         {isLocked ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-red-500/10 text-red-500 border border-red-500/30">
-                            <Lock size={12} weight="fill" /> Bị khóa
-                          </span>
+                          <div className="space-y-1">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-red-500/10 text-red-500 border border-red-500/30">
+                              <Lock size={12} weight="fill" /> Bị khóa
+                            </span>
+                            <div className="flex items-center gap-1 text-[10px] text-zinc-400 font-semibold">
+                              <Clock size={11} className="text-amber-500" />
+                              <span>{formatLockRemaining(u.lockExpiresAt)}</span>
+                            </div>
+                            {u.lockReason && (
+                              <div className="text-[10px] text-zinc-500 italic max-w-xs truncate" title={u.lockReason}>
+                                Lý do: {u.lockReason}
+                              </div>
+                            )}
+                          </div>
                         ) : (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-500 border border-emerald-500/30">
                             <CheckCircle size={12} weight="fill" /> Hoạt động
@@ -329,29 +426,32 @@ export default function AdminUsersTab() {
                       <td className="px-5 py-4 text-right">
                         {isSelf ? (
                           <span className="text-[10px] text-zinc-400 italic">Không thể thao tác</span>
-                        ) : (
+                        ) : isLocked ? (
                           <button
-                            onClick={() => handleToggleStatus(u)}
+                            onClick={() => handleUnlockUser(u)}
                             disabled={actionLoadingId === targetId}
-                            className={`px-3 py-1.5 rounded text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 ml-auto border ${
-                              isLocked
-                                ? 'bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 border-emerald-500/30 shadow-sm'
-                                : 'bg-red-500/10 hover:bg-red-500/20 text-[#ff4655] border-red-500/30 shadow-sm'
-                            }`}
+                            className="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 ml-auto border bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 border-emerald-500/30 shadow-sm cursor-pointer"
                           >
                             {actionLoadingId === targetId ? (
                               <div className="w-3 h-3 border border-current border-t-transparent rounded-full animate-spin" />
-                            ) : isLocked ? (
+                            ) : (
                               <>
                                 <LockOpen size={12} weight="bold" />
                                 <span>Mở khóa</span>
                               </>
-                            ) : (
-                              <>
-                                <Lock size={12} weight="bold" />
-                                <span>Khóa tài khoản</span>
-                              </>
                             )}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setLockModalUser(u)
+                              setLockDurationType('24h')
+                              setLockReason('')
+                            }}
+                            className="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1.5 ml-auto border bg-red-500/10 hover:bg-red-500/20 text-[#ff4655] border-red-500/30 shadow-sm cursor-pointer"
+                          >
+                            <Lock size={12} weight="bold" />
+                            <span>Khóa tài khoản</span>
                           </button>
                         )}
                       </td>
@@ -373,14 +473,14 @@ export default function AdminUsersTab() {
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page <= 1}
-                className="px-3 py-1 rounded bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 disabled:opacity-40 font-bold"
+                className="px-3 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 disabled:opacity-40 font-bold cursor-pointer"
               >
                 Trước
               </button>
               <button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page >= totalPages}
-                className="px-3 py-1 rounded bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 disabled:opacity-40 font-bold"
+                className="px-3 py-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 disabled:opacity-40 font-bold cursor-pointer"
               >
                 Sau
               </button>
@@ -388,6 +488,213 @@ export default function AdminUsersTab() {
           </div>
         )}
       </div>
+
+      {/* D1: Modal Khóa tài khoản có thời hạn */}
+      <AnimatePresence>
+        {lockModalUser && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4"
+            >
+              <div className="flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-3">
+                <h4 className="text-sm font-black uppercase text-zinc-900 dark:text-white flex items-center gap-2">
+                  <Lock size={18} className="text-[#ff4655]" weight="bold" />
+                  KHÓA TÀI KHOẢN CÓ THỜI HẠN
+                </h4>
+                <button onClick={() => setLockModalUser(null)} className="text-zinc-400 hover:text-white p-1 rounded-xl cursor-pointer">
+                  <X size={16} />
+                </button>
+              </div>
+
+              <div className="p-3 bg-zinc-50 dark:bg-zinc-800/60 rounded-2xl text-xs space-y-1 border border-zinc-200/60 dark:border-zinc-700/60">
+                <div className="font-bold text-zinc-900 dark:text-white">{lockModalUser.name}</div>
+                <div className="text-[11px] text-zinc-400 font-mono">{lockModalUser.email}</div>
+              </div>
+
+              <form onSubmit={handleConfirmLock} className="space-y-3.5 text-xs">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-zinc-400 mb-1.5">
+                    Thời hạn khóa tài khoản *
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: '24h', label: '1 Ngày (24h)' },
+                      { id: '3d', label: '3 Ngày' },
+                      { id: '7d', label: '7 Ngày' },
+                      { id: '30d', label: '30 Ngày' },
+                      { id: 'custom', label: 'Tùy chọn' },
+                      { id: 'permanent', label: 'Vĩnh viễn' }
+                    ].map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setLockDurationType(opt.id as any)}
+                        className={`py-2 px-2.5 rounded-xl text-center font-bold text-[11px] border transition-all cursor-pointer ${
+                          lockDurationType === opt.id
+                            ? 'bg-[#ff4655] text-white border-[#ff4655] shadow-sm'
+                            : 'bg-zinc-50 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {lockDurationType === 'custom' && (
+                  <div>
+                    <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">
+                      Chọn thời điểm mở khóa cụ thể *
+                    </label>
+                    <input
+                      type="datetime-local"
+                      required
+                      value={customLockDate}
+                      onChange={(e) => setCustomLockDate(e.target.value)}
+                      className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white"
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">
+                    Lý do khóa (sẽ hiển thị cho khách hàng khi đăng nhập)
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder="VD: Vi phạm điều khoản đánh giá, nghi vấn gian lận..."
+                    value={lockReason}
+                    onChange={(e) => setLockReason(e.target.value)}
+                    className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white"
+                  />
+                </div>
+
+                <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-[11px] text-amber-500 flex items-start gap-2">
+                  <Info size={16} className="shrink-0 mt-0.5" weight="bold" />
+                  <span>Khi hết thời gian khóa, hệ thống sẽ tự động kích hoạt lại tài khoản của khách hàng khi họ đăng nhập lại.</span>
+                </div>
+
+                <div className="pt-2 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setLockModalUser(null)}
+                    className="flex-1 py-2.5 px-3 rounded-xl border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 font-bold cursor-pointer"
+                  >
+                    Hủy bỏ
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={lockSubmitting}
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-[#ff4655] hover:bg-[#e03d4b] disabled:opacity-50 text-white font-black uppercase tracking-wider cursor-pointer"
+                  >
+                    {lockSubmitting ? 'Đang xử lý...' : 'Xác nhận khóa'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* D2: Modal tạo tài khoản mới */}
+      <AnimatePresence>
+        {showCreateModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 max-w-md w-full shadow-2xl space-y-4"
+            >
+              <div className="flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-3">
+                <h4 className="text-sm font-black uppercase text-zinc-900 dark:text-white flex items-center gap-2">
+                  <Plus size={18} className="text-[#ff4655]" weight="bold" />
+                  TẠO TÀI KHOẢN MỚI
+                </h4>
+                <button onClick={() => setShowCreateModal(false)} className="text-zinc-400 hover:text-white p-1 rounded-xl cursor-pointer">
+                  <X size={16} />
+                </button>
+              </div>
+
+              <form onSubmit={handleCreateUser} className="space-y-3 text-xs">
+                <div>
+                  <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Họ và tên *</label>
+                  <input
+                    type="text"
+                    required
+                    value={createForm.name}
+                    onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Email *</label>
+                  <input
+                    type="email"
+                    required
+                    value={createForm.email}
+                    onChange={(e) => setCreateForm({ ...createForm, email: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Số điện thoại</label>
+                  <input
+                    type="tel"
+                    value={createForm.phone}
+                    onChange={(e) => setCreateForm({ ...createForm, phone: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">
+                    Mật khẩu tạm * (tối thiểu 6 ký tự)
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    minLength={6}
+                    value={createForm.password}
+                    onChange={(e) => setCreateForm({ ...createForm, password: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white font-mono"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Vai trò *</label>
+                  <select
+                    value={createForm.role}
+                    onChange={(e) => setCreateForm({ ...createForm, role: e.target.value })}
+                    className="w-full p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white"
+                  >
+                    <option value="user">Khách hàng (Customer)</option>
+                    <option value="shop">Chủ cửa hàng (Shop Owner - Tự động liên kết Shop)</option>
+                  </select>
+                </div>
+
+                <div className="pt-2 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowCreateModal(false)}
+                    className="flex-1 py-2.5 px-3 rounded-xl border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 font-bold cursor-pointer"
+                  >
+                    Hủy bỏ
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={createSubmitting}
+                    className="flex-1 py-2.5 px-3 rounded-xl bg-[#ff4655] hover:bg-[#e03d4b] disabled:opacity-50 text-white font-black uppercase tracking-wider cursor-pointer"
+                  >
+                    {createSubmitting ? 'Đang tạo...' : 'Tạo tài khoản'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

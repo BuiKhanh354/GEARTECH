@@ -46,12 +46,24 @@ const ProductSchema = new mongoose.Schema({
   rating: { type: Number, default: 5.0, min: 0, max: 5 },
   reviewsCount: { type: Number, default: 0 },
   salesCount: { type: String, default: 'ĐÃ BÁN 0' },
-  stock: { 
-    type: Number, 
-    required: [true, 'Số lượng tồn kho không được để trống'], 
-    default: 10, 
-    min: [0, 'Số lượng tồn kho không được âm'] 
+  // Số lượng đã bán thực tế (đếm từ đơn hàng COMPLETED, do backend cập nhật)
+  soldCount: { type: Number, default: 0, min: 0 },
+  stock: {
+    type: Number,
+    required: [true, 'Số lượng tồn kho không được để trống'],
+    default: 10,
+    min: [0, 'Số lượng tồn kho không được âm']
   },
+  // =========================================================================
+  // C3: PHÂN BIỆT TỒN KHO VẬT LÝ VÀ SỐ LƯỢNG ĐĂNG BÁN
+  // - warehouseStock: tồn kho vật lý trong kho (chưa phân bổ đăng bán)
+  // - listedQty: tổng số lượng đã phân bổ để đăng bán (thống kê)
+  // - stock: số lượng CÓ THỂ BÁN hiện tại (nguồn sự thật khi checkout)
+  // Luồng: Nhập kho -> warehouseStock tăng. Đăng bán x (x <= warehouseStock)
+  // -> warehouseStock -= x, stock += x, listedQty += x. Bán hàng -> stock giảm.
+  // =========================================================================
+  warehouseStock: { type: Number, default: null, min: 0 },
+  listedQty: { type: Number, default: 0, min: 0 },
   status: {
     type: String,
     enum: ['active', 'hidden', 'out_of_stock', 'inactive'],
@@ -80,6 +92,13 @@ ProductSchema.pre('validate', function() {
   }
   if (!this.sku) {
     this.sku = 'GT-' + Date.now().toString(36).toUpperCase();
+  }
+  // Tương thích dữ liệu cũ: sản phẩm chưa từng dùng phân bổ kho thì toàn bộ stock coi như đã đăng bán
+  if (this.warehouseStock === null || this.warehouseStock === undefined) {
+    this.warehouseStock = 0;
+  }
+  if (this.stock > 0 && this.listedQty === 0) {
+    this.listedQty = this.stock;
   }
   if (this.stock === 0 && this.status === 'active') {
     this.status = 'out_of_stock';

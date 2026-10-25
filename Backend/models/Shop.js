@@ -5,6 +5,7 @@ const defaultStorefrontConfig = {
   template: 'modern-tech', // 'modern-tech' | 'minimal' | 'gaming'
   primaryColor: '#ff4655', // Màu chủ đạo (mặc định đỏ gaming GearTech)
   secondaryColor: '#18181b', // Màu phụ (mặc định nền tối zinc-900)
+  textColor: '#ffffff', // Màu chữ nội dung gian hàng (C1)
   bannerUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1920&q=80',
   logoUrl: '',
   announcement: 'Chào mừng bạn đến với gian hàng chính hãng GearTech! Cam kết 100% hàng mới full box, bảo hành chính hãng.',

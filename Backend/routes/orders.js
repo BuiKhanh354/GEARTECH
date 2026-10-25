@@ -201,9 +201,32 @@ router.post('/', auth, async (req, res) => {
       return res.status(400).json({ error: 'Vui lòng cung cấp địa chỉ nhận hàng và số điện thoại liên lạc.' });
     }
 
+    // 1. Kiểm tra trạng thái tài khoản người dùng (Phần D1 prompt.md)
+    const currentUser = await User.findById(req.user.id || req.user._id);
+    if (!currentUser) {
+      return res.status(404).json({ error: 'Người dùng không tồn tại.' });
+    }
+    if (currentUser.status === 'locked') {
+      const now = new Date();
+      if (currentUser.lockExpiresAt && currentUser.lockExpiresAt <= now) {
+        currentUser.status = 'active';
+        currentUser.lockExpiresAt = null;
+        currentUser.lockReason = null;
+        await currentUser.save();
+      } else {
+        const remainingStr = currentUser.lockExpiresAt ? ` đến ${new Date(currentUser.lockExpiresAt).toLocaleString('vi-VN')}` : '';
+        return res.status(403).json({
+          error: `Tài khoản của bạn đang bị khóa${remainingStr}. Lý do: ${currentUser.lockReason || 'Vi phạm điều khoản chính sách'}. Không thể thực hiện mua hàng hoặc thanh toán.`
+        });
+      }
+    }
+
     // Chuẩn bị thông tin khách hàng
     const customer = await getCustomerForUser(req.user.id);
     const customerId = customer ? customer._id : null;
+
+    // Tải giỏ hàng để kiểm tra chính sách bảo lưu giá khuyến mãi 48 giờ (Phần E prompt.md)
+    const userCart = await Cart.findOne({ userId: req.user.id || req.user._id });
 
     // Phân tích và nhóm sản phẩm theo shop_id để hỗ trợ mô hình Multi-Shop
     // Mỗi shop sẽ có 1 đơn hàng độc lập, giúp chủ shop chỉ quản lý đơn của mình
@@ -223,14 +246,14 @@ router.post('/', auth, async (req, res) => {
       }
 
       if (product.status !== 'active') {
-        return res.status(400).json({ 
-          error: `Sản phẩm "${product.title}" hiện đã ngừng kinh doanh hoặc đang tạm khóa.` 
+        return res.status(400).json({
+          error: `Sản phẩm "${product.title}" hiện đã ngừng kinh doanh hoặc đang tạm khóa.`
         });
       }
 
       if (product.stock < qty) {
-        return res.status(400).json({ 
-          error: `Sản phẩm "${product.title}" không đủ tồn kho (chỉ còn ${product.stock} cái, bạn chọn ${qty} cái).` 
+        return res.status(400).json({
+          error: `Sản phẩm "${product.title}" không đủ tồn kho (chỉ còn ${product.stock} cái, bạn chọn ${qty} cái).`
         });
       }
 
@@ -240,7 +263,7 @@ router.post('/', auth, async (req, res) => {
       // Kiểm tra trạng thái shop
       if (product.shopId && product.shopId.status && product.shopId.status !== 'active') {
         return res.status(400).json({
-          error: `Cửa hàng "${product.shopId.shopName || 'Bán lẻ'}" hiện đang tạm ngừng hoạt động.`
+          error: `Cửa hàng "${product.shopId.shopName || product.shopId.name || 'Bán lẻ'}" hiện đang tạm ngừng hoạt động.`
         });
       }
 
@@ -251,8 +274,17 @@ router.post('/', auth, async (req, res) => {
         });
       }
 
-      // Giá được lấy trực tiếp từ database, tuyệt đối không tin giá client
-      const authoritativePrice = product.price;
+      // Giá được lấy trực tiếp từ database hoặc bảo lưu từ giỏ hàng nếu còn trong 48 giờ
+      let authoritativePrice = product.price;
+      if (userCart && Array.isArray(userCart.items)) {
+        const cartItem = userCart.items.find(ci => ci.productId.toString() === pId.toString());
+        if (cartItem && cartItem.priceLockExpiresAt && new Date(cartItem.priceLockExpiresAt) > new Date()) {
+          if (cartItem.price && cartItem.price < authoritativePrice) {
+            authoritativePrice = cartItem.price;
+          }
+        }
+      }
+
       const subtotal = authoritativePrice * qty;
 
       shopGroupMap.get(shopIdStr).items.push({
@@ -263,7 +295,7 @@ router.post('/', auth, async (req, res) => {
       });
     }
 
-    // Xử lý mã voucher nếu có (Section 3.17)
+    // Xử lý mã voucher nếu có (Section 3.17 & C3 Shop Vouchers)
     let totalDiscount = 0;
     let appliedVoucher = null;
     if (voucherCode) {
@@ -277,10 +309,14 @@ router.post('/', auth, async (req, res) => {
         const max = Number(v.maxUses || v.quantity || 100);
         const minOrder = Number(v.minOrderValue || (v.min_order_amount ? v.min_order_amount.toString() : 0));
 
-        let overallCartTotal = 0;
+        // Tính tổng tiền khả dụng áp dụng mã (nếu voucher của shop thì chỉ tính sản phẩm của shop đó)
+        let eligibleCartTotal = 0;
         for (const g of shopGroupMap.values()) {
-          for (const it of g.items) {
-            overallCartTotal += it.subtotal;
+          const isEligibleShop = !v.shopId || String(g.shopId) === String(v.shopId);
+          if (isEligibleShop) {
+            for (const it of g.items) {
+              eligibleCartTotal += it.subtotal;
+            }
           }
         }
 
@@ -288,7 +324,7 @@ router.post('/', auth, async (req, res) => {
                         (!start || start <= now) &&
                         (!expiry || expiry >= now) &&
                         (currentUses < max) &&
-                        (overallCartTotal >= minOrder);
+                        (eligibleCartTotal >= minOrder && eligibleCartTotal > 0);
 
         if (isValid) {
           appliedVoucher = v;
@@ -297,7 +333,7 @@ router.post('/', auth, async (req, res) => {
           const maxCap = Number(v.maxDiscount || (v.max_discount ? v.max_discount.toString() : 0));
 
           if (isPct) {
-            totalDiscount = Math.round((overallCartTotal * val) / 100);
+            totalDiscount = Math.round((eligibleCartTotal * val) / 100);
             if (maxCap > 0 && totalDiscount > maxCap) {
               totalDiscount = maxCap;
             }
@@ -305,8 +341,8 @@ router.post('/', auth, async (req, res) => {
             totalDiscount = val;
           }
 
-          if (totalDiscount > overallCartTotal) {
-            totalDiscount = overallCartTotal;
+          if (totalDiscount > eligibleCartTotal) {
+            totalDiscount = eligibleCartTotal;
           }
 
           v.usesCount = currentUses + 1;
@@ -329,6 +365,20 @@ router.post('/', auth, async (req, res) => {
       const embeddedItems = [];
       const orderItemDocs = [];
 
+      // Xác định mức giảm giá cho shop này
+      let shopDiscount = 0;
+      if (appliedVoucher) {
+        if (appliedVoucher.shopId) {
+          // Voucher riêng của shop: toàn bộ giảm giá thuộc về shop này nếu trùng khớp
+          if (String(group.shopId) === String(appliedVoucher.shopId)) {
+            shopDiscount = totalDiscount;
+          }
+        } else {
+          // Voucher toàn sàn: phân bổ theo số lượng shop
+          shopDiscount = discountPerShop;
+        }
+      }
+
       for (const entry of group.items) {
         const { product, qty, authoritativePrice, subtotal } = entry;
         shopSubtotal += subtotal;
@@ -350,9 +400,30 @@ router.post('/', auth, async (req, res) => {
           shopId: group.shopId
         });
 
-        // Trừ tồn kho sản phẩm trực tiếp và an toàn
-        product.stock -= qty;
-        await product.save();
+        // Trừ tồn kho NGUYÊN TỬ: chỉ trừ khi còn đủ hàng trong kho khả dụng.
+        // Điều kiện stock >= qty trong chính câu update giúp chống bán vượt tồn
+        // khi nhiều đơn hàng đặt cùng lúc (race condition).
+        const decremented = await Product.findOneAndUpdate(
+          { _id: product._id, stock: { $gte: qty } },
+          { $inc: { stock: -qty } },
+          { new: true }
+        );
+
+        if (!decremented) {
+          // Đơn này không thể tạo vì đã có đơn khác "chớp" mất hàng -> hủy toàn bộ phiên đặt
+          for (const ord of createdOrders) {
+            for (const it of ord.items) {
+              await Product.updateOne(
+                { _id: it.productId || it.product_id },
+                { $inc: { stock: it.quantity || it.qty || 1 } }
+              );
+            }
+            await Order.findByIdAndDelete(ord._id);
+          }
+          return res.status(400).json({
+            error: `Sản phẩm "${product.title}" vừa hết hàng do một đơn hàng khác đã đặt trước. Vui lòng thử lại!`
+          });
+        }
 
         // Ghi nhận biến động xuất kho (3.14 stock_movements)
         if (group.shopId) {
@@ -369,8 +440,8 @@ router.post('/', auth, async (req, res) => {
 
       // Tính phí vận chuyển (mặc định 30,000 VND / shop hoặc tuỳ chỉnh)
       const shippingFee = 30000;
-      const shopDiscount = Math.min(shopSubtotal, discountPerShop);
-      const finalAmount = Math.max(0, shopSubtotal - shopDiscount + shippingFee);
+      const actualShopDiscount = Math.min(shopSubtotal, shopDiscount);
+      const finalAmount = Math.max(0, shopSubtotal - actualShopDiscount + shippingFee);
 
       // Địa chỉ giao hàng
       let addressString = '';
@@ -407,7 +478,7 @@ router.post('/', auth, async (req, res) => {
         voucherCode: voucherCode || null,
 
         totalAmount: shopSubtotal,
-        discountAmount: shopDiscount,
+        discountAmount: actualShopDiscount,
         shippingFee: shippingFee,
         finalAmount: finalAmount,
 
@@ -605,6 +676,24 @@ router.put('/:id/status', auth, async (req, res) => {
       order.paymentStatus = 'paid';
       order.payment_status = 'paid';
       await Payment.updateOne({ order_id: order._id }, { payment_status: 'paid', paid_at: new Date() });
+
+      // B1: Cập nhật số lượng ĐÃ BÁN thực tế cho từng sản phẩm trong đơn.
+      // Chỉ chạy khi đơn chuyển SANG completed (previousStatus khác completed
+      // đã được chặn ở trên), nên không bao giờ cộng trùng lặp.
+      const soldProducts = new Set();
+      for (const it of order.items) {
+        const pId = it.productId || it.product_id;
+        const q = it.quantity || it.qty || 1;
+        if (!pId || soldProducts.has(String(pId))) continue;
+        soldProducts.add(String(pId));
+
+        const prod = await Product.findById(pId);
+        if (prod) {
+          prod.soldCount = (prod.soldCount || 0) + q;
+          prod.salesCount = `ĐÃ BÁN ${prod.soldCount}`;
+          await prod.save();
+        }
+      }
     }
 
     await order.save();

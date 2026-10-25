@@ -5,7 +5,7 @@ import {
 type TabType = 
   | 'profile' | 'orders' | 'vouchers' | 'favorites' | 'security' 
   | 'admin-overview' | 'admin-users' | 'admin-shops' | 'admin-categories' | 'admin-brands' | 'admin-vouchers' | 'admin-showrooms' | 'admin-orders'
-  | 'shop-overview' | 'shop-products' | 'shop-orders' | 'shop-inventory' | 'shop-suppliers' | 'shop-storefront'
+  | 'shop-overview' | 'shop-products' | 'shop-orders' | 'shop-inventory' | 'shop-suppliers' | 'shop-storefront' | 'shop-vouchers'
 
 interface ProfileSidebarProps {
   currentUser: any;
@@ -198,6 +198,16 @@ export default function ProfileSidebar({ currentUser, currentShop: _currentShop,
               }`}
             >
               <PaintBrush size={16} /> Trang trí gian hàng (Storefront)
+            </button>
+            <button
+              onClick={() => setActiveTab('shop-vouchers')}
+              className={`text-[10px] text-left px-4 py-3 rounded-sm font-black uppercase tracking-wider transition-all border-l-2 flex items-center gap-3.5 ${
+                activeTab === 'shop-vouchers'
+                  ? 'bg-[#ff4655]/5 text-[#ff4655] border-l-[#ff4655]'
+                  : 'border-l-transparent text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 hover:text-zinc-900 dark:hover:text-white'
+              }`}
+            >
+              <Ticket size={16} /> Mã giảm giá của Shop
             </button>
           </>
         )}

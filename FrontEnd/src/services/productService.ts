@@ -36,6 +36,7 @@ export interface ProductItem {
   rating: number
   reviewsCount: number
   salesCount: string
+  soldCount?: number
   stock: number
   status: 'active' | 'hidden' | 'out_of_stock' | 'inactive'
   shopId: any

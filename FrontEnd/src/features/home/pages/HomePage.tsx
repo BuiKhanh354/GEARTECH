@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
-import { 
-  Laptop,
-  Desktop,
-  Cpu,
-  Monitor,
-  Keyboard,
-  Mouse,
-  Headphones,
-  Watch,
-  Plug,
+import {
   Lightning,
   Flame,
   ArrowRight,
@@ -27,6 +18,7 @@ import {
   ArrowUpRight
 } from '@phosphor-icons/react'
 import { productService, type ProductItem } from '../../../services/productService'
+import { categoryService } from '../../../services/categoryService'
 import { shopService, type ShopItem } from '../../../services/shopService'
 import { useCartStore } from '../../../store/cartStore'
 import { SafeProductImage } from '../../../components/common/ProductImage'
@@ -103,19 +95,26 @@ const HomePage: React.FC = () => {
     fetchData()
   }, [])
 
-  // Tech categories with clean tags
-  const categories: Category[] = [
-    { id: '1', name: 'LAPTOP & MACBOOK', slug: 'laptops', icon: <Laptop size={24} />, subtitle: 'Gaming & AI' },
-    { id: '2', name: 'PC & WORKSTATION', slug: 'desktops', icon: <Desktop size={24} />, subtitle: 'Đồ họa & Render' },
-    { id: '3', name: 'LINH KIỆN MÁY TÍNH', slug: 'components', icon: <Cpu size={24} />, subtitle: 'CPU, VGA, RAM' },
-    { id: '4', name: 'MÀN HÌNH ĐỒ HỌA', slug: 'monitors', icon: <Monitor size={24} />, subtitle: '240Hz, 4K HDR' },
-    { id: '5', name: 'BÀN PHÍM CƠ', slug: 'peripherals', icon: <Keyboard size={24} />, subtitle: 'Custom & Wireless' },
-    { id: '6', name: 'CHUỘT GAMING', slug: 'peripherals', icon: <Mouse size={24} />, subtitle: 'Siêu nhẹ & 8KHz' },
-    { id: '7', name: 'TAI NGHE CHỤP TAI', slug: 'audio', icon: <Headphones size={24} />, subtitle: 'Hi-Res Spatial' },
-    { id: '8', name: 'SMARTWATCH', slug: 'smart-devices', icon: <Watch size={24} />, subtitle: 'Đo sức khỏe' },
-    { id: '9', name: 'CỦ SẠC & DÂY CÁP', slug: 'accessories', icon: <Plug size={24} />, subtitle: 'GaN 140W' },
-    { id: '10', name: 'PHỤ KIỆN HIGH-TECH', slug: 'accessories', icon: <Lightning size={24} />, subtitle: 'Stream & Setup' },
-  ]
+  // Danh mục hiển thị lấy THẬT từ MongoDB qua /api/categories
+  // (Admin thêm/sửa/ẩn danh mục sẽ tự động phản ánh tại đây)
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    let cancelled = false
+    categoryService.getCategories()
+      .then((cats) => {
+        if (cancelled || !Array.isArray(cats)) return
+        setCategories(cats.map((c) => ({
+          id: c._id || c.slug,
+          name: c.name,
+          slug: c.slug,
+          icon: <span className="text-xl leading-none">{c.icon || '📦'}</span>,
+          subtitle: (c.description || '').slice(0, 40)
+        })))
+      })
+      .catch((err) => console.error('Lỗi nạp danh mục trang chủ:', err))
+    return () => { cancelled = true }
+  }, [])
 
   // Filter flash sale products from real API
   const flashSaleProducts = allProducts.slice(0, 5)
@@ -584,16 +583,13 @@ const HomePage: React.FC = () => {
                       {prod.title}
                     </h4>
 
-                    {/* Progress Bar Bán Chạy */}
+                    {/* Số lượng đã bán THẬT từ database (soldCount) */}
                     <div className="space-y-1">
                       <div className="flex justify-between text-[9px] font-mono font-bold text-zinc-400">
                         <span className="text-[#ff4655] flex items-center gap-0.5">
-                          <Flame size={10} weight="fill" /> ĐÃ BÁN 75%
+                          <Flame size={10} weight="fill" /> ĐÃ BÁN {prod.soldCount ?? 0}
                         </span>
-                        <span>SẴN HÀNG</span>
-                      </div>
-                      <div className="w-full h-1.5 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-amber-500 to-[#ff4655] rounded-full w-[75%] animate-pulse"></div>
+                        <span>{(prod.stock ?? 0) > 0 ? `CÒN ${prod.stock} SẢN PHẨM` : 'HẾT HÀNG'}</span>
                       </div>
                     </div>
 
@@ -858,7 +854,7 @@ const HomePage: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
-            className="fixed bottom-6 right-6 z-50 bg-zinc-900 text-white px-5 py-3 rounded-lg shadow-2xl border border-zinc-700 flex items-center gap-3 text-xs font-bold backdrop-blur-md"
+            className="fixed bottom-24 right-6 z-50 bg-zinc-900 text-white px-5 py-3 rounded-lg shadow-2xl border border-zinc-700 flex items-center gap-3 text-xs font-bold backdrop-blur-md"
           >
             <CheckCircle size={18} className="text-emerald-400" weight="fill" />
             <span>{addedToast}</span>

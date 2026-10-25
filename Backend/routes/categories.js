@@ -46,9 +46,16 @@ router.get('/', async (req, res) => {
 
     // Nếu client yêu cầu dạng cây phân cấp cha/con
     if (tree === 'true') {
-      const topLevel = categories.filter(c => !c.parent_id);
+      const getParentIdStr = (c) => {
+        const pid = c.parent_id || c.parent_category_id;
+        if (!pid || pid === 'null' || pid === '' || pid === '0') return null;
+        return pid._id ? pid._id.toString() : pid.toString();
+      };
+
+      const topLevel = categories.filter(c => !getParentIdStr(c));
       const categoryTree = topLevel.map(parent => {
-        const children = categories.filter(c => c.parent_id && c.parent_id._id.toString() === parent._id.toString());
+        const pIdStr = parent._id.toString();
+        const children = categories.filter(c => getParentIdStr(c) === pIdStr);
         return {
           ...parent.toObject(),
           children

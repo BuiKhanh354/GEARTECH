@@ -18,6 +18,17 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
 
+  // E1: Loc don hang theo trang thai xu ly
+  const [statusFilter, setStatusFilter] = useState<string>('all')
+  const STATUS_FILTERS = [
+    { key: 'all', label: 'Tất cả' },
+    { key: 'pending', label: 'Chờ xác nhận' },
+    { key: 'confirmed', label: 'Đã xác nhận' },
+    { key: 'shipping', label: 'Đang vận chuyển' },
+    { key: 'completed', label: 'Hoàn tất' },
+    { key: 'cancelled', label: 'Đã hủy' }
+  ]
+
   // Payment Modal State
   const [paymentModalOrder, setPaymentModalOrder] = useState<any | null>(null)
   const [paymentIntentData, setPaymentIntentData] = useState<any | null>(null)
@@ -204,6 +215,30 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
         </div>
       )}
 
+      {/* E1: Bộ lọc theo trạng thái đơn hàng */}
+      {userOrders.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {STATUS_FILTERS.map((f) => {
+            const count = f.key === 'all'
+              ? userOrders.length
+              : userOrders.filter((o) => (o.orderStatus || o.order_status || 'pending') === f.key).length
+            return (
+              <button
+                key={f.key}
+                onClick={() => setStatusFilter(f.key)}
+                className={`px-3 py-1.5 rounded text-[10px] font-bold uppercase tracking-wider transition-all ${
+                  statusFilter === f.key
+                    ? 'bg-[#ff4655] text-white shadow-sm'
+                    : 'bg-zinc-100 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                }`}
+              >
+                {f.label} ({count})
+              </button>
+            )
+          })}
+        </div>
+      )}
+
       <div className="space-y-4">
         {userOrders.length === 0 ? (
           <div className="text-center py-12 border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg">
@@ -212,7 +247,9 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
             <p className="text-[10px] text-zinc-400 mt-1">Các thiết bị công nghệ bạn đặt mua sẽ hiển thị chi tiết tại đây</p>
           </div>
         ) : (
-          userOrders.map((ord) => {
+          userOrders
+            .filter((ord) => statusFilter === 'all' || (ord.orderStatus || ord.order_status || 'pending') === statusFilter)
+            .map((ord) => {
             const status = ord.orderStatus || ord.order_status || 'pending'
             const paymentStatus = ord.paymentStatus || ord.payment_status || 'pending'
             const paymentMethod = ord.paymentMethod || ord.payment_method || 'COD'
