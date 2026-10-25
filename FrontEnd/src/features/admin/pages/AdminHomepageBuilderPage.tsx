@@ -14,6 +14,7 @@ import {
 } from '../../../services/homepageService'
 import { formatPrice } from '../../../utils/format'
 import { SafeProductImage } from '../../../components/common/ProductImage'
+import type { ProductItem } from '../../../services/productService'
 
 const SECTION_TYPE_INFO: Record<SectionType, { label: string; icon: any; color: string; desc: string }> = {
   category_products: {
@@ -62,11 +63,19 @@ const SECTION_TYPE_INFO: Record<SectionType, { label: string; icon: any; color: 
 
 export default function AdminHomepageBuilderPage() {
   const [sections, setSections] = useState<HomepageSection[]>([])
-  const [categories, setCategories] = useState<{ _id: string; name: string; slug: string; parent_id: string | null }[]>([])
+  const [categories, setCategories] = useState<{ _id: string; name: string; slug: string; parent_id: string | null; productCount?: number }[]>([])
   const [publishedVersion, setPublishedVersion] = useState<number>(1)
   const [publishedAt, setPublishedAt] = useState<string | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   
+  // Workspace Tab: Builder (Split view) vs Live Fullpage Preview
+  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState<'builder' | 'live_preview'>('builder')
+  
+  // Real-time live product preview for selected category
+  const [categoryPreviewProducts, setCategoryPreviewProducts] = useState<ProductItem[]>([])
+  const [categoryPreviewTotal, setCategoryPreviewTotal] = useState<number>(0)
+  const [categoryPreviewLoading, setCategoryPreviewLoading] = useState(false)
+
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [publishing, setPublishing] = useState(false)
@@ -121,6 +130,72 @@ export default function AdminHomepageBuilderPage() {
   }, [loadConfig])
 
   const selectedSection = sections.find(s => s.sectionKey === selectedKey) || sections[0]
+
+  // Real-time live query for category products in editor
+  const fetchCategoryPreview = useCallback(async () => {
+    if (!selectedSection || selectedSection.type !== 'category_products') {
+      setCategoryPreviewProducts([])
+      setCategoryPreviewTotal(0)
+      return
+    }
+
+    try {
+      setCategoryPreviewLoading(true)
+      const res = await homepageService.getCategoryPreview({
+        categoryId: selectedSection.config?.categoryId,
+        categorySlug: selectedSection.config?.categorySlug,
+        includeChildren: selectedSection.config?.includeChildren ?? true,
+        limit: selectedSection.config?.limit || 8,
+        sortBy: selectedSection.config?.sortBy || 'newest',
+        showOutOfStock: selectedSection.config?.showOutOfStock ?? false
+      })
+      if (res.success) {
+        setCategoryPreviewProducts(res.products || [])
+        setCategoryPreviewTotal(res.totalCount || 0)
+      }
+    } catch (err) {
+      console.error('Lỗi nạp xem trước sản phẩm danh mục:', err)
+    } finally {
+      setCategoryPreviewLoading(false)
+    }
+  }, [
+    selectedSection?.sectionKey,
+    selectedSection?.type,
+    selectedSection?.config?.categoryId,
+    selectedSection?.config?.categorySlug,
+    selectedSection?.config?.includeChildren,
+    selectedSection?.config?.limit,
+    selectedSection?.config?.sortBy,
+    selectedSection?.config?.showOutOfStock
+  ])
+
+  useEffect(() => {
+    fetchCategoryPreview()
+  }, [fetchCategoryPreview])
+
+  // Khi chuyển sang tab Live Preview, tự động lấy preview đầy đủ
+  useEffect(() => {
+    if (activeWorkspaceTab === 'live_preview') {
+      const loadLive = async () => {
+        try {
+          setPreviewLoading(true)
+          if (hasUnsavedChanges) {
+            await homepageService.saveDraft(sections)
+            setHasUnsavedChanges(false)
+          }
+          const res = await homepageService.getPreview()
+          if (res.success) {
+            setPreviewSections(res.sections || [])
+          }
+        } catch {
+          // ignore
+        } finally {
+          setPreviewLoading(false)
+        }
+      }
+      loadLive()
+    }
+  }, [activeWorkspaceTab, hasUnsavedChanges, sections])
 
   // Reorder Handlers
   const handleMoveUp = (index: number) => {
@@ -471,8 +546,36 @@ export default function AdminHomepageBuilderPage() {
         </div>
       </div>
 
-      {/* 2. Main Builder Workspace: Left (List) & Right (Editor) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      {/* 2. Workspace View Mode Switcher */}
+      <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-2">
+        <button
+          onClick={() => setActiveWorkspaceTab('builder')}
+          className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+            activeWorkspaceTab === 'builder'
+              ? 'bg-[#ff4655] text-white shadow-md'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 dark:bg-zinc-800'
+          }`}
+        >
+          <SquaresFour size={15} weight="bold" />
+          <span>1. Bộ dựng bố cục (Builder)</span>
+        </button>
+
+        <button
+          onClick={() => setActiveWorkspaceTab('live_preview')}
+          className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+            activeWorkspaceTab === 'live_preview'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white bg-zinc-100 dark:bg-zinc-800'
+          }`}
+        >
+          <Eye size={15} weight="bold" />
+          <span>2. Xem trước trực quan toàn trang ({sections.filter(s => s.status === 'active').length} khu vực hoạt động)</span>
+        </button>
+      </div>
+
+      {activeWorkspaceTab === 'builder' ? (
+        /* Main Builder Workspace: Left (List) & Right (Editor) */
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
         {/* LEFT COLUMN: SECTIONS LIST & REORDERING (5 Cols) */}
         <div className="lg:col-span-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 shadow-sm space-y-3">
@@ -717,7 +820,7 @@ export default function AdminHomepageBuilderPage() {
                           .filter(c => !categorySearch || c.name.toLowerCase().includes(categorySearch.toLowerCase()) || c.slug.includes(categorySearch.toLowerCase()))
                           .map(c => (
                             <option key={c._id} value={c._id}>
-                              {c.parent_id ? `↳ ${c.name}` : `📁 ${c.name}`} (slug: {c.slug})
+                              {c.parent_id ? `↳ ${c.name}` : `📁 ${c.name}`} ({c.productCount ?? 0} sản phẩm)
                             </option>
                           ))}
                       </select>
@@ -809,6 +912,70 @@ export default function AdminHomepageBuilderPage() {
                             placeholder="Đường dẫn nút xem tất cả (/ProductPage?category=...)"
                             className="w-full px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-xs text-zinc-900 dark:text-white"
                           />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* REAL-TIME LIVE PRODUCT PREVIEW BOX (TRUY VẤN SẢN PHẨM THỰC TẾ) */}
+                    <div className="mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-800 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                          <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-1.5">
+                            <Sparkle size={14} className="text-blue-500" weight="fill" />
+                            Sản phẩm thực tế trong Database ({categoryPreviewProducts.length} hiển thị / {categoryPreviewTotal} tổng số)
+                          </h4>
+                        </div>
+                        
+                        <button
+                          type="button"
+                          onClick={() => fetchCategoryPreview()}
+                          disabled={categoryPreviewLoading}
+                          className="text-[11px] font-bold text-blue-500 hover:text-blue-600 flex items-center gap-1 cursor-pointer transition-colors"
+                        >
+                          <ArrowClockwise size={12} className={categoryPreviewLoading ? 'animate-spin' : ''} weight="bold" />
+                          <span>Làm mới</span>
+                        </button>
+                      </div>
+
+                      {categoryPreviewLoading ? (
+                        <div className="p-6 bg-zinc-50 dark:bg-zinc-800/40 rounded-lg flex items-center justify-center gap-2 text-xs text-zinc-400">
+                          <ArrowClockwise size={16} className="animate-spin text-blue-500" />
+                          <span>Đang truy vấn sản phẩm thực tế từ MongoDB...</span>
+                        </div>
+                      ) : categoryPreviewProducts.length > 0 ? (
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                          {categoryPreviewProducts.map(p => (
+                            <div
+                              key={p._id || p.id}
+                              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700/80 rounded-lg p-2.5 space-y-1.5 shadow-2xs hover:border-blue-500 transition-colors"
+                            >
+                              <div className="h-24 bg-zinc-100 dark:bg-zinc-950 rounded overflow-hidden flex items-center justify-center">
+                                <SafeProductImage src={p.imageEmoji} alt={p.title} className="w-full h-full object-cover" />
+                              </div>
+                              <div className="space-y-0.5">
+                                <span className="text-[8px] font-mono font-bold px-1 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 uppercase">
+                                  {p.categoryName || p.category}
+                                </span>
+                                <h5 className="text-[11px] font-bold text-zinc-900 dark:text-zinc-100 line-clamp-1">
+                                  {p.title}
+                                </h5>
+                              </div>
+                              <div className="flex items-center justify-between text-[10px]">
+                                <span className="font-black text-[#ff4655]">{formatPrice(p.price)}</span>
+                                <span className="text-zinc-400 font-mono">Kho: {p.stock}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg space-y-1 text-center">
+                          <p className="text-xs font-bold text-amber-500 flex items-center justify-center gap-1">
+                            <Warning size={14} weight="fill" /> Danh mục này hiện chưa có sản phẩm nào trong database!
+                          </p>
+                          <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                            Khu vực này sẽ tự động ẩn trên trang chủ khách hàng cho đến khi bạn gán sản phẩm vào danh mục này.
+                          </p>
                         </div>
                       )}
                     </div>
@@ -1146,6 +1313,160 @@ export default function AdminHomepageBuilderPage() {
           )}
         </div>
       </div>
+      ) : (
+        /* INLINE LIVE PREVIEW OF FULL HOMEPAGE (DỮ LIỆU THẬT TỪ MONGODB) */
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 shadow-sm space-y-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-zinc-200 dark:border-zinc-800">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <h3 className="text-sm font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-2">
+                  <Eye size={16} weight="bold" className="text-blue-500" />
+                  Xem trước trực quan toàn trang (Dữ liệu MongoDB Thật 100%)
+                </h3>
+              </div>
+              <p className="text-xs text-zinc-400">
+                Hiển thị chính xác những gì khách hàng sẽ nhìn thấy khi bạn bấm nút "Xuất bản ngay".
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <button
+                onClick={async () => {
+                  setPreviewLoading(true)
+                  try {
+                    const res = await homepageService.getPreview()
+                    if (res.success) setPreviewSections(res.sections || [])
+                  } finally {
+                    setPreviewLoading(false)
+                  }
+                }}
+                disabled={previewLoading}
+                className="px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
+              >
+                <ArrowClockwise size={13} className={previewLoading ? 'animate-spin' : ''} weight="bold" />
+                <span>Làm mới xem trước</span>
+              </button>
+
+              <button
+                onClick={() => setIsPublishModalOpen(true)}
+                className="px-4 py-1.5 bg-[#ff4655] hover:bg-[#e03d4b] text-white rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1 cursor-pointer shadow-sm transition-all"
+              >
+                <CheckCircle size={14} weight="bold" />
+                <span>Xuất bản ngay</span>
+              </button>
+            </div>
+          </div>
+
+          {previewLoading ? (
+            <div className="py-20 flex flex-col items-center justify-center space-y-3">
+              <ArrowClockwise size={32} className="animate-spin text-[#ff4655]" />
+              <p className="text-xs text-zinc-400 font-bold uppercase tracking-wider">Đang truy vấn sản phẩm và danh mục thực tế từ Database...</p>
+            </div>
+          ) : (
+            <div className="space-y-12">
+              {previewSections.map((sec, idx) => (
+                <div key={sec.sectionKey || idx} className="space-y-4 border-l-2 border-[#ff4655]/40 pl-4 py-1">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono font-bold text-zinc-400">#{idx + 1}</span>
+                        <h4 className="text-sm font-black uppercase text-zinc-900 dark:text-white">{sec.title}</h4>
+                        <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded uppercase ${
+                          sec._previewBadge === 'active'
+                            ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
+                            : sec._previewBadge === 'scheduled'
+                            ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
+                            : 'bg-zinc-500/10 text-zinc-400 border border-zinc-500/20'
+                        }`}>
+                          {sec._previewBadge === 'active' ? 'Đang bật' : sec._previewBadge === 'scheduled' ? 'Lên lịch' : 'Tắt / Hết hạn'}
+                        </span>
+                      </div>
+                      {sec.subtitle && <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{sec.subtitle}</p>}
+                    </div>
+
+                    {sec.config?.showViewAll && sec.config?.viewAllLink && (
+                      <span className="text-xs font-bold text-[#ff4655] flex items-center gap-1">
+                        Xem tất cả &raquo;
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Populated Content */}
+                  {sec.type === 'category_products' && (
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {sec.populatedData?.products && sec.populatedData.products.length > 0 ? (
+                        sec.populatedData.products.map(p => (
+                          <div
+                            key={p._id || p.id}
+                            className="bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 space-y-2 shadow-xs"
+                          >
+                            <div className="h-32 bg-white dark:bg-zinc-900 rounded overflow-hidden flex items-center justify-center">
+                              <SafeProductImage src={p.imageEmoji} alt={p.title} className="w-full h-full object-cover" />
+                            </div>
+                            <h5 className="text-xs font-bold text-zinc-900 dark:text-white line-clamp-1">{p.title}</h5>
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="font-black text-[#ff4655]">{formatPrice(p.price)}</span>
+                              <span className="text-[10px] text-zinc-400">Kho: {p.stock}</span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="col-span-full py-6 text-center text-xs text-zinc-400 bg-zinc-50 dark:bg-zinc-950 rounded-xl border border-dashed border-zinc-300 dark:border-zinc-800">
+                          Danh mục này hiện chưa có sản phẩm nào kích hoạt trong database. Khu vực sẽ tự động ẩn trên trang chủ.
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {sec.type === 'banner_slider' && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {(sec.populatedData?.banners || sec.config?.banners || []).map((b, bIdx) => (
+                        <div
+                          key={bIdx}
+                          className={`p-6 rounded-2xl bg-gradient-to-br ${b.bgGradient || 'from-zinc-950 to-black'} text-white space-y-3 border border-zinc-800`}
+                        >
+                          <span className="px-2 py-0.5 rounded bg-[#ff4655] text-white text-[9px] font-black uppercase">
+                            {b.badge || 'PROMO'}
+                          </span>
+                          <h4 className="text-base font-black uppercase">{b.title}</h4>
+                          <p className="text-xs text-zinc-400 line-clamp-2">{b.description}</p>
+                          <div className="pt-2 flex items-center justify-between">
+                            <span className="text-xs font-black text-[#ff4655]">{b.priceTag}</span>
+                            <span className="px-3 py-1 bg-white text-zinc-900 rounded text-[10px] font-black uppercase">
+                              {b.ctaText}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {sec.type === 'flash_sale' && (
+                    <div className="p-4 bg-zinc-100 dark:bg-zinc-950 rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
+                      <div className="flex items-center gap-2 text-[#ff4655] font-black mb-3">
+                        <Flame size={18} weight="fill" />
+                        <span>GIỜ VÀNG FLASH SALE (Đếm ngược: {sec.config?.countdownEnd ? new Date(sec.config.countdownEnd).toLocaleTimeString('vi-VN') : '24:00:00'})</span>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                        {(sec.populatedData?.products || []).slice(0, 5).map(p => (
+                          <div key={p._id || p.id} className="p-2.5 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800">
+                            <div className="h-24 bg-zinc-100 dark:bg-zinc-950 rounded mb-1 overflow-hidden">
+                              <SafeProductImage src={p.imageEmoji} alt={p.title} className="w-full h-full object-cover" />
+                            </div>
+                            <p className="text-[11px] font-bold truncate text-zinc-900 dark:text-white">{p.title}</p>
+                            <span className="text-xs font-black text-[#ff4655]">{formatPrice(p.price)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* MODAL 1: ADD NEW SECTION */}
       {isAddModalOpen && (

@@ -109,6 +109,7 @@ export interface AdminHomepageConfigResponse {
     slug: string
     parent_id: string | null
     description: string
+    productCount?: number
   }[]
 }
 
@@ -155,6 +156,24 @@ export const homepageService = {
     const res = await apiClient.get<{ success: boolean; state: string; sections: PopulatedSection[] }>(
       '/homepage/admin/preview'
     )
+    return res.data
+  },
+
+  // Xem trước sản phẩm THẬT theo danh mục ngay trong Admin Builder (thời gian thực)
+  getCategoryPreview: async (params: {
+    categoryId?: string | null
+    categorySlug?: string
+    includeChildren?: boolean
+    limit?: number
+    sortBy?: string
+    showOutOfStock?: boolean
+  }): Promise<{
+    success: boolean
+    products: ProductItem[]
+    totalCount: number
+    categoryInfo: { _id: string; name: string; slug: string } | null
+  }> => {
+    const res = await apiClient.get('/homepage/admin/category-preview', { params })
     return res.data
   },
 

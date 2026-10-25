@@ -47,19 +47,43 @@ const HomePage: React.FC = () => {
   // Interactive Category Filter on Homepage
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<string>('all')
 
-  // Flash Sale Live Ticking Countdown
-  const [timeLeft, setTimeLeft] = useState({ hours: 2, minutes: 45, seconds: 18 })
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 }
-        if (prev.minutes > 0) return { ...prev, minutes: 59, seconds: 59 }
-        if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 }
-        return { hours: 2, minutes: 59, seconds: 59 }
-      })
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [])
+  // Flash Sale Live Ticking Countdown based on section config
+  const FlashSaleCountdown: React.FC<{ countdownEnd?: string | null }> = ({ countdownEnd }) => {
+    const [time, setTime] = useState({ hours: 0, minutes: 0, seconds: 0 })
+
+    useEffect(() => {
+      const calc = () => {
+        const target = countdownEnd ? new Date(countdownEnd).getTime() : Date.now() + 86400000
+        const diff = Math.max(0, Math.floor((target - Date.now()) / 1000))
+        const hours = Math.floor(diff / 3600)
+        const minutes = Math.floor((diff % 3600) / 60)
+        const seconds = diff % 60
+        return { hours, minutes, seconds }
+      }
+
+      setTime(calc())
+      const timer = setInterval(() => setTime(calc()), 1000)
+      return () => clearInterval(timer)
+    }, [countdownEnd])
+
+    return (
+      <div className="flex items-center gap-1.5 sm:ml-4 bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+        <Clock size={14} className="text-[#ff4655]" weight="bold" />
+        <span className="text-[10px] font-mono font-bold text-zinc-500 uppercase mr-1">KẾT THÚC TRONG:</span>
+        <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+          {String(time.hours).padStart(2, '0')}
+        </span>
+        <span className="text-[#ff4655] font-black">:</span>
+        <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+          {String(time.minutes).padStart(2, '0')}
+        </span>
+        <span className="text-[#ff4655] font-black">:</span>
+        <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
+          {String(time.seconds).padStart(2, '0')}
+        </span>
+      </div>
+    )
+  }
 
   // Cart Add Toast Notification
   const [addedToast, setAddedToast] = useState<string | null>(null)
@@ -540,21 +564,7 @@ const HomePage: React.FC = () => {
                         </div>
 
                         {/* HUD Live Countdown */}
-                        <div className="flex items-center gap-1.5 sm:ml-4 bg-zinc-100 dark:bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
-                          <Clock size={14} className="text-[#ff4655]" weight="bold" />
-                          <span className="text-[10px] font-mono font-bold text-zinc-500 uppercase mr-1">KẾT THÚC TRONG:</span>
-                          <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
-                            {String(timeLeft.hours).padStart(2, '0')}
-                          </span>
-                          <span className="text-[#ff4655] font-black">:</span>
-                          <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
-                            {String(timeLeft.minutes).padStart(2, '0')}
-                          </span>
-                          <span className="text-[#ff4655] font-black">:</span>
-                          <span className="bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded shadow">
-                            {String(timeLeft.seconds).padStart(2, '0')}
-                          </span>
-                        </div>
+                        <FlashSaleCountdown countdownEnd={sec.config?.countdownEnd} />
                       </div>
 
                       <button 

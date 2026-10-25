@@ -416,21 +416,73 @@ router.get('/admin/config', auth, checkRole(['admin']), async (req, res) => {
       });
     }
 
+    // Tính số lượng sản phẩm thật trong mỗi danh mục
+    const categoriesWithCount = await Promise.all(
+      categories.map(async (c) => {
+        const count = await Product.countDocuments({
+          status: 'active',
+          $or: [
+            { categoryId: c._id },
+            { category_id: c._id },
+            { category: c.slug },
+            { category: c.name },
+            { categoryName: c.name }
+          ]
+        });
+        return {
+          _id: c._id,
+          name: c.name,
+          slug: c.slug,
+          parent_id: c.parent_id || c.parent_category_id || null,
+          description: c.description || '',
+          productCount: count
+        };
+      })
+    );
+
     res.json({
       success: true,
       draft: draftConfig,
       published: publishedConfig,
-      categories: categories.map(c => ({
-        _id: c._id,
-        name: c.name,
-        slug: c.slug,
-        parent_id: c.parent_id || c.parent_category_id || null,
-        description: c.description || ''
-      }))
+      categories: categoriesWithCount
     });
   } catch (error) {
     console.error('Lỗi tải cấu hình Admin Homepage:', error);
     res.status(500).json({ error: 'Lỗi nạp cấu hình quản trị trang chủ.', details: error.message });
+  }
+});
+
+// =========================================================================
+// 2.1 ADMIN ENDPOINT: GET /api/homepage/admin/category-preview
+// Xem trước sản phẩm thật theo danh mục ngay trong Admin Builder (thời gian thực)
+// =========================================================================
+router.get('/admin/category-preview', auth, checkRole(['admin']), async (req, res) => {
+  try {
+    const { categoryId, categorySlug, includeChildren, limit, sortBy, showOutOfStock } = req.query;
+
+    const mockSection = {
+      type: 'category_products',
+      config: {
+        categoryId,
+        categorySlug,
+        includeChildren: includeChildren === 'true' || includeChildren === true,
+        limit: Number(limit) || 8,
+        sortBy: sortBy || 'newest',
+        showOutOfStock: showOutOfStock === 'true' || showOutOfStock === true
+      }
+    };
+
+    const populated = await populateCategoryProducts(mockSection);
+
+    res.json({
+      success: true,
+      products: populated.populatedData?.products || [],
+      totalCount: populated.populatedData?.totalCount || 0,
+      categoryInfo: populated.populatedData?.categoryInfo || null
+    });
+  } catch (error) {
+    console.error('Lỗi xem trước sản phẩm danh mục:', error);
+    res.status(500).json({ error: 'Lỗi nạp sản phẩm danh mục.', details: error.message });
   }
 });
 
