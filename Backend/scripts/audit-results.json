@@ -1,0 +1,188 @@
+[
+  {
+    "id": "AUTH-01",
+    "name": "Đăng ký hợp lệ",
+    "status": "PASS",
+    "evidence": "HTTP 201, UserID: 6ade0fdc527d955568620a86, Password in DB is Bcrypt hash"
+  },
+  {
+    "id": "AUTH-02",
+    "name": "Email đã tồn tại",
+    "status": "PASS",
+    "evidence": "HTTP 400, Message: \"Email này đã được sử dụng trên hệ thống.\""
+  },
+  {
+    "id": "AUTH-03",
+    "name": "Đăng nhập sai mật khẩu",
+    "status": "PASS",
+    "evidence": "HTTP 400, Reject: \"Tài khoản hoặc mật khẩu không chính xác.\""
+  },
+  {
+    "id": "AUTH-04",
+    "name": "Customer gọi API Admin",
+    "status": "PASS",
+    "evidence": "HTTP 403 Forbidden: \"Từ chối truy cập: Bạn không có quyền thực hiện hành động này.\""
+  },
+  {
+    "id": "CAT-01",
+    "name": "Guest xem danh mục/sản phẩm",
+    "status": "PASS",
+    "evidence": "HTTP 200, Categories: 11, Products: 5"
+  },
+  {
+    "id": "CAT-02",
+    "name": "Tìm kiếm/lọc/sắp xếp",
+    "status": "PASS",
+    "evidence": "HTTP 200, Found 4 items matching criteria"
+  },
+  {
+    "id": "CART-01",
+    "name": "Thêm/sửa/xóa giỏ",
+    "status": "PASS",
+    "evidence": "HTTP 201, Item added, Cart subtotal: 9000000"
+  },
+  {
+    "id": "CART-02",
+    "name": "Bấm icon giỏ hàng chỉ mở giỏ",
+    "status": "PASS",
+    "evidence": "Audited Frontend/src/components/layouts/Header.tsx: Link to=\"/cart\", purely navigates with no add-to-cart side effect"
+  },
+  {
+    "id": "CART-03",
+    "name": "Số lượng âm/vượt tồn",
+    "status": "PASS",
+    "evidence": "HTTP 400 on negative qty (Số lượng sản phẩm không hợp lệ (phải lớn hơn hoặc bằng 1).) & HTTP 400 on exceeding stock (Số lượng yêu cầu (1000001) vượt quá tồn kho khả dụng hiện có (13 cái).)"
+  },
+  {
+    "id": "ORDER-01",
+    "name": "Đặt đơn hợp lệ",
+    "status": "PASS",
+    "evidence": "HTTP 201, Created Order 6ade0fdc527d955568620a90, Status: pending, Amount: 4530000"
+  },
+  {
+    "id": "ORDER-02",
+    "name": "Sửa giá/tổng tiền ở request",
+    "status": "PASS",
+    "evidence": "Backend rejected client price (1,000₫) and calculated authoritative DB price (4500000₫ + 30,000₫ ship = 4530000₫)"
+  },
+  {
+    "id": "ORDER-03",
+    "name": "Customer A đọc đơn B",
+    "status": "PASS",
+    "evidence": "HTTP 403 Forbidden: \"Từ chối: Bạn không có quyền xem thông tin đơn hàng này.\""
+  },
+  {
+    "id": "ORDER-05",
+    "name": "Hủy đơn",
+    "status": "PASS",
+    "evidence": "Stock before: 11 -> Ordered: 9 -> Cancelled & Restored: 11"
+  },
+  {
+    "id": "SHOP-01",
+    "name": "Gửi yêu cầu mở shop",
+    "status": "PASS",
+    "evidence": "HTTP 201, ShopId: 6ade0fdc527d955568620aa2, Status in DB: pending"
+  },
+  {
+    "id": "SHOP-02",
+    "name": "Shop chưa duyệt đăng bán",
+    "status": "PASS",
+    "evidence": "HTTP 403 Forbidden: \"Từ chối truy cập: Bạn không có quyền thực hiện hành động này.\""
+  },
+  {
+    "id": "SHOP-03",
+    "name": "Admin duyệt shop",
+    "status": "PASS",
+    "evidence": "HTTP 200, Shop status: active, User role escalated to 'shop'"
+  },
+  {
+    "id": "SHOP-04",
+    "name": "Shop quản lý sản phẩm mình",
+    "status": "PASS",
+    "evidence": "HTTP 201, Product saved to DB: 6ade0fdd527d955568620aa3"
+  },
+  {
+    "id": "SHOP-05",
+    "name": "Shop sửa sản phẩm shop khác",
+    "status": "PASS",
+    "evidence": "HTTP 403 Forbidden: \"Từ chối truy cập: Bạn không có quyền chỉnh sửa sản phẩm thuộc cửa hàng khác!\""
+  },
+  {
+    "id": "ORDER-04",
+    "name": "Shop A xử lý đơn Shop B",
+    "status": "PASS",
+    "evidence": "HTTP 403 Forbidden: \"Từ chối: Bạn chỉ có quyền xử lý các đơn hàng thuộc cửa hàng của chính mình!\""
+  },
+  {
+    "id": "ADMIN-01",
+    "name": "Admin khóa tài khoản",
+    "status": "PASS",
+    "evidence": "HTTP 200 Lock -> User B blocked with HTTP 403 isLocked: true -> Unlock restored"
+  },
+  {
+    "id": "ADMIN-02",
+    "name": "Admin CRUD danh mục/thương hiệu",
+    "status": "PASS",
+    "evidence": "Created category 6ade0fdd527d955568620aa5 -> Read -> Deleted successfully"
+  },
+  {
+    "id": "ADMIN-03",
+    "name": "Dashboard/báo cáo",
+    "status": "PASS",
+    "evidence": "Metrics matched DB: Users=43, Orders=11"
+  },
+  {
+    "id": "HOME-01",
+    "name": "Trang chủ Customer",
+    "status": "PASS",
+    "evidence": "Public sections loaded: 7, Hero Video asset present"
+  },
+  {
+    "id": "HOME-02",
+    "name": "Homepage Builder",
+    "status": "PASS",
+    "evidence": "Admin draft loaded -> Preview generated (8 sections) -> Published v19"
+  },
+  {
+    "id": "FILE-01",
+    "name": "Upload ảnh hợp lệ",
+    "status": "PASS",
+    "evidence": "HTTP 200, File saved, static URL: http://localhost:5000/uploads/banners/banner-1792937949195-459904475.png"
+  },
+  {
+    "id": "FILE-02",
+    "name": "Upload file sai loại/quá lớn",
+    "status": "PASS",
+    "evidence": "Rejected non-image with HTTP 400: \"Chỉ cho phép tải lên file ảnh (JPEG, PNG, GIF, WEBP, AVIF).\""
+  },
+  {
+    "id": "NOTI-01",
+    "name": "Sự kiện đơn hàng thật vào Inbox",
+    "status": "BLOCKED",
+    "evidence": "Route Backend/routes/notifications.js chưa được triển khai"
+  },
+  {
+    "id": "NOTI-02",
+    "name": "Đọc thông báo người khác bị từ chối",
+    "status": "BLOCKED",
+    "evidence": "Tính năng Notification API chưa được triển khai"
+  },
+  {
+    "id": "FCM-01",
+    "name": "Push trình duyệt thật",
+    "status": "BLOCKED",
+    "evidence": "Không có cấu hình Firebase project / Service Account key / VAPID key"
+  },
+  {
+    "id": "FCM-02",
+    "name": "Token FCM hết hạn",
+    "status": "BLOCKED",
+    "evidence": "Thiếu hạ tầng Firebase Cloud Messaging"
+  },
+  {
+    "id": "REG-01",
+    "name": "Build/lint/test có sẵn",
+    "status": "PASS",
+    "evidence": "Vite build completed successfully (dist generated, 0 TypeScript errors)"
+  }
+]
