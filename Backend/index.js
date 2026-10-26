@@ -63,6 +63,6 @@ app.use((err, req, res, next) => {
 
 // Cổng chạy ứng dụng
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server backend GearTech đang chạy trên cổng ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server backend GearTech đang chạy trên cổng ${PORT} (0.0.0.0)`);
 });
