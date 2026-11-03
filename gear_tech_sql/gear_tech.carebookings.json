@@ -1,0 +1,76 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae9f4706b259671bb6d56da"
+    },
+    "bookingCode": "GC-261103-3761",
+    "userId": null,
+    "fullName": "Bùi Viết Khánh",
+    "phone": "0987654321",
+    "address": "123 Đường Công Nghệ, Quận 1, TP.HCM",
+    "deviceType": "laptop",
+    "servicePackage": "deep-clean",
+    "servicePackageName": "Bảo Dưỡng & Vệ Sinh Chuyên Sâu",
+    "price": {
+      "$numberInt": "250000"
+    },
+    "issueDescription": "MÁY NÓNG QUÁ NHIỆT KHI CHẠY ĐỒ HỌA, CẦN VỆ SINH & TRA KEO TẢN NHIỆT",
+    "status": "completed",
+    "technicianName": "KTV Nguyễn Thành Long",
+    "adminNote": "Đã vệ sinh, thay keo tản nhiệt Honeywell PTM7950. Nhiệt độ GPU giảm 15°C.",
+    "completedAt": {
+      "$date": {
+        "$numberLong": "1793717405316"
+      }
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793717360189"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793717405321"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae9f7bb8688f837c4f58185"
+    },
+    "bookingCode": "GC-261103-1630",
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "fullName": "Nguyễn Văn Khách",
+    "phone": "0912345678",
+    "address": "18A/1",
+    "deviceType": "desktop",
+    "servicePackage": "deep-clean",
+    "servicePackageName": "Bảo Dưỡng & Vệ Sinh Chuyên Sâu",
+    "price": {
+      "$numberInt": "250000"
+    },
+    "issueDescription": "Vệ sinh máy",
+    "status": "in_progress",
+    "technicianName": "KTV Test",
+    "adminNote": "",
+    "completedAt": null,
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793718203003"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793718275194"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

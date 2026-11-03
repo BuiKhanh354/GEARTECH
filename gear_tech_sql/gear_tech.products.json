@@ -1,0 +1,3516 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11f462de58adcc60f3c5e"
+    },
+    "shop_id": {
+      "$oid": "000000000000000000000002"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "brand_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "name": "ASUS GeForce RTX Gaming",
+    "slug": "asus-geforce-rtx-gaming",
+    "description": "Card màn hình dành cho gaming",
+    "price": {
+      "$numberDecimal": "15990000"
+    },
+    "original_price": {
+      "$numberDecimal": "16990000"
+    },
+    "stock_quantity": {
+      "$numberInt": "20"
+    },
+    "sku": "GPU-ASUS-001",
+    "specifications": [
+      {
+        "name": "Dung lượng VRAM",
+        "value": "12GB"
+      },
+      {
+        "name": "Loại bộ nhớ",
+        "value": "GDDR7"
+      },
+      {
+        "name": "Chuẩn giao tiếp",
+        "value": "PCIe 5.0"
+      },
+      {
+        "name": "Công suất nguồn đề nghị",
+        "value": "650W"
+      }
+    ],
+    "status": "active",
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "review_count": {
+      "$numberInt": "25"
+    },
+    "sold_count": {
+      "$numberInt": "100"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "brand": "asus",
+    "category": "components",
+    "categoryName": "LINH KIỆN MÁY TÍNH",
+    "title": "ASUS GeForce RTX Gaming",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190337"
+      }
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "0"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "brandId": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specs": {
+      "Dung lượng VRAM": "12GB",
+      "Loại bộ nhớ": "GDDR7",
+      "Chuẩn giao tiếp": "PCIe 5.0",
+      "Công suất nguồn đề nghị": "650W"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d81"
+    },
+    "title": "Block Nước GPU RTX 4090 Custom Edition",
+    "description": "Linh kiện tản nhiệt mạ niken bóng loáng",
+    "price": {
+      "$numberInt": "4500000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "components",
+    "categoryName": "LINH KIỆN MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "11"
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "specs": {
+      "Chipset đồ họa": "NVIDIA GeForce RTX Series",
+      "Dung lượng VRAM": "12GB GDDR6X",
+      "Giao tiếp": "PCIe 4.0 x16",
+      "Nguồn đề nghị": "650W trở lên",
+      "Bảo hành": "36 tháng"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792423895683"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792937948979"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "status": "active",
+    "name": "Block Nước GPU RTX 4090 Custom Edition",
+    "sku": "GT-MVNWXJWG",
+    "slug": "block-nuoc-gpu-rtx-4090-custom-edition",
+    "specifications": [
+      {
+        "name": "Chipset đồ họa",
+        "value": "NVIDIA GeForce RTX Series"
+      },
+      {
+        "name": "Dung lượng VRAM",
+        "value": "12GB GDDR6X"
+      },
+      {
+        "name": "Giao tiếp",
+        "value": "PCIe 4.0 x16"
+      },
+      {
+        "name": "Nguồn đề nghị",
+        "value": "650W trở lên"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6ad6d2fe29c60e9f2f62c532"
+    },
+    "title": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+    "description": "Bàn phím cơ không dây custom cao cấp",
+    "price": {
+      "$numberInt": "12990000"
+    },
+    "imageEmoji": "https://geartech.vn/images/azoth-oled.jpg",
+    "gallery": [
+      "https://geartech.vn/images/azoth-oled.jpg",
+      "https://geartech.vn/images/azoth-side.jpg",
+      "https://geartech.vn/images/azoth-box.jpg"
+    ],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "1"
+    },
+    "salesCount": "ĐÃ BÁN 1",
+    "stock": {
+      "$numberInt": "17"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+    "slug": "ban-phim-gaming-rog-azoth-extreme-1792463614354",
+    "sku": "GT-MVG2K0IA",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792463614355"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190341"
+      }
+    },
+    "__v": {
+      "$numberInt": "16"
+    },
+    "soldCount": {
+      "$numberInt": "1"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "20"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "brand": "asus",
+    "brandId": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "brand_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "3 Chế độ (2.4G / BT / Dây Type-C)"
+      },
+      {
+        "name": "Loại Switch",
+        "value": "Cơ học ROG NX Snow (Hotswap)"
+      },
+      {
+        "name": "Keycap",
+        "value": "PBT Doubleshot siêu bền"
+      },
+      {
+        "name": "Đèn LED",
+        "value": "RGB từng phím Aura Sync"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "3 Chế độ (2.4G / BT / Dây Type-C)",
+      "Loại Switch": "Cơ học ROG NX Snow (Hotswap)",
+      "Keycap": "PBT Doubleshot siêu bền",
+      "Đèn LED": "RGB từng phím Aura Sync",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c73"
+    },
+    "title": "Chuột Không Dây Gaming 1792465750949",
+    "sku": "MOUSE-1792465750949",
+    "description": "Chuột siêu nhẹ",
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 2",
+    "stock": {
+      "$numberInt": "8"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db5663ee301d7a3c8c6e"
+    },
+    "name": "Chuột Không Dây Gaming 1792465750949",
+    "slug": "chuot-khong-day-gaming-1792465750949",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750995"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "2"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "8"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c74"
+    },
+    "title": "Màn Hình Cong 4K 1792465750949",
+    "sku": "MONITOR-1792465750949",
+    "description": "Màn hình OLED 240Hz",
+    "price": {
+      "$numberInt": "5000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db5663ee301d7a3c8c70"
+    },
+    "name": "Màn Hình Cong 4K 1792465750949",
+    "slug": "man-hinh-cong-4k-1792465750949",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465750997"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17b9"
+    },
+    "title": "Chuột Không Dây Gaming 1792465763030",
+    "sku": "MOUSE-1792465763030",
+    "description": "Chuột siêu nhẹ",
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "10"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db6391dada42db9b17b4"
+    },
+    "name": "Chuột Không Dây Gaming 1792465763030",
+    "slug": "chuot-khong-day-gaming-1792465763030",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763078"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "10"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db6391dada42db9b17ba"
+    },
+    "title": "Màn Hình Cong 4K 1792465763030",
+    "sku": "MONITOR-1792465763030",
+    "description": "Màn hình OLED 240Hz",
+    "price": {
+      "$numberInt": "5000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db6391dada42db9b17b6"
+    },
+    "name": "Màn Hình Cong 4K 1792465763030",
+    "slug": "man-hinh-cong-4k-1792465763030",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465763080"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf4"
+    },
+    "title": "Chuột Không Dây Gaming 1792465777068",
+    "sku": "MOUSE-1792465777068",
+    "description": "Chuột siêu nhẹ",
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "10"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db71d5c52f3af8ee0cef"
+    },
+    "name": "Chuột Không Dây Gaming 1792465777068",
+    "slug": "chuot-khong-day-gaming-1792465777068",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777110"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "10"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf5"
+    },
+    "title": "Màn Hình Cong 4K 1792465777068",
+    "sku": "MONITOR-1792465777068",
+    "description": "Màn hình OLED 240Hz",
+    "price": {
+      "$numberInt": "5000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db71d5c52f3af8ee0cf1"
+    },
+    "name": "Màn Hình Cong 4K 1792465777068",
+    "slug": "man-hinh-cong-4k-1792465777068",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465777111"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb49014"
+    },
+    "title": "Chuột Không Dây Gaming 1792465804243",
+    "sku": "MOUSE-1792465804243",
+    "description": "Chuột siêu nhẹ",
+    "price": {
+      "$numberInt": "2000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "8"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db8cf15476018bb4900f"
+    },
+    "name": "Chuột Không Dây Gaming 1792465804243",
+    "slug": "chuot-khong-day-gaming-1792465804243",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804291"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920801"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "8"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6db8cf15476018bb49015"
+    },
+    "title": "Màn Hình Cong 4K 1792465804243",
+    "sku": "MONITOR-1792465804243",
+    "description": "Màn hình OLED 240Hz",
+    "price": {
+      "$numberInt": "5000000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ad6db8cf15476018bb49011"
+    },
+    "name": "Màn Hình Cong 4K 1792465804243",
+    "slug": "man-hinh-cong-4k-1792465804243",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792465804293"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920794"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad74a47c53fd0e9dc938824"
+    },
+    "title": "Màn hình ASUS ProArt",
+    "name": "Màn hình ASUS ProArt",
+    "description": "Test-2",
+    "price": {
+      "$numberInt": "1500000"
+    },
+    "oldPrice": {
+      "$numberInt": "1800000"
+    },
+    "discount": "16%",
+    "imageEmoji": "http://localhost:5000/uploads/products/product-1792494690671-775416417.webp",
+    "gallery": [
+      "http://localhost:5000/uploads/products/product-1792494690671-775416417.webp",
+      "http://localhost:5000/uploads/products/product-1792494684595-617650336.webp",
+      "http://localhost:5000/uploads/products/product-1792494684595-423938267.webp",
+      "http://localhost:5000/uploads/products/product-1792494684596-254563534.webp",
+      "http://localhost:5000/uploads/products/product-1792494684596-726687502.webp",
+      "http://localhost:5000/uploads/products/product-1792494684596-126067145.webp"
+    ],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "stock": {
+      "$numberInt": "18"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    },
+    "slug": "man-hinh-asus-proart",
+    "sku": "GT-MVGKQJ7V",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792494151630"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190342"
+      }
+    },
+    "__v": {
+      "$numberInt": "4"
+    },
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "20"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "brandId": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "brand_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "title": "ROG Swift OLED PG34WCDN",
+    "name": "ROG Swift OLED PG34WCDN",
+    "description": "Kiểu dáng màn hình: Cong 1800R\nTỉ lệ khung hình: 21:9\nKích thước mặc định: 34 inch\nCông nghệ tấm nền: QD-OLED\nPhân giải điểm ảnh: 3440x1440\nĐộ sáng hiển thị: 1.300 cd/㎡\nTần số quét màn: 360Hz\nThời gian đáp ứng: 0.03ms(GTG)\nChỉ số màu sắc: 1073.7M (10 bit) - 135% sRGB - 99% DCI-P3\nĐộ chính xác màu sắc:△E≦ 2\nCổng cắm kết nối: DisplayPort, HDMI, USB-C\nNPP: VS",
+    "price": {
+      "$numberInt": "38990000"
+    },
+    "oldPrice": {
+      "$numberInt": "40990000"
+    },
+    "discount": "16%",
+    "imageEmoji": "http://localhost:5000/uploads/products/product-1792495796427-971742525.jpg",
+    "gallery": [
+      "http://localhost:5000/uploads/products/product-1792495796427-971742525.jpg",
+      "http://localhost:5000/uploads/products/product-1792495796427-531540240.jpg",
+      "http://localhost:5000/uploads/products/product-1792495796428-777679648.jpg"
+    ],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 1",
+    "stock": {
+      "$numberInt": "28"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    },
+    "slug": "rog-swift-oled-pg34wcdn",
+    "sku": "GT-MVGLR6C8",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792495861209"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190343"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "1"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "29"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "brandId": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "brand_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "title": "TUF GAMING VG259Q",
+    "name": "TUF GAMING VG259Q",
+    "description": "Thương hiệu\tAsus\nBảo hành\t36 Tháng\nKích thước\t24.5 inch\nĐộ phân giải\t1920 x 1080 ( 16 : 9 )\nTấm nền\tIPS\nTần số quét\t144Hz\nThời gian phản hồi\t1ms\nKiểu màn hình ( phẳng / cong )\tPhẳng \nĐộ sáng\t400 cd/m2\nGóc nhìn\t178 (H) / 178 (V)\nKhả năng hiển thị màu sắc\t16.7 triệu màu, sRGB 99%\nĐộ tương phản tĩnh\t1000 : 1 \nĐộ tương phản động\t100.000.000 : 1 \nCổng xuất hình\t\nDisplayPort 1.2 x 1\nHDMI(v1.4) x 2\nJack tai nghe\n\nTính năng đặc biệt\t\nCác lựa chọn tông màu: 3 chế độ\nCác lựa chọn nhiệt độ màu: 4 chế độ\nGamePlus (chế độ) : Có (Ngắm/Hẹn giờ/Bộ đếm FPS/Màn hình hiển thị dạng lưới)\nHỗ trợ HDCP\nTần suất Ánh sáng Xanh Thấp : Có\nGameVisual :7 chế độ(Cảnh vật/Đua xe/Rạp/RTS/RPG/FPS/Chế độ sRGB/Chế độ MOBA)\nHỗ trợ công nghệ Adaptive-Sync :Có\nTương thích với G-SYNC\nCông nghệ GameFast Input\nExtreme Low Motion Blur\nCông nghệ Shadow Boost\n\nKhối lượng\t5.1  kg (có chân đế)\n2.9 kg (không có chân đế)\nTiêu thụ điện\tĐiện năng tiêu thụ < 40W**\nChế độ tiết kiệm điện <0.5W\nChế độ tắt nguồn <0.5W\nKích thước chuẩn\tGồm chân đế 563 x ( 356~486) x 211mm\nKhông gồm chân đế 563 x 329 x 52mm\nPhụ kiện đi kèm\tDây nguồn\nSạc nguồn\nCáp DisplayPort (Có thể có)\nSách hướng dẫn\nCáp HDMI (Có thể có)\nPhiếu bảo hành",
+    "price": {
+      "$numberInt": "75000000"
+    },
+    "oldPrice": {
+      "$numberInt": "80000000"
+    },
+    "discount": "16%",
+    "imageEmoji": "http://localhost:5000/uploads/products/product-1792844201796-48482336.png",
+    "gallery": [
+      "http://localhost:5000/uploads/products/product-1792844201796-48482336.png",
+      "http://localhost:5000/uploads/products/product-1792844201799-65048688.png",
+      "http://localhost:5000/uploads/products/product-1792844201801-776003701.png",
+      "http://localhost:5000/uploads/products/product-1792844201802-143767828.png"
+    ],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 2",
+    "stock": {
+      "$numberInt": "21"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    },
+    "slug": "tuf-gaming-vg259q",
+    "sku": "GT-MVMD6OEE",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792844264966"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793709069658"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "soldCount": {
+      "$numberInt": "2"
+    },
+    "warehouseStock": {
+      "$numberInt": "4"
+    },
+    "listedQty": {
+      "$numberInt": "22"
+    },
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "brandId": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "brand_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ],
+    "isFeatured": true
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c73"
+    },
+    "title": "PC Gaming GearTech Battle Station Core i5-14400F / RTX 4060 Ti 8GB",
+    "description": "Cấu hình quốc dân tối ưu cho game thủ Esports, chiến mượt mà Valorant 400+ FPS, CS2, LMHT, PUBG ở độ phân giải Full HD & 2K. Bảo hành 1 đổi 1 trong 30 ngày.",
+    "price": {
+      "$numberInt": "23990000"
+    },
+    "oldPrice": {
+      "$numberInt": "26500000"
+    },
+    "discount": "-9%",
+    "imageEmoji": "🎯",
+    "gallery": [],
+    "category": "desktops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "brand": "geartech",
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "reviewsCount": {
+      "$numberInt": "36"
+    },
+    "salesCount": "ĐÃ BÁN 85",
+    "soldCount": {
+      "$numberInt": "85"
+    },
+    "stock": {
+      "$numberInt": "15"
+    },
+    "warehouseStock": {
+      "$numberInt": "25"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "PC Gaming GearTech Battle Station Core i5-14400F / RTX 4060 Ti 8GB",
+    "slug": "pc-gaming-geartech-battle-station-core-i5-14400f-rtx-4060-ti-8gb",
+    "sku": "GT-MVNVR6I2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "specifications": [
+      {
+        "name": "Chipset đồ họa",
+        "value": "NVIDIA GeForce RTX Series"
+      },
+      {
+        "name": "Dung lượng VRAM",
+        "value": "12GB GDDR6X"
+      },
+      {
+        "name": "Giao tiếp",
+        "value": "PCIe 4.0 x16"
+      },
+      {
+        "name": "Nguồn đề nghị",
+        "value": "650W trở lên"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng"
+      }
+    ],
+    "specs": {
+      "Chipset đồ họa": "NVIDIA GeForce RTX Series",
+      "Dung lượng VRAM": "12GB GDDR6X",
+      "Giao tiếp": "PCIe 4.0 x16",
+      "Nguồn đề nghị": "650W trở lên",
+      "Bảo hành": "36 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c70"
+    },
+    "title": "PC Gaming ROG Hyperion GR701 Intel i9-14900K / RTX 4090 / 64GB DDR5",
+    "description": "Cỗ máy chiến hạm đỉnh cao Esports với vỏ ROG Hyperion GR701, tản nhiệt nước Custom EKWB, card đồ họa ROG Strix GeForce RTX 4090 OC 24GB và vi xử lý Intel Core i9-14900K thế hệ 14.",
+    "price": {
+      "$numberInt": "125990000"
+    },
+    "oldPrice": {
+      "$numberInt": "139000000"
+    },
+    "discount": "-9%",
+    "imageEmoji": "🖥️",
+    "gallery": [],
+    "category": "desktops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "18"
+    },
+    "salesCount": "ĐÃ BÁN 24",
+    "soldCount": {
+      "$numberInt": "24"
+    },
+    "stock": {
+      "$numberInt": "6"
+    },
+    "warehouseStock": {
+      "$numberInt": "10"
+    },
+    "listedQty": {
+      "$numberInt": "6"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "PC Gaming ROG Hyperion GR701 Intel i9-14900K / RTX 4090 / 64GB DDR5",
+    "slug": "pc-gaming-rog-hyperion-gr701-intel-i9-14900k-rtx-4090-64gb-ddr5",
+    "sku": "GT-MVNVR6I2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920812"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190345"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brandId": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "brand_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "specifications": [
+      {
+        "name": "Chipset đồ họa",
+        "value": "NVIDIA GeForce RTX Series"
+      },
+      {
+        "name": "Dung lượng VRAM",
+        "value": "12GB GDDR6X"
+      },
+      {
+        "name": "Giao tiếp",
+        "value": "PCIe 4.0 x16"
+      },
+      {
+        "name": "Nguồn đề nghị",
+        "value": "650W trở lên"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng"
+      }
+    ],
+    "specs": {
+      "Chipset đồ họa": "NVIDIA GeForce RTX Series",
+      "Dung lượng VRAM": "12GB GDDR6X",
+      "Giao tiếp": "PCIe 4.0 x16",
+      "Nguồn đề nghị": "650W trở lên",
+      "Bảo hành": "36 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c71"
+    },
+    "title": "PC Gaming MSI Meg Trident X2 Intel i7-14700KF / RTX 4080 Super / 32GB",
+    "description": "Thiết kế HMI cảm ứng độc quyền phía trước máy, tản nhiệt Silent Storm Cooling 3 riêng biệt, card đồ họa MSI GeForce RTX 4080 Super 16GB mạnh mẽ đáp ứng game 4K Ray Tracing mượt mà.",
+    "price": {
+      "$numberInt": "79990000"
+    },
+    "oldPrice": {
+      "$numberInt": "88500000"
+    },
+    "discount": "-10%",
+    "imageEmoji": "⚡",
+    "gallery": [],
+    "category": "desktops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "brand": "msi",
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "14"
+    },
+    "salesCount": "ĐÃ BÁN 19",
+    "soldCount": {
+      "$numberInt": "19"
+    },
+    "stock": {
+      "$numberInt": "8"
+    },
+    "warehouseStock": {
+      "$numberInt": "12"
+    },
+    "listedQty": {
+      "$numberInt": "8"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "PC Gaming MSI Meg Trident X2 Intel i7-14700KF / RTX 4080 Super / 32GB",
+    "slug": "pc-gaming-msi-meg-trident-x2-intel-i7-14700kf-rtx-4080-super-32gb",
+    "sku": "GT-MVNVR6I2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190346"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73417"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73417"
+    },
+    "specifications": [
+      {
+        "name": "Chipset đồ họa",
+        "value": "NVIDIA GeForce RTX Series"
+      },
+      {
+        "name": "Dung lượng VRAM",
+        "value": "12GB GDDR6X"
+      },
+      {
+        "name": "Giao tiếp",
+        "value": "PCIe 4.0 x16"
+      },
+      {
+        "name": "Nguồn đề nghị",
+        "value": "650W trở lên"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng"
+      }
+    ],
+    "specs": {
+      "Chipset đồ họa": "NVIDIA GeForce RTX Series",
+      "Dung lượng VRAM": "12GB GDDR6X",
+      "Giao tiếp": "PCIe 4.0 x16",
+      "Nguồn đề nghị": "650W trở lên",
+      "Bảo hành": "36 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c72"
+    },
+    "title": "PC Workstation ASUS ProArt PA602 Dual RTX 4090 / AMD Threadripper 7970X",
+    "description": "Hệ thống máy trạm chuyên nghiệp dành cho đồ họa 3D, Render 8K, đào tạo AI Machine Learning với vi xử lý AMD Threadripper 7970X 32 nhân 64 luồng và 128GB RAM ECC.",
+    "price": {
+      "$numberInt": "215000000"
+    },
+    "oldPrice": {
+      "$numberInt": "230000000"
+    },
+    "discount": "-7%",
+    "imageEmoji": "🎛️",
+    "gallery": [],
+    "category": "desktops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "9"
+    },
+    "salesCount": "ĐÃ BÁN 12",
+    "soldCount": {
+      "$numberInt": "12"
+    },
+    "stock": {
+      "$numberInt": "3"
+    },
+    "warehouseStock": {
+      "$numberInt": "5"
+    },
+    "listedQty": {
+      "$numberInt": "3"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "PC Workstation ASUS ProArt PA602 Dual RTX 4090 / AMD Threadripper 7970X",
+    "slug": "pc-workstation-asus-proart-pa602-dual-rtx-4090-amd-threadripper-7970x",
+    "sku": "GT-MVNVR6I2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920813"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190346"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brandId": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "brand_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "specifications": [
+      {
+        "name": "Chipset đồ họa",
+        "value": "NVIDIA GeForce RTX Series"
+      },
+      {
+        "name": "Dung lượng VRAM",
+        "value": "12GB GDDR6X"
+      },
+      {
+        "name": "Giao tiếp",
+        "value": "PCIe 4.0 x16"
+      },
+      {
+        "name": "Nguồn đề nghị",
+        "value": "650W trở lên"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng"
+      }
+    ],
+    "specs": {
+      "Chipset đồ họa": "NVIDIA GeForce RTX Series",
+      "Dung lượng VRAM": "12GB GDDR6X",
+      "Giao tiếp": "PCIe 4.0 x16",
+      "Nguồn đề nghị": "650W trở lên",
+      "Bảo hành": "36 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c74"
+    },
+    "title": "Laptop ASUS ROG Zephyrus G16 OLED (2024) Intel Core Ultra 9 / RTX 4080 / 32GB",
+    "description": "Đỉnh cao laptop gaming mỏng nhẹ với màn hình ROG Nebula OLED 2.5K 240Hz 0.2ms chuẩn màu DCI-P3 100%, khung nhôm CNC nguyên khối với dải đèn Slash Lighting độc đáo.",
+    "price": {
+      "$numberInt": "79990000"
+    },
+    "oldPrice": {
+      "$numberInt": "85000000"
+    },
+    "discount": "-6%",
+    "imageEmoji": "💻",
+    "gallery": [],
+    "category": "laptops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "brand": "asus",
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "22"
+    },
+    "salesCount": "ĐÃ BÁN 45",
+    "soldCount": {
+      "$numberInt": "45"
+    },
+    "stock": {
+      "$numberInt": "7"
+    },
+    "warehouseStock": {
+      "$numberInt": "10"
+    },
+    "listedQty": {
+      "$numberInt": "7"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Laptop ASUS ROG Zephyrus G16 OLED (2024) Intel Core Ultra 9 / RTX 4080 / 32GB",
+    "slug": "laptop-asus-rog-zephyrus-g16-oled-2024-intel-core-ultra-9-rtx-4080-32gb",
+    "sku": "GT-MVNVR6J3",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190347"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brandId": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "brand_id": {
+      "$oid": "6ac11f302de58adcc60f3c5b"
+    },
+    "specifications": [
+      {
+        "name": "CPU",
+        "value": "Intel Core i7-13700H (14 nhân, 20 luồng)"
+      },
+      {
+        "name": "RAM",
+        "value": "16GB DDR5 4800MHz"
+      },
+      {
+        "name": "Ổ cứng",
+        "value": "512GB SSD NVMe PCIe 4.0"
+      },
+      {
+        "name": "Card đồ họa (GPU)",
+        "value": "NVIDIA GeForce RTX 4060 8GB"
+      },
+      {
+        "name": "Màn hình",
+        "value": "15.6 inch FHD 144Hz IPS"
+      },
+      {
+        "name": "Hệ điều hành",
+        "value": "Windows 11 Home"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "2.2 kg"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "CPU": "Intel Core i7-13700H (14 nhân, 20 luồng)",
+      "RAM": "16GB DDR5 4800MHz",
+      "Ổ cứng": "512GB SSD NVMe PCIe 4.0",
+      "Card đồ họa (GPU)": "NVIDIA GeForce RTX 4060 8GB",
+      "Màn hình": "15.6 inch FHD 144Hz IPS",
+      "Hệ điều hành": "Windows 11 Home",
+      "Trọng lượng": "2.2 kg",
+      "Bảo hành": "24 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c75"
+    },
+    "title": "MacBook Pro 16 inch M3 Max (16 CPU / 40 GPU / 48GB Unified Memory / 1TB SSD)",
+    "description": "Sức mạnh quái vật từ chip Apple M3 Max, màn hình Liquid Retina XDR 120Hz ProMotion 1600 nits, thời lượng pin 22 giờ liên tục. Lựa chọn số 1 cho lập trình viên và dựng phim chuyên nghiệp.",
+    "price": {
+      "$numberInt": "99990000"
+    },
+    "oldPrice": {
+      "$numberInt": "105000000"
+    },
+    "discount": "-5%",
+    "imageEmoji": "🍎",
+    "gallery": [],
+    "category": "laptops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "brand": "apple",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "31"
+    },
+    "salesCount": "ĐÃ BÁN 62",
+    "soldCount": {
+      "$numberInt": "62"
+    },
+    "stock": {
+      "$numberInt": "5"
+    },
+    "warehouseStock": {
+      "$numberInt": "8"
+    },
+    "listedQty": {
+      "$numberInt": "5"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "MacBook Pro 16 inch M3 Max (16 CPU / 40 GPU / 48GB Unified Memory / 1TB SSD)",
+    "slug": "macbook-pro-16-inch-m3-max-16-cpu-40-gpu-48gb-unified-memory-1tb-ssd",
+    "sku": "GT-MVNVR6J3",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190348"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73412"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73412"
+    },
+    "specifications": [
+      {
+        "name": "CPU",
+        "value": "Intel Core i7-13700H (14 nhân, 20 luồng)"
+      },
+      {
+        "name": "RAM",
+        "value": "16GB DDR5 4800MHz"
+      },
+      {
+        "name": "Ổ cứng",
+        "value": "512GB SSD NVMe PCIe 4.0"
+      },
+      {
+        "name": "Card đồ họa (GPU)",
+        "value": "NVIDIA GeForce RTX 4060 8GB"
+      },
+      {
+        "name": "Màn hình",
+        "value": "15.6 inch FHD 144Hz IPS"
+      },
+      {
+        "name": "Hệ điều hành",
+        "value": "Windows 11 Home"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "2.2 kg"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "CPU": "Intel Core i7-13700H (14 nhân, 20 luồng)",
+      "RAM": "16GB DDR5 4800MHz",
+      "Ổ cứng": "512GB SSD NVMe PCIe 4.0",
+      "Card đồ họa (GPU)": "NVIDIA GeForce RTX 4060 8GB",
+      "Màn hình": "15.6 inch FHD 144Hz IPS",
+      "Hệ điều hành": "Windows 11 Home",
+      "Trọng lượng": "2.2 kg",
+      "Bảo hành": "24 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c77"
+    },
+    "title": "Laptop Acer Predator Helios 16 Intel Core i7-14700HX / RTX 4070 8GB / 16GB DDR5",
+    "description": "Màn hình 16 inch WQXGA 240Hz 500 nits G-Sync, 2 quạt AeroBlade 3D thế hệ 5 kim loại và keo tản nhiệt kim loại lỏng. Đạt chứng chỉ GearTech Esports Certified.",
+    "price": {
+      "$numberInt": "49990000"
+    },
+    "oldPrice": {
+      "$numberInt": "54990000"
+    },
+    "discount": "-9%",
+    "imageEmoji": "https://imgs.search.brave.com/RDYEHECGuVn4oyBMgo3cTmRx6UubJhnsqeb4rQBDYkM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzYxYnNPeUIxV0pM/LmpwZw",
+    "gallery": [
+      "https://imgs.search.brave.com/RDYEHECGuVn4oyBMgo3cTmRx6UubJhnsqeb4rQBDYkM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMtbmEuc3NsLWlt/YWdlcy1hbWF6b24u/Y29tL2ltYWdlcy9J/LzYxYnNPeUIxV0pM/LmpwZw"
+    ],
+    "category": "laptops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "brand": "acer",
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "reviewsCount": {
+      "$numberInt": "19"
+    },
+    "salesCount": "ĐÃ BÁN 43",
+    "soldCount": {
+      "$numberInt": "43"
+    },
+    "stock": {
+      "$numberInt": "9"
+    },
+    "warehouseStock": {
+      "$numberInt": "18"
+    },
+    "listedQty": {
+      "$numberInt": "12"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Laptop Acer Predator Helios 16 Intel Core i7-14700HX / RTX 4070 8GB / 16GB DDR5",
+    "slug": "laptop-acer-predator-helios-16-intel-core-i7-14700hx-rtx-4070-8gb-16gb-ddr5",
+    "sku": "GT-MVNVR6J3",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793707388008"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "specifications": [
+      {
+        "name": "CPU",
+        "value": "Intel Core i7-13700H (14 nhân, 20 luồng)"
+      },
+      {
+        "name": "RAM",
+        "value": "16GB DDR5 4800MHz"
+      },
+      {
+        "name": "Ổ cứng",
+        "value": "512GB SSD NVMe PCIe 4.0"
+      },
+      {
+        "name": "Card đồ họa (GPU)",
+        "value": "NVIDIA GeForce RTX 4060 8GB"
+      },
+      {
+        "name": "Màn hình",
+        "value": "15.6 inch FHD 144Hz IPS"
+      },
+      {
+        "name": "Hệ điều hành",
+        "value": "Windows 11 Home"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "2.2 kg"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "CPU": "Intel Core i7-13700H (14 nhân, 20 luồng)",
+      "RAM": "16GB DDR5 4800MHz",
+      "Ổ cứng": "512GB SSD NVMe PCIe 4.0",
+      "Card đồ họa (GPU)": "NVIDIA GeForce RTX 4060 8GB",
+      "Màn hình": "15.6 inch FHD 144Hz IPS",
+      "Hệ điều hành": "Windows 11 Home",
+      "Trọng lượng": "2.2 kg",
+      "Bảo hành": "24 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade07f091ec1df1b8447c76"
+    },
+    "title": "Laptop Gaming Lenovo Legion Pro 7i Gen 9 Intel i9-14900HX / RTX 4090 / 32GB",
+    "description": "Hệ thống tản nhiệt buồng hơi Legion Coldfront Vapor kết hợp chip AI Lenovo LA-2Q tối ưu hóa FPS tự động theo thời gian thực. Bàn phím Legion TrueStrike RGB từng phím.",
+    "price": {
+      "$numberInt": "88990000"
+    },
+    "oldPrice": {
+      "$numberInt": "94000000"
+    },
+    "discount": "-5%",
+    "imageEmoji": "🔥",
+    "gallery": [],
+    "category": "laptops",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "category_id": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "brand": "lenovo",
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "16"
+    },
+    "salesCount": "ĐÃ BÁN 28",
+    "soldCount": {
+      "$numberInt": "28"
+    },
+    "stock": {
+      "$numberInt": "4"
+    },
+    "warehouseStock": {
+      "$numberInt": "6"
+    },
+    "listedQty": {
+      "$numberInt": "4"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Laptop Gaming Lenovo Legion Pro 7i Gen 9 Intel i9-14900HX / RTX 4090 / 32GB",
+    "slug": "laptop-gaming-lenovo-legion-pro-7i-gen-9-intel-i9-14900hx-rtx-4090-32gb",
+    "sku": "GT-MVNVR6J3",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792935920847"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190349"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brandId": {
+      "$oid": "6ad740cdf285ccfae2389c8a"
+    },
+    "brand_id": {
+      "$oid": "6ad740cdf285ccfae2389c8a"
+    },
+    "specifications": [
+      {
+        "name": "CPU",
+        "value": "Intel Core i7-13700H (14 nhân, 20 luồng)"
+      },
+      {
+        "name": "RAM",
+        "value": "16GB DDR5 4800MHz"
+      },
+      {
+        "name": "Ổ cứng",
+        "value": "512GB SSD NVMe PCIe 4.0"
+      },
+      {
+        "name": "Card đồ họa (GPU)",
+        "value": "NVIDIA GeForce RTX 4060 8GB"
+      },
+      {
+        "name": "Màn hình",
+        "value": "15.6 inch FHD 144Hz IPS"
+      },
+      {
+        "name": "Hệ điều hành",
+        "value": "Windows 11 Home"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "2.2 kg"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "CPU": "Intel Core i7-13700H (14 nhân, 20 luồng)",
+      "RAM": "16GB DDR5 4800MHz",
+      "Ổ cứng": "512GB SSD NVMe PCIe 4.0",
+      "Card đồ họa (GPU)": "NVIDIA GeForce RTX 4060 8GB",
+      "Màn hình": "15.6 inch FHD 144Hz IPS",
+      "Hệ điều hành": "Windows 11 Home",
+      "Trọng lượng": "2.2 kg",
+      "Bảo hành": "24 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a33"
+    },
+    "title": "Chuột Esports Predator 1792937897054",
+    "name": "Chuột Esports Predator 1792937897054",
+    "description": "Thiết bị công nghệ cao cấp",
+    "price": {
+      "$numberInt": "1250000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [
+      "📦"
+    ],
+    "category": "peripherals",
+    "categoryName": "Phụ kiện công nghệ",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "15"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ade0fa9527d955568620a32"
+    },
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    },
+    "slug": "chuot-esports-predator-1792937897054",
+    "sku": "GT-MVNWXJZI",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937897838"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190350"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brand": "acer",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdd527d955568620aa3"
+    },
+    "title": "Chuột Esports Predator 1792937948371",
+    "name": "Chuột Esports Predator 1792937948371",
+    "description": "Thiết bị công nghệ cao cấp",
+    "price": {
+      "$numberInt": "1250000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [
+      "📦"
+    ],
+    "category": "peripherals",
+    "categoryName": "Phụ kiện công nghệ",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "15"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ade0fdc527d955568620aa2"
+    },
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    },
+    "slug": "chuot-esports-predator-1792937948371",
+    "sku": "GT-MVNWYNIH",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1792937949066"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190351"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brand": "acer",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6adf6c3a4c331b65526da0f5"
+    },
+    "title": "Chuột Gaming GHN Test",
+    "description": "Sản phẩm test vận chuyển GHN",
+    "price": {
+      "$numberInt": "450000"
+    },
+    "imageEmoji": "📦",
+    "gallery": [],
+    "category": "chuột & bàn phím",
+    "categoryName": "Phụ kiện công nghệ",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "46"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "50"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "name": "Chuột Gaming GHN Test",
+    "slug": "chuot-gaming-ghn-test",
+    "sku": "GT-MVPE244Z",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793027130228"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793028594456"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8abc3f0e5bf513ab57c6f"
+    },
+    "title": "Màn Hình Gaming K243Y E",
+    "name": "Màn Hình Gaming K243Y E",
+    "description": "23.8' FHD (1920x1080)\nTấm nền: IPS\nTần số quét: 100Hz\nCổng kết nối: VGA, HDMI\nĐộ phủ màu: 99% sRGB\nCông nghệ bảo vệ mắt Bluelight Shield\n3 năm bảo hành VIP 3S1",
+    "price": {
+      "$numberInt": "1500000"
+    },
+    "oldPrice": {
+      "$numberInt": "2390000"
+    },
+    "discount": "16%",
+    "imageEmoji": "http://localhost:5000/uploads/products/product-1793633187130-176358787.webp",
+    "gallery": [
+      "http://localhost:5000/uploads/products/product-1793633187130-176358787.webp",
+      "http://localhost:5000/uploads/products/product-1793633187130-39115139.webp",
+      "http://localhost:5000/uploads/products/product-1793633187130-640933098.webp"
+    ],
+    "category": "monitors",
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "brand": "acer",
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "20"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "20"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    },
+    "slug": "man-hinh-gaming-k243y-e",
+    "sku": "GT-MVZEWPSH",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793633219730"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190352"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73418"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b26"
+    },
+    "title": "Chuột Gaming Không Dây Razer Viper V3 Pro Ultra-lightweight",
+    "description": "Cảm biến quang học Focus Pro 35K Gen-2 thế hệ mới, polling rate 8000Hz, trọng lượng siêu nhẹ 54g chuẩn Esports.",
+    "price": {
+      "$numberInt": "3890000"
+    },
+    "oldPrice": {
+      "$numberInt": "4290000"
+    },
+    "discount": "-9%",
+    "imageEmoji": "🖱️",
+    "gallery": [
+      "🖱️"
+    ],
+    "category": "peripherals",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "categoryName": "Bàn phím & Chuột",
+    "brand": "razer",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73410"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73410"
+    },
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "42"
+    },
+    "salesCount": "ĐÃ BÁN 156",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "35"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "35"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Chuột Gaming Không Dây Razer Viper V3 Pro Ultra-lightweight",
+    "slug": "chuot-gaming-khong-day-razer-viper-v3-pro-ultra-lightweight",
+    "sku": "GT-MVZH9TJP",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190358"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190358"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    },
+    "isFeatured": true
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b27"
+    },
+    "title": "Bàn Phím Cơ Gaming Razer BlackWidow V4 Pro RGB",
+    "description": "Razer Green Mechanical Switches cảm giác gõ tactile clicky, núm xoay đa năng Command Dial, 8 phím macro chuyên biệt.",
+    "price": {
+      "$numberInt": "5490000"
+    },
+    "oldPrice": {
+      "$numberInt": "5990000"
+    },
+    "discount": "-8%",
+    "imageEmoji": "⌨️",
+    "gallery": [
+      "⌨️"
+    ],
+    "category": "peripherals",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "categoryName": "Bàn phím & Chuột",
+    "brand": "razer",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73410"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73410"
+    },
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "reviewsCount": {
+      "$numberInt": "28"
+    },
+    "salesCount": "ĐÃ BÁN 89",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "20"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "20"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Bàn Phím Cơ Gaming Razer BlackWidow V4 Pro RGB",
+    "slug": "ban-phim-co-gaming-razer-blackwidow-v4-pro-rgb",
+    "sku": "GT-MVZH9TJV",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190363"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190363"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "3 Chế độ (2.4G / BT / Dây Type-C)"
+      },
+      {
+        "name": "Loại Switch",
+        "value": "Cơ học ROG NX Snow (Hotswap)"
+      },
+      {
+        "name": "Keycap",
+        "value": "PBT Doubleshot siêu bền"
+      },
+      {
+        "name": "Đèn LED",
+        "value": "RGB từng phím Aura Sync"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "3 Chế độ (2.4G / BT / Dây Type-C)",
+      "Loại Switch": "Cơ học ROG NX Snow (Hotswap)",
+      "Keycap": "PBT Doubleshot siêu bền",
+      "Đèn LED": "RGB từng phím Aura Sync",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b28"
+    },
+    "title": "Chuột Không Dây Logitech G Pro X Superlight 2 Lightspeed",
+    "description": "Huyền thoại chuột Esports với cảm biến HERO 2 32.000 DPI, Switch cơ lai quang học LIGHTFORCE, thời lượng pin 95 giờ.",
+    "price": {
+      "$numberInt": "3490000"
+    },
+    "oldPrice": {
+      "$numberInt": "3890000"
+    },
+    "discount": "-10%",
+    "imageEmoji": "🖱️",
+    "gallery": [
+      "🖱️"
+    ],
+    "category": "peripherals",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "categoryName": "Bàn phím & Chuột",
+    "brand": "logitech",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73411"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73411"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "110"
+    },
+    "salesCount": "ĐÃ BÁN 340",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "50"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "50"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Chuột Không Dây Logitech G Pro X Superlight 2 Lightspeed",
+    "slug": "chuot-khong-day-logitech-g-pro-x-superlight-2-lightspeed",
+    "sku": "GT-MVZH9TJZ",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190368"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793637190368"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "Wireless 2.4GHz + Bluetooth + Type-C"
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Quang học cao cấp 26,000 DPI"
+      },
+      {
+        "name": "Trọng lượng",
+        "value": "58g siêu nhẹ"
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "Lên đến 80 giờ liên tục"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "Wireless 2.4GHz + Bluetooth + Type-C",
+      "Cảm biến": "Quang học cao cấp 26,000 DPI",
+      "Trọng lượng": "58g siêu nhẹ",
+      "Thời lượng pin": "Lên đến 80 giờ liên tục",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b29"
+    },
+    "title": "Bàn Phím Cơ Không Dây Logitech G915 LIGHTSPEED Wireless RGB",
+    "description": "Thiết kế Low-profile siêu mỏng cao cấp bằng hợp kim nhôm hàng không, switch GL Tactile, pin lên tới 40 giờ đèn nền tối đa.",
+    "price": {
+      "$numberInt": "4690000"
+    },
+    "oldPrice": {
+      "$numberInt": "5290000"
+    },
+    "discount": "-11%",
+    "imageEmoji": "https://product.hstatic.net/200000637319/product/g915-x-tkl-wireless-keyboard-gallery-1-us_bc155e05697044c48527879d8d62dc09_master.png",
+    "gallery": [
+      "https://product.hstatic.net/200000637319/product/g915-x-tkl-wireless-keyboard-gallery-1-us_bc155e05697044c48527879d8d62dc09_master.png"
+    ],
+    "category": "peripherals",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "categoryName": "Bàn phím & Chuột",
+    "brand": "logitech",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73411"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73411"
+    },
+    "rating": {
+      "$numberDouble": "4.8"
+    },
+    "reviewsCount": {
+      "$numberInt": "65"
+    },
+    "salesCount": "ĐÃ BÁN 210",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "25"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "25"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Bàn Phím Cơ Không Dây Logitech G915 LIGHTSPEED Wireless RGB",
+    "slug": "ban-phim-co-khong-day-logitech-g915-lightspeed-wireless-rgb",
+    "sku": "GT-MVZH9TK2",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190370"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793706357287"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "specifications": [
+      {
+        "name": "Chuẩn kết nối",
+        "value": "3 Chế độ (2.4G / BT / Dây Type-C)"
+      },
+      {
+        "name": "Loại Switch",
+        "value": "Cơ học ROG NX Snow (Hotswap)"
+      },
+      {
+        "name": "Keycap",
+        "value": "PBT Doubleshot siêu bền"
+      },
+      {
+        "name": "Đèn LED",
+        "value": "RGB từng phím Aura Sync"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "24 tháng"
+      }
+    ],
+    "specs": {
+      "Chuẩn kết nối": "3 Chế độ (2.4G / BT / Dây Type-C)",
+      "Loại Switch": "Cơ học ROG NX Snow (Hotswap)",
+      "Keycap": "PBT Doubleshot siêu bền",
+      "Đèn LED": "RGB từng phím Aura Sync",
+      "Bảo hành": "24 tháng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b2a"
+    },
+    "title": "Nguồn Máy Tính Corsair RM1000x Shift 80 Plus Gold 1000W Modular",
+    "description": "Thiết kế cổng cắm mặt bên độc quyền Side-Mounted, chuẩn ATX 3.0 & PCIe 5.0 cấp nguồn an toàn tuyệt đối cho RTX 4090.",
+    "price": {
+      "$numberInt": "5290000"
+    },
+    "oldPrice": {
+      "$numberInt": "5890000"
+    },
+    "discount": "-10%",
+    "imageEmoji": "https://phongvu.vn/nguon-may-tinh-psu-corsair-rm1000x-shift-80-plus-gold-full-modul-cp-9020253-na--s230302800",
+    "gallery": [
+      "https://phongvu.vn/nguon-may-tinh-psu-corsair-rm1000x-shift-80-plus-gold-full-modul-cp-9020253-na--s230302800"
+    ],
+    "category": "components",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "categoryName": "Linh kiện máy tính",
+    "brand": "corsair",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73413"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73413"
+    },
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "34"
+    },
+    "salesCount": "ĐÃ BÁN 95",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "18"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "18"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Nguồn Máy Tính Corsair RM1000x Shift 80 Plus Gold 1000W Modular",
+    "slug": "nguon-may-tinh-corsair-rm1000x-shift-80-plus-gold-1000w-modular",
+    "sku": "GT-MVZH9TK4",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190372"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793706259398"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "specifications": []
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b2b"
+    },
+    "title": "Tản Nhiệt Nước Corsair iCUE LINK H150i LCD RGB 360mm",
+    "description": "Màn hình IPS LCD 2.1 inch tùy biến ảnh động 480x480, hệ thống kết nối thông minh iCUE LINK 1 dây độc bản.",
+    "price": {
+      "$numberInt": "7290000"
+    },
+    "oldPrice": {
+      "$numberInt": "7990000"
+    },
+    "discount": "-9%",
+    "imageEmoji": "https://anphat.com.vn/media/product/46184_t___n_nhi___t_n_____c_corsair_icue_link_h150i_rgb__cw_9061003_ww____2_.jpg",
+    "gallery": [
+      "https://anphat.com.vn/media/product/46184_t___n_nhi___t_n_____c_corsair_icue_link_h150i_rgb__cw_9061003_ww____2_.jpg"
+    ],
+    "category": "components",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "categoryName": "Linh kiện máy tính",
+    "brand": "corsair",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73413"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73413"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "19"
+    },
+    "salesCount": "ĐÃ BÁN 45",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "12"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "12"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Tản Nhiệt Nước Corsair iCUE LINK H150i LCD RGB 360mm",
+    "slug": "tan-nhiet-nuoc-corsair-icue-link-h150i-lcd-rgb-360mm",
+    "sku": "GT-MVZH9TK7",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190375"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793706214411"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "specifications": []
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b2c"
+    },
+    "title": "Tai Nghe Không Dây Sony INZONE H9 Gaming Noise Canceling",
+    "description": "Công nghệ chống ồn kép Dual Noise Sensor của dòng 1000X lừng danh, 360 Spatial Sound for Gaming xác định chính xác vị trí đối thủ.",
+    "price": {
+      "$numberInt": "5990000"
+    },
+    "oldPrice": {
+      "$numberInt": "6990000"
+    },
+    "discount": "-14%",
+    "imageEmoji": "https://d1ncau8tqf99kp.cloudfront.net/converted/118330_original_local_1200x1050_v3_converted.webp",
+    "gallery": [
+      "https://d1ncau8tqf99kp.cloudfront.net/converted/118330_original_local_1200x1050_v3_converted.webp"
+    ],
+    "category": "audio",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28c"
+    },
+    "categoryName": "Tai nghe & Loa",
+    "brand": "sony",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73414"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73414"
+    },
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "52"
+    },
+    "salesCount": "ĐÃ BÁN 180",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "22"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "22"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Tai Nghe Không Dây Sony INZONE H9 Gaming Noise Canceling",
+    "slug": "tai-nghe-khong-day-sony-inzone-h9-gaming-noise-canceling",
+    "sku": "GT-MVZH9TKA",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190378"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793706155275"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "specifications": []
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b2d"
+    },
+    "title": "Màn hình Dell PRO P2726HE (Y4G5T) 27 inch (Full HD/ IPS/ 120Hz/ 5 ms)",
+    "description": "Tấm nền IPS Black độ tương phản 2000:1, tần số quét 120Hz mượt mà, cảm biến tự động điều chỉnh độ sáng và độ chuẩn màu Delta E < 2.",
+    "price": {
+      "$numberInt": "11290000"
+    },
+    "oldPrice": {
+      "$numberInt": "12490000"
+    },
+    "discount": "-10%",
+    "imageEmoji": "https://lh3.googleusercontent.com/IGQ9jS1jnkUatPfacJZushnUrFKcRfM38BLO9YVYJlZV7JbUm31WW7Kc4kgioTAUJJiBu8u4uDEJzlw0M1zs6lyvKgsT56E=rw",
+    "gallery": [
+      "https://lh3.googleusercontent.com/IGQ9jS1jnkUatPfacJZushnUrFKcRfM38BLO9YVYJlZV7JbUm31WW7Kc4kgioTAUJJiBu8u4uDEJzlw0M1zs6lyvKgsT56E=rw"
+    ],
+    "category": "monitors",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "brand": "dell",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73415"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73415"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "88"
+    },
+    "salesCount": "ĐÃ BÁN 260",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "15"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "15"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Màn hình Dell PRO P2726HE (Y4G5T) 27 inch (Full HD/ IPS/ 120Hz/ 5 ms)",
+    "slug": "man-hinh-chuyen-nghiep-dell-ultrasharp-u2724d-27-inch-2k-120hz",
+    "sku": "GT-MVZH9TKC",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190380"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793706101038"
+      }
+    },
+    "__v": {
+      "$numberInt": "2"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch",
+        "_id": {
+          "$oid": "6ae9c8691cce17449433a914"
+        }
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)",
+        "_id": {
+          "$oid": "6ae9c8691cce17449433a915"
+        }
+      },
+      {
+        "name": "Tấm nền",
+        "value": "IPS, Góc nhìn: 178 (H) / 178 (V)",
+        "_id": {
+          "$oid": "6ae9c8691cce17449433a916"
+        }
+      },
+      {
+        "name": "Tần số quét",
+        "value": "120Hz , Thời gian phản hồi 5ms GTG (Fast)-8ms GTG)",
+        "_id": {
+          "$oid": "6ae9c8691cce17449433a917"
+        }
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG",
+        "_id": {
+          "$oid": "6ae9c8691cce17449433a918"
+        }
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2 x DisplayPort 1.4, 1 x HDMI 1.4, 2 x USB-A, 3 x USB Type-C (Display port,Power Delivery)",
+        "_id": {
+          "$oid": "6ae9c8691cce17449433a919"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng",
+        "_id": {
+          "$oid": "6ae9c8691cce17449433a91a"
+        }
+      },
+      {
+        "name": "Hiển thị màu sắc:",
+        "value": "16.7 triệu màu",
+        "_id": {
+          "$oid": "6ae9c8691cce17449433a91b"
+        }
+      }
+    ],
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "IPS, Góc nhìn: 178 (H) / 178 (V)",
+      "Tần số quét": "120Hz , Thời gian phản hồi 5ms GTG (Fast)-8ms GTG)",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2 x DisplayPort 1.4, 1 x HDMI 1.4, 2 x USB-A, 3 x USB Type-C (Display port,Power Delivery)",
+      "Bảo hành": "36 tháng chính hãng",
+      "Hiển thị màu sắc:": "16.7 triệu màu"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b2e"
+    },
+    "title": "Màn Hình Cong Samsung Odyssey OLED G9 49 inch Dual QHD 240Hz",
+    "description": "Tấm nền OLED cao cấp tỷ lệ 32:9 siêu rộng, thời gian phản hồi 0.03ms (GtG), vi xử lý Neo Quantum Processor Pro hỗ trợ Gaming Hub.",
+    "price": {
+      "$numberInt": "36900000"
+    },
+    "oldPrice": {
+      "$numberInt": "39990000"
+    },
+    "discount": "-8%",
+    "imageEmoji": "https://product.hstatic.net/200000837185/product/cong-samsung-odyssey-oled-g9-ls49cg934sexxv-dqhd-49inch-240hz-gaming-6_7f907e40979346449dd973cc3881e5a9_master.png",
+    "gallery": [
+      "https://product.hstatic.net/200000837185/product/cong-samsung-odyssey-oled-g9-ls49cg934sexxv-dqhd-49inch-240hz-gaming-6_7f907e40979346449dd973cc3881e5a9_master.png"
+    ],
+    "category": "monitors",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "categoryName": "Màn hình máy tính",
+    "brand": "samsung",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73416"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73416"
+    },
+    "rating": {
+      "$numberDouble": "4.9"
+    },
+    "reviewsCount": {
+      "$numberInt": "31"
+    },
+    "salesCount": "ĐÃ BÁN 72",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "8"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "8"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Màn Hình Cong Samsung Odyssey OLED G9 49 inch Dual QHD 240Hz",
+    "slug": "man-hinh-cong-samsung-odyssey-oled-g9-49-inch-dual-qhd-240hz",
+    "sku": "GT-MVZH9TKE",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190382"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793705964282"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "specifications": [
+      {
+        "name": "Kích thước",
+        "value": "27 inch"
+      },
+      {
+        "name": "Độ phân giải",
+        "value": "2K QHD (2560 x 1440)"
+      },
+      {
+        "name": "Tấm nền",
+        "value": "Fast IPS"
+      },
+      {
+        "name": "Tần số quét",
+        "value": "240Hz"
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "value": "1ms GTG"
+      },
+      {
+        "name": "Cổng kết nối",
+        "value": "2x HDMI 2.0, 1x DP 1.4"
+      },
+      {
+        "name": "Bảo hành",
+        "value": "36 tháng chính hãng"
+      }
+    ],
+    "specs": {
+      "Kích thước": "27 inch",
+      "Độ phân giải": "2K QHD (2560 x 1440)",
+      "Tấm nền": "Fast IPS",
+      "Tần số quét": "240Hz",
+      "Thời gian đáp ứng": "1ms GTG",
+      "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
+      "Bảo hành": "36 tháng chính hãng"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bb466fee009710ce2b2f"
+    },
+    "title": "Ổ Cứng SSD Samsung 990 PRO 2TB PCIe Gen 4.0 NVMe M.2 V-NAND",
+    "description": "Tốc độ đọc tuần tự lên đến 7450 MB/s, ghi 6900 MB/s, công nghệ tản nhiệt Nickel bảo vệ hiệu suất tối đa khi tải nặng.",
+    "price": {
+      "$numberInt": "4590000"
+    },
+    "oldPrice": {
+      "$numberInt": "5190000"
+    },
+    "discount": "-12%",
+    "imageEmoji": "http://localhost:5000/uploads/products/products-1793705913597-210743625.jpg",
+    "gallery": [
+      "http://localhost:5000/uploads/products/products-1793705913597-210743625.jpg",
+      "http://localhost:5000/uploads/products/products-1793705913598-208857322.jpg",
+      "http://localhost:5000/uploads/products/products-1793705913599-731635062.jpg"
+    ],
+    "category": "components",
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "categoryName": "Linh kiện máy tính",
+    "brand": "samsung",
+    "brandId": {
+      "$oid": "6ad6c9179f350cfe3da73416"
+    },
+    "brand_id": {
+      "$oid": "6ad6c9179f350cfe3da73416"
+    },
+    "rating": {
+      "$numberInt": "5"
+    },
+    "reviewsCount": {
+      "$numberInt": "145"
+    },
+    "salesCount": "ĐÃ BÁN 520",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "40"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "40"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "name": "Ổ Cứng SSD Samsung 990 PRO 2TB PCIe Gen 4.0 NVMe M.2 V-NAND",
+    "slug": "o-cung-ssd-samsung-990-pro-2tb-pcie-gen-40-nvme-m2-v-nand",
+    "sku": "GT-MVZH9TKG",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793637190384"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793709063735"
+      }
+    },
+    "__v": {
+      "$numberInt": "3"
+    },
+    "specifications": [],
+    "isFeatured": true
+  }
+]

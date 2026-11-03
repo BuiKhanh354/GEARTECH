@@ -1,0 +1,274 @@
+[
+  {
+    "_id": {
+      "$oid": "6adf6dff57d8233ae7a0a6ab"
+    },
+    "order_id": {
+      "$oid": "6adf58c7327c42c190737eaf"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "user_id": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "customer_id": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "carrier": "GHN",
+    "tracking_code": "GHNMVPEBTNZ",
+    "service_id": {
+      "$numberInt": "0"
+    },
+    "service_type_id": {
+      "$numberInt": "2"
+    },
+    "service_name": "Giao hàng tiêu chuẩn GHN",
+    "shipping_fee": {
+      "$numberInt": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "0"
+    },
+    "insurance_value": {
+      "$numberInt": "75030000"
+    },
+    "cod_amount": {
+      "$numberInt": "75030000"
+    },
+    "weight": {
+      "$numberInt": "500"
+    },
+    "length": {
+      "$numberInt": "20"
+    },
+    "width": {
+      "$numberInt": "15"
+    },
+    "height": {
+      "$numberInt": "10"
+    },
+    "sender_info": {
+      "name": "Gear Tech Store",
+      "phone": "0901234567",
+      "address": "TP. Hồ Chí Minh",
+      "district_id": {
+        "$numberInt": "1482"
+      },
+      "ward_code": "20101"
+    },
+    "receiver_info": {
+      "name": "Nguyễn Văn A",
+      "phone": "0912345678",
+      "address": "18A/1 Cộng Hòa, TP. Hồ Chí Minh",
+      "district_id": {
+        "$numberInt": "1482"
+      },
+      "ward_code": "20101"
+    },
+    "shipping_status": "ready_to_pick",
+    "expected_delivery_date": {
+      "$date": {
+        "$numberLong": "1793286783215"
+      }
+    },
+    "timeline": [
+      {
+        "status": "ready_to_pick",
+        "description": "Vận đơn GHN đã được khởi tạo thành công trên hệ thống. Đang chờ tài xế GHN đến lấy hàng.",
+        "updated_at": {
+          "$date": {
+            "$numberLong": "1793027583216"
+          }
+        },
+        "location": ""
+      }
+    ],
+    "ghn_order_data": {
+      "order_code": "GHNMVPEBTNZ",
+      "sort_code": "TEST-01-A",
+      "trans_type": "truck",
+      "total_fee": {
+        "$numberInt": "30000"
+      },
+      "expected_delivery_time": "2026-10-29T15:13:03.215Z",
+      "isSimulated": true
+    },
+    "notes": "",
+    "cancel_reason": "",
+    "webhook_events": [],
+    "orderId": {
+      "$oid": "6adf58c7327c42c190737eaf"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "userId": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "customerId": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "trackingCode": "GHNMVPEBTNZ",
+    "shippingStatus": "ready_to_pick",
+    "expectedDeliveryDate": {
+      "$date": {
+        "$numberLong": "1793286783215"
+      }
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793027583221"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793027583221"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf720d1de925349aa4d171"
+    },
+    "order_id": {
+      "$oid": "6ade32c326f0498fc495aba0"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "user_id": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "customer_id": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "carrier": "GHN",
+    "tracking_code": "GHNMVPEY366",
+    "service_id": {
+      "$numberInt": "0"
+    },
+    "service_type_id": {
+      "$numberInt": "2"
+    },
+    "service_name": "Giao hàng tiêu chuẩn GHN",
+    "shipping_fee": {
+      "$numberInt": "32000"
+    },
+    "shippingFee": {
+      "$numberInt": "0"
+    },
+    "insurance_value": {
+      "$numberInt": "150000000"
+    },
+    "cod_amount": {
+      "$numberInt": "150000000"
+    },
+    "weight": {
+      "$numberInt": "500"
+    },
+    "length": {
+      "$numberInt": "20"
+    },
+    "width": {
+      "$numberInt": "15"
+    },
+    "height": {
+      "$numberInt": "10"
+    },
+    "sender_info": {
+      "name": "Gear Tech Store",
+      "phone": "0901234567",
+      "address": "TP. Hồ Chí Minh",
+      "district_id": {
+        "$numberInt": "1482"
+      },
+      "ward_code": "20101"
+    },
+    "receiver_info": {
+      "name": "Nguyễn Văn A",
+      "phone": "0912345678",
+      "address": "18A/1 Cong Hoa, Quan Cau Giay, Ha Noi, Hà Nội",
+      "district_id": {
+        "$numberInt": "1482"
+      },
+      "ward_code": "20101"
+    },
+    "shipping_status": "cancelled",
+    "expected_delivery_date": {
+      "$date": {
+        "$numberLong": "1793287821966"
+      }
+    },
+    "timeline": [
+      {
+        "status": "ready_to_pick",
+        "description": "Vận đơn GHN đã được khởi tạo thành công trên hệ thống. Đang chờ tài xế GHN đến lấy hàng.",
+        "updated_at": {
+          "$date": {
+            "$numberLong": "1793028621966"
+          }
+        },
+        "location": ""
+      },
+      {
+        "status": "cancelled",
+        "description": "Đã hủy vận đơn #GHNMVPEY366. Lý do: Shop chủ động hủy bàn giao",
+        "updated_at": {
+          "$date": {
+            "$numberLong": "1793028892582"
+          }
+        },
+        "location": ""
+      }
+    ],
+    "ghn_order_data": {
+      "order_code": "GHNMVPEY366",
+      "sort_code": "SANDBOX-01",
+      "trans_type": "truck",
+      "total_fee": {
+        "$numberInt": "32000"
+      },
+      "expected_delivery_time": "2026-10-29T15:30:21.966Z",
+      "isSimulated": true
+    },
+    "notes": "",
+    "cancel_reason": "Shop chủ động hủy bàn giao",
+    "webhook_events": [],
+    "orderId": {
+      "$oid": "6ade32c326f0498fc495aba0"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "userId": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "customerId": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "trackingCode": "GHNMVPEY366",
+    "shippingStatus": "ready_to_pick",
+    "expectedDeliveryDate": {
+      "$date": {
+        "$numberLong": "1793287821966"
+      }
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793028621968"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793028892582"
+      }
+    },
+    "__v": {
+      "$numberInt": "1"
+    }
+  }
+]

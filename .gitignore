@@ -25,15 +25,10 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Documentation & Database backups
+# Documentation & Backups
 Documentation/
-gear_tech_sql/
 gear_tech_mongo_backup/
 
 # Root documents & spreadsheets
 /*.xlsx
-/admin_huongdanchucnang.md
-/customer_huongdanchucnang.md
-/bao_cao_test_gear_tech.md
-/TODO_REDESIGN_APP.md
-
+/*.md

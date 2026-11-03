@@ -1,0 +1,68 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac120062de58adcc60f3c82"
+    },
+    "customer_id": {
+      "$oid": "000000000000000000000006"
+    },
+    "product_id": {
+      "$oid": "000000000000000000000005"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc999e9813e60615ce52bd"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "product_id": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "productId": {
+      "$oid": "6ad750f5c53fd0e9dc938837"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792842142438"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca25f9813e60615ce532b"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "product_id": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "productId": {
+      "$oid": "6adca1e89813e60615ce531a"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792844383727"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

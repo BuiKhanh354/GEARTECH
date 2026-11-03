@@ -1,0 +1,987 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b72648c"
+    },
+    "categorySlug": "laptops",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "CPU",
+        "key": "cpu",
+        "placeholder": "VD: Intel Core i7-13700H / Apple M3",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "RAM",
+        "key": "ram",
+        "placeholder": "VD: 16GB DDR5 4800MHz",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "Ổ cứng",
+        "key": "storage",
+        "placeholder": "VD: 512GB SSD NVMe PCIe",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Card đồ họa (GPU)",
+        "key": "gpu",
+        "placeholder": "VD: NVIDIA GeForce RTX 4060 8GB",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Màn hình",
+        "key": "screen",
+        "placeholder": "VD: 15.6 inch FHD (1920x1080) 144Hz IPS",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Hệ điều hành",
+        "key": "os",
+        "placeholder": "VD: Windows 11 Home / macOS",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      },
+      {
+        "name": "Dung lượng pin",
+        "key": "battery",
+        "placeholder": "VD: 4-cell 70Whr",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "7"
+        }
+      },
+      {
+        "name": "Trọng lượng",
+        "key": "weight",
+        "placeholder": "VD: 2.1 kg",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "8"
+        }
+      },
+      {
+        "name": "Cổng kết nối",
+        "key": "ports",
+        "placeholder": "VD: 1x USB-C Thunderbolt 4, 2x USB-A 3.2, HDMI 2.1",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "9"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 24 tháng chính hãng",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "10"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd287"
+    },
+    "categoryName": "LAPTOP & MACBOOK",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324497"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324497"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b72648d"
+    },
+    "categorySlug": "desktops",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "CPU",
+        "key": "cpu",
+        "placeholder": "VD: Intel Core i5-13400F / AMD Ryzen 5 7600",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "Mainboard",
+        "key": "mainboard",
+        "placeholder": "VD: B760M Gaming DDR5",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "RAM",
+        "key": "ram",
+        "placeholder": "VD: 32GB (2x16GB) DDR5 6000MHz",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Card đồ họa (VGA)",
+        "key": "vga",
+        "placeholder": "VD: NVIDIA RTX 4070 SUPER 12GB",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Ổ cứng lưu trữ",
+        "key": "storage",
+        "placeholder": "VD: 1TB SSD NVMe Gen 4",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Nguồn (PSU)",
+        "key": "psu",
+        "placeholder": "VD: 750W 80 Plus Gold",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      },
+      {
+        "name": "Tản nhiệt",
+        "key": "cooler",
+        "placeholder": "VD: Tản nhiệt nước AIO 240 ARGB",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "7"
+        }
+      },
+      {
+        "name": "Vỏ Case",
+        "key": "case",
+        "placeholder": "VD: Mid Tower Kính cường lực",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "8"
+        }
+      },
+      {
+        "name": "Hệ điều hành",
+        "key": "os",
+        "placeholder": "VD: Windows 11 Pro 64-bit",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "9"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 36 tháng",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "10"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd288"
+    },
+    "categoryName": "PC & WORKSTATION",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324505"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324505"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b72648e"
+    },
+    "categorySlug": "components",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "Loại linh kiện",
+        "key": "component_type",
+        "placeholder": "VD: CPU / Mainboard / RAM / VGA / Nguồn",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "Nhà sản xuất",
+        "key": "manufacturer",
+        "placeholder": "VD: ASUS, MSI, Gigabyte, Corsair",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "Model / Dòng sản phẩm",
+        "key": "model",
+        "placeholder": "VD: TUF Gaming Series",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Chuẩn tương thích / Socket",
+        "key": "socket_compatibility",
+        "placeholder": "VD: LGA 1700 / AM5 / ATX",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Công suất tiêu thụ / TDP",
+        "key": "power_tdp",
+        "placeholder": "VD: 65W / 650W",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Kích thước",
+        "key": "dimensions",
+        "placeholder": "VD: Chuẩn ATX / Micro-ATX",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 36 tháng chính hãng",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "7"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd289"
+    },
+    "categoryName": "LINH KIỆN MÁY TÍNH",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324507"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324507"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b72648f"
+    },
+    "categorySlug": "gpu",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "Chipset đồ họa",
+        "key": "gpu_chipset",
+        "placeholder": "VD: NVIDIA GeForce RTX 4070 Ti / AMD RX 7800 XT",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "Dung lượng VRAM",
+        "key": "vram",
+        "placeholder": "VD: 12GB GDDR6X",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "Băng thông bộ nhớ",
+        "key": "memory_bus",
+        "placeholder": "VD: 192-bit",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Xung nhịp Boost",
+        "key": "boost_clock",
+        "placeholder": "VD: 2610 MHz",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Chuẩn giao tiếp",
+        "key": "interface",
+        "placeholder": "VD: PCIe 4.0 x16",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Cổng xuất hình",
+        "key": "output_ports",
+        "placeholder": "VD: 3x DisplayPort 1.4a, 1x HDMI 2.1a",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      },
+      {
+        "name": "Công suất nguồn đề nghị",
+        "key": "recommended_psu",
+        "placeholder": "VD: 700W trở lên",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "7"
+        }
+      },
+      {
+        "name": "Đầu cấp nguồn",
+        "key": "power_connectors",
+        "placeholder": "VD: 1x 16-pin (12VHPWR)",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "8"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 36 tháng",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "9"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ac11f192de58adcc60f3c58"
+    },
+    "categoryName": "GPU",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324517"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324517"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b726490"
+    },
+    "categorySlug": "monitors",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "Kích thước màn hình",
+        "key": "screen_size",
+        "placeholder": "VD: 27 inch",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "Độ phân giải",
+        "key": "resolution",
+        "placeholder": "VD: 2K QHD (2560 x 1440)",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "Tấm nền",
+        "key": "panel_type",
+        "placeholder": "VD: Fast IPS / OLED / VA",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Tần số quét",
+        "key": "refresh_rate",
+        "placeholder": "VD: 165Hz / 180Hz / 240Hz",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Thời gian đáp ứng",
+        "key": "response_time",
+        "placeholder": "VD: 1ms (GTG)",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Độ sáng",
+        "key": "brightness",
+        "placeholder": "VD: 400 cd/m² (HDR400)",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      },
+      {
+        "name": "Độ bao phủ màu",
+        "key": "color_gamut",
+        "placeholder": "VD: 99% sRGB, 95% DCI-P3",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "7"
+        }
+      },
+      {
+        "name": "Cổng kết nối",
+        "key": "connectivity",
+        "placeholder": "VD: 2x HDMI 2.0, 1x DisplayPort 1.4, Audio Out",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "8"
+        }
+      },
+      {
+        "name": "Tính năng đặc biệt",
+        "key": "features",
+        "placeholder": "VD: G-Sync Compatible, Chân đế nâng hạ xoay",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "9"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 36 tháng",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "10"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28a"
+    },
+    "categoryName": "MÀN HÌNH MÁY TÍNH",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324520"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324520"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b726491"
+    },
+    "categorySlug": "peripherals",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "Loại phụ kiện",
+        "key": "accessory_type",
+        "placeholder": "VD: Bàn phím cơ / Chuột gaming / Lót chuột",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "Chuẩn kết nối",
+        "key": "connection_type",
+        "placeholder": "VD: Không dây 2.4GHz + Bluetooth 5.1 + Type-C",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "Loại Switch / Cảm biến",
+        "key": "switch_sensor",
+        "placeholder": "VD: ROG NX Snow Switch / Cảm biến AimPoint 36K DPI",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Độ phân giải DPI",
+        "key": "dpi",
+        "placeholder": "VD: Lên đến 36,000 DPI (nếu là chuột)",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Đèn LED hiển thị",
+        "key": "led",
+        "placeholder": "VD: RGB 16.8 triệu màu sync Aura",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Thời lượng pin",
+        "key": "battery_life",
+        "placeholder": "VD: Lên đến 90 giờ khi tắt LED",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      },
+      {
+        "name": "Trọng lượng",
+        "key": "weight",
+        "placeholder": "VD: 54g",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "7"
+        }
+      },
+      {
+        "name": "Tương thích",
+        "key": "compatibility",
+        "placeholder": "VD: Windows, macOS, Android",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "8"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 24 tháng",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "9"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28b"
+    },
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324522"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324522"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b726492"
+    },
+    "categorySlug": "audio",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "Loại sản phẩm",
+        "key": "audio_type",
+        "placeholder": "VD: Tai nghe chụp tai Gaming (Over-ear) / Loa soundbar",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "Chuẩn kết nối",
+        "key": "connection",
+        "placeholder": "VD: Wireless 2.4GHz / Jack 3.5mm / Bluetooth",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "Kích thước củ loa (Driver)",
+        "key": "driver_size",
+        "placeholder": "VD: 50mm Neodymium",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Dải tần số đáp ứng",
+        "key": "frequency_range",
+        "placeholder": "VD: 20Hz - 40,000Hz (Hi-Res Audio)",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Microphone",
+        "key": "mic",
+        "placeholder": "VD: Mic lọc ồn AI có thể tháo rời",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Thời lượng pin",
+        "key": "battery",
+        "placeholder": "VD: Khoảng 38 giờ liên tục",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      },
+      {
+        "name": "Công nghệ âm thanh",
+        "key": "sound_tech",
+        "placeholder": "VD: Âm thanh vòm 7.1 Virtual Surround",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "7"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 24 tháng",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "8"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28c"
+    },
+    "categoryName": "TAI NGHE & LOA",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324524"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324524"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b726493"
+    },
+    "categorySlug": "smart-devices",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "Loại thiết bị",
+        "key": "device_type",
+        "placeholder": "VD: Đồng hồ thông minh / Vòng đeo tay / Stream Deck",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "Kết nối không dây",
+        "key": "wireless",
+        "placeholder": "VD: Wi-Fi 2.4GHz, Bluetooth 5.3",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "Màn hình hiển thị",
+        "key": "display",
+        "placeholder": "VD: 1.43 inch AMOLED 466x466",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Chuẩn chống nước",
+        "key": "waterproof",
+        "placeholder": "VD: 5ATM / IP68",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Thời lượng pin",
+        "key": "battery",
+        "placeholder": "VD: 7-14 ngày sử dụng bình thường",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Hệ điều hành tương thích",
+        "key": "os_compat",
+        "placeholder": "VD: Android 8.0+ / iOS 12.0+",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 12 tháng",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "7"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28d"
+    },
+    "categoryName": "THIẾT BỊ THÔNG MINH",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324526"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324526"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae93cb4301300298b726494"
+    },
+    "categorySlug": "accessories",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "attributes": [
+      {
+        "name": "Loại phụ kiện",
+        "key": "type",
+        "placeholder": "VD: Giá đỡ laptop / Hub chuyển đổi Type-C / Cáp HDMI 2.1",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "1"
+        }
+      },
+      {
+        "name": "Chất liệu cấu tạo",
+        "key": "material",
+        "placeholder": "VD: Hợp kim nhôm nguyên khối / Nhựa ABS chống cháy",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "2"
+        }
+      },
+      {
+        "name": "Cổng giao tiếp / Tốc độ",
+        "key": "interface_speed",
+        "placeholder": "VD: USB 3.2 Gen 2 (10Gbps) / 4K@60Hz",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "3"
+        }
+      },
+      {
+        "name": "Chiều dài cáp / Kích thước",
+        "key": "size",
+        "placeholder": "VD: Chiều dài 1.5m",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "4"
+        }
+      },
+      {
+        "name": "Tương thích thiết bị",
+        "key": "compatibility",
+        "placeholder": "VD: Laptop, PC, MacBook, iPad, Điện thoại",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "5"
+        }
+      },
+      {
+        "name": "Bảo hành",
+        "key": "warranty",
+        "placeholder": "VD: 12 tháng 1 đổi 1",
+        "options": [],
+        "isRequired": false,
+        "order": {
+          "$numberInt": "6"
+        }
+      }
+    ],
+    "categoryId": {
+      "$oid": "6ad6c432a4d565be918bd28e"
+    },
+    "categoryName": "PHỤ KIỆN CÔNG NGHỆ",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793670324528"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793670324528"
+      }
+    }
+  }
+]

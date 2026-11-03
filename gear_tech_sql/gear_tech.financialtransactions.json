@@ -1,0 +1,494 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dcb"
+    },
+    "transactionCode": "FT-REV-20261102-U9B8T4",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "orderId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dca"
+    },
+    "withdrawalRequestId": null,
+    "type": "ORDER_REVENUE",
+    "amount": {
+      "$numberInt": "950000"
+    },
+    "balanceBefore": {
+      "$numberInt": "0"
+    },
+    "balanceAfter": {
+      "$numberInt": "0"
+    },
+    "orderAmount": {
+      "$numberInt": "1000000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "platformFeeRate": {
+      "$numberInt": "5"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "50000"
+    },
+    "netAmount": {
+      "$numberInt": "950000"
+    },
+    "status": "COMPLETED",
+    "description": "Ghi nhận doanh thu tạm giữ đơn hàng #4E6DCA",
+    "metadata": {
+      "paymentMethod": "MOMO",
+      "paymentStatus": "paid"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347703"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347703"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dce"
+    },
+    "transactionCode": "FT-REV-20261102-R97Q4Z",
+    "shopId": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "orderId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dcd"
+    },
+    "withdrawalRequestId": null,
+    "type": "ORDER_REVENUE",
+    "amount": {
+      "$numberInt": "1900000"
+    },
+    "balanceBefore": {
+      "$numberInt": "0"
+    },
+    "balanceAfter": {
+      "$numberInt": "0"
+    },
+    "orderAmount": {
+      "$numberInt": "2000000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "platformFeeRate": {
+      "$numberInt": "5"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "100000"
+    },
+    "netAmount": {
+      "$numberInt": "1900000"
+    },
+    "status": "COMPLETED",
+    "description": "Ghi nhận doanh thu tạm giữ đơn hàng #4E6DCD",
+    "metadata": {
+      "paymentMethod": "VNPAY",
+      "paymentStatus": "paid"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347728"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347728"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dcf"
+    },
+    "transactionCode": "FT-SET-20261102-4EBQMY",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "orderId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dca"
+    },
+    "withdrawalRequestId": null,
+    "type": "ORDER_SETTLED",
+    "amount": {
+      "$numberInt": "950000"
+    },
+    "balanceBefore": {
+      "$numberInt": "0"
+    },
+    "balanceAfter": {
+      "$numberInt": "950000"
+    },
+    "orderAmount": {
+      "$numberInt": "1000000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "platformFeeRate": {
+      "$numberInt": "5"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "50000"
+    },
+    "netAmount": {
+      "$numberInt": "950000"
+    },
+    "status": "COMPLETED",
+    "description": "Giải ngân doanh thu khả dụng đơn hàng #4E6DCA",
+    "metadata": {
+      "orderStatus": "pending"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347737"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347737"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd1"
+    },
+    "transactionCode": "FT-WDR-20261102-575735",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "orderId": null,
+    "withdrawalRequestId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd0"
+    },
+    "type": "WITHDRAWAL_REQUEST",
+    "amount": {
+      "$numberInt": "-200000"
+    },
+    "balanceBefore": {
+      "$numberInt": "950000"
+    },
+    "balanceAfter": {
+      "$numberInt": "750000"
+    },
+    "orderAmount": {
+      "$numberInt": "0"
+    },
+    "shippingFee": {
+      "$numberInt": "0"
+    },
+    "platformFeeRate": {
+      "$numberInt": "0"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "0"
+    },
+    "netAmount": {
+      "$numberInt": "0"
+    },
+    "status": "COMPLETED",
+    "description": "Tạo yêu cầu rút tiền 200.000đ về tài khoản Vietcombank - 999988887777",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347744"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347744"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd2"
+    },
+    "transactionCode": "FT-REJ-20261102-BHAT41",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "orderId": null,
+    "withdrawalRequestId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd0"
+    },
+    "type": "WITHDRAWAL_REJECT",
+    "amount": {
+      "$numberInt": "200000"
+    },
+    "balanceBefore": {
+      "$numberInt": "750000"
+    },
+    "balanceAfter": {
+      "$numberInt": "950000"
+    },
+    "orderAmount": {
+      "$numberInt": "0"
+    },
+    "shippingFee": {
+      "$numberInt": "0"
+    },
+    "platformFeeRate": {
+      "$numberInt": "0"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "0"
+    },
+    "netAmount": {
+      "$numberInt": "0"
+    },
+    "status": "COMPLETED",
+    "description": "Hoàn tiền yêu cầu rút WR-20261102-KCKFVJ bị từ chối: Thông tin STK ngân hàng không khớp tên đăng ký",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347750"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347750"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd4"
+    },
+    "transactionCode": "FT-WDR-20261102-O10B3D",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "orderId": null,
+    "withdrawalRequestId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd3"
+    },
+    "type": "WITHDRAWAL_REQUEST",
+    "amount": {
+      "$numberInt": "-100000"
+    },
+    "balanceBefore": {
+      "$numberInt": "950000"
+    },
+    "balanceAfter": {
+      "$numberInt": "850000"
+    },
+    "orderAmount": {
+      "$numberInt": "0"
+    },
+    "shippingFee": {
+      "$numberInt": "0"
+    },
+    "platformFeeRate": {
+      "$numberInt": "0"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "0"
+    },
+    "netAmount": {
+      "$numberInt": "0"
+    },
+    "status": "COMPLETED",
+    "description": "Tạo yêu cầu rút tiền 100.000đ về tài khoản MB Bank - 88882222",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347756"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347756"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd5"
+    },
+    "transactionCode": "FT-PAY-20261102-WQIFTZ",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "orderId": null,
+    "withdrawalRequestId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd3"
+    },
+    "type": "WITHDRAWAL_SUCCESS",
+    "amount": {
+      "$numberInt": "100000"
+    },
+    "balanceBefore": {
+      "$numberInt": "850000"
+    },
+    "balanceAfter": {
+      "$numberInt": "850000"
+    },
+    "orderAmount": {
+      "$numberInt": "0"
+    },
+    "shippingFee": {
+      "$numberInt": "0"
+    },
+    "platformFeeRate": {
+      "$numberInt": "0"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "0"
+    },
+    "netAmount": {
+      "$numberInt": "0"
+    },
+    "status": "COMPLETED",
+    "description": "Giải ngân thành công 100.000đ (Mã giao dịch NH: VND-FT-99281729)",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347761"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347761"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd7"
+    },
+    "transactionCode": "FT-REV-20261102-UKND66",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "orderId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd6"
+    },
+    "withdrawalRequestId": null,
+    "type": "ORDER_REVENUE",
+    "amount": {
+      "$numberInt": "475000"
+    },
+    "balanceBefore": {
+      "$numberInt": "850000"
+    },
+    "balanceAfter": {
+      "$numberInt": "850000"
+    },
+    "orderAmount": {
+      "$numberInt": "500000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "platformFeeRate": {
+      "$numberInt": "5"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "25000"
+    },
+    "netAmount": {
+      "$numberInt": "475000"
+    },
+    "status": "COMPLETED",
+    "description": "Ghi nhận doanh thu tạm giữ đơn hàng #4E6DD6",
+    "metadata": {
+      "paymentMethod": "MOMO",
+      "paymentStatus": "paid"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347771"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347771"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd8"
+    },
+    "transactionCode": "FT-CAN-20261102-UOIOOV",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "orderId": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd6"
+    },
+    "withdrawalRequestId": null,
+    "type": "ORDER_CANCELLED",
+    "amount": {
+      "$numberInt": "-475000"
+    },
+    "balanceBefore": {
+      "$numberInt": "850000"
+    },
+    "balanceAfter": {
+      "$numberInt": "850000"
+    },
+    "orderAmount": {
+      "$numberInt": "0"
+    },
+    "shippingFee": {
+      "$numberInt": "0"
+    },
+    "platformFeeRate": {
+      "$numberInt": "0"
+    },
+    "platformFeeAmount": {
+      "$numberInt": "0"
+    },
+    "netAmount": {
+      "$numberInt": "0"
+    },
+    "status": "COMPLETED",
+    "description": "Hủy ghi nhận doanh thu tạm giữ do hủy đơn hàng #4E6DD6",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347777"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347777"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

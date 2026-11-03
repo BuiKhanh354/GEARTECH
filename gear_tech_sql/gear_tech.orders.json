@@ -1,0 +1,3088 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11f9d2de58adcc60f3c6f"
+    },
+    "customer_id": {
+      "$oid": "000000000000000000000006"
+    },
+    "shop_id": {
+      "$oid": "000000000000000000000002"
+    },
+    "voucher_id": null,
+    "total_amount": {
+      "$numberDecimal": "31980000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "1000000"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "final_amount": {
+      "$numberDecimal": "30910000"
+    },
+    "shipping_address": "TP. Hồ Chí Minh",
+    "phone": "0912345678",
+    "payment_method": "COD",
+    "order_status": "pending",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6dd45a4dbee2dfc1aefec"
+    },
+    "customer_id": {
+      "$oid": "6ad6dd24a4dbee2dfc1aefea"
+    },
+    "customerId": {
+      "$oid": "6ad6dd24a4dbee2dfc1aefea"
+    },
+    "user_id": {
+      "$oid": "6ad634b31fd2e94b807260dc"
+    },
+    "userId": {
+      "$oid": "6ad634b31fd2e94b807260dc"
+    },
+    "shop_id": {
+      "$oid": "6ad6db5663ee301d7a3c8c6e"
+    },
+    "shopId": {
+      "$oid": "6ad6db5663ee301d7a3c8c6e"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "4000000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "4030000"
+    },
+    "shipping_address": "11, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội",
+    "phone": "123455676",
+    "receiver_name": "Admin GearTech",
+    "shippingAddress": {
+      "receiverName": "Admin GearTech",
+      "receiverPhone": "123455676",
+      "detailAddress": "11, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "BANK_TRANSFER",
+    "paymentMethod": "BANK_TRANSFER",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "completed",
+    "orderStatus": "completed",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad6db5663ee301d7a3c8c73"
+        },
+        "productId": {
+          "$oid": "6ad6db5663ee301d7a3c8c73"
+        },
+        "product_name": "Chuột Không Dây Gaming 1792465750949",
+        "title": "Chuột Không Dây Gaming 1792465750949",
+        "sku": "MOUSE-1792465750949",
+        "quantity": {
+          "$numberInt": "2"
+        },
+        "qty": {
+          "$numberInt": "2"
+        },
+        "unit_price": {
+          "$numberInt": "2000000"
+        },
+        "price": {
+          "$numberInt": "2000000"
+        },
+        "subtotal": {
+          "$numberInt": "4000000"
+        },
+        "shop_id": {
+          "$oid": "6ad6db5663ee301d7a3c8c6e"
+        },
+        "shopId": {
+          "$oid": "6ad6db5663ee301d7a3c8c6e"
+        },
+        "_id": {
+          "$oid": "6ad6dd45a4dbee2dfc1aefed"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792466245820"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792848298369"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "4000000"
+    },
+    "final_amount": {
+      "$numberDecimal": "4030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc993b9813e60615ce5294"
+    },
+    "customer_id": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "customerId": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": {
+      "$oid": "6ac1201a2de58adcc60f3c86"
+    },
+    "voucherId": {
+      "$oid": "6ac1201a2de58adcc60f3c86"
+    },
+    "voucher_code": "GEAR10",
+    "voucherCode": "GEAR10",
+    "totalAmount": {
+      "$numberInt": "38990000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "100000"
+    },
+    "discountAmount": {
+      "$numberInt": "100000"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "38920000"
+    },
+    "shipping_address": "18A/1 Cộng Hoà, Phường Dịch Vọng Hậu, Quận Tân Bình, TP. Hồ Chí Minh",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Khách",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Khách",
+      "receiverPhone": "0912345678",
+      "detailAddress": "18A/1 Cộng Hoà, Phường Dịch Vọng Hậu, Quận Tân Bình, TP. Hồ Chí Minh"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "completed",
+    "orderStatus": "completed",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad750f5c53fd0e9dc938837"
+        },
+        "productId": {
+          "$oid": "6ad750f5c53fd0e9dc938837"
+        },
+        "product_name": "ROG Swift OLED PG34WCDN",
+        "title": "ROG Swift OLED PG34WCDN",
+        "sku": "GT-MVGLR6C8",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "38990000"
+        },
+        "price": {
+          "$numberInt": "38990000"
+        },
+        "subtotal": {
+          "$numberInt": "38990000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6adc993b9813e60615ce5295"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792842043187"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792842210133"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "38990000"
+    },
+    "final_amount": {
+      "$numberDecimal": "38920000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca2f39813e60615ce5376"
+    },
+    "customer_id": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "customerId": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "75000000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "75030000"
+    },
+    "shipping_address": "18A/1 Cộng Hoà, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Khách",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Khách",
+      "receiverPhone": "0912345678",
+      "detailAddress": "18A/1 Cộng Hoà, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "completed",
+    "orderStatus": "completed",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6adca1e89813e60615ce531a"
+        },
+        "productId": {
+          "$oid": "6adca1e89813e60615ce531a"
+        },
+        "product_name": "TUF GAMING VG259Q",
+        "title": "TUF GAMING VG259Q",
+        "sku": "GT-MVMD6OEE",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "75000000"
+        },
+        "price": {
+          "$numberInt": "75000000"
+        },
+        "subtotal": {
+          "$numberInt": "75000000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6adca2f39813e60615ce5377"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792844531245"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792844658748"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "75000000"
+    },
+    "final_amount": {
+      "$numberDecimal": "75030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcb22518d7b415e2ab4827"
+    },
+    "customer_id": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "customerId": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "12990000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "13020000"
+    },
+    "shipping_address": "18A/1 Cộng Hoà, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Khách",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Khách",
+      "receiverPhone": "0912345678",
+      "detailAddress": "18A/1 Cộng Hoà, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "completed",
+    "orderStatus": "completed",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad6d2fe29c60e9f2f62c532"
+        },
+        "productId": {
+          "$oid": "6ad6d2fe29c60e9f2f62c532"
+        },
+        "product_name": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+        "title": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+        "sku": "GT-MVG2K0IA",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "12990000"
+        },
+        "price": {
+          "$numberInt": "12990000"
+        },
+        "subtotal": {
+          "$numberInt": "12990000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6adcb22518d7b415e2ab4828"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792848421181"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792851103189"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "12990000"
+    },
+    "final_amount": {
+      "$numberDecimal": "13020000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a20"
+    },
+    "customer_id": {
+      "$oid": "6ade0fa9527d955568620a17"
+    },
+    "customerId": {
+      "$oid": "6ade0fa9527d955568620a17"
+    },
+    "user_id": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "userId": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "4500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "4530000"
+    },
+    "shipping_address": "Số 123 Đường Công Nghệ, Quận 1, TP.HCM",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Test A",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Test A",
+      "receiverPhone": "0912345678",
+      "detailAddress": "Số 123 Đường Công Nghệ, Quận 1, TP.HCM"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "productId": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+        "title": "Block Nước GPU RTX 4090 Custom Edition",
+        "sku": "",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "4500000"
+        },
+        "price": {
+          "$numberInt": "4500000"
+        },
+        "subtotal": {
+          "$numberInt": "4500000"
+        },
+        "shop_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "shopId": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "_id": {
+          "$oid": "6ade0fa9527d955568620a21"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897550"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792937897550"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "4500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "4530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a26"
+    },
+    "customer_id": {
+      "$oid": "6ade0fa9527d955568620a17"
+    },
+    "customerId": {
+      "$oid": "6ade0fa9527d955568620a17"
+    },
+    "user_id": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "userId": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "4500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "4530000"
+    },
+    "shipping_address": "Số 456 Đường Hack, Hà Nội",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Test A",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Test A",
+      "receiverPhone": "0912345678",
+      "detailAddress": "Số 456 Đường Hack, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "productId": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+        "title": "Block Nước GPU RTX 4090 Custom Edition",
+        "sku": "",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "4500000"
+        },
+        "price": {
+          "$numberInt": "4500000"
+        },
+        "subtotal": {
+          "$numberInt": "4500000"
+        },
+        "shop_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "shopId": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "_id": {
+          "$oid": "6ade0fa9527d955568620a27"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897675"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792937897675"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "4500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "4530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a2c"
+    },
+    "customer_id": {
+      "$oid": "6ade0fa9527d955568620a17"
+    },
+    "customerId": {
+      "$oid": "6ade0fa9527d955568620a17"
+    },
+    "user_id": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "userId": {
+      "$oid": "6ade0fa9527d955568620a16"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "9000000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "9030000"
+    },
+    "shipping_address": "Test Cancel Address",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Test A",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Test A",
+      "receiverPhone": "0912345678",
+      "detailAddress": "Test Cancel Address"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "cancelled",
+    "orderStatus": "cancelled",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "productId": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+        "title": "Block Nước GPU RTX 4090 Custom Edition",
+        "sku": "",
+        "quantity": {
+          "$numberInt": "2"
+        },
+        "qty": {
+          "$numberInt": "2"
+        },
+        "unit_price": {
+          "$numberInt": "4500000"
+        },
+        "price": {
+          "$numberInt": "4500000"
+        },
+        "subtotal": {
+          "$numberInt": "9000000"
+        },
+        "shop_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "shopId": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "_id": {
+          "$oid": "6ade0fa9527d955568620a2d"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897711"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792937897731"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "9000000"
+    },
+    "final_amount": {
+      "$numberDecimal": "9030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a90"
+    },
+    "customer_id": {
+      "$oid": "6ade0fdc527d955568620a87"
+    },
+    "customerId": {
+      "$oid": "6ade0fdc527d955568620a87"
+    },
+    "user_id": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "userId": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "4500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "4530000"
+    },
+    "shipping_address": "Số 123 Đường Công Nghệ, Quận 1, TP.HCM",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Test A",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Test A",
+      "receiverPhone": "0912345678",
+      "detailAddress": "Số 123 Đường Công Nghệ, Quận 1, TP.HCM"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "productId": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+        "title": "Block Nước GPU RTX 4090 Custom Edition",
+        "sku": "GT-MVNWXJWG",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "4500000"
+        },
+        "price": {
+          "$numberInt": "4500000"
+        },
+        "subtotal": {
+          "$numberInt": "4500000"
+        },
+        "shop_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "shopId": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "_id": {
+          "$oid": "6ade0fdc527d955568620a91"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948899"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792937948899"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "4500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "4530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a96"
+    },
+    "customer_id": {
+      "$oid": "6ade0fdc527d955568620a87"
+    },
+    "customerId": {
+      "$oid": "6ade0fdc527d955568620a87"
+    },
+    "user_id": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "userId": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "4500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "4530000"
+    },
+    "shipping_address": "Số 456 Đường Hack, Hà Nội",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Test A",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Test A",
+      "receiverPhone": "0912345678",
+      "detailAddress": "Số 456 Đường Hack, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "productId": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+        "title": "Block Nước GPU RTX 4090 Custom Edition",
+        "sku": "GT-MVNWXJWG",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "4500000"
+        },
+        "price": {
+          "$numberInt": "4500000"
+        },
+        "subtotal": {
+          "$numberInt": "4500000"
+        },
+        "shop_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "shopId": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "_id": {
+          "$oid": "6ade0fdc527d955568620a97"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948923"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792937948923"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "4500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "4530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a9c"
+    },
+    "customer_id": {
+      "$oid": "6ade0fdc527d955568620a87"
+    },
+    "customerId": {
+      "$oid": "6ade0fdc527d955568620a87"
+    },
+    "user_id": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "userId": {
+      "$oid": "6ade0fdc527d955568620a86"
+    },
+    "shop_id": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "shopId": {
+      "$oid": "6ad637d76ed58eb4b05e5d80"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "9000000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "9030000"
+    },
+    "shipping_address": "Test Cancel Address",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Test A",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Test A",
+      "receiverPhone": "0912345678",
+      "detailAddress": "Test Cancel Address"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "cancelled",
+    "orderStatus": "cancelled",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "productId": {
+          "$oid": "6ad637d76ed58eb4b05e5d81"
+        },
+        "product_name": "Block Nước GPU RTX 4090 Custom Edition",
+        "title": "Block Nước GPU RTX 4090 Custom Edition",
+        "sku": "GT-MVNWXJWG",
+        "quantity": {
+          "$numberInt": "2"
+        },
+        "qty": {
+          "$numberInt": "2"
+        },
+        "unit_price": {
+          "$numberInt": "4500000"
+        },
+        "price": {
+          "$numberInt": "4500000"
+        },
+        "subtotal": {
+          "$numberInt": "9000000"
+        },
+        "shop_id": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "shopId": {
+          "$oid": "6ad637d76ed58eb4b05e5d80"
+        },
+        "_id": {
+          "$oid": "6ade0fdc527d955568620a9d"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948961"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1792937948981"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "9000000"
+    },
+    "final_amount": {
+      "$numberDecimal": "9030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade32c326f0498fc495aba0"
+    },
+    "customer_id": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "customerId": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "user_id": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "userId": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "149970000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "150000000"
+    },
+    "shipping_address": "18A/1 Cong Hoa, Quan Cau Giay, Ha Noi, Hà Nội",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn A",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn A",
+      "receiverPhone": "0912345678",
+      "detailAddress": "18A/1 Cong Hoa, Quan Cau Giay, Ha Noi, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ade07f091ec1df1b8447c77"
+        },
+        "productId": {
+          "$oid": "6ade07f091ec1df1b8447c77"
+        },
+        "product_name": "Laptop Acer Predator Helios 16 Intel Core i7-14700HX / RTX 4070 8GB / 16GB DDR5",
+        "title": "Laptop Acer Predator Helios 16 Intel Core i7-14700HX / RTX 4070 8GB / 16GB DDR5",
+        "sku": "GT-MVNVR6J3",
+        "quantity": {
+          "$numberInt": "3"
+        },
+        "qty": {
+          "$numberInt": "3"
+        },
+        "unit_price": {
+          "$numberInt": "49990000"
+        },
+        "price": {
+          "$numberInt": "49990000"
+        },
+        "subtotal": {
+          "$numberInt": "149970000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6ade32c326f0498fc495aba1"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792946883592"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793028892585"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "149970000"
+    },
+    "final_amount": {
+      "$numberDecimal": "150000000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "carrier": "GHN",
+    "shipmentId": {
+      "$oid": "6adf720d1de925349aa4d171"
+    },
+    "shipment_id": {
+      "$oid": "6adf720d1de925349aa4d171"
+    },
+    "trackingCode": "GHNMVPEY366",
+    "tracking_code": "GHNMVPEY366"
+  },
+  {
+    "_id": {
+      "$oid": "6adf58c7327c42c190737eaf"
+    },
+    "customer_id": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "customerId": {
+      "$oid": "6ac11f662de58adcc60f3c64"
+    },
+    "user_id": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "userId": {
+      "$oid": "6ad6d62e7e2f30396f42ec2f"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "75000000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "75030000"
+    },
+    "shipping_address": "18A/1 Cộng Hòa, TP. Hồ Chí Minh",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn A",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn A",
+      "receiverPhone": "0912345678",
+      "detailAddress": "18A/1 Cộng Hòa, TP. Hồ Chí Minh"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "completed",
+    "orderStatus": "completed",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6adca1e89813e60615ce531a"
+        },
+        "productId": {
+          "$oid": "6adca1e89813e60615ce531a"
+        },
+        "product_name": "TUF GAMING VG259Q",
+        "title": "TUF GAMING VG259Q",
+        "sku": "GT-MVMD6OEE",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "75000000"
+        },
+        "price": {
+          "$numberInt": "75000000"
+        },
+        "subtotal": {
+          "$numberInt": "75000000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6adf58c7327c42c190737eb0"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793022151095"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793028870112"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "75000000"
+    },
+    "final_amount": {
+      "$numberDecimal": "75030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "carrier": "GHN",
+    "shipmentId": {
+      "$oid": "6adf6dff57d8233ae7a0a6ab"
+    },
+    "shipment_id": {
+      "$oid": "6adf6dff57d8233ae7a0a6ab"
+    },
+    "trackingCode": "GHNMVPEBTNZ",
+    "tracking_code": "GHNMVPEBTNZ"
+  },
+  {
+    "_id": {
+      "$oid": "6adf6c3a57d8233ae7a0a663"
+    },
+    "customer_id": {
+      "$oid": "6adf6c3a57d8233ae7a0a661"
+    },
+    "customerId": {
+      "$oid": "6adf6c3a57d8233ae7a0a661"
+    },
+    "user_id": {
+      "$oid": "6adf6c3a4c331b65526da0f3"
+    },
+    "userId": {
+      "$oid": "6adf6c3a4c331b65526da0f3"
+    },
+    "shop_id": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "shopId": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "450000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "480000"
+    },
+    "shipping_address": "456 Hoàng Quốc Việt, Cầu Giấy, Hà Nội, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội",
+    "phone": "0901234567",
+    "receiver_name": "Khách Hàng A",
+    "shippingAddress": {
+      "receiverName": "Khách Hàng A",
+      "receiverPhone": "0901234567",
+      "detailAddress": "456 Hoàng Quốc Việt, Cầu Giấy, Hà Nội, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6adf6c3a4c331b65526da0f5"
+        },
+        "productId": {
+          "$oid": "6adf6c3a4c331b65526da0f5"
+        },
+        "product_name": "Chuột Gaming GHN Test",
+        "title": "Chuột Gaming GHN Test",
+        "sku": "GT-MVPE244Z",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "450000"
+        },
+        "price": {
+          "$numberInt": "450000"
+        },
+        "subtotal": {
+          "$numberInt": "450000"
+        },
+        "shop_id": {
+          "$oid": "6adf6c3a4c331b65526da0f0"
+        },
+        "shopId": {
+          "$oid": "6adf6c3a4c331b65526da0f0"
+        },
+        "_id": {
+          "$oid": "6adf6c3a57d8233ae7a0a664"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793027130671"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793027130671"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "450000"
+    },
+    "final_amount": {
+      "$numberDecimal": "480000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf6d5257d8233ae7a0a674"
+    },
+    "customer_id": {
+      "$oid": "6adf6c3a57d8233ae7a0a661"
+    },
+    "customerId": {
+      "$oid": "6adf6c3a57d8233ae7a0a661"
+    },
+    "user_id": {
+      "$oid": "6adf6c3a4c331b65526da0f3"
+    },
+    "userId": {
+      "$oid": "6adf6c3a4c331b65526da0f3"
+    },
+    "shop_id": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "shopId": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "450000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "480000"
+    },
+    "shipping_address": "456 Hoàng Quốc Việt, Cầu Giấy, Hà Nội, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội",
+    "phone": "0901234567",
+    "receiver_name": "Khách Hàng A",
+    "shippingAddress": {
+      "receiverName": "Khách Hàng A",
+      "receiverPhone": "0901234567",
+      "detailAddress": "456 Hoàng Quốc Việt, Cầu Giấy, Hà Nội, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6adf6c3a4c331b65526da0f5"
+        },
+        "productId": {
+          "$oid": "6adf6c3a4c331b65526da0f5"
+        },
+        "product_name": "Chuột Gaming GHN Test",
+        "title": "Chuột Gaming GHN Test",
+        "sku": "GT-MVPE244Z",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "450000"
+        },
+        "price": {
+          "$numberInt": "450000"
+        },
+        "subtotal": {
+          "$numberInt": "450000"
+        },
+        "shop_id": {
+          "$oid": "6adf6c3a4c331b65526da0f0"
+        },
+        "shopId": {
+          "$oid": "6adf6c3a4c331b65526da0f0"
+        },
+        "_id": {
+          "$oid": "6adf6d5257d8233ae7a0a675"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793027410985"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793027410985"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "450000"
+    },
+    "final_amount": {
+      "$numberDecimal": "480000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf71c648325a916cc718dc"
+    },
+    "customer_id": {
+      "$oid": "6adf6c3a57d8233ae7a0a661"
+    },
+    "customerId": {
+      "$oid": "6adf6c3a57d8233ae7a0a661"
+    },
+    "user_id": {
+      "$oid": "6adf6c3a4c331b65526da0f3"
+    },
+    "userId": {
+      "$oid": "6adf6c3a4c331b65526da0f3"
+    },
+    "shop_id": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "shopId": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "450000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "480000"
+    },
+    "shipping_address": "456 Hoàng Quốc Việt, Cầu Giấy, Hà Nội, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội",
+    "phone": "0901234567",
+    "receiver_name": "Khách Hàng A",
+    "shippingAddress": {
+      "receiverName": "Khách Hàng A",
+      "receiverPhone": "0901234567",
+      "detailAddress": "456 Hoàng Quốc Việt, Cầu Giấy, Hà Nội, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6adf6c3a4c331b65526da0f5"
+        },
+        "productId": {
+          "$oid": "6adf6c3a4c331b65526da0f5"
+        },
+        "product_name": "Chuột Gaming GHN Test",
+        "title": "Chuột Gaming GHN Test",
+        "sku": "GT-MVPE244Z",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "450000"
+        },
+        "price": {
+          "$numberInt": "450000"
+        },
+        "subtotal": {
+          "$numberInt": "450000"
+        },
+        "shop_id": {
+          "$oid": "6adf6c3a4c331b65526da0f0"
+        },
+        "shopId": {
+          "$oid": "6adf6c3a4c331b65526da0f0"
+        },
+        "_id": {
+          "$oid": "6adf71c648325a916cc718dd"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793028550577"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793028550577"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "450000"
+    },
+    "final_amount": {
+      "$numberDecimal": "480000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf71f21de925349aa4d161"
+    },
+    "customer_id": {
+      "$oid": "6adf6c3a57d8233ae7a0a661"
+    },
+    "customerId": {
+      "$oid": "6adf6c3a57d8233ae7a0a661"
+    },
+    "user_id": {
+      "$oid": "6adf6c3a4c331b65526da0f3"
+    },
+    "userId": {
+      "$oid": "6adf6c3a4c331b65526da0f3"
+    },
+    "shop_id": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "shopId": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "450000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "480000"
+    },
+    "shipping_address": "456 Hoàng Quốc Việt, Cầu Giấy, Hà Nội, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội",
+    "phone": "0901234567",
+    "receiver_name": "Khách Hàng A",
+    "shippingAddress": {
+      "receiverName": "Khách Hàng A",
+      "receiverPhone": "0901234567",
+      "detailAddress": "456 Hoàng Quốc Việt, Cầu Giấy, Hà Nội, Phường Nghĩa Đô, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "COD",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6adf6c3a4c331b65526da0f5"
+        },
+        "productId": {
+          "$oid": "6adf6c3a4c331b65526da0f5"
+        },
+        "product_name": "Chuột Gaming GHN Test",
+        "title": "Chuột Gaming GHN Test",
+        "sku": "GT-MVPE244Z",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "450000"
+        },
+        "price": {
+          "$numberInt": "450000"
+        },
+        "subtotal": {
+          "$numberInt": "450000"
+        },
+        "shop_id": {
+          "$oid": "6adf6c3a4c331b65526da0f0"
+        },
+        "shopId": {
+          "$oid": "6adf6c3a4c331b65526da0f0"
+        },
+        "_id": {
+          "$oid": "6adf71f21de925349aa4d162"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793028594465"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793028594465"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "450000"
+    },
+    "final_amount": {
+      "$numberDecimal": "480000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf76d31254ad14b91b5353"
+    },
+    "customer_id": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "customerId": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "1500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "1530000"
+    },
+    "shipping_address": "18A/1 Cộng Hoà, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Khách",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Khách",
+      "receiverPhone": "0912345678",
+      "detailAddress": "18A/1 Cộng Hoà, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "COD",
+    "paymentMethod": "VNPAY",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad74a47c53fd0e9dc938824"
+        },
+        "productId": {
+          "$oid": "6ad74a47c53fd0e9dc938824"
+        },
+        "product_name": "Màn hình ASUS ProArt",
+        "title": "Màn hình ASUS ProArt",
+        "sku": "GT-MVGKQJ7V",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "1500000"
+        },
+        "price": {
+          "$numberInt": "1500000"
+        },
+        "subtotal": {
+          "$numberInt": "1500000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6adf76d31254ad14b91b5354"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793029843385"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793636253944"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "1500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "1530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b25d1d4bb52359e96b8e"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "200000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "230000"
+    },
+    "shipping_address": "123 Đường Test MoMo, Quận 1, TP.HCM",
+    "phone": "0901234567",
+    "receiver_name": "Khách Test MoMo",
+    "payment_method": "COD",
+    "paymentMethod": "MOMO",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793634909064"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793634909064"
+      }
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "total_amount": {
+      "$numberDecimal": "200000"
+    },
+    "final_amount": {
+      "$numberDecimal": "230000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b27104cb02d9bad19b22"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "200000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "230000"
+    },
+    "shipping_address": "123 Đường Test MoMo, Quận 1, TP.HCM",
+    "phone": "0901234567",
+    "receiver_name": "Khách Test MoMo",
+    "payment_method": "COD",
+    "paymentMethod": "MOMO",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793634929441"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793634929441"
+      }
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "total_amount": {
+      "$numberDecimal": "200000"
+    },
+    "final_amount": {
+      "$numberDecimal": "230000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b29c2950e9ca110e699e"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "200000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "230000"
+    },
+    "shipping_address": "123 Đường Test MoMo, Quận 1, TP.HCM",
+    "phone": "0901234567",
+    "receiver_name": "Khách Test MoMo",
+    "payment_method": "MOMO",
+    "paymentMethod": "MOMO",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793634972306"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793634972438"
+      }
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "total_amount": {
+      "$numberDecimal": "200000"
+    },
+    "final_amount": {
+      "$numberDecimal": "230000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b4aecfd3a4c0abd999c6"
+    },
+    "customer_id": {
+      "$oid": "6add61a41cf79b4cea218cbe"
+    },
+    "customerId": {
+      "$oid": "6add61a41cf79b4cea218cbe"
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "12990000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "13020000"
+    },
+    "shipping_address": "22A Cộng Hoà, Phường Dịch Vọng Hậu, Tân Bình, TP. Hồ Chí Minh",
+    "phone": "0912345678",
+    "receiver_name": "admin",
+    "shippingAddress": {
+      "receiverName": "admin",
+      "receiverPhone": "0912345678",
+      "detailAddress": "22A Cộng Hoà, Phường Dịch Vọng Hậu, Tân Bình, TP. Hồ Chí Minh"
+    },
+    "payment_method": "MOMO",
+    "paymentMethod": "MOMO",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad6d2fe29c60e9f2f62c532"
+        },
+        "productId": {
+          "$oid": "6ad6d2fe29c60e9f2f62c532"
+        },
+        "product_name": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+        "title": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+        "sku": "GT-MVG2K0IA",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "12990000"
+        },
+        "price": {
+          "$numberInt": "12990000"
+        },
+        "subtotal": {
+          "$numberInt": "12990000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6ae8b4aecfd3a4c0abd999c7"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793635502491"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793705495952"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "12990000"
+    },
+    "final_amount": {
+      "$numberDecimal": "13020000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b622cfd3a4c0abd999fe"
+    },
+    "customer_id": {
+      "$oid": "6add61a41cf79b4cea218cbe"
+    },
+    "customerId": {
+      "$oid": "6add61a41cf79b4cea218cbe"
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "12990000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "13020000"
+    },
+    "shipping_address": "20, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội",
+    "phone": "123566",
+    "receiver_name": "admin",
+    "shippingAddress": {
+      "receiverName": "admin",
+      "receiverPhone": "123566",
+      "detailAddress": "20, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "BANK_TRANSFER",
+    "paymentMethod": "BANK_TRANSFER",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad6d2fe29c60e9f2f62c532"
+        },
+        "productId": {
+          "$oid": "6ad6d2fe29c60e9f2f62c532"
+        },
+        "product_name": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+        "title": "Bàn Phím Gaming ROG Azoth Extreme 1792463614354",
+        "sku": "GT-MVG2K0IA",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "12990000"
+        },
+        "price": {
+          "$numberInt": "12990000"
+        },
+        "subtotal": {
+          "$numberInt": "12990000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6ae8b622cfd3a4c0abd999ff"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793635874084"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793705495567"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "12990000"
+    },
+    "final_amount": {
+      "$numberDecimal": "13020000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b6827c4770cb80e61b35"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "1500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "1530000"
+    },
+    "shipping_address": "18A/1 Cộng Hòa, Tân Bình, TP.HCM",
+    "phone": "0938793972",
+    "receiver_name": "Khách Test VNPAY",
+    "payment_method": "VNPAY",
+    "paymentMethod": "VNPAY",
+    "payment_status": "pending",
+    "paymentStatus": "pending",
+    "order_status": "pending",
+    "orderStatus": "pending",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793635970713"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793635970755"
+      }
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "total_amount": {
+      "$numberDecimal": "1500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "1530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b698149a52cb9d9dcc31"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "1500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "1530000"
+    },
+    "shipping_address": "18A/1 Cộng Hòa, Tân Bình, TP.HCM",
+    "phone": "0938793972",
+    "receiver_name": "Khách Test VNPAY",
+    "payment_method": "VNPAY",
+    "paymentMethod": "VNPAY",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793635992396"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793635992901"
+      }
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "total_amount": {
+      "$numberDecimal": "1500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "1530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b719ceade107328dc835"
+    },
+    "customer_id": {
+      "$oid": "6add61a41cf79b4cea218cbe"
+    },
+    "customerId": {
+      "$oid": "6add61a41cf79b4cea218cbe"
+    },
+    "user_id": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "userId": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "1500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "1530000"
+    },
+    "shipping_address": "21, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội",
+    "phone": "123125456",
+    "receiver_name": "admin",
+    "shippingAddress": {
+      "receiverName": "admin",
+      "receiverPhone": "123125456",
+      "detailAddress": "21, Phường Dịch Vọng Hậu, Quận Cầu Giấy, Hà Nội"
+    },
+    "payment_method": "VNPAY",
+    "paymentMethod": "VNPAY",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad74a47c53fd0e9dc938824"
+        },
+        "productId": {
+          "$oid": "6ad74a47c53fd0e9dc938824"
+        },
+        "product_name": "Màn hình ASUS ProArt",
+        "title": "Màn hình ASUS ProArt",
+        "sku": "GT-MVGKQJ7V",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "1500000"
+        },
+        "price": {
+          "$numberInt": "1500000"
+        },
+        "subtotal": {
+          "$numberInt": "1500000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6ae8b719ceade107328dc836"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793636121757"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793705494896"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "1500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "1530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b772ceade107328dc8b5"
+    },
+    "customer_id": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "customerId": {
+      "$oid": "6ad72341bf3c035283c20b58"
+    },
+    "user_id": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "userId": {
+      "$oid": "6ad72341d88dc9f0a82e919f"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "38990000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "39020000"
+    },
+    "shipping_address": "21, Phường Dịch Vọng Hậu, Tân Bình, TP. Hồ Chí Minh",
+    "phone": "0912345678",
+    "receiver_name": "Nguyễn Văn Khách",
+    "shippingAddress": {
+      "receiverName": "Nguyễn Văn Khách",
+      "receiverPhone": "0912345678",
+      "detailAddress": "21, Phường Dịch Vọng Hậu, Tân Bình, TP. Hồ Chí Minh"
+    },
+    "payment_method": "VNPAY",
+    "paymentMethod": "VNPAY",
+    "payment_status": "paid",
+    "paymentStatus": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "items": [
+      {
+        "product_id": {
+          "$oid": "6ad750f5c53fd0e9dc938837"
+        },
+        "productId": {
+          "$oid": "6ad750f5c53fd0e9dc938837"
+        },
+        "product_name": "ROG Swift OLED PG34WCDN",
+        "title": "ROG Swift OLED PG34WCDN",
+        "sku": "GT-MVGLR6C8",
+        "quantity": {
+          "$numberInt": "1"
+        },
+        "qty": {
+          "$numberInt": "1"
+        },
+        "unit_price": {
+          "$numberInt": "38990000"
+        },
+        "price": {
+          "$numberInt": "38990000"
+        },
+        "subtotal": {
+          "$numberInt": "38990000"
+        },
+        "shop_id": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "shopId": {
+          "$oid": "6ac11efa2de58adcc60f3c56"
+        },
+        "_id": {
+          "$oid": "6ae8b772ceade107328dc8b6"
+        }
+      }
+    ],
+    "note": "",
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793636210025"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793705494257"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "38990000"
+    },
+    "final_amount": {
+      "$numberDecimal": "39020000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dca"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "1000000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "1030000"
+    },
+    "shipping_address": "123 Đường Test, Quận 1, TP.HCM",
+    "phone": "0901234567",
+    "payment_method": "MOMO",
+    "payment_status": "paid",
+    "order_status": "completed",
+    "orderStatus": "completed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": "GT-GHN-519545",
+    "trackingCode": "GT-GHN-519545",
+    "carrier": "GEARTECH SuperShip (Tự giao)",
+    "note": "",
+    "items": [],
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793638347680"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793706537314"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "1000000"
+    },
+    "final_amount": {
+      "$numberDecimal": "1030000"
+    },
+    "paymentMethod": "MOMO",
+    "paymentStatus": "paid",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "shippingMethod": "ghn",
+    "shippingMethodName": "Giao Hàng Nhanh (GHN Express)",
+    "shipping_method": "ghn",
+    "shipping_method_name": "Giao Hàng Nhanh (GHN Express)"
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dcd"
+    },
+    "shop_id": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "shopId": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "2000000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "2030000"
+    },
+    "shipping_address": "456 Test Street",
+    "phone": "0909999999",
+    "payment_method": "VNPAY",
+    "payment_status": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "pending",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "note": "",
+    "items": [],
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793638347722"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793638347722"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "2000000"
+    },
+    "final_amount": {
+      "$numberDecimal": "2030000"
+    },
+    "paymentMethod": "VNPAY",
+    "paymentStatus": "paid",
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd6"
+    },
+    "shop_id": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "voucher_id": null,
+    "voucherId": null,
+    "voucher_code": null,
+    "voucherCode": null,
+    "totalAmount": {
+      "$numberInt": "500000"
+    },
+    "discount_amount": {
+      "$numberDecimal": "0"
+    },
+    "discountAmount": {
+      "$numberInt": "0"
+    },
+    "shipping_fee": {
+      "$numberDecimal": "30000"
+    },
+    "shippingFee": {
+      "$numberInt": "30000"
+    },
+    "finalAmount": {
+      "$numberInt": "530000"
+    },
+    "shipping_address": "Hanoi",
+    "phone": "0912345678",
+    "payment_method": "MOMO",
+    "payment_status": "paid",
+    "order_status": "confirmed",
+    "orderStatus": "confirmed",
+    "shipment_id": null,
+    "shipmentId": null,
+    "tracking_code": null,
+    "trackingCode": null,
+    "carrier": "GHN",
+    "note": "",
+    "items": [],
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793638347765"
+      }
+    },
+    "updated_at": {
+      "$date": {
+        "$numberLong": "1793705492383"
+      }
+    },
+    "total_amount": {
+      "$numberDecimal": "500000"
+    },
+    "final_amount": {
+      "$numberDecimal": "530000"
+    },
+    "paymentMethod": "MOMO",
+    "paymentStatus": "paid",
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

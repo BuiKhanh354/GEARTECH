@@ -1,0 +1,20 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11f5c2de58adcc60f3c61"
+    },
+    "product_id": {
+      "$oid": "000000000000000000000005"
+    },
+    "image_url": "/images/products/gpu-01.jpg",
+    "is_primary": true,
+    "sort_order": {
+      "$numberInt": "1"
+    },
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  }
+]

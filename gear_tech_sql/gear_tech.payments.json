@@ -1,0 +1,886 @@
+[
+  {
+    "_id": {
+      "$oid": "6ac11fb22de58adcc60f3c75"
+    },
+    "order_id": {
+      "$oid": "000000000000000000000008"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "30910000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1790985600000"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ad6dd45a4dbee2dfc1aefef"
+    },
+    "order_id": {
+      "$oid": "6ad6dd45a4dbee2dfc1aefec"
+    },
+    "payment_method": "BANK_TRANSFER",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "4030000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1792848298364"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792466245823"
+      }
+    },
+    "orderId": {
+      "$oid": "6ad6dd45a4dbee2dfc1aefec"
+    },
+    "paymentMethod": "BANK_TRANSFER",
+    "paymentStatus": "paid",
+    "paidAt": {
+      "$date": {
+        "$numberLong": "1792466245823"
+      }
+    },
+    "numericAmount": {
+      "$numberInt": "4030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adc993b9813e60615ce5297"
+    },
+    "order_id": {
+      "$oid": "6adc993b9813e60615ce5294"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "38920000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1792842210131"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792842043268"
+      }
+    },
+    "orderId": {
+      "$oid": "6adc993b9813e60615ce5294"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "38920000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adca2f39813e60615ce5379"
+    },
+    "order_id": {
+      "$oid": "6adca2f39813e60615ce5376"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "75030000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1792844658746"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792844531249"
+      }
+    },
+    "orderId": {
+      "$oid": "6adca2f39813e60615ce5376"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "75030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adcb22518d7b415e2ab482a"
+    },
+    "order_id": {
+      "$oid": "6adcb22518d7b415e2ab4827"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "13020000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1792851103185"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792848421186"
+      }
+    },
+    "orderId": {
+      "$oid": "6adcb22518d7b415e2ab4827"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "13020000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a23"
+    },
+    "order_id": {
+      "$oid": "6ade0fa9527d955568620a20"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "4530000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897608"
+      }
+    },
+    "orderId": {
+      "$oid": "6ade0fa9527d955568620a20"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "4530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a29"
+    },
+    "order_id": {
+      "$oid": "6ade0fa9527d955568620a26"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "4530000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897678"
+      }
+    },
+    "orderId": {
+      "$oid": "6ade0fa9527d955568620a26"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "4530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fa9527d955568620a2f"
+    },
+    "order_id": {
+      "$oid": "6ade0fa9527d955568620a2c"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "9030000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937897715"
+      }
+    },
+    "orderId": {
+      "$oid": "6ade0fa9527d955568620a2c"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "9030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a93"
+    },
+    "order_id": {
+      "$oid": "6ade0fdc527d955568620a90"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "4530000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948902"
+      }
+    },
+    "orderId": {
+      "$oid": "6ade0fdc527d955568620a90"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "4530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a99"
+    },
+    "order_id": {
+      "$oid": "6ade0fdc527d955568620a96"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "4530000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948928"
+      }
+    },
+    "orderId": {
+      "$oid": "6ade0fdc527d955568620a96"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "4530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade0fdc527d955568620a9f"
+    },
+    "order_id": {
+      "$oid": "6ade0fdc527d955568620a9c"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "9030000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792937948967"
+      }
+    },
+    "orderId": {
+      "$oid": "6ade0fdc527d955568620a9c"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "9030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ade32c326f0498fc495aba3"
+    },
+    "order_id": {
+      "$oid": "6ade32c326f0498fc495aba0"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "150000000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793028626406"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1792946883597"
+      }
+    },
+    "orderId": {
+      "$oid": "6ade32c326f0498fc495aba0"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "150000000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf58c7327c42c190737eb2"
+    },
+    "order_id": {
+      "$oid": "6adf58c7327c42c190737eaf"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "75030000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793028870108"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793022151178"
+      }
+    },
+    "orderId": {
+      "$oid": "6adf58c7327c42c190737eaf"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "75030000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf6c3a57d8233ae7a0a666"
+    },
+    "order_id": {
+      "$oid": "6adf6c3a57d8233ae7a0a663"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "480000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793027130678"
+      }
+    },
+    "orderId": {
+      "$oid": "6adf6c3a57d8233ae7a0a663"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "480000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf6d5257d8233ae7a0a677"
+    },
+    "order_id": {
+      "$oid": "6adf6d5257d8233ae7a0a674"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "480000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793027410990"
+      }
+    },
+    "orderId": {
+      "$oid": "6adf6d5257d8233ae7a0a674"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "480000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf71c648325a916cc718df"
+    },
+    "order_id": {
+      "$oid": "6adf71c648325a916cc718dc"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "480000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793028550584"
+      }
+    },
+    "orderId": {
+      "$oid": "6adf71c648325a916cc718dc"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "480000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf71f21de925349aa4d164"
+    },
+    "order_id": {
+      "$oid": "6adf71f21de925349aa4d161"
+    },
+    "payment_method": "COD",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "480000"
+    },
+    "payment_status": "pending",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793028594473"
+      }
+    },
+    "orderId": {
+      "$oid": "6adf71f21de925349aa4d161"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "480000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6adf76d31254ad14b91b5356"
+    },
+    "order_id": {
+      "$oid": "6adf76d31254ad14b91b5353"
+    },
+    "payment_method": "VNPAY",
+    "transaction_code": "VNPAY-20261102-ZBWS2G",
+    "amount": {
+      "$numberDecimal": "1530000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793636253943"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793029843392"
+      }
+    },
+    "orderId": {
+      "$oid": "6adf76d31254ad14b91b5353"
+    },
+    "paymentMethod": "COD",
+    "paymentStatus": "pending",
+    "numericAmount": {
+      "$numberInt": "1530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "transactionCode": "COD-20261102-BFQPFQ",
+    "paidAt": {
+      "$date": {
+        "$numberLong": "1793636253943"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b29c06a6024eabdf1deb"
+    },
+    "order_id": {
+      "$oid": "6ae8b29c2950e9ca110e699e"
+    },
+    "orderId": {
+      "$oid": "6ae8b29c2950e9ca110e699e"
+    },
+    "payment_method": "MOMO",
+    "transaction_code": "MOMO-20261102-79XXZG",
+    "amount": {
+      "$numberDecimal": "230000"
+    },
+    "numericAmount": {
+      "$numberInt": "230000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793634972384"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793634972388"
+      }
+    },
+    "paymentMethod": "MOMO",
+    "transactionCode": "MOMO-20261102-79XXZG",
+    "paymentStatus": "paid",
+    "paidAt": {
+      "$date": {
+        "$numberLong": "1793634972384"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b4aecfd3a4c0abd999c9"
+    },
+    "order_id": {
+      "$oid": "6ae8b4aecfd3a4c0abd999c6"
+    },
+    "payment_method": "MOMO",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "13020000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793635502533"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793635502534"
+      }
+    },
+    "orderId": {
+      "$oid": "6ae8b4aecfd3a4c0abd999c6"
+    },
+    "paymentMethod": "MOMO",
+    "paymentStatus": "paid",
+    "paidAt": {
+      "$date": {
+        "$numberLong": "1793635502533"
+      }
+    },
+    "numericAmount": {
+      "$numberInt": "13020000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b622cfd3a4c0abd99a01"
+    },
+    "order_id": {
+      "$oid": "6ae8b622cfd3a4c0abd999fe"
+    },
+    "payment_method": "BANK_TRANSFER",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "13020000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793635874087"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793635874088"
+      }
+    },
+    "orderId": {
+      "$oid": "6ae8b622cfd3a4c0abd999fe"
+    },
+    "paymentMethod": "BANK_TRANSFER",
+    "paymentStatus": "paid",
+    "paidAt": {
+      "$date": {
+        "$numberLong": "1793635874087"
+      }
+    },
+    "numericAmount": {
+      "$numberInt": "13020000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b682cfd3a4c0abd99a03"
+    },
+    "order_id": {
+      "$oid": "6ae8b6827c4770cb80e61b35"
+    },
+    "orderId": {
+      "$oid": "6ae8b6827c4770cb80e61b35"
+    },
+    "payment_method": "VNPAY",
+    "transaction_code": "VNPAY-20261102-JL1033",
+    "amount": {
+      "$numberDecimal": "1530000"
+    },
+    "numericAmount": {
+      "$numberInt": "1530000"
+    },
+    "payment_status": "processing",
+    "paid_at": null,
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793635970753"
+      }
+    },
+    "paymentMethod": "VNPAY",
+    "transactionCode": "VNPAY-20261102-JL1033",
+    "paymentStatus": "processing",
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b6988e65ffb99770c00a"
+    },
+    "order_id": {
+      "$oid": "6ae8b698149a52cb9d9dcc31"
+    },
+    "orderId": {
+      "$oid": "6ae8b698149a52cb9d9dcc31"
+    },
+    "payment_method": "VNPAY",
+    "transaction_code": "VNPAY-20261102-TJ3T0A",
+    "amount": {
+      "$numberDecimal": "1530000"
+    },
+    "numericAmount": {
+      "$numberInt": "1530000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793635992888"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793635992469"
+      }
+    },
+    "paymentMethod": "VNPAY",
+    "transactionCode": "VNPAY-20261102-TJ3T0A",
+    "paymentStatus": "processing",
+    "__v": {
+      "$numberInt": "0"
+    },
+    "paidAt": {
+      "$date": {
+        "$numberLong": "1793635992888"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b719ceade107328dc838"
+    },
+    "order_id": {
+      "$oid": "6ae8b719ceade107328dc835"
+    },
+    "payment_method": "VNPAY",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "1530000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793636121762"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793636121762"
+      }
+    },
+    "orderId": {
+      "$oid": "6ae8b719ceade107328dc835"
+    },
+    "paymentMethod": "VNPAY",
+    "paymentStatus": "paid",
+    "paidAt": {
+      "$date": {
+        "$numberLong": "1793636121762"
+      }
+    },
+    "numericAmount": {
+      "$numberInt": "1530000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8b772ceade107328dc8b8"
+    },
+    "order_id": {
+      "$oid": "6ae8b772ceade107328dc8b5"
+    },
+    "payment_method": "VNPAY",
+    "transaction_code": null,
+    "amount": {
+      "$numberDecimal": "39020000"
+    },
+    "payment_status": "paid",
+    "paid_at": {
+      "$date": {
+        "$numberLong": "1793636210029"
+      }
+    },
+    "failure_reason": null,
+    "created_at": {
+      "$date": {
+        "$numberLong": "1793636210029"
+      }
+    },
+    "orderId": {
+      "$oid": "6ae8b772ceade107328dc8b5"
+    },
+    "paymentMethod": "VNPAY",
+    "paymentStatus": "paid",
+    "paidAt": {
+      "$date": {
+        "$numberLong": "1793636210029"
+      }
+    },
+    "numericAmount": {
+      "$numberInt": "39020000"
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

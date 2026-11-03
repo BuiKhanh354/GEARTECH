@@ -1,0 +1,100 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dc9"
+    },
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "pendingBalance": {
+      "$numberInt": "0"
+    },
+    "availableBalance": {
+      "$numberInt": "850000"
+    },
+    "lockedBalance": {
+      "$numberInt": "0"
+    },
+    "withdrawnBalance": {
+      "$numberInt": "100000"
+    },
+    "totalRevenue": {
+      "$numberInt": "1000000"
+    },
+    "totalPlatformFee": {
+      "$numberInt": "50000"
+    },
+    "totalRefunded": {
+      "$numberInt": "0"
+    },
+    "payoutAccount": {
+      "bankName": "",
+      "bankCode": "",
+      "accountNumber": "",
+      "accountHolder": "",
+      "isVerified": false
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347674"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347776"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dcc"
+    },
+    "shopId": {
+      "$oid": "6adf6c3a4c331b65526da0f0"
+    },
+    "pendingBalance": {
+      "$numberInt": "1900000"
+    },
+    "availableBalance": {
+      "$numberInt": "0"
+    },
+    "lockedBalance": {
+      "$numberInt": "0"
+    },
+    "withdrawnBalance": {
+      "$numberInt": "0"
+    },
+    "totalRevenue": {
+      "$numberInt": "2000000"
+    },
+    "totalPlatformFee": {
+      "$numberInt": "100000"
+    },
+    "totalRefunded": {
+      "$numberInt": "0"
+    },
+    "payoutAccount": {
+      "bankName": "",
+      "bankCode": "",
+      "accountNumber": "",
+      "accountHolder": "",
+      "isVerified": false
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347721"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347727"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

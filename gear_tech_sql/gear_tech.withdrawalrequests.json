@@ -1,0 +1,96 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd0"
+    },
+    "requestCode": "WR-20261102-KCKFVJ",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "requestedBy": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "amount": {
+      "$numberInt": "200000"
+    },
+    "bankInfo": {
+      "bankName": "Vietcombank",
+      "accountNumber": "999988887777",
+      "accountHolder": "NGUYEN VAN SHOP",
+      "bankCode": ""
+    },
+    "status": "REJECTED",
+    "rejectReason": "Thông tin STK ngân hàng không khớp tên đăng ký",
+    "processedBy": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "processedAt": {
+      "$date": {
+        "$numberLong": "1793638347749"
+      }
+    },
+    "payoutProofUrl": "",
+    "payoutReference": "",
+    "note": "",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347742"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347749"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6ae8bfcbd9a90bf62f4e6dd3"
+    },
+    "requestCode": "WR-20261102-KZHCA8",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "requestedBy": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "amount": {
+      "$numberInt": "100000"
+    },
+    "bankInfo": {
+      "bankName": "MB Bank",
+      "accountNumber": "88882222",
+      "accountHolder": "NGUYEN VAN SHOP",
+      "bankCode": ""
+    },
+    "status": "PAID_OUT",
+    "rejectReason": "",
+    "processedBy": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "processedAt": {
+      "$date": {
+        "$numberLong": "1793638347760"
+      }
+    },
+    "payoutProofUrl": "https://proof.example.com/receipt.jpg",
+    "payoutReference": "VND-FT-99281729",
+    "note": "",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793638347755"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793638347760"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]

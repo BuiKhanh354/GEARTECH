@@ -1,0 +1,35 @@
+[
+  {
+    "_id": {
+      "$oid": "6ae9f6388688f837c4f57f72"
+    },
+    "name": "Chính sách phí tiêu chuẩn GearTech",
+    "defaultRate": {
+      "$numberInt": "5"
+    },
+    "updatedBy": {
+      "$oid": "6ac11ee42de58adcc60f3c53"
+    },
+    "isActive": true,
+    "notes": "Cấu hình phí áp dụng cho các giao dịch mới phát sinh.",
+    "categoryOverrides": [],
+    "effectiveFrom": {
+      "$date": {
+        "$numberLong": "1793717816503"
+      }
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793717816505"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793717816505"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  }
+]
