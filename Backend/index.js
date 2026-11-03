@@ -32,7 +32,6 @@ app.get('/', (req, res) => {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/shops', require('./routes/shops'));
-app.use('/api/showrooms', require('./routes/showrooms'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/vouchers', require('./routes/vouchers'));
 app.use('/api/categories', require('./routes/categories'));
@@ -48,6 +47,9 @@ app.use('/api/shop-followers', require('./routes/shopFollowers'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/homepage', require('./routes/homepage'));
 app.use('/api/ai', require('./routes/ai'));
+app.use('/api/shipping', require('./routes/shipping'));
+app.use('/api/finance', require('./routes/finance'));
+app.use('/api/care', require('./routes/careServices'));
 
 
 // Middleware xử lý lỗi 404 (Không tìm thấy Route)

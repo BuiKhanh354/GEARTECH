@@ -5,6 +5,9 @@ const Payment = require('../models/Payment');
 const Order = require('../models/Order');
 const Shop = require('../models/Shop');
 const { auth } = require('../middleware/auth');
+const momoService = require('../services/momoService');
+const vnpayService = require('../services/vnpayService');
+const financeService = require('../services/financeService');
 
 // Helper sinh mã giao dịch duy nhất
 function generateTransactionCode(prefix = 'TXN') {
@@ -151,9 +154,39 @@ router.post('/create-intent', auth, async (req, res) => {
         qrUrl: `https://api.vietqr.io/image/970422-999988889999-compact2.png?amount=${authoritativeAmount}&addInfo=GT%20${String(order._id).slice(-8).toUpperCase()}&accountName=GEARTECH`
       };
     } else if (method.toUpperCase() === 'MOMO' || method.toLowerCase() === 'momo') {
+      const momoResult = await momoService.createPayment({
+        orderId: order._id,
+        amount: authoritativeAmount,
+        orderInfo: `Thanh toan don hang GearTech GT${String(order._id).slice(-8).toUpperCase()}`,
+        redirectUrl: `http://localhost:5173/profile?tab=orders&paidOrderId=${order._id}`,
+        ipnUrl: `http://localhost:5000/api/payments/momo/ipn`
+      });
+
       paymentInstruction = {
         type: 'MOMO',
-        checkoutUrl: `https://test-payment.momo.vn/v2/gateway/pay?orderId=${order._id}&amount=${authoritativeAmount}&txn=${txnCode}`
+        checkoutUrl: momoResult.payUrl,
+        payUrl: momoResult.payUrl,
+        qrCodeUrl: momoResult.qrCodeUrl,
+        deeplink: momoResult.deeplink,
+        amount: authoritativeAmount,
+        memo: `GT ${String(order._id).slice(-8).toUpperCase()}`,
+        isSimulated: momoResult.isSimulated
+      };
+    } else if (method.toUpperCase() === 'VNPAY' || method.toLowerCase() === 'vnpay') {
+      const ipAddr = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '13.160.92.202';
+      const vnpayResult = vnpayService.buildPaymentUrl({
+        orderId: order._id,
+        amount: authoritativeAmount,
+        orderInfo: `Thanh toan don hang GearTech GT${String(order._id).slice(-8).toUpperCase()}`,
+        ipAddr
+      });
+
+      paymentInstruction = {
+        type: 'VNPAY',
+        checkoutUrl: vnpayResult.paymentUrl,
+        paymentUrl: vnpayResult.paymentUrl,
+        amount: authoritativeAmount,
+        memo: `GT ${String(order._id).slice(-8).toUpperCase()}`
       };
     }
 
@@ -400,6 +433,319 @@ router.get('/admin/all', auth, async (req, res) => {
     return res.json(payments);
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi lấy danh sách thanh toán toàn sàn.', details: error.message });
+  }
+});
+
+// ==========================================
+// 7. POST /api/payments/momo/ipn - Webhook IPN nhận kết quả thanh toán từ MoMo
+// ==========================================
+router.post('/momo/ipn', async (req, res) => {
+  try {
+    const { orderId, resultCode, transId, message, amount } = req.body;
+    console.log(`[MoMo IPN] Nhận thông báo giao dịch đơn #${orderId}: resultCode=${resultCode}, transId=${transId}`);
+
+    // Tìm đơn hàng và bản ghi thanh toán tương ứng
+    const order = await Order.findById(orderId);
+    if (!order) {
+      console.warn(`[MoMo IPN] Không tìm thấy đơn hàng #${orderId}`);
+      return res.status(204).json({ message: 'Order not found' });
+    }
+
+    let payment = await Payment.findOne({
+      $or: [{ order_id: order._id }, { orderId: order._id }]
+    });
+
+    if (resultCode === 0 || resultCode === '0') {
+      // Thanh toán thành công từ MoMo
+      if (payment) {
+        payment.payment_status = 'paid';
+        payment.paid_at = new Date();
+        payment.failure_reason = null;
+        payment.payment_details = {
+          ...(payment.payment_details || {}),
+          momoTransId: transId,
+          momoResponseTime: req.body.responseTime
+        };
+        await payment.save();
+      }
+
+      order.paymentStatus = 'paid';
+      order.payment_status = 'paid';
+      if (order.orderStatus === 'pending') {
+        order.orderStatus = 'confirmed';
+        order.order_status = 'confirmed';
+      }
+      await order.save();
+      await financeService.recordOrderPayment(order._id).catch(err => console.error('Lỗi ghi nhận doanh thu MoMo IPN:', err));
+      console.log(`[MoMo IPN] Đơn #${orderId} đã cập nhật sang trạng thái PAID thành công!`);
+    } else {
+      // Giao dịch MoMo thất bại hoặc bị hủy
+      if (payment) {
+        payment.payment_status = 'failed';
+        payment.failure_reason = message || 'Thanh toán MoMo bị hủy hoặc lỗi';
+        await payment.save();
+      }
+      order.paymentStatus = 'failed';
+      order.payment_status = 'failed';
+      await order.save();
+      console.warn(`[MoMo IPN] Đơn #${orderId} thanh toán thất bại: ${message}`);
+    }
+
+    return res.status(204).json({ message: 'IPN processed successfully' });
+  } catch (error) {
+    console.error('[MoMo IPN] Lỗi xử lý webhook:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// ==========================================
+// 8. POST /api/payments/momo/simulate-success - Mô phỏng thanh toán MoMo thành công cho kiểm thử
+// ==========================================
+router.post('/momo/simulate-success', auth, async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    if (!orderId) {
+      return res.status(400).json({ error: 'Thiếu mã đơn hàng (orderId).' });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: 'Không tìm thấy đơn hàng.' });
+    }
+
+    let payment = await Payment.findOne({
+      $or: [{ order_id: order._id }, { orderId: order._id }]
+    });
+
+    const momoTransId = 'MOMO_SIM_' + Date.now();
+
+    if (payment) {
+      payment.payment_status = 'paid';
+      payment.paid_at = new Date();
+      payment.failure_reason = null;
+      payment.payment_details = {
+        ...(payment.payment_details || {}),
+        momoTransId,
+        provider: 'MoMo E-Wallet'
+      };
+      await payment.save();
+    } else {
+      payment = await Payment.create({
+        order_id: order._id,
+        orderId: order._id,
+        payment_method: 'MOMO',
+        transaction_code: generateTransactionCode('MOMO'),
+        amount: order.finalAmount || order.totalAmount,
+        numericAmount: order.finalAmount || order.totalAmount,
+        payment_status: 'paid',
+        paid_at: new Date(),
+        payment_details: { momoTransId, provider: 'MoMo E-Wallet' }
+      });
+    }
+
+    order.paymentMethod = 'MOMO';
+    order.payment_method = 'MOMO';
+    order.paymentStatus = 'paid';
+    order.payment_status = 'paid';
+    if (order.orderStatus === 'pending') {
+      order.orderStatus = 'confirmed';
+      order.order_status = 'confirmed';
+    }
+    await order.save();
+    await financeService.recordOrderPayment(order._id).catch(err => console.error('Lỗi ghi nhận doanh thu VNPAY Sim:', err));
+
+    return res.json({
+      success: true,
+      message: 'Mô phỏng thanh toán MoMo thành công! Đơn hàng đã chuyển sang trạng thái ĐÃ THANH TOÁN.',
+      order,
+      payment
+    });
+  } catch (error) {
+    console.error('[MoMo Simulate] Lỗi:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// ==========================================
+// 9. GET /api/payments/vnpay/return - Nhận kết quả điều hướng từ VNPAY Gateway
+// ==========================================
+router.get('/vnpay/return', async (req, res) => {
+  try {
+    const verifyResult = vnpayService.verifyReturnUrl(req.query);
+    console.log('[VNPay Return] Kết quả giao dịch:', verifyResult);
+
+    const orderId = verifyResult.orderId;
+    const order = await Order.findById(orderId);
+
+    if (order) {
+      let payment = await Payment.findOne({
+        $or: [{ order_id: order._id }, { orderId: order._id }]
+      });
+
+      if (verifyResult.isSuccess) {
+        if (payment) {
+          payment.payment_status = 'paid';
+          payment.paid_at = new Date();
+          payment.failure_reason = null;
+          payment.payment_details = {
+            ...(payment.payment_details || {}),
+            vnpayTransNo: verifyResult.transNo,
+            bankCode: verifyResult.bankCode
+          };
+          await payment.save();
+        }
+
+        order.paymentStatus = 'paid';
+        order.payment_status = 'paid';
+        if (order.orderStatus === 'pending') {
+          order.orderStatus = 'confirmed';
+          order.order_status = 'confirmed';
+        }
+        await order.save();
+        return res.redirect(`http://localhost:5173/profile?tab=orders&paidOrderId=${orderId}&vnpayStatus=success`);
+      } else {
+        if (payment) {
+          payment.payment_status = 'failed';
+          payment.failure_reason = `VNPAY từ chối với mã lỗi: ${verifyResult.responseCode}`;
+          await payment.save();
+        }
+        order.paymentStatus = 'failed';
+        order.payment_status = 'failed';
+        await order.save();
+        return res.redirect(`http://localhost:5173/profile?tab=orders&paidOrderId=${orderId}&vnpayStatus=failed`);
+      }
+    }
+
+    return res.redirect('http://localhost:5173/profile?tab=orders');
+  } catch (error) {
+    console.error('[VNPay Return] Lỗi:', error);
+    return res.redirect('http://localhost:5173/profile?tab=orders');
+  }
+});
+
+// ==========================================
+// 10. GET /api/payments/vnpay/ipn - Webhook Server-to-Server từ VNPAY
+// ==========================================
+router.get('/vnpay/ipn', async (req, res) => {
+  try {
+    const verifyResult = vnpayService.verifyReturnUrl(req.query);
+    if (!verifyResult.isValidSignature) {
+      return res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
+    }
+
+    const order = await Order.findById(verifyResult.orderId);
+    if (!order) {
+      return res.status(200).json({ RspCode: '01', Message: 'Order not found' });
+    }
+
+    let payment = await Payment.findOne({
+      $or: [{ order_id: order._id }, { orderId: order._id }]
+    });
+
+    if (verifyResult.isSuccess) {
+      if (payment) {
+        payment.payment_status = 'paid';
+        payment.paid_at = new Date();
+        payment.failure_reason = null;
+        payment.payment_details = {
+          ...(payment.payment_details || {}),
+          vnpayTransNo: verifyResult.transNo,
+          bankCode: verifyResult.bankCode
+        };
+        await payment.save();
+      }
+
+      order.paymentStatus = 'paid';
+      order.payment_status = 'paid';
+      if (order.orderStatus === 'pending') {
+        order.orderStatus = 'confirmed';
+        order.order_status = 'confirmed';
+      }
+      await order.save();
+      await financeService.recordOrderPayment(order._id).catch(err => console.error('Lỗi ghi nhận doanh thu VNPAY IPN:', err));
+      return res.status(200).json({ RspCode: '00', Message: 'Confirm Success' });
+    } else {
+      if (payment) {
+        payment.payment_status = 'failed';
+        payment.failure_reason = `VNPAY IPN mã lỗi: ${verifyResult.responseCode}`;
+        await payment.save();
+      }
+      order.paymentStatus = 'failed';
+      order.payment_status = 'failed';
+      await order.save();
+      return res.status(200).json({ RspCode: '00', Message: 'Confirm Success' });
+    }
+  } catch (error) {
+    console.error('[VNPay IPN] Lỗi:', error);
+    return res.status(200).json({ RspCode: '99', Message: 'Unknow error' });
+  }
+});
+
+// ==========================================
+// 11. POST /api/payments/vnpay/simulate-success - Mô phỏng thanh toán VNPAY thành công
+// ==========================================
+router.post('/vnpay/simulate-success', auth, async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    if (!orderId) {
+      return res.status(400).json({ error: 'Thiếu mã đơn hàng (orderId).' });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: 'Không tìm thấy đơn hàng.' });
+    }
+
+    let payment = await Payment.findOne({
+      $or: [{ order_id: order._id }, { orderId: order._id }]
+    });
+
+    const vnpayTransNo = 'VNPAY_SIM_' + Date.now();
+
+    if (payment) {
+      payment.payment_status = 'paid';
+      payment.paid_at = new Date();
+      payment.failure_reason = null;
+      payment.payment_details = {
+        ...(payment.payment_details || {}),
+        vnpayTransNo,
+        provider: 'VNPAY Gateway'
+      };
+      await payment.save();
+    } else {
+      payment = await Payment.create({
+        order_id: order._id,
+        orderId: order._id,
+        payment_method: 'VNPAY',
+        transaction_code: generateTransactionCode('VNPAY'),
+        amount: order.finalAmount || order.totalAmount,
+        numericAmount: order.finalAmount || order.totalAmount,
+        payment_status: 'paid',
+        paid_at: new Date(),
+        payment_details: { vnpayTransNo, provider: 'VNPAY Gateway' }
+      });
+    }
+
+    order.paymentMethod = 'VNPAY';
+    order.payment_method = 'VNPAY';
+    order.paymentStatus = 'paid';
+    order.payment_status = 'paid';
+    if (order.orderStatus === 'pending') {
+      order.orderStatus = 'confirmed';
+      order.order_status = 'confirmed';
+    }
+    await order.save();
+    await financeService.recordOrderPayment(order._id).catch(err => console.error('Lỗi ghi nhận doanh thu VNPAY Sim:', err));
+
+    return res.json({
+      success: true,
+      message: 'Mô phỏng thanh toán VNPAY thành công! Đơn hàng đã chuyển sang trạng thái ĐÃ THANH TOÁN.',
+      order,
+      payment
+    });
+  } catch (error) {
+    console.error('[VNPay Simulate] Lỗi:', error);
+    return res.status(500).json({ error: error.message });
   }
 });
 

@@ -3,14 +3,16 @@ import {
   SquaresFour, Eye, FloppyDisk, ArrowClockwise, Plus, Trash,
   CaretUp, CaretDown, CheckCircle, Warning, Clock,
   Images, Package, Sparkle, Storefront, Flame, Tag,
-  UploadSimple, Copy, X, ArrowSquareOut, Funnel
+  UploadSimple, Copy, X, ArrowSquareOut, Funnel,
+  Wrench, ShieldCheck, Truck, ArrowRight
 } from '@phosphor-icons/react'
 import {
   homepageService,
   type HomepageSection,
   type SectionType,
   type PopulatedSection,
-  type HomepageBannerItem
+  type HomepageBannerItem,
+  type ServiceFeatureItem
 } from '../../../services/homepageService'
 import { formatPrice } from '../../../utils/format'
 import { SafeProductImage } from '../../../components/common/ProductImage'
@@ -1221,6 +1223,163 @@ export default function AdminHomepageBuilderPage() {
                 </div>
               )}
 
+              {/* CASE D: SERVICE FEATURES (CHỈNH SỬA CHI TIẾT 3 KHỐI CAM KẾT) */}
+              {selectedSection.type === 'service_features' && (() => {
+                const defaultItems: ServiceFeatureItem[] = [
+                  {
+                    id: 'feat_1',
+                    title: 'Build PC & Cấu Hình Đồ Họa',
+                    description: 'Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.',
+                    badge: 'LÃI SUẤT 0%',
+                    badgeColor: 'red',
+                    icon: 'wrench',
+                    ctaText: 'BẮT ĐẦU BUILD NGAY',
+                    link: '/ProductPage?category=desktops'
+                  },
+                  {
+                    id: 'feat_2',
+                    title: 'Bảo Hành 1 Đổi 1 Tận Nơi',
+                    description: 'Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.',
+                    badge: '30 NGÀY VIP',
+                    badgeColor: 'blue',
+                    icon: 'shield',
+                    ctaText: 'TRA CỨU BẢO HÀNH',
+                    link: '/dich-vu'
+                  },
+                  {
+                    id: 'feat_3',
+                    title: 'Giao Hàng Hỏa Tốc & Miễn Phí',
+                    description: 'Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.',
+                    badge: 'SIÊU TỐC 2H',
+                    badgeColor: 'emerald',
+                    icon: 'truck',
+                    ctaText: 'XEM CHÍNH SÁCH SHIP',
+                    link: '/about'
+                  }
+                ];
+
+                const currentItems: ServiceFeatureItem[] = (selectedSection.config?.items && selectedSection.config.items.length > 0)
+                  ? selectedSection.config.items
+                  : defaultItems;
+
+                const updateItemField = (idx: number, field: keyof ServiceFeatureItem, value: any) => {
+                  const updated = currentItems.map((it, i) => i === idx ? { ...it, [field]: value } : it);
+                  updateConfig(selectedSection.sectionKey, { items: updated });
+                };
+
+                return (
+                  <div className="space-y-4 pt-3 border-t border-zinc-200 dark:border-zinc-800">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-1.5">
+                          <Tag size={15} className="text-indigo-500" weight="bold" />
+                          2. Chỉnh sửa nội dung 3 thẻ cam kết dịch vụ
+                        </h3>
+                        <p className="text-[10px] text-zinc-400 mt-0.5">
+                          Tùy biến trực tiếp tiêu đề, mô tả, huy hiệu, liên kết và màu sắc của từng thẻ
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateConfig(selectedSection.sectionKey, { items: defaultItems });
+                          showToast('success', 'Đã đặt lại 3 thẻ dịch vụ về nội dung mặc định.');
+                        }}
+                        className="text-[10px] font-bold text-indigo-500 hover:underline cursor-pointer shrink-0"
+                      >
+                        Khôi phục mẫu
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {currentItems.map((item, idx) => (
+                        <div key={idx} className="p-4 bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 rounded-xl space-y-3">
+                          <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
+                            <span className="text-[11px] font-black uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+                              Thẻ dịch vụ #{idx + 1}
+                            </span>
+                            <div className="flex items-center gap-2">
+                              {/* Color selector */}
+                              <select
+                                value={item.badgeColor || 'red'}
+                                onChange={(e) => updateItemField(idx, 'badgeColor', e.target.value as any)}
+                                className="px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-[10px] font-bold cursor-pointer"
+                              >
+                                <option value="red">🔴 Tông Đỏ</option>
+                                <option value="blue">🔵 Tông Xanh dương</option>
+                                <option value="emerald">🟢 Tông Xanh ngọc</option>
+                              </select>
+                              {/* Icon selector */}
+                              <select
+                                value={item.icon || 'wrench'}
+                                onChange={(e) => updateItemField(idx, 'icon', e.target.value as any)}
+                                className="px-2 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-[10px] font-bold cursor-pointer"
+                              >
+                                <option value="wrench">🔧 Build PC / Cờ lê</option>
+                                <option value="shield">🛡️ Bảo hành / Khiên</option>
+                                <option value="truck">🚚 Giao hàng / Xe tải</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-[10px] font-bold text-zinc-500 mb-0.5">Tiêu đề thẻ *</label>
+                              <input
+                                type="text"
+                                value={item.title}
+                                onChange={(e) => updateItemField(idx, 'title', e.target.value)}
+                                className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-xs text-zinc-900 dark:text-white"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-bold text-zinc-500 mb-0.5">Huy hiệu góc (Badge)</label>
+                              <input
+                                type="text"
+                                value={item.badge}
+                                onChange={(e) => updateItemField(idx, 'badge', e.target.value)}
+                                className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-xs text-zinc-900 dark:text-white"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-[10px] font-bold text-zinc-500 mb-0.5">Mô tả cam kết *</label>
+                            <textarea
+                              rows={2}
+                              value={item.description}
+                              onChange={(e) => updateItemField(idx, 'description', e.target.value)}
+                              className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-xs text-zinc-900 dark:text-white"
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-[10px] font-bold text-zinc-500 mb-0.5">Chữ nút bấm (CTA)</label>
+                              <input
+                                type="text"
+                                value={item.ctaText}
+                                onChange={(e) => updateItemField(idx, 'ctaText', e.target.value)}
+                                className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-xs text-zinc-900 dark:text-white"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] font-bold text-zinc-500 mb-0.5">Link chuyển hướng khi click</label>
+                              <input
+                                type="text"
+                                value={item.link}
+                                onChange={(e) => updateItemField(idx, 'link', e.target.value)}
+                                className="w-full px-2.5 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded text-xs text-zinc-900 dark:text-white"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
               {/* 3. Schedule Settings (Áp dụng chung cho tất cả khu vực) */}
               <div className="space-y-3 pt-3 border-t border-zinc-200 dark:border-zinc-800">
                 <div className="flex items-center justify-between">
@@ -1461,6 +1620,88 @@ export default function AdminHomepageBuilderPage() {
                       </div>
                     </div>
                   )}
+
+                  {sec.type === 'service_features' && (() => {
+                    const defaultItems: ServiceFeatureItem[] = [
+                      {
+                        title: 'Build PC & Cấu Hình Đồ Họa',
+                        description: 'Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.',
+                        badge: 'LÃI SUẤT 0%',
+                        badgeColor: 'red',
+                        icon: 'wrench',
+                        ctaText: 'BẮT ĐẦU BUILD NGAY',
+                        link: '/ProductPage?category=desktops'
+                      },
+                      {
+                        title: 'Bảo Hành 1 Đổi 1 Tận Nơi',
+                        description: 'Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.',
+                        badge: '30 NGÀY VIP',
+                        badgeColor: 'blue',
+                        icon: 'shield',
+                        ctaText: 'TRA CỨU BẢO HÀNH',
+                        link: '/dich-vu'
+                      },
+                      {
+                        title: 'Giao Hàng Hỏa Tốc & Miễn Phí',
+                        description: 'Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.',
+                        badge: 'SIÊU TỐC 2H',
+                        badgeColor: 'emerald',
+                        icon: 'truck',
+                        ctaText: 'XEM CHÍNH SÁCH SHIP',
+                        link: '/about'
+                      }
+                    ];
+                    const items = (sec.config?.items && sec.config.items.length > 0)
+                      ? sec.config.items
+                      : ((sec.populatedData as any)?.items && (sec.populatedData as any).items.length > 0)
+                      ? (sec.populatedData as any).items
+                      : defaultItems;
+
+                    return (
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        {items.map((it: ServiceFeatureItem, itIdx: number) => {
+                          const color = it.badgeColor || (itIdx === 0 ? 'red' : itIdx === 1 ? 'blue' : 'emerald');
+                          const barColor = color === 'blue' ? 'bg-blue-500' : color === 'emerald' ? 'bg-emerald-500' : 'bg-[#ff4655]';
+                          const badgeClass = color === 'blue' 
+                            ? 'bg-blue-500/10 text-blue-500 border-blue-500/30' 
+                            : color === 'emerald' 
+                            ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30' 
+                            : 'bg-[#ff4655]/10 text-[#ff4655] border-[#ff4655]/30';
+                          const ctaColor = color === 'blue' ? 'text-blue-500' : color === 'emerald' ? 'text-emerald-500' : 'text-[#ff4655]';
+
+                          return (
+                            <div key={itIdx} className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 flex flex-col justify-between min-h-[135px] relative overflow-hidden shadow-xs">
+                              <div className={`absolute top-0 left-0 w-1.5 h-full ${barColor}`}></div>
+                              <div className="space-y-1.5 pl-2">
+                                <div className="flex items-center justify-between">
+                                  <span className={`w-8 h-8 rounded-lg flex items-center justify-center border ${badgeClass}`}>
+                                    {it.icon === 'shield' ? <ShieldCheck size={16} weight="fill" /> : it.icon === 'truck' ? <Truck size={16} weight="fill" /> : <Wrench size={16} weight="fill" />}
+                                  </span>
+                                  {it.badge && (
+                                    <span className={`px-2 py-0.5 rounded-full text-[8px] font-mono font-bold uppercase border ${badgeClass}`}>
+                                      {it.badge}
+                                    </span>
+                                  )}
+                                </div>
+                                <div>
+                                  <h4 className="text-xs font-black uppercase text-zinc-900 dark:text-white">
+                                    {it.title}
+                                  </h4>
+                                  <p className="text-[10px] text-zinc-500 line-clamp-2 mt-0.5">
+                                    {it.description}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className={`pl-2 pt-2 flex items-center justify-between text-[9px] font-black uppercase ${ctaColor}`}>
+                                <span>{it.ctaText || 'XEM NGAY'}</span>
+                                <ArrowRight size={12} weight="bold" />
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
                 </div>
               ))}
             </div>
@@ -1753,6 +1994,88 @@ export default function AdminHomepageBuilderPage() {
                         </div>
                       </div>
                     )}
+
+                    {sec.type === 'service_features' && (() => {
+                      const defaultItems: ServiceFeatureItem[] = [
+                        {
+                          title: 'Build PC & Cấu Hình Đồ Họa',
+                          description: 'Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.',
+                          badge: 'LÃI SUẤT 0%',
+                          badgeColor: 'red',
+                          icon: 'wrench',
+                          ctaText: 'BẮT ĐẦU BUILD NGAY',
+                          link: '/ProductPage?category=desktops'
+                        },
+                        {
+                          title: 'Bảo Hành 1 Đổi 1 Tận Nơi',
+                          description: 'Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.',
+                          badge: '30 NGÀY VIP',
+                          badgeColor: 'blue',
+                          icon: 'shield',
+                          ctaText: 'TRA CỨU BẢO HÀNH',
+                          link: '/dich-vu'
+                        },
+                        {
+                          title: 'Giao Hàng Hỏa Tốc & Miễn Phí',
+                          description: 'Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.',
+                          badge: 'SIÊU TỐC 2H',
+                          badgeColor: 'emerald',
+                          icon: 'truck',
+                          ctaText: 'XEM CHÍNH SÁCH SHIP',
+                          link: '/about'
+                        }
+                      ];
+                      const items = (sec.config?.items && sec.config.items.length > 0)
+                        ? sec.config.items
+                        : ((sec.populatedData as any)?.items && (sec.populatedData as any).items.length > 0)
+                        ? (sec.populatedData as any).items
+                        : defaultItems;
+
+                      return (
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                          {items.map((it: ServiceFeatureItem, itIdx: number) => {
+                            const color = it.badgeColor || (itIdx === 0 ? 'red' : itIdx === 1 ? 'blue' : 'emerald');
+                            const borderClass = color === 'blue' ? 'bg-blue-500' : color === 'emerald' ? 'bg-emerald-500' : 'bg-[#ff4655]';
+                            const badgeClass = color === 'blue' 
+                              ? 'bg-blue-500/10 text-blue-500 border-blue-500/30' 
+                              : color === 'emerald' 
+                              ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30' 
+                              : 'bg-[#ff4655]/10 text-[#ff4655] border-[#ff4655]/30';
+                            const textCta = color === 'blue' ? 'text-blue-500' : color === 'emerald' ? 'text-emerald-500' : 'text-[#ff4655]';
+
+                            return (
+                              <div key={itIdx} className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm relative overflow-hidden">
+                                <div className={`absolute top-0 left-0 w-1.5 h-full ${borderClass}`}></div>
+                                <div className="space-y-3 pl-2">
+                                  <div className="flex items-center justify-between">
+                                    <span className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-sm border ${badgeClass}`}>
+                                      {it.icon === 'shield' ? <ShieldCheck size={20} weight="fill" /> : it.icon === 'truck' ? <Truck size={20} weight="fill" /> : <Wrench size={20} weight="fill" />}
+                                    </span>
+                                    {it.badge && (
+                                      <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold uppercase border ${badgeClass}`}>
+                                        {it.badge}
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div>
+                                    <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white">
+                                      {it.title}
+                                    </h3>
+                                    <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
+                                      {it.description}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className={`pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase tracking-wider ${textCta}`}>
+                                  <span>{it.ctaText || 'XEM NGAY'}</span>
+                                  <ArrowRight size={14} weight="bold" />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
                   </div>
                 ))
               )}

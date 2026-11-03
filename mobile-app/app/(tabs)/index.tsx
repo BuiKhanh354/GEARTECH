@@ -1,23 +1,33 @@
 import { useState } from 'react'
-import { FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { useQuery } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { catalogService } from '../../services/catalogService'
+import { useCartStore } from '../../store/cartStore'
 import { ProductCard } from '../../components/ProductCard'
-import { EmptyView, ErrorView, LoadingView } from '../../components/StateViews'
+import { SearchBar } from '../../components/SearchBar'
+import { ProductGridSkeleton, Skeleton } from '../../components/Skeleton'
+import { EmptyView, ErrorView } from '../../components/StateViews'
 import { SectionHeader } from '../../components/ui'
-import { colors, radius, spacing } from '../../constants/theme'
+import { elevation, palette, radius, spacing, type } from '../../constants/theme'
 
-// Trang chủ: thương hiệu, tìm kiếm, danh mục, sản phẩm mới/nổi bật từ API thật
+// =============================================================================
+// TRANG CHỦ — GEARTECH MOBILE (v2)
+// - Brand Header + Quick Cart button (có badge số lượng)
+// - SearchBar mới (focus ring, nút xóa & gửi)
+// - Danh mục ngang dạng tile tinh tế + skeleton khi loading
+// - Lưới 2 cột sản phẩm mới dùng ProductCard v2 + ProductGridSkeleton
+// =============================================================================
 export default function HomeScreen() {
   const [search, setSearch] = useState('')
+  const cartTotalQty = useCartStore((s) => s.cartCount)
 
   // GET /api/products — sản phẩm mới nhất (sortBy=newest)
   const newest = useQuery({
     queryKey: ['products', 'home-newest'],
-    queryFn: () => catalogService.getProducts({ limit: 6, sortBy: 'newest' })
+    queryFn: () => catalogService.getProducts({ limit: 8, sortBy: 'newest' })
   })
 
   // GET /api/categories — danh mục đang hoạt động
@@ -34,29 +44,40 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      {/* Header thương hiệu + tìm kiếm */}
+      {/* Header thương hiệu + Tìm kiếm */}
       <View style={styles.header}>
-        <Text style={styles.brand}>
-          GEAR<Text style={{ color: colors.primary }}>TECH</Text>
-        </Text>
-        <Text style={styles.tagline}>Máy tính & linh kiện chính hãng</Text>
+        <View style={styles.topRow}>
+          <View>
+            <Text style={styles.brand}>
+              GEAR<Text style={{ color: palette.brand }}>TECH</Text>
+            </Text>
+            <Text style={styles.tagline}>Máy tính & linh kiện chính hãng</Text>
+          </View>
 
-        <View style={styles.searchBox}>
-          <Ionicons name="search" size={16} color={colors.faint} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Tìm sản phẩm, linh kiện..."
-            placeholderTextColor={colors.faint}
+          {/* Nút giỏ hàng nhanh */}
+          <TouchableOpacity
+            style={styles.cartButton}
+            onPress={() => router.push('/(tabs)/cart')}
+            hitSlop={6}
+          >
+            <Ionicons name="cart-outline" size={20} color={palette.ink} />
+            {cartTotalQty > 0 ? (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>
+                  {cartTotalQty > 99 ? '99+' : cartTotalQty}
+                </Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.searchWrap}>
+          <SearchBar
             value={search}
             onChangeText={setSearch}
-            onSubmitEditing={submitSearch}
-            returnKeyType="search"
+            onSubmit={submitSearch}
+            placeholder="Tìm linh kiện, laptop, PC gaming..."
           />
-          {search.length > 0 && (
-            <TouchableOpacity onPress={submitSearch} hitSlop={8}>
-              <Ionicons name="arrow-forward-circle" size={22} color={colors.primary} />
-            </TouchableOpacity>
-          )}
         </View>
       </View>
 
@@ -66,59 +87,104 @@ export default function HomeScreen() {
         numColumns={2}
         columnWrapperStyle={styles.gridRow}
         contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={newest.isRefetching}
-            onRefresh={() => { newest.refetch(); categories.refetch() }}
+            tintColor={palette.brand}
+            colors={[palette.brand]}
+            onRefresh={() => {
+              newest.refetch()
+              categories.refetch()
+            }}
           />
         }
         ListHeaderComponent={
           <View style={styles.headerList}>
-            {/* Danh mục ngang */}
+            {/* Mục: Danh mục sản phẩm */}
+            <SectionHeader
+              title="Danh mục"
+              subtitle="Khám phá theo nhóm phần cứng"
+              actionLabel="Xem tất cả"
+              onAction={() => router.push('/(tabs)/categories')}
+            />
+
             {categories.isLoading ? (
-              <LoadingView label="Đang tải danh mục..." />
+              <View style={styles.catSkeletonRow}>
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <View key={i} style={styles.catSkeletonTile}>
+                    <Skeleton style={{ width: 42, height: 42, borderRadius: radius.md }} />
+                    <Skeleton style={{ width: 50, height: 10, borderRadius: 4, marginTop: 6 }} />
+                  </View>
+                ))}
+              </View>
             ) : categories.isError ? (
-              <ErrorView message={`Không tải được danh mục: ${categories.error?.message || ''}`} onRetry={() => categories.refetch()} />
+              <ErrorView
+                message="Không tải được danh mục"
+                onRetry={() => categories.refetch()}
+              />
             ) : (categories.data?.length ?? 0) === 0 ? (
               <EmptyView icon="grid-outline" title="Chưa có danh mục nào" />
             ) : (
-              <View style={{ marginBottom: spacing.lg }}>
-                <SectionHeader title="Danh mục" actionLabel="Xem tất cả" onAction={() => router.push('/(tabs)/categories')} />
-                <FlatList
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  data={categories.data}
-                  keyExtractor={(item) => item._id}
-                  contentContainerStyle={{ paddingHorizontal: spacing.lg, gap: spacing.sm }}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      style={styles.catChip}
-                      onPress={() => router.push({ pathname: '/(tabs)/categories', params: { category: item.slug } })}
-                    >
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={categories.data}
+                keyExtractor={(item) => item._id}
+                contentContainerStyle={styles.catListContent}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={[styles.catCard, elevation.card]}
+                    activeOpacity={0.7}
+                    onPress={() =>
+                      router.push({
+                        pathname: '/(tabs)/categories',
+                        params: { category: item.slug }
+                      })
+                    }
+                  >
+                    <View style={styles.catIconWrap}>
                       <Text style={styles.catIcon}>{item.icon || '📦'}</Text>
-                      <Text style={styles.catName} numberOfLines={2}>{item.name}</Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
+                    </View>
+                    <Text style={styles.catName} numberOfLines={2}>
+                      {item.name}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+              />
             )}
 
-            <SectionHeader title="Sản phẩm mới" actionLabel="Xem tất cả" onAction={() => router.push('/products')} />
+            {/* Mục: Sản phẩm mới */}
+            <View style={{ marginTop: spacing.md }}>
+              <SectionHeader
+                title="Sản phẩm mới"
+                subtitle="Hàng mới về, nguyên seal chính hãng"
+                actionLabel="Xem tất cả"
+                onAction={() => router.push('/products')}
+              />
+            </View>
           </View>
         }
         renderItem={({ item }) => (
-          <ProductCard product={item} onPress={() => router.push(`/products/${item._id}`)} />
+          <ProductCard
+            product={item}
+            onPress={() => router.push(`/products/${item._id}`)}
+          />
         )}
         ListEmptyComponent={
           newest.isLoading ? (
-            <LoadingView label="Đang tải sản phẩm..." />
+            <ProductGridSkeleton count={6} />
           ) : newest.isError ? (
             <ErrorView
-              message={newest.error?.message || 'Không tải được sản phẩm. Kiểm tra kết nối tới máy chủ.'}
+              message={newest.error?.message || 'Không tải được sản phẩm. Kiểm tra kết nối.'}
               onRetry={() => newest.refetch()}
             />
           ) : (
-            <EmptyView icon="cube-outline" title="Chưa có sản phẩm nào" subtitle="Sàn hiện chưa có sản phẩm đang bán" />
+            <EmptyView
+              icon="cube-outline"
+              title="Chưa có sản phẩm nào"
+              subtitle="Sàn hiện chưa có sản phẩm đang mở bán"
+            />
           )
         }
       />
@@ -127,41 +193,123 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.bg },
+  safe: {
+    flex: 1,
+    backgroundColor: palette.bg
+  },
   header: {
-    backgroundColor: colors.card,
+    backgroundColor: palette.surface,
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
+    paddingTop: spacing.sm,
     paddingBottom: spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border
+    borderBottomColor: palette.border
   },
-  brand: { fontSize: 22, fontWeight: '900', color: colors.ink, letterSpacing: 1 },
-  tagline: { fontSize: 11, color: colors.sub, marginTop: 2 },
-  searchBox: {
+  topRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 8,
-    backgroundColor: colors.bg,
-    borderRadius: radius.md,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    marginTop: spacing.md
+    marginBottom: spacing.sm
   },
-  searchInput: { flex: 1, fontSize: 13, color: colors.ink },
-  headerList: { paddingTop: spacing.lg },
-  listContent: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },
-  gridRow: { gap: spacing.sm, marginBottom: spacing.sm },
-  catChip: {
-    width: 84,
-    backgroundColor: colors.card,
+  brand: {
+    ...type.h1,
+    fontSize: 21,
+    fontWeight: '900',
+    letterSpacing: 0.8
+  },
+  tagline: {
+    fontSize: 11,
+    color: palette.muted,
+    marginTop: 1
+  },
+  cartButton: {
+    width: 38,
+    height: 38,
+    borderRadius: radius.pill,
+    backgroundColor: palette.surfaceAlt,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: palette.border,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  cartBadge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    backgroundColor: palette.brand,
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4
+  },
+  cartBadgeText: {
+    color: '#fff',
+    fontSize: 9,
+    fontWeight: '800'
+  },
+  searchWrap: {
+    marginTop: 2
+  },
+  headerList: {
+    paddingTop: spacing.md
+  },
+  catSkeletonRow: {
+    flexDirection: 'row',
+    paddingHorizontal: spacing.lg,
+    gap: spacing.sm,
+    marginBottom: spacing.md
+  },
+  catSkeletonTile: {
+    width: 82,
+    alignItems: 'center',
+    padding: spacing.sm,
+    backgroundColor: palette.surface,
     borderRadius: radius.md,
-    paddingVertical: 10,
-    paddingHorizontal: 6,
+    borderWidth: 1,
+    borderColor: palette.border
+  },
+  catListContent: {
+    paddingHorizontal: spacing.lg,
+    gap: spacing.sm,
+    paddingBottom: spacing.xs
+  },
+  catCard: {
+    width: 84,
+    backgroundColor: palette.surface,
+    borderWidth: 1,
+    borderColor: palette.border,
+    borderRadius: radius.md,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xs,
     alignItems: 'center'
   },
-  catIcon: { fontSize: 22 },
-  catName: { fontSize: 10, fontWeight: '600', color: colors.ink, textAlign: 'center', marginTop: 4 }
+  catIconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: radius.sm,
+    backgroundColor: palette.surfaceAlt,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.xs
+  },
+  catIcon: {
+    fontSize: 22
+  },
+  catName: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: palette.ink,
+    textAlign: 'center',
+    lineHeight: 14
+  },
+  listContent: {
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.xxxl
+  },
+  gridRow: {
+    gap: spacing.sm,
+    marginBottom: spacing.sm
+  }
 })

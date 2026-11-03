@@ -4,10 +4,9 @@ import { ChartBar } from '@phosphor-icons/react'
 interface AdminOverviewTabProps {
   shopsList: any[];
   dbVouchers: any[];
-  dbShowrooms: any[];
 }
 
-export default function AdminOverviewTab({ shopsList, dbVouchers, dbShowrooms }: AdminOverviewTabProps) {
+export default function AdminOverviewTab({ shopsList, dbVouchers }: AdminOverviewTabProps) {
   return (
     <motion.div
       key="admin-overview"
@@ -39,9 +38,9 @@ export default function AdminOverviewTab({ shopsList, dbVouchers, dbShowrooms }:
           <span className="text-[8px] text-zinc-450 block font-bold uppercase tracking-wider">Đang hoạt động</span>
         </div>
         <div className="p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-850 rounded-sm space-y-1">
-          <span className="text-[8px] font-mono text-zinc-450 dark:text-zinc-655 block uppercase">// SHOWROOMS</span>
-          <span className="text-lg font-black text-zinc-900 dark:text-white text-glow block">{dbShowrooms.length}</span>
-          <span className="text-[8px] text-zinc-450 block font-bold uppercase tracking-wider">Trải nghiệm thực tế</span>
+          <span className="text-[8px] font-mono text-zinc-450 dark:text-zinc-655 block uppercase">// GEARTECH CARE</span>
+          <span className="text-lg font-black text-emerald-500 text-glow block">ACTIVE</span>
+          <span className="text-[8px] text-zinc-450 block font-bold uppercase tracking-wider">Dịch vụ sàn 24/7</span>
         </div>
         <div className="p-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-850 rounded-sm space-y-1">
           <span className="text-[8px] font-mono text-zinc-450 dark:text-zinc-655 block uppercase">// SERVER PORT</span>

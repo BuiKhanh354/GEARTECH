@@ -5,7 +5,6 @@ require('dotenv').config();
 const User = require('./models/User');
 const Shop = require('./models/Shop');
 const Product = require('./models/Product');
-const Showroom = require('./models/Showroom');
 const Voucher = require('./models/Voucher');
 
 const seedData = async () => {
@@ -17,7 +16,6 @@ const seedData = async () => {
     await User.deleteMany();
     await Shop.deleteMany();
     await Product.deleteMany();
-    await Showroom.deleteMany();
     await Voucher.deleteMany();
 
     const salt = await bcrypt.genSalt(10);
@@ -377,60 +375,6 @@ const seedData = async () => {
     for (const prod of productsData) {
       const newProd = new Product(prod);
       await newProd.save();
-    }
-
-    console.log('📍 Khởi tạo hệ thống Showroom...');
-    const showroomsList = [
-      {
-        name: 'GEARTECH FLAGSHIP STORE - TP. HCM',
-        address: '123 Đường Ba Tháng Hai, Phường 11, Quận 10, Thành phố Hồ Chí Minh',
-        phone: '1900 6868 (Phím 1)',
-        hours: '08:00 - 22:00 (Thứ 2 - Chủ Nhật)',
-        features: [
-          'Khu Trải Nghiệm Virtual Reality (VR)',
-          'Độc Quyền Ghế Secretlab Valorant Ed.',
-          'Trung Tâm Bảo Hành & Nâng Cấp Tốc Hành'
-        ],
-        lat: 10.7766023,
-        lng: 106.6780075,
-        city: 'hcm',
-        mapUrl: 'https://maps.google.com/maps?q=123%20%C4%90%C6%B0%E1%BB%9Dng%20Ba%20Th%C3%A1ng%20Hai%2C%20Ph%C6%B0%E1%BB%9Dng%2011%2C%20Qu%E1%BA%ADn%2010%2C%20TP.HCM&t=&z=16&ie=UTF8&iwloc=&output=embed'
-      },
-      {
-        name: 'GEARTECH ZONE - ĐỐNG ĐA, HÀ NỘI',
-        address: '18 Phố Chùa Bộc, Quang Trung, Đống Đa, Hà Nội',
-        phone: '1900 6868 (Phím 2)',
-        hours: '08:00 - 22:00 (Thứ 2 - Chủ Nhật)',
-        features: [
-          'Không Gian Build Phím Cơ Custom chuyên sâu',
-          'Khu Vực Benchmark Workstation đồ họa',
-          'Trải Nghiệm Tản Nhiệt Nước Custom'
-        ],
-        lat: 21.0076935,
-        lng: 105.8260799,
-        city: 'hanoi',
-        mapUrl: 'https://maps.google.com/maps?q=18%20Ph%E1%BB%91%20Ch%C3%B9a%20B%E1%BB%99c%2C%20Quang%20Trung%2C%20%C4%90%E1%BB%91ng%20%C4%90a%2C%20H%C3%A0%20N%E1%BB%99i&t=&z=16&ie=UTF8&iwloc=&output=embed'
-      },
-      {
-        name: 'GEARTECH ESPORT HUB - HẢI CHÂU, ĐÀ NẴNG',
-        address: '52 Nguyễn Văn Linh, Nam Dương, Hải Châu, Đà Nẵng',
-        phone: '1900 6868 (Phím 3)',
-        hours: '08:30 - 21:30 (Thứ 2 - Chủ Nhật)',
-        features: [
-          'Khu Vực Thi Đấu Esport 5v5 Chuẩn Gear',
-          'Trải Nghiệm Chuột & Tai Nghe Siêu Nhẹ',
-          'Bàn Trải Nghiệm Tay Cầm Console'
-        ],
-        lat: 16.0601955,
-        lng: 108.2145322,
-        city: 'danang',
-        mapUrl: 'https://maps.google.com/maps?q=52%20Nguy%E1%BB%85n%20V%C4%83n%20Linh%2C%20Nam%20D%C6%B0%C6%A1ng%2C%20H%E1%BA%A3i%20Ch%C3%A2u%2C%20%C4%90%C3%A0%20N%E1%BA%B5ng&t=&z=16&ie=UTF8&iwloc=&output=embed'
-      }
-    ];
-
-    for (const sr of showroomsList) {
-      const newSr = new Showroom(sr);
-      await newSr.save();
     }
 
     console.log('🎟️ Khởi tạo danh sách Voucher...');

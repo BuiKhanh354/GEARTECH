@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { formatPrice } from '../../utils/format'
 import { useCartStore } from '../../store/cartStore'
+import { useAuthStore } from '../../store/authStore'
 import { categoryService, type CategoryItem } from '../../services/categoryService'
 import { brandService, type BrandItem } from '../../services/brandService'
 import {
@@ -120,17 +121,12 @@ export default function Header() {
     }]
   }
 
-  const [currentUser, setCurrentUser] = useState<any>(() => {
-    const userStr = localStorage.getItem('user')
-    return userStr ? JSON.parse(userStr) : null
-  })
+  const { user: currentUser, logout } = useAuthStore()
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    setCurrentUser(null)
+    logout()
     setUserMenuOpen(false)
-    window.location.href = '/Trang-chu'
+    navigate('/Trang-chu')
   }
 
   // Danh sách thương hiệu hợp tác hiển thị ở tab "Thương hiệu nổi tiếng"
@@ -516,11 +512,15 @@ export default function Header() {
                   )}
                 </AnimatePresence>
               </div>
-              <Link to="/tintuc" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors">
-                Tin tức
+              <Link to="/khuyen-mai" className="relative group text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-1.5">
+                <span>Khuyến mãi</span>
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ff4655]"></span>
+                </span>
               </Link>
-              <Link to="/about" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors">
-                Chúng tôi
+              <Link to="/geartech-care" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors flex items-center gap-1">
+                <span>GearTech Care</span>
               </Link>
               <Link to="/Cua-hang" className="text-zinc-600 hover:text-[#ff4655] dark:text-zinc-300 dark:hover:text-[#ff4655] font-bold text-xs uppercase tracking-widest transition-colors">
                 Cửa Hàng & Shop
@@ -820,11 +820,16 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              <Link to="/tintuc" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
-                Tin tức
+              <Link to="/khuyen-mai" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 flex items-center justify-between uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
+                <span className="flex items-center gap-2">
+                  <span>🔥</span>
+                  <span>Khuyến mãi</span>
+                </span>
+                <span className="text-[10px] bg-red-500 text-white font-black px-2 py-0.5 rounded-full">HOT</span>
               </Link>
-              <Link to="/about" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
-                Chúng tôi
+              <Link to="/geartech-care" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
+                <span>🛠️</span>
+                <span>GearTech Care (Dịch vụ)</span>
               </Link>
               <Link to="/Cua-hang" className="px-3.5 py-2.5 rounded-lg text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 flex items-center gap-2 uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>
                 Cửa Hàng & Shop

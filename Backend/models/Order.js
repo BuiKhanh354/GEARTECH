@@ -85,6 +85,17 @@ const OrderSchema = new mongoose.Schema({
     default: 'pending' 
   },
 
+  // Tích hợp vận chuyển & phương thức giao hàng
+  shipping_method: { type: String, default: 'ghn' },
+  shippingMethod: { type: String, default: 'ghn' },
+  shipping_method_name: { type: String, default: 'Giao Hàng Nhanh (GHN Express)' },
+  shippingMethodName: { type: String, default: 'Giao Hàng Nhanh (GHN Express)' },
+  shipment_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Shipment', default: null },
+  shipmentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shipment', default: null },
+  tracking_code: { type: String, default: null },
+  trackingCode: { type: String, default: null },
+  carrier: { type: String, default: 'GHN' },
+
   items: [EmbeddedOrderItemSchema],
   note: { type: String, default: '' },
   created_at: { type: Date, default: Date.now },
@@ -177,6 +188,17 @@ OrderSchema.pre('validate', function() {
   // Sync order status
   if (this.orderStatus && !this.order_status) this.order_status = this.orderStatus.toLowerCase();
   if (this.order_status && !this.orderStatus) this.orderStatus = this.order_status.toLowerCase();
+
+  // Sync shipment & shipping method
+  if (this.shippingMethod && !this.shipping_method) this.shipping_method = this.shippingMethod;
+  if (this.shipping_method && !this.shippingMethod) this.shippingMethod = this.shipping_method;
+  if (this.shippingMethodName && !this.shipping_method_name) this.shipping_method_name = this.shippingMethodName;
+  if (this.shipping_method_name && !this.shippingMethodName) this.shippingMethodName = this.shipping_method_name;
+
+  if (this.shipmentId && !this.shipment_id) this.shipment_id = this.shipmentId;
+  if (this.shipment_id && !this.shipmentId) this.shipmentId = this.shipment_id;
+  if (this.trackingCode && !this.tracking_code) this.tracking_code = this.trackingCode;
+  if (this.tracking_code && !this.trackingCode) this.trackingCode = this.tracking_code;
 
   this.updated_at = new Date();
 });

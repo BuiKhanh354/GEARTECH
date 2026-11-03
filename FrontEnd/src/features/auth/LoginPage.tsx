@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { 
   Envelope, 
@@ -13,10 +14,15 @@ import {
   DiscordLogo,
   AppleLogo
 } from '@phosphor-icons/react'
+import { authService } from '../../services/authService'
+import { useAuthStore } from '../../store/authStore'
+import { getApiErrorMessage } from '../../api/client'
 
 type AuthMode = 'login' | 'register'
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [mode, setMode] = useState<AuthMode>('login')
 
   // Common Form Fields
@@ -51,31 +57,22 @@ const LoginPage: React.FC = () => {
 
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      })
+      const data = await authService.login({ email, password })
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Đăng nhập thất bại.')
-      }
-
-      // Lưu Token JWT và thông tin User vào localStorage
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('user', JSON.stringify(data.user))
+      // Lưu vào Store tập trung và localStorage đồng bộ
+      useAuthStore.getState().setSession(data.token, data.user)
 
       setSuccessMsg('Đăng nhập thành công! Đang chuyển hướng...')
-      
-      // Thực hiện chuyển hướng toàn trang để đồng bộ lại trạng thái của Header
-      setTimeout(() => {
-        window.location.href = '/profile'
-      }, 1000)
 
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Lỗi kết nối máy chủ.')
+      const redirect = searchParams.get('redirect') || (
+        data.user.role === 'admin' ? '/admin' : data.user.role === 'shop' ? '/shop' : '/profile'
+      )
+      
+      setTimeout(() => {
+        navigate(redirect)
+      }, 700)
+    } catch (err) {
+      setErrorMsg(getApiErrorMessage(err, 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.'))
     } finally {
       setLoading(false)
     }
@@ -99,17 +96,7 @@ const LoginPage: React.FC = () => {
 
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, phone })
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Đăng ký thất bại.')
-      }
+      await authService.register({ name, email, password, phone })
 
       setSuccessMsg('Tạo tài khoản thành công! Hãy sử dụng tài khoản này để đăng nhập.')
       
@@ -117,13 +104,12 @@ const LoginPage: React.FC = () => {
       setName('')
       setPhone('')
       
-      // Tự động nhảy về Tab đăng nhập sau 2.5s
+      // Tự động nhảy về Tab đăng nhập sau 1.5s
       setTimeout(() => {
         handleSwitchMode('login')
-      }, 2500)
-
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Lỗi kết nối máy chủ.')
+      }, 1500)
+    } catch (err) {
+      setErrorMsg(getApiErrorMessage(err, 'Đăng ký tài khoản thất bại.'))
     } finally {
       setLoading(false)
     }
@@ -321,7 +307,7 @@ const LoginPage: React.FC = () => {
               }}
               className="py-2 px-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 font-black text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer"
             >
-              👑 Khách
+               Khách
             </button>
             <button
               type="button"
@@ -333,7 +319,7 @@ const LoginPage: React.FC = () => {
               }}
               className="py-2 px-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-500 font-black text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer"
             >
-              🏬 Shop
+               Shop
             </button>
             <button
               type="button"
@@ -345,7 +331,7 @@ const LoginPage: React.FC = () => {
               }}
               className="py-2 px-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-[#ff4655] font-black text-[9px] uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer"
             >
-              🛡️ Admin
+               Admin
             </button>
           </div>
         </div>

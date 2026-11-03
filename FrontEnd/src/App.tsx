@@ -9,6 +9,8 @@ import LoginPage from './pages/LoginPage'
 import CheckoutPage from './pages/CheckoutPage'
 import CartPage from './pages/CartPage'
 import ShopDetailPage from './pages/ShopDetailPage'
+import PromotionPage from './pages/PromotionPage'
+import CareServicesPage from './pages/CareServicesPage'
 import MainLayout from './layouts/Mainlayout'
 
 // Admin Centre (Kênh Quản trị) - layout dashboard riêng cho vai trò Admin
@@ -22,8 +24,9 @@ import AdminCategoriesPage from './features/admin/pages/AdminCategoriesPage'
 import AdminBrandsPage from './features/admin/pages/AdminBrandsPage'
 import AdminOrdersPage from './features/admin/pages/AdminOrdersPage'
 import AdminVouchersPage from './features/admin/pages/AdminVouchersPage'
-import AdminShowroomsPage from './features/admin/pages/AdminShowroomsPage'
 import AdminHomepageBuilderPage from './features/admin/pages/AdminHomepageBuilderPage'
+import AdminFinancePage from './features/admin/pages/AdminFinancePage'
+import AdminCareServicesPage from './features/admin/pages/AdminCareServicesPage'
 
 // Seller Centre (Kênh Người Bán) - layout dashboard riêng, không dùng chrome trang công khai
 import SellerLayout from './features/shop/pages/SellerLayout'
@@ -35,6 +38,7 @@ import SellerSuppliersPage from './features/shop/pages/SellerSuppliersPage'
 import SellerVouchersPage from './features/shop/pages/SellerVouchersPage'
 import SellerAnalyticsPage from './features/shop/pages/SellerAnalyticsPage'
 import SellerStorefrontPage from './features/shop/pages/SellerStorefrontPage'
+import SellerFinancePage from './features/shop/pages/SellerFinancePage'
 
 // Wrapper cho site công khai: giữ MainLayout bao quanh Outlet
 function SiteLayout() {
@@ -63,6 +67,7 @@ function App() {
           <Route path="suppliers" element={<SellerSuppliersPage />} />
           <Route path="vouchers" element={<SellerVouchersPage />} />
           <Route path="analytics" element={<SellerAnalyticsPage />} />
+          <Route path="finance" element={<SellerFinancePage />} />
           <Route path="storefront" element={<SellerStorefrontPage />} />
         </Route>
 
@@ -79,8 +84,9 @@ function App() {
           <Route path="categories" element={<AdminCategoriesPage />} />
           <Route path="brands" element={<AdminBrandsPage />} />
           <Route path="orders" element={<AdminOrdersPage />} />
+          <Route path="finance" element={<AdminFinancePage />} />
+          <Route path="care" element={<AdminCareServicesPage />} />
           <Route path="vouchers" element={<AdminVouchersPage />} />
-          <Route path="showrooms" element={<AdminShowroomsPage />} />
           <Route path="homepage" element={<AdminHomepageBuilderPage />} />
         </Route>
 
@@ -91,10 +97,15 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/Trang-chu" element={<HomePage />} />
           <Route path="/ProductPage" element={<ProductListPage />} />
+          <Route path="/khuyen-mai" element={<PromotionPage />} />
+          <Route path="/promotions" element={<PromotionPage />} />
+          <Route path="/tintuc" element={<PromotionPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/shop/:id" element={<ShopDetailPage />} />
           <Route path="/Cua-hang" element={<StorePage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/dich-vu" element={<CareServicesPage />} />
+          <Route path="/geartech-care" element={<CareServicesPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/orders" element={<ProfilePage />} />
           <Route path="/settings" element={<ProfilePage />} />

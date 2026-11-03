@@ -1,0 +1,41 @@
+[{
+  "_id": {
+    "$oid": "6ac11f462de58adcc60f3c5e"
+  },
+  "shop_id": {
+    "$oid": "000000000000000000000002"
+  },
+  "category_id": {
+    "$oid": "000000000000000000000003"
+  },
+  "brand_id": {
+    "$oid": "000000000000000000000004"
+  },
+  "name": "ASUS GeForce RTX Gaming",
+  "slug": "asus-geforce-rtx-gaming",
+  "description": "Card màn hình dành cho gaming",
+  "price": {
+    "$numberDecimal": "15990000"
+  },
+  "original_price": {
+    "$numberDecimal": "16990000"
+  },
+  "stock_quantity": 20,
+  "sku": "GPU-ASUS-001",
+  "specifications": {
+    "vram": "12GB",
+    "memory_type": "GDDR7",
+    "interface": "PCIe 5.0",
+    "recommended_psu": "650W"
+  },
+  "status": "active",
+  "rating": 4.8,
+  "review_count": 25,
+  "sold_count": 100,
+  "created_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  },
+  "updated_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  }
+}]

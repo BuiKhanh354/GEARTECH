@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Category = require('../models/Category');
 const Product = require('../models/Product');
+const CategorySpecification = require('../models/CategorySpecification');
 const { auth, checkRole } = require('../middleware/auth');
 
 // Helper chuẩn hóa slug
@@ -130,6 +131,65 @@ router.get('/admin/all', auth, checkRole(['admin']), async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi tải danh mục cho Admin.', details: error.message });
+  }
+});
+
+// ==========================================
+// 3.0 LẤY MẪU THÔNG SỐ KỸ THUẬT CỦA DANH MỤC (CHO FORM TẠO/SỬA SẢN PHẨM)
+// GET /api/categories/:idOrSlug/specifications
+// ==========================================
+router.get('/:idOrSlug/specifications', async (req, res) => {
+  try {
+    const { idOrSlug } = req.params;
+    let category = null;
+
+    if (idOrSlug.match(/^[0-9a-fA-F]{24}$/)) {
+      category = await Category.findById(idOrSlug);
+    }
+    if (!category) {
+      category = await Category.findOne({ slug: idOrSlug.toLowerCase() });
+    }
+
+    const slug = category ? category.slug : idOrSlug.toLowerCase();
+    const categoryId = category ? category._id : null;
+
+    // Tìm template specs theo categoryId hoặc categorySlug
+    let specTemplate = await CategorySpecification.findOne({
+      $or: [
+        ...(categoryId ? [{ categoryId }] : []),
+        { categorySlug: slug }
+      ]
+    });
+
+    // Nếu là danh mục con mà chưa có cấu hình riêng, tìm theo danh mục cha
+    if ((!specTemplate || !specTemplate.attributes || specTemplate.attributes.length === 0) && category && (category.parent_id || category.parent_category_id)) {
+      const parentId = category.parent_id || category.parent_category_id;
+      const parentCat = await Category.findById(parentId);
+      if (parentCat) {
+        specTemplate = await CategorySpecification.findOne({
+          $or: [
+            { categoryId: parentCat._id },
+            { categorySlug: parentCat.slug }
+          ]
+        });
+      }
+    }
+
+    if (!specTemplate) {
+      return res.json({
+        categorySlug: slug,
+        categoryName: category ? category.name : slug,
+        attributes: [
+          { name: 'Nhà sản xuất / Thương hiệu', key: 'brand', placeholder: 'VD: ASUS, MSI, Dell...', order: 1 },
+          { name: 'Xuất xứ / Bảo hành', key: 'warranty', placeholder: 'VD: 12 tháng chính hãng', order: 2 },
+          { name: 'Tính năng nổi bật', key: 'features', placeholder: 'VD: Chống nước, tiết kiệm điện...', order: 3 }
+        ]
+      });
+    }
+
+    return res.json(specTemplate);
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi lấy mẫu thông số kỹ thuật.', details: error.message });
   }
 });
 

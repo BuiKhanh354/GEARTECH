@@ -33,6 +33,17 @@ export interface SectionSchedule {
   endDate: string | null
 }
 
+export interface ServiceFeatureItem {
+  id?: string
+  title: string
+  description: string
+  badge: string
+  badgeColor?: 'red' | 'blue' | 'emerald' | 'amber' | 'purple'
+  icon?: 'wrench' | 'shield' | 'truck' | 'lightning' | 'sparkle'
+  ctaText: string
+  link: string
+}
+
 export interface SectionConfig {
   categoryId?: string | null
   categorySlug?: string
@@ -47,6 +58,7 @@ export interface SectionConfig {
   countdownEnd?: string | null
   tagline?: string
   manualProductIds?: string[]
+  items?: ServiceFeatureItem[]
 }
 
 export interface HomepageSection {

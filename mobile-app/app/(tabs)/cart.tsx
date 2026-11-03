@@ -4,16 +4,21 @@ import { Ionicons } from '@expo/vector-icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { cartService } from '../../services/cartService'
+import { PriceText } from '../../components/PriceText'
 import { EmptyView, ErrorView, LoadingView } from '../../components/StateViews'
-import { PrimaryButton } from '../../components/ui'
-import { colors, formatPrice, radius, spacing } from '../../constants/theme'
+import { Card, PrimaryButton } from '../../components/ui'
+import { elevation, formatPrice, palette, radius, spacing, type } from '../../constants/theme'
 import { confirmAsync } from '../../components/confirm'
 import { useAuthStore } from '../../store/authStore'
 import { useCartStore } from '../../store/cartStore'
 import type { CartItem } from '../../types/api'
 
-// Giỏ hàng — CRUD thật qua GET/PUT/DELETE /api/cart/*
-// Backend kiểm tra tồn kho & chốt giá (kể cả chính sách giữ giá 48h); client chỉ hiển thị
+// =============================================================================
+// GIỎ HÀNG — CART SCREEN (v2)
+// - Item card: Thumbnail 56px, tên 2 dòng, PriceText, Qty stepper tròn, nút xóa
+// - Footer tổng tiền nổi bật + thông tin ghi chú phí vận chuyển
+// - Giữ 100% logic CRUD giỏ hàng thật qua /api/cart
+// =============================================================================
 export default function CartScreen() {
   const token = useAuthStore((s) => s.token)
   const setCartCount = useCartStore((s) => s.setFromCart)
@@ -77,13 +82,16 @@ export default function CartScreen() {
   if (!token) {
     return (
       <SafeAreaView style={styles.safe} edges={['top']}>
-        <View style={styles.header}><Text style={styles.headerTitle}>Giỏ hàng</Text></View>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Giỏ hàng</Text>
+        </View>
         <EmptyView
           icon="log-in-outline"
           title="Bạn chưa đăng nhập"
-          subtitle="Đăng nhập để xem giỏ hàng và đặt mua sản phẩm"
+          subtitle="Đăng nhập tài khoản GearTech để xem giỏ hàng và đồng bộ sản phẩm"
+          actionLabel="Đăng nhập ngay"
+          onAction={() => router.push('/auth/login')}
         />
-        <PrimaryButton label="Đăng nhập" onPress={() => router.push('/auth/login')} />
       </SafeAreaView>
     )
   }
@@ -92,85 +100,152 @@ export default function CartScreen() {
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
+      {/* Header giỏ hàng */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Giỏ hàng {cart ? `(${cart.totalCount})` : ''}</Text>
+        <View>
+          <Text style={styles.headerTitle}>
+            Giỏ hàng {cart ? `(${cart.totalCount})` : ''}
+          </Text>
+          <Text style={styles.headerSubtitle}>Kiểm tra số lượng trước khi đặt</Text>
+        </View>
         {cart && cart.items.length > 0 && (
           <TouchableOpacity
+            style={styles.clearBtn}
+            hitSlop={8}
             onPress={async () => {
-              const ok = await confirmAsync('Xóa giỏ hàng', 'Bỏ tất cả sản phẩm khỏi giỏ?')
-              if (ok) { await cartService.clearCart(); resetCartCount(); invalidate() }
+              const ok = await confirmAsync('Xóa giỏ hàng', 'Bỏ tất cả sản phẩm khỏi giỏ hàng?')
+              if (ok) {
+                await cartService.clearCart()
+                resetCartCount()
+                invalidate()
+              }
             }}
           >
-            <Text style={[styles.clearText]}>Xóa hết</Text>
+            <Ionicons name="trash-outline" size={14} color={palette.danger} />
+            <Text style={styles.clearText}>Xóa hết</Text>
           </TouchableOpacity>
         )}
       </View>
 
       {cartQuery.isLoading ? (
-        <LoadingView label="Đang tải giỏ hàng..." />
+        <LoadingView label="Đang tải giỏ hàng của bạn..." />
       ) : cartQuery.isError ? (
         <ErrorView
-          message="Không tải được giỏ hàng."
+          message="Không thể kết nối giỏ hàng."
           onRetry={() => cartQuery.refetch()}
         />
       ) : !cart || cart.items.length === 0 ? (
-        <EmptyView icon="cart-outline" title="Giỏ hàng trống" subtitle="Thêm sản phẩm để bắt đầu mua sắm" />
+        <EmptyView
+          icon="cart-outline"
+          title="Giỏ hàng trống"
+          subtitle="Chưa có món hàng nào được thêm. Hãy tiếp tục khám phá!"
+          actionLabel="Mua sắm ngay"
+          onAction={() => router.push('/(tabs)')}
+        />
       ) : (
         <>
           <FlatList
             data={cart.items}
             keyExtractor={(item) => item._id}
             contentContainerStyle={styles.list}
+            showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
-              <View style={[styles.itemCard, !item.isAvailable && styles.itemDisabled]}>
+              <View
+                style={[
+                  styles.itemCard,
+                  elevation.card,
+                  !item.isAvailable && styles.itemDisabled
+                ]}
+              >
+                {/* Thumbnail */}
+                <View style={styles.thumbWrap}>
+                  <Text style={styles.thumbEmoji}>💻</Text>
+                </View>
+
+                {/* Thông tin sản phẩm */}
                 <View style={styles.itemInfo}>
-                  <Text style={styles.itemTitle} numberOfLines={2}>{item.title}</Text>
-                  <Text style={styles.itemShop} numberOfLines={1}>{item.shop?.name ?? 'GEARTECH'}</Text>
-                  <View style={styles.priceRow}>
-                    <Text style={styles.itemPrice}>{formatPrice(item.currentPrice)}</Text>
-                    {item.oldPrice && item.oldPrice > item.currentPrice ? (
-                      <Text style={styles.itemOldPrice}>{formatPrice(item.oldPrice)}</Text>
-                    ) : null}
+                  <Text style={styles.itemTitle} numberOfLines={2}>
+                    {item.title}
+                  </Text>
+                  <View style={styles.shopRow}>
+                    <Ionicons name="storefront-outline" size={11} color={palette.faint} />
+                    <Text style={styles.itemShop} numberOfLines={1}>
+                      {item.shop?.name ?? 'GEARTECH Official'}
+                    </Text>
                   </View>
+
+                  <View style={styles.priceRow}>
+                    <PriceText price={item.currentPrice} oldPrice={item.oldPrice} />
+                  </View>
+
                   {item.isPriceLocked && item.promotionNote ? (
                     <Text style={styles.promoNote}>🔒 {item.promotionNote}</Text>
                   ) : null}
+
                   {!item.isAvailable ? (
-                    <Text style={styles.unavailable}>⚠ {item.unavailableReason ?? 'Không thể mua sản phẩm này'}</Text>
+                    <Text style={styles.unavailable}>
+                      ⚠ {item.unavailableReason ?? 'Sản phẩm tạm thời không khả dụng'}
+                    </Text>
                   ) : item.isExceedingStock ? (
-                    <Text style={styles.unavailable}>⚠ Số lượng trong giỏ vượt tồn kho (còn {item.stock})</Text>
+                    <Text style={styles.unavailable}>
+                      ⚠ Số lượng vượt tồn kho (còn {item.stock})
+                    </Text>
                   ) : null}
                 </View>
 
+                {/* Cột thao tác phải */}
                 <View style={styles.itemRight}>
+                  <TouchableOpacity
+                    onPress={() => confirmRemove(item)}
+                    hitSlop={8}
+                    style={styles.deleteIconBtn}
+                  >
+                    <Ionicons name="close" size={16} color={palette.muted} />
+                  </TouchableOpacity>
+
                   {item.isAvailable ? (
                     <View style={styles.qtyRow}>
-                      <TouchableOpacity style={styles.qtyBtn} onPress={() => changeQty(item, -1)} disabled={updateMutation.isPending}>
-                        <Ionicons name="remove" size={14} color={colors.ink} />
+                      <TouchableOpacity
+                        style={styles.qtyBtn}
+                        onPress={() => changeQty(item, -1)}
+                        disabled={updateMutation.isPending}
+                        hitSlop={6}
+                      >
+                        <Ionicons name="remove" size={13} color={palette.ink} />
                       </TouchableOpacity>
                       <Text style={styles.qty}>{item.quantity}</Text>
-                      <TouchableOpacity style={styles.qtyBtn} onPress={() => changeQty(item, 1)} disabled={updateMutation.isPending}>
-                        <Ionicons name="add" size={14} color={colors.ink} />
+                      <TouchableOpacity
+                        style={styles.qtyBtn}
+                        onPress={() => changeQty(item, 1)}
+                        disabled={updateMutation.isPending}
+                        hitSlop={6}
+                      >
+                        <Ionicons name="add" size={13} color={palette.ink} />
                       </TouchableOpacity>
                     </View>
                   ) : null}
+
                   <Text style={styles.lineTotal}>{formatPrice(item.lineTotal)}</Text>
-                  <TouchableOpacity onPress={() => confirmRemove(item)}>
-                    <Ionicons name="trash-outline" size={16} color={colors.danger} />
-                  </TouchableOpacity>
                 </View>
               </View>
             )}
           />
 
-          {/* Thanh tổng tiền — tổng tính từ subtotal do backend trả về */}
-          <View style={styles.footer}>
+          {/* Thanh tổng tiền footer */}
+          <View style={[styles.footer, elevation.float]}>
             <View style={styles.footerRow}>
-              <Text style={styles.footerLabel}>Tạm tính</Text>
+              <View>
+                <Text style={styles.footerLabel}>Tổng tạm tính</Text>
+                <Text style={styles.footerNote}>Chưa bao gồm phí giao hàng</Text>
+              </View>
               <Text style={styles.footerValue}>{formatPrice(cart.subtotal)}</Text>
             </View>
-            <Text style={styles.footerNote}>Phí vận chuyển và khuyến mãi được xác nhận khi đặt hàng</Text>
-            <PrimaryButton label="Thanh toán" icon="arrow-forward" onPress={goCheckout} />
+
+            <PrimaryButton
+              label="Tiến hành đặt hàng"
+              icon="arrow-forward"
+              onPress={goCheckout}
+            />
           </View>
         </>
       )}
@@ -179,42 +254,171 @@ export default function CartScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.bg },
+  safe: {
+    flex: 1,
+    backgroundColor: palette.bg
+  },
   header: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    backgroundColor: colors.card, paddingHorizontal: spacing.lg, paddingVertical: spacing.md,
-    borderBottomWidth: 1, borderBottomColor: colors.border
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: palette.surface,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: palette.border
   },
-  headerTitle: { fontSize: 17, fontWeight: '800', color: colors.ink },
-  clearText: { fontSize: 12, fontWeight: '700', color: colors.danger },
-  list: { padding: spacing.lg, gap: spacing.sm },
+  headerTitle: {
+    ...type.h2,
+    fontSize: 18
+  },
+  headerSubtitle: {
+    ...type.caption,
+    marginTop: 1
+  },
+  clearBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: radius.pill,
+    backgroundColor: palette.dangerSoft
+  },
+  clearText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: palette.danger
+  },
+  list: {
+    padding: spacing.lg,
+    gap: spacing.sm,
+    paddingBottom: spacing.xxl
+  },
   itemCard: {
-    flexDirection: 'row', backgroundColor: colors.card, borderRadius: radius.md,
-    borderWidth: 1, borderColor: colors.border, padding: spacing.md, gap: spacing.sm
+    flexDirection: 'row',
+    backgroundColor: palette.surface,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: palette.border,
+    padding: spacing.md,
+    gap: spacing.md
   },
-  itemDisabled: { opacity: 0.6 },
-  itemInfo: { flex: 1 },
-  itemTitle: { fontSize: 13, fontWeight: '700', color: colors.ink, lineHeight: 18 },
-  itemShop: { fontSize: 10, color: colors.faint, marginTop: 2 },
-  priceRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 },
-  itemPrice: { fontSize: 13, fontWeight: '800', color: colors.primary },
-  itemOldPrice: { fontSize: 10, color: colors.faint, textDecorationLine: 'line-through' },
-  promoNote: { fontSize: 10, color: colors.success, marginTop: 4 },
-  unavailable: { fontSize: 10, color: colors.warning, marginTop: 4, flexShrink: 1 },
-  itemRight: { alignItems: 'flex-end', justifyContent: 'space-between' },
-  qtyRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  itemDisabled: {
+    opacity: 0.55
+  },
+  thumbWrap: {
+    width: 60,
+    height: 60,
+    borderRadius: radius.sm,
+    backgroundColor: palette.surfaceAlt,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: palette.border
+  },
+  thumbEmoji: {
+    fontSize: 26
+  },
+  itemInfo: {
+    flex: 1,
+    gap: 2
+  },
+  itemTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: palette.ink,
+    lineHeight: 18
+  },
+  shopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    marginTop: 2
+  },
+  itemShop: {
+    ...type.caption,
+    color: palette.muted
+  },
+  priceRow: {
+    marginTop: 4
+  },
+  promoNote: {
+    fontSize: 10,
+    color: palette.success,
+    fontWeight: '700',
+    marginTop: 2
+  },
+  unavailable: {
+    fontSize: 10,
+    color: palette.warning,
+    fontWeight: '700',
+    marginTop: 2
+  },
+  itemRight: {
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+    minWidth: 80
+  },
+  deleteIconBtn: {
+    padding: 2
+  },
+  qtyRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: palette.surfaceAlt,
+    borderRadius: radius.pill,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderWidth: 1,
+    borderColor: palette.border
+  },
   qtyBtn: {
-    width: 26, height: 26, borderRadius: 6, backgroundColor: colors.bg,
-    alignItems: 'center', justifyContent: 'center'
+    width: 22,
+    height: 22,
+    borderRadius: radius.pill,
+    backgroundColor: palette.surface,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  qty: { fontSize: 14, fontWeight: '800', color: colors.ink, minWidth: 18, textAlign: 'center' },
-  lineTotal: { fontSize: 12, fontWeight: '800', color: colors.ink },
+  qty: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: palette.ink,
+    minWidth: 16,
+    textAlign: 'center'
+  },
+  lineTotal: {
+    fontSize: 12,
+    fontWeight: '900',
+    color: palette.ink
+  },
   footer: {
-    backgroundColor: colors.card, padding: spacing.lg,
-    borderTopWidth: 1, borderTopColor: colors.border, gap: 8
+    backgroundColor: palette.surface,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: palette.border,
+    gap: spacing.sm
   },
-  footerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  footerLabel: { fontSize: 13, color: colors.sub },
-  footerValue: { fontSize: 18, fontWeight: '900', color: colors.primary },
-  footerNote: { fontSize: 10, color: colors.faint, marginBottom: 4 }
+  footerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  footerLabel: {
+    fontSize: 13,
+    color: palette.inkSoft,
+    fontWeight: '700'
+  },
+  footerNote: {
+    ...type.caption,
+    marginTop: 1
+  },
+  footerValue: {
+    fontSize: 20,
+    fontWeight: '900',
+    color: palette.brand
+  }
 })

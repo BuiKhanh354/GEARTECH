@@ -1,14 +1,18 @@
 import { useState } from 'react'
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import { authService } from '../../services/authService'
-import { PrimaryButton } from '../../components/ui'
-import { colors, radius, spacing } from '../../constants/theme'
+import { Card, Input, PrimaryButton } from '../../components/ui'
+import { elevation, palette, radius, spacing, type } from '../../constants/theme'
 import { AppError } from '../../services/client'
 
-// Đăng ký — POST /api/auth/register (role luôn 'user', backend tự tạo Customer liên kết)
+// =============================================================================
+// ĐĂNG KÝ TÀI KHOẢN (v2)
+// - Form trong Card cao cấp, Input có label và focus ring
+// - Giữ 100% authService.register
+// =============================================================================
 export default function RegisterScreen() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -18,11 +22,11 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!name.trim() || !email.trim() || !password) {
-      Alert.alert('Thiếu thông tin', 'Vui lòng điền họ tên, email và mật khẩu.')
+      Alert.alert('Thiếu thông tin', 'Vui lòng điền đầy đủ họ tên, email và mật khẩu.')
       return
     }
     if (password.length < 6) {
-      Alert.alert('Mật khẩu yếu', 'Mật khẩu cần tối thiểu 6 ký tự.')
+      Alert.alert('Mật khẩu yếu', 'Mật khẩu cần tối thiểu 6 ký tự để bảo vệ tài khoản.')
       return
     }
     setLoading(true)
@@ -34,7 +38,7 @@ export default function RegisterScreen() {
         phone: phone.trim() || undefined
       })
       Alert.alert('Thành công', res.message ?? 'Đăng ký thành công! Hãy đăng nhập.', [
-        { text: 'Đăng nhập', onPress: () => router.replace('/auth/login') }
+        { text: 'Đăng nhập ngay', onPress: () => router.replace('/auth/login') }
       ])
     } catch (err) {
       const e = err as AppError
@@ -47,43 +51,74 @@ export default function RegisterScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-          <TouchableOpacity style={styles.back} onPress={() => router.back()}>
-            <Ionicons name="close" size={22} color={colors.ink} />
+        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+          {/* Nút quay lại */}
+          <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} hitSlop={8}>
+            <Ionicons name="arrow-back" size={20} color={palette.ink} />
           </TouchableOpacity>
 
+          {/* Logo thương hiệu */}
           <View style={styles.brandWrap}>
-            <Text style={styles.brand}>GEAR<Text style={{ color: colors.primary }}>TECH</Text></Text>
-            <Text style={styles.welcome}>Tạo tài khoản mới</Text>
+            <Text style={styles.brand}>
+              GEAR<Text style={{ color: palette.brand }}>TECH</Text>
+            </Text>
+            <Text style={styles.welcome}>Tạo tài khoản thành viên mới</Text>
           </View>
 
-          <View style={styles.form}>
-            <Text style={styles.label}>HỌ VÀ TÊN</Text>
-            <TextInput style={styles.input} placeholder="Nguyễn Văn A" placeholderTextColor={colors.faint} value={name} onChangeText={setName} />
-
-            <Text style={styles.label}>EMAIL</Text>
-            <TextInput
-              style={styles.input} placeholder="example@gmail.com" placeholderTextColor={colors.faint}
-              autoCapitalize="none" keyboardType="email-address" value={email} onChangeText={setEmail}
+          {/* Card Form */}
+          <Card style={styles.card}>
+            <Input
+              label="HỌ VÀ TÊN *"
+              placeholder="Nguyễn Văn A"
+              value={name}
+              onChangeText={setName}
             />
 
-            <Text style={styles.label}>SỐ ĐIỆN THOẠI (TÙY CHỌN)</Text>
-            <TextInput
-              style={styles.input} placeholder="09xx xxx xxx" placeholderTextColor={colors.faint}
-              keyboardType="phone-pad" value={phone} onChangeText={setPhone}
+            <Input
+              label="ĐỊA CHỈ EMAIL *"
+              placeholder="example@gmail.com"
+              autoCapitalize="none"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
             />
 
-            <Text style={styles.label}>MẬT KHẨU (TỐI THIỂU 6 KÝ TỰ)</Text>
-            <TextInput
-              style={styles.input} placeholder="••••••••" placeholderTextColor={colors.faint}
-              secureTextEntry value={password} onChangeText={setPassword}
+            <Input
+              label="SỐ ĐIỆN THOẠI (TÙY CHỌN)"
+              placeholder="09xx xxx xxx"
+              keyboardType="phone-pad"
+              value={phone}
+              onChangeText={setPhone}
             />
 
-            <PrimaryButton label="Đăng ký" onPress={handleRegister} loading={loading} />
-          </View>
+            <Input
+              label="MẬT KHẨU (TỐI THIỂU 6 KÝ TỰ) *"
+              placeholder="••••••••"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
 
-          <TouchableOpacity onPress={() => router.back()}>
-            <Text style={styles.loginLink}>Đã có tài khoản? Đăng nhập</Text>
+            <View style={{ marginTop: spacing.sm }}>
+              <PrimaryButton
+                label="Đăng ký tài khoản"
+                onPress={handleRegister}
+                loading={loading}
+                icon="person-add-outline"
+              />
+            </View>
+          </Card>
+
+          {/* Chuyển hướng đăng nhập */}
+          <TouchableOpacity
+            style={styles.loginWrap}
+            onPress={() => router.back()}
+            hitSlop={8}
+          >
+            <Text style={styles.loginText}>
+              Đã có tài khoản?{' '}
+              <Text style={styles.loginHighlight}>Đăng nhập</Text>
+            </Text>
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -92,18 +127,57 @@ export default function RegisterScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.card },
-  scroll: { flexGrow: 1, padding: spacing.xl },
-  back: { alignSelf: 'flex-end', padding: 4 },
-  brandWrap: { marginTop: 16, marginBottom: 24, alignItems: 'center' },
-  brand: { fontSize: 30, fontWeight: '900', color: colors.ink, letterSpacing: 2 },
-  welcome: { fontSize: 13, color: colors.sub, marginTop: 8 },
-  form: { gap: 6 },
-  label: { fontSize: 10, fontWeight: '800', color: colors.sub, letterSpacing: 1, marginTop: 10 },
-  input: {
-    backgroundColor: colors.bg, borderWidth: 1, borderColor: colors.border,
-    borderRadius: radius.md, paddingHorizontal: 14, paddingVertical: 13,
-    fontSize: 14, color: colors.ink, marginBottom: 8
+  safe: {
+    flex: 1,
+    backgroundColor: palette.bg
   },
-  loginLink: { textAlign: 'center', fontSize: 12, fontWeight: '700', color: colors.primary, marginTop: 20 }
+  scroll: {
+    flexGrow: 1,
+    padding: spacing.xl,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.xxl
+  },
+  backBtn: {
+    alignSelf: 'flex-start',
+    width: 36,
+    height: 36,
+    borderRadius: radius.pill,
+    backgroundColor: palette.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: palette.border,
+    marginBottom: spacing.md
+  },
+  brandWrap: {
+    alignItems: 'center',
+    marginBottom: spacing.xl
+  },
+  brand: {
+    ...type.h1,
+    fontSize: 28,
+    fontWeight: '900',
+    letterSpacing: 1.5
+  },
+  welcome: {
+    ...type.body,
+    color: palette.muted,
+    marginTop: 4
+  },
+  card: {
+    padding: spacing.lg,
+    gap: spacing.xs
+  },
+  loginWrap: {
+    marginTop: spacing.xl,
+    alignItems: 'center'
+  },
+  loginText: {
+    fontSize: 13,
+    color: palette.muted
+  },
+  loginHighlight: {
+    fontWeight: '800',
+    color: palette.brand
+  }
 })

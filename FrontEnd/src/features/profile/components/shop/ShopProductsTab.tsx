@@ -24,7 +24,8 @@ import { categoryService, type CategoryItem } from '../../../../services/categor
 import { brandService, type BrandItem } from '../../../../services/brandService'
 import { productService, type ProductItem } from '../../../../services/productService'
 import { productImageService, type ProductImageItem } from '../../../../services/productImageService'
-import { SafeProductImage, isImageUrl } from '../../../../components/common/ProductImage'
+import { SafeProductImage } from '../../../../components/common/ProductImage'
+import { isImageUrl } from '../../../../utils/image'
 
 interface ShopProductsTabProps {
   token: string | null;
@@ -46,6 +47,7 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
     brand: 'asus',
     imageEmoji: '💻',
     stock: 20,
+    isFeatured: false,
     specKey1: 'CPU', specVal1: '',
     specKey2: 'RAM', specVal2: '',
     specKey3: 'SSD', specVal3: '',
@@ -77,7 +79,8 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
     categoryName: '',
     brand: '',
     status: 'active' as 'active' | 'hidden' | 'out_of_stock' | 'inactive',
-    imageEmoji: '📦'
+    imageEmoji: '📦',
+    isFeatured: false
   })
   const [editSubmitting, setEditSubmitting] = useState(false)
   const [editError, setEditError] = useState<string | null>(null)
@@ -333,6 +336,7 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
       imageEmoji: productForm.imageEmoji,
       gallery: galleryUrls.length > 0 ? galleryUrls : [productForm.imageEmoji],
       stock: Number(productForm.stock),
+      isFeatured: Boolean(productForm.isFeatured),
       specs
     }
 
@@ -362,6 +366,7 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
         brand: brands.length > 0 ? brands[0].slug : 'asus',
         imageEmoji: '📦',
         stock: 20,
+        isFeatured: false,
         specKey1: 'CPU', specVal1: '',
         specKey2: 'RAM', specVal2: '',
         specKey3: 'SSD', specVal3: '',
@@ -390,7 +395,8 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
       categoryName: p.categoryName || '',
       brand: p.brand || 'asus',
       status: p.status || 'active',
-      imageEmoji: p.imageEmoji || '📦'
+      imageEmoji: p.imageEmoji || '📦',
+      isFeatured: Boolean(p.isFeatured)
     })
     setEditError(null)
     setIsEditModalOpen(true)
@@ -419,7 +425,8 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
         category: editForm.category,
         categoryName: mappedCategoryName,
         brand: editForm.brand,
-        status: editForm.status
+        status: editForm.status,
+        isFeatured: Boolean(editForm.isFeatured)
       }
 
       await productService.updateProduct(String(pId), payload)
@@ -448,6 +455,24 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
       onRefresh()
     } catch (err: any) {
       setError(err.response?.data?.error || 'Không thể cập nhật trạng thái sản phẩm.')
+    } finally {
+      setActionLoadingId(null)
+    }
+  }
+
+  // Bật/tắt ghim sản phẩm nổi bật của shop
+  const handleToggleFeatured = async (p: any) => {
+    const pId = p._id || p.id
+    if (!pId) return
+    const idStr = String(pId)
+    const nextFeatured = !p.isFeatured
+    try {
+      setActionLoadingId(idStr)
+      await productService.updateProduct(idStr, { isFeatured: nextFeatured })
+      setSuccess(`Đã ${nextFeatured ? 'ghim' : 'bỏ ghim'} sản phẩm "${p.title}" vào mục Nổi bật của gian hàng!`)
+      onRefresh()
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Không thể cập nhật trạng thái nổi bật.')
     } finally {
       setActionLoadingId(null)
     }
@@ -636,6 +661,24 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
               className="w-full text-xs font-bold pl-3 pr-3 pt-4.5 pb-2.5 border border-zinc-200 dark:border-zinc-850 rounded-sm bg-white dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#ff4655]"
             />
           </div>
+          <div className="md:col-span-4">
+            <label className="flex items-center gap-2.5 cursor-pointer p-3 rounded border border-amber-500/30 bg-amber-500/5 hover:bg-amber-500/10 transition-colors">
+              <input
+                type="checkbox"
+                checked={productForm.isFeatured}
+                onChange={(e) => setProductForm({ ...productForm, isFeatured: e.target.checked })}
+                className="w-4 h-4 rounded text-amber-500 accent-amber-500 cursor-pointer"
+              />
+              <div>
+                <span className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                  <Star size={14} weight="fill" /> Đặt làm Sản phẩm Nổi bật (Featured)
+                </span>
+                <span className="text-[10px] text-zinc-500 block mt-0.5">
+                  Tích chọn để sản phẩm được ưu tiên đưa vào mục "Sản phẩm nổi bật" ở đầu trang gian hàng của Shop.
+                </span>
+              </div>
+            </label>
+          </div>
           <div className="relative md:col-span-4">
             <span className="absolute left-3 top-1.5 text-[7px] font-mono text-zinc-455 dark:text-zinc-655 tracking-wider">MÔ TẢ CHI TIẾT SẢN PHẨM *</span>
             <textarea
@@ -819,6 +862,11 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
                             {p.brand}
                           </span>
                         )}
+                        {p.isFeatured && (
+                          <span className="px-1.5 py-0.5 rounded text-[8px] font-mono font-bold bg-amber-500/15 text-amber-500 border border-amber-500/30 uppercase flex items-center gap-0.5">
+                            <Star size={10} weight="fill" /> Nổi bật
+                          </span>
+                        )}
                         <span className={`px-1.5 py-0.5 rounded text-[8px] font-mono font-bold uppercase ${
                           pStatus === 'active'
                             ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
@@ -849,6 +897,20 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
 
                   {/* Actions bar */}
                   <div className="flex items-center justify-end gap-1.5 pt-2 border-t border-zinc-200/60 dark:border-zinc-800/60 flex-wrap">
+                    <button
+                      onClick={() => handleToggleFeatured(p)}
+                      disabled={actionLoadingId === pId}
+                      title={p.isFeatured ? 'Bỏ ghim khỏi mục Nổi bật' : 'Ghim sản phẩm vào mục Nổi bật trên trang gian hàng'}
+                      className={`px-2.5 py-1.5 rounded text-[10px] font-black uppercase tracking-wider flex items-center gap-1 border transition-all cursor-pointer ${
+                        p.isFeatured
+                          ? 'border-amber-500/40 bg-amber-500/15 text-amber-500 hover:bg-amber-500/25 shadow-sm'
+                          : 'border-zinc-300 dark:border-zinc-800 text-zinc-500 hover:text-amber-500 hover:border-amber-500/30'
+                      }`}
+                    >
+                      <Star size={13} weight={p.isFeatured ? 'fill' : 'regular'} />
+                      {p.isFeatured ? 'Nổi bật' : 'Ghim'}
+                    </button>
+
                     <button
                       onClick={() => handleToggleStatus(p)}
                       disabled={actionLoadingId === pId}
@@ -1015,6 +1077,25 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
                       ))}
                     </select>
                   </div>
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2.5 cursor-pointer p-2.5 rounded border border-amber-500/30 bg-amber-500/5 hover:bg-amber-500/10 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={editForm.isFeatured}
+                      onChange={(e) => setEditForm({ ...editForm, isFeatured: e.target.checked })}
+                      className="w-4 h-4 rounded text-amber-500 accent-amber-500 cursor-pointer"
+                    />
+                    <div>
+                      <span className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                        <Star size={13} weight="fill" /> Đặt làm Sản phẩm Nổi bật (Featured)
+                      </span>
+                      <span className="text-[10px] text-zinc-500 block mt-0.5">
+                        Ghim sản phẩm ưu tiên xuất hiện trong mục "Sản phẩm nổi bật" ở đầu trang gian hàng.
+                      </span>
+                    </div>
+                  </label>
                 </div>
 
                 <div>

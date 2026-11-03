@@ -1,10 +1,10 @@
 import { 
-  User, Receipt, Ticket, ShieldCheck, SignOut, Storefront, MapPin, ChartBar, Package, Users, FolderSimple, Tag, Heart, PaintBrush 
+  User, Receipt, Ticket, ShieldCheck, SignOut, Storefront, ChartBar, Package, Users, FolderSimple, Tag, Heart, PaintBrush 
 } from '@phosphor-icons/react'
 
 type TabType = 
   | 'profile' | 'orders' | 'vouchers' | 'favorites' | 'security' 
-  | 'admin-overview' | 'admin-users' | 'admin-shops' | 'admin-categories' | 'admin-brands' | 'admin-vouchers' | 'admin-showrooms' | 'admin-orders'
+  | 'admin-overview' | 'admin-users' | 'admin-shops' | 'admin-categories' | 'admin-brands' | 'admin-vouchers' | 'admin-orders'
   | 'shop-overview' | 'shop-products' | 'shop-orders' | 'shop-inventory' | 'shop-suppliers' | 'shop-storefront' | 'shop-vouchers'
 
 interface ProfileSidebarProps {
@@ -86,16 +86,6 @@ export default function ProfileSidebar({ currentUser, currentShop: _currentShop,
               }`}
             >
               <Ticket size={16} /> Tạo Mã Giảm Giá
-            </button>
-            <button
-              onClick={() => setActiveTab('admin-showrooms')}
-              className={`text-[10px] text-left px-4 py-3 rounded-sm font-black uppercase tracking-wider transition-all border-l-2 flex items-center gap-3.5 ${
-                activeTab === 'admin-showrooms'
-                  ? 'bg-[#ff4655]/5 text-[#ff4655] border-l-[#ff4655]'
-                  : 'border-l-transparent text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-900/40 hover:text-zinc-900 dark:hover:text-white'
-              }`}
-            >
-              <MapPin size={16} /> Tạo Showroom GPS
             </button>
             <button
               onClick={() => setActiveTab('admin-orders')}

@@ -174,11 +174,11 @@ QUY TẮC BẮT BUỘC (TUYỆT ĐỐI KHÔNG BỊA ĐẶT THÔNG TIN):
       thinking: thinkingContent,
       suggestedProducts: suggestedProducts.map(p => ({
         _id: p._id,
-        name: p.name,
+        name: p.name || p.title,
         price: p.price,
-        discountPrice: p.discountPrice,
+        discountPrice: p.discountPrice || p.price,
         slug: p.slug,
-        image: p.images?.[0] || null
+        image: (p.gallery && p.gallery[0]) || (p.images && p.images[0]) || p.imageEmoji || p.image || null
       }))
     });
 

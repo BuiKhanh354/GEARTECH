@@ -5,10 +5,16 @@ import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams, router } from 'expo-router'
 import { catalogService } from '../../services/catalogService'
 import { ProductCard } from '../../components/ProductCard'
-import { EmptyView, ErrorView, LoadingView } from '../../components/StateViews'
-import { colors, radius, spacing } from '../../constants/theme'
+import { ProductGridSkeleton } from '../../components/Skeleton'
+import { EmptyView, ErrorView } from '../../components/StateViews'
+import { SectionHeader } from '../../components/ui'
+import { elevation, palette, radius, spacing, type } from '../../constants/theme'
 
-// Trang cửa hàng — GET /api/shops/:id (chỉ thông tin công khai: shop + sản phẩm đang bán)
+// =============================================================================
+// GIAN HÀNG / SHOP DETAIL (v2)
+// - Header thông tin shop dạng card cao cấp (Avatar, Đánh giá, Người theo dõi)
+// - Lưới sản phẩm 2 cột dùng ProductCard v2
+// =============================================================================
 export default function ShopDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>()
 
@@ -18,17 +24,26 @@ export default function ShopDetailScreen() {
     enabled: Boolean(id)
   })
 
-  if (shop.isLoading) return <LoadingView label="Đang tải gian hàng..." />
+  if (shop.isLoading) {
+    return (
+      <SafeAreaView style={styles.safe} edges={['top']}>
+        <View style={{ padding: spacing.lg }}>
+          <ProductGridSkeleton count={6} />
+        </View>
+      </SafeAreaView>
+    )
+  }
+
   if (shop.isError || !shop.data) {
     return (
-      <SafeAreaView style={styles.safe}>
-        <ErrorView message="Không tải được gian hàng." onRetry={() => shop.refetch()} />
+      <SafeAreaView style={styles.safe} edges={['top']}>
+        <ErrorView message="Không tải được thông tin gian hàng." onRetry={() => shop.refetch()} />
       </SafeAreaView>
     )
   }
 
   const s = shop.data.shop
-  const name = s.name || s.shop_name || 'Gian hàng'
+  const name = s.name || s.shop_name || 'Gian hàng đối tác'
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -38,49 +53,69 @@ export default function ShopDetailScreen() {
         numColumns={2}
         columnWrapperStyle={styles.gridRow}
         contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <View style={styles.shopHeader}>
-            <View style={styles.shopAvatar}>
-              <Text style={styles.shopAvatarText}>{name.slice(0, 1).toUpperCase()}</Text>
-            </View>
-            <Text style={styles.shopName}>{name}</Text>
-            {s.category ? <Text style={styles.shopCategory}>{s.category}</Text> : null}
-
-            <View style={styles.statsRow}>
-              <View style={styles.stat}>
-                <Ionicons name="star" size={13} color="#f59e0b" />
-                <Text style={styles.statText}>{Number(s.rating ?? 5).toFixed(1)}</Text>
+          <View style={styles.shopHeaderWrapper}>
+            <View style={[styles.shopHeaderCard, elevation.card]}>
+              <View style={styles.shopAvatar}>
+                <Text style={styles.shopAvatarText}>{name.slice(0, 1).toUpperCase()}</Text>
               </View>
-              <View style={styles.stat}>
-                <Ionicons name="people-outline" size={13} color={colors.sub} />
-                <Text style={styles.statText}>
-                  {s.followersCount ?? Number(s.followers ?? 0)} theo dõi
+              <Text style={styles.shopName}>{name}</Text>
+              {s.category ? <Text style={styles.shopCategory}>{s.category}</Text> : null}
+
+              <View style={styles.statsRow}>
+                <View style={styles.statChip}>
+                  <Ionicons name="star" size={13} color={palette.star} />
+                  <Text style={styles.statText}>{Number(s.rating ?? 5).toFixed(1)}</Text>
+                </View>
+                <View style={styles.statChip}>
+                  <Ionicons name="people-outline" size={13} color={palette.inkSoft} />
+                  <Text style={styles.statText}>
+                    {s.followersCount ?? Number(s.followers ?? 0)} theo dõi
+                  </Text>
+                </View>
+                <View style={styles.statChip}>
+                  <Ionicons name="cube-outline" size={13} color={palette.inkSoft} />
+                  <Text style={styles.statText}>{shop.data.productsCount ?? 0} sản phẩm</Text>
+                </View>
+              </View>
+
+              {s.description ? (
+                <Text style={styles.shopDesc} numberOfLines={3}>
+                  {s.description}
                 </Text>
-              </View>
-              <View style={styles.stat}>
-                <Ionicons name="cube-outline" size={13} color={colors.sub} />
-                <Text style={styles.statText}>{shop.data.productsCount ?? 0} sản phẩm</Text>
-              </View>
+              ) : null}
+
+              {s.address ? (
+                <View style={styles.addressRow}>
+                  <Ionicons name="location-outline" size={13} color={palette.muted} />
+                  <Text style={styles.address} numberOfLines={1}>
+                    {s.address}
+                  </Text>
+                </View>
+              ) : null}
             </View>
 
-            {s.description ? (
-              <Text style={styles.shopDesc} numberOfLines={3}>{s.description}</Text>
-            ) : null}
-            {s.address ? (
-              <View style={styles.addressRow}>
-                <Ionicons name="location-outline" size={12} color={colors.faint} />
-                <Text style={styles.address} numberOfLines={1}>{s.address}</Text>
-              </View>
-            ) : null}
-
-            <Text style={styles.sectionTitle}>Sản phẩm đang bán</Text>
+            <View style={styles.sectionHeaderWrap}>
+              <SectionHeader
+                title="Sản phẩm đang bán"
+                subtitle={`Tất cả ${shop.data.products?.length ?? 0} mặt hàng từ cửa hàng này`}
+              />
+            </View>
           </View>
         }
         renderItem={({ item }) => (
-          <ProductCard product={item} onPress={() => router.push(`/products/${item._id}`)} />
+          <ProductCard
+            product={item}
+            onPress={() => router.push(`/products/${item._id}`)}
+          />
         )}
         ListEmptyComponent={
-          <EmptyView icon="cube-outline" title="Shop chưa có sản phẩm nào đang bán" />
+          <EmptyView
+            icon="cube-outline"
+            title="Chưa có sản phẩm"
+            subtitle="Shop này hiện chưa có mặt hàng nào đang mở bán"
+          />
         }
       />
     </SafeAreaView>
@@ -88,29 +123,98 @@ export default function ShopDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.bg },
-  list: { paddingBottom: 48 },
-  gridRow: { gap: spacing.sm, marginBottom: spacing.sm, paddingHorizontal: spacing.lg },
-  shopHeader: {
-    backgroundColor: colors.card, alignItems: 'center',
-    paddingVertical: spacing.xl, paddingHorizontal: spacing.lg,
-    borderBottomWidth: 1, borderBottomColor: colors.border, marginBottom: spacing.md
+  safe: {
+    flex: 1,
+    backgroundColor: palette.bg
+  },
+  list: {
+    paddingBottom: spacing.xxxl
+  },
+  gridRow: {
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+    paddingHorizontal: spacing.lg
+  },
+  shopHeaderWrapper: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm
+  },
+  shopHeaderCard: {
+    backgroundColor: palette.surface,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: palette.border,
+    alignItems: 'center',
+    paddingVertical: spacing.xl,
+    paddingHorizontal: spacing.lg
   },
   shopAvatar: {
-    width: 64, height: 64, borderRadius: 16, backgroundColor: colors.ink,
-    alignItems: 'center', justifyContent: 'center', marginBottom: 10
+    width: 60,
+    height: 60,
+    borderRadius: radius.md,
+    backgroundColor: palette.ink,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.sm,
+    borderWidth: 2,
+    borderColor: palette.brandSoft
   },
-  shopAvatarText: { color: '#fff', fontSize: 26, fontWeight: '900' },
-  shopName: { fontSize: 17, fontWeight: '900', color: colors.ink },
-  shopCategory: { fontSize: 11, color: colors.sub, marginTop: 2 },
-  statsRow: { flexDirection: 'row', gap: spacing.lg, marginTop: 12 },
-  stat: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  statText: { fontSize: 11, fontWeight: '700', color: colors.sub },
-  shopDesc: { fontSize: 12, color: colors.sub, lineHeight: 18, marginTop: 10, textAlign: 'center' },
-  addressRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 6 },
-  address: { fontSize: 11, color: colors.faint },
-  sectionTitle: {
-    fontSize: 15, fontWeight: '800', color: colors.ink,
-    alignSelf: 'flex-start', marginTop: spacing.lg
+  shopAvatarText: {
+    color: '#ffffff',
+    fontSize: 24,
+    fontWeight: '900'
+  },
+  shopName: {
+    ...type.h2,
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  shopCategory: {
+    ...type.caption,
+    color: palette.muted,
+    marginTop: 2
+  },
+  statsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    marginTop: spacing.md
+  },
+  statChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: palette.surfaceAlt,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: radius.pill
+  },
+  statText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: palette.inkSoft
+  },
+  shopDesc: {
+    ...type.body,
+    fontSize: 12,
+    marginTop: spacing.md,
+    textAlign: 'center',
+    lineHeight: 18,
+    color: palette.muted
+  },
+  addressRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: spacing.sm
+  },
+  address: {
+    ...type.caption,
+    color: palette.muted
+  },
+  sectionHeaderWrap: {
+    marginTop: spacing.lg
   }
 })

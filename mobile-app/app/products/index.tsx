@@ -1,15 +1,21 @@
 import { useEffect, useState } from 'react'
-import { FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Ionicons } from '@expo/vector-icons'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams, router } from 'expo-router'
 import { catalogService, type ProductQuery } from '../../services/catalogService'
 import { ProductCard } from '../../components/ProductCard'
-import { EmptyView, ErrorView, LoadingView } from '../../components/StateViews'
-import { colors, spacing } from '../../constants/theme'
+import { SearchBar } from '../../components/SearchBar'
+import { ProductGridSkeleton } from '../../components/Skeleton'
+import { EmptyView, ErrorView } from '../../components/StateViews'
+import { palette, radius, spacing, type } from '../../constants/theme'
 
-// Tìm kiếm & duyệt sản phẩm — GET /api/products với search/sort + phân trang vô hạn
+// =============================================================================
+// TÌM KIẾM & BỘ LỌC SẢN PHẨM (v2)
+// - SearchBar mới (focus ring, nút xóa & gửi)
+// - Bộ lọc sắp xếp dạng pill mượt mà
+// - Lưới 2 cột đồng bộ với trang chủ + ProductGridSkeleton
+// =============================================================================
 export default function ProductSearchScreen() {
   const params = useLocalSearchParams<{ search?: string; category?: string }>()
 
@@ -24,6 +30,7 @@ export default function ProductSearchScreen() {
 
   useEffect(() => {
     setQuery((q) => ({ ...q, search: params.search, category: params.category, page: 1 }))
+    if (params.search !== undefined) setSearchText(params.search)
   }, [params.search, params.category])
 
   const products = useQuery({
@@ -43,39 +50,51 @@ export default function ProductSearchScreen() {
 
   const SORTS = [
     { key: 'popular', label: 'Nổi bật' },
-    { key: 'priceAsc', label: 'Giá thấp' },
-    { key: 'priceDesc', label: 'Giá cao' },
-    { key: 'newest', label: 'Mới nhất' }
+    { key: 'newest', label: 'Mới nhất' },
+    { key: 'priceAsc', label: 'Giá tăng dần' },
+    { key: 'priceDesc', label: 'Giá giảm dần' }
   ]
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
-      {/* Thanh tìm kiếm + sắp xếp */}
+      {/* Thanh tìm kiếm */}
       <View style={styles.top}>
-        <View style={styles.searchBox}>
-          <Ionicons name="search" size={16} color={colors.faint} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Tìm sản phẩm..."
-            placeholderTextColor={colors.faint}
-            value={searchText}
-            onChangeText={setSearchText}
-            onSubmitEditing={submit}
-            returnKeyType="search"
-          />
-        </View>
+        <SearchBar
+          value={searchText}
+          onChangeText={setSearchText}
+          onSubmit={submit}
+          placeholder="Tìm sản phẩm, thương hiệu..."
+        />
       </View>
+
+      {/* Dải chip sắp xếp */}
       <View style={styles.sortRow}>
-        {SORTS.map((s) => (
-          <TouchableOpacity
-            key={s.key}
-            style={[styles.sortChip, sortBy === s.key && styles.sortChipActive]}
-            onPress={() => setSortBy(s.key)}
-          >
-            <Text style={[styles.sortText, sortBy === s.key && styles.sortTextActive]}>{s.label}</Text>
-          </TouchableOpacity>
-        ))}
+        {SORTS.map((s) => {
+          const active = sortBy === s.key
+          return (
+            <TouchableOpacity
+              key={s.key}
+              style={[styles.sortChip, active && styles.sortChipActive]}
+              activeOpacity={0.7}
+              onPress={() => setSortBy(s.key)}
+            >
+              <Text style={[styles.sortText, active && styles.sortTextActive]}>
+                {s.label}
+              </Text>
+            </TouchableOpacity>
+          )
+        })}
       </View>
+
+      {/* Số lượng kết quả */}
+      {products.data?.total !== undefined && !products.isLoading ? (
+        <View style={styles.resultInfoRow}>
+          <Text style={styles.resultInfoText}>
+            Tìm thấy <Text style={{ color: palette.brand, fontWeight: '800' }}>{products.data.total}</Text> sản phẩm
+            {query.search ? ` cho "${query.search}"` : ''}
+          </Text>
+        </View>
+      ) : null}
 
       <FlatList
         data={products.data?.products ?? []}
@@ -83,25 +102,46 @@ export default function ProductSearchScreen() {
         numColumns={2}
         columnWrapperStyle={styles.gridRow}
         contentContainerStyle={styles.list}
+        showsVerticalScrollIndicator={false}
         onEndReached={loadMore}
         onEndReachedThreshold={0.4}
-        refreshControl={<RefreshControl refreshing={products.isRefetching} onRefresh={() => { products.refetch() }} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={products.isRefetching}
+            tintColor={palette.brand}
+            colors={[palette.brand]}
+            onRefresh={() => {
+              products.refetch()
+            }}
+          />
+        }
         ListFooterComponent={
-          products.isFetching && (query.page ?? 1) > 1 ? <LoadingView label="Đang tải thêm..." /> : undefined
+          products.isFetching && (query.page ?? 1) > 1 ? (
+            <View style={styles.footerLoading}>
+              <ActivityIndicator size="small" color={palette.brand} />
+              <Text style={styles.footerLoadingText}>Đang tải thêm sản phẩm...</Text>
+            </View>
+          ) : undefined
         }
         renderItem={({ item }) => (
-          <ProductCard product={item} onPress={() => router.push(`/products/${item._id}`)} />
+          <ProductCard
+            product={item}
+            onPress={() => router.push(`/products/${item._id}`)}
+          />
         )}
         ListEmptyComponent={
           products.isLoading ? (
-            <LoadingView label="Đang tìm kiếm..." />
+            <ProductGridSkeleton count={6} />
           ) : products.isError ? (
-            <ErrorView message="Không tải được sản phẩm" onRetry={() => products.refetch()} />
+            <ErrorView
+              message="Không tải được kết quả tìm kiếm"
+              onRetry={() => products.refetch()}
+            />
           ) : (
             <EmptyView
               icon="search-outline"
               title="Không tìm thấy sản phẩm"
-              subtitle="Thử từ khóa khác hoặc xóa bộ lọc"
+              subtitle="Hãy thử tìm với từ khóa khác hoặc bỏ chọn bộ lọc"
             />
           )
         }
@@ -111,25 +151,72 @@ export default function ProductSearchScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.bg },
-  top: { backgroundColor: colors.card, paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.sm },
-  searchBox: {
-    flexDirection: 'row', alignItems: 'center', gap: 8,
-    backgroundColor: colors.bg, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10
+  safe: {
+    flex: 1,
+    backgroundColor: palette.bg
   },
-  searchInput: { flex: 1, fontSize: 13, color: colors.ink },
+  top: {
+    backgroundColor: palette.surface,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.sm
+  },
   sortRow: {
-    flexDirection: 'row', gap: 8, paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm, backgroundColor: colors.card,
-    borderBottomWidth: 1, borderBottomColor: colors.border
+    flexDirection: 'row',
+    gap: spacing.xs,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    backgroundColor: palette.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: palette.border
   },
   sortChip: {
-    paddingHorizontal: 12, paddingVertical: 6, borderRadius: 999,
-    backgroundColor: colors.bg, borderWidth: 1, borderColor: colors.border
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: radius.pill,
+    backgroundColor: palette.surfaceAlt,
+    borderWidth: 1,
+    borderColor: palette.border
   },
-  sortChipActive: { backgroundColor: colors.primary, borderColor: colors.primary },
-  sortText: { fontSize: 11, fontWeight: '700', color: colors.sub },
-  sortTextActive: { color: '#fff' },
-  list: { paddingHorizontal: spacing.lg, paddingVertical: spacing.md, paddingBottom: 48 },
-  gridRow: { gap: spacing.sm, marginBottom: spacing.sm }
+  sortChipActive: {
+    backgroundColor: palette.brand,
+    borderColor: palette.brand
+  },
+  sortText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: palette.muted
+  },
+  sortTextActive: {
+    color: '#ffffff'
+  },
+  resultInfoRow: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
+    paddingBottom: 2
+  },
+  resultInfoText: {
+    ...type.caption,
+    color: palette.muted
+  },
+  list: {
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    paddingBottom: spacing.xxxl
+  },
+  gridRow: {
+    gap: spacing.sm,
+    marginBottom: spacing.sm
+  },
+  footerLoading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: spacing.lg
+  },
+  footerLoadingText: {
+    ...type.caption,
+    color: palette.muted
+  }
 })

@@ -1,216 +1,138 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 const { auth } = require('../middleware/auth');
+const { saveImage } = require('../services/cloudinaryService');
+
 const router = express.Router();
 
-// Đảm bảo thư mục uploads tồn tại
-const uploadDir = path.join(__dirname, '..', 'public', 'uploads', 'products');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-// Cấu hình Multer Storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    // Tạo tên file duy nhất: timestamp + random + extension gốc
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, `product-${uniqueSuffix}${ext}`);
-  }
-});
+// Sử dụng memoryStorage để nhận buffer trực tiếp phục vụ tải lên Firebase / Local
+const memoryStorage = multer.memoryStorage();
 
 // Bộ lọc chỉ cho phép file ảnh
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
-  if (allowedTypes.includes(file.mimetype)) {
+const imageFilter = (req, file, cb) => {
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/avif', 'image/svg+xml'];
+  if (allowedTypes.includes(file.mimetype) || (file.originalname && file.originalname.toLowerCase().endsWith('.svg'))) {
     cb(null, true);
   } else {
-    cb(new Error('Chỉ cho phép tải lên file ảnh (JPEG, PNG, GIF, WEBP, AVIF).'), false);
+    cb(new Error('Chỉ cho phép tải lên file ảnh (JPEG, PNG, GIF, WEBP, AVIF, SVG).'), false);
   }
 };
 
-// Giới hạn: tối đa 6 ảnh, mỗi ảnh tối đa 5MB
-const upload = multer({
-  storage,
-  fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB mỗi file
-    files: 6 // Tối đa 6 file
-  }
+// Cấu hình Multer cho các loại ảnh khác nhau
+const uploadProducts = multer({
+  storage: memoryStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: 5 * 1024 * 1024, files: 6 } // Tối đa 6 ảnh, mỗi ảnh 5MB
 });
 
+const uploadSingle = multer({
+  storage: memoryStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: 5 * 1024 * 1024, files: 1 } // Tối đa 1 ảnh 5MB
+});
+
+const uploadBanner = multer({
+  storage: memoryStorage,
+  fileFilter: imageFilter,
+  limits: { fileSize: 10 * 1024 * 1024, files: 1 } // Tối đa 1 ảnh 10MB
+});
+
+// ==========================================================================
+// 1. UPLOAD ẢNH SẢN PHẨM (Nhiều ảnh, tối đa 6)
 // POST /api/upload/product-images
-// Upload nhiều ảnh sản phẩm cùng lúc (max 6)
-router.post('/product-images', auth, upload.array('images', 6), (req, res) => {
+// ==========================================================================
+router.post('/product-images', auth, uploadProducts.array('images', 6), async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'Vui lòng chọn ít nhất 1 ảnh để tải lên.' });
     }
 
-    // Trả về danh sách URL của các ảnh vừa upload
-    const imageUrls = req.files.map(file => {
-      return `http://localhost:5000/uploads/products/${file.filename}`;
-    });
+    // Tải từng ảnh lên Firebase (hoặc fallback Local)
+    const uploadPromises = req.files.map(file => 
+      saveImage(file.buffer, file.originalname, file.mimetype, 'products')
+    );
+
+    const results = await Promise.all(uploadPromises);
+    const imageUrls = results.map(r => r.url);
+    const storageProvider = results[0]?.storage || 'local';
 
     res.json({
-      message: `Tải lên thành công ${imageUrls.length} ảnh sản phẩm!`,
-      urls: imageUrls
+      message: `Tải lên thành công ${imageUrls.length} ảnh sản phẩm! (${storageProvider})`,
+      urls: imageUrls,
+      storage: storageProvider
     });
-
   } catch (error) {
+    console.error('Lỗi upload ảnh sản phẩm:', error);
     res.status(500).json({ error: 'Lỗi tải lên ảnh sản phẩm.', details: error.message });
   }
 });
 
 // ==========================================================================
-// C1: UPLOAD ẢNH GIAO DIỆN CỬA HÀNG (BANNER / LOGO)
-// POST /api/upload/shop-images (field: 'image', 1 ảnh, max 5MB)
-// Chủ shop hoặc Admin. Ảnh lưu vào Backend/public/uploads/shops và trả về
-// URL tĩnh ổn định (không phải blob: tạm thời của trình duyệt).
+// 2. UPLOAD ẢNH GIAO DIỆN CỬA HÀNG (LOGO / BANNER SHOP)
+// POST /api/upload/shop-images (field: 'image')
 // ==========================================================================
-const shopUploadDir = path.join(__dirname, '..', 'public', 'uploads', 'shops');
-if (!fs.existsSync(shopUploadDir)) {
-  fs.mkdirSync(shopUploadDir, { recursive: true });
-}
-
-const shopStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, shopUploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, `shop-${uniqueSuffix}${ext}`);
-  }
-});
-
-const shopUpload = multer({
-  storage: shopStorage,
-  fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-    files: 1
-  }
-});
-
-router.post('/shop-images', auth, shopUpload.single('image'), (req, res) => {
+router.post('/shop-images', auth, uploadSingle.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'Vui lòng chọn 1 ảnh để tải lên.' });
     }
 
-    const url = `http://localhost:5000/uploads/shops/${req.file.filename}`;
+    const result = await saveImage(req.file.buffer, req.file.originalname, req.file.mimetype, 'shops');
 
     res.json({
-      message: 'Tải lên ảnh cửa hàng thành công!',
-      url
+      message: `Tải lên ảnh cửa hàng thành công! (${result.storage})`,
+      url: result.url,
+      storage: result.storage
     });
   } catch (error) {
+    console.error('Lỗi upload ảnh cửa hàng:', error);
     res.status(500).json({ error: 'Lỗi tải lên ảnh cửa hàng.', details: error.message });
   }
 });
 
 // ==========================================================================
-// D3: UPLOAD ICON DANH MỤC TRỰC TIẾP TỪ MÁY TÍNH
-// POST /api/upload/category-icon (field: 'icon', 1 file, max 2MB, .png, .jpg, .svg, .webp)
+// 3. UPLOAD ICON DANH MỤC
+// POST /api/upload/category-icon (field: 'icon')
 // ==========================================================================
-const categoryUploadDir = path.join(__dirname, '..', 'public', 'uploads', 'categories');
-if (!fs.existsSync(categoryUploadDir)) {
-  fs.mkdirSync(categoryUploadDir, { recursive: true });
-}
-
-const categoryStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, categoryUploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, `cat-icon-${uniqueSuffix}${ext}`);
-  }
-});
-
-const categoryFileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg+xml', 'image/webp'];
-  if (allowedTypes.includes(file.mimetype) || (file.originalname && file.originalname.toLowerCase().endsWith('.svg'))) {
-    cb(null, true);
-  } else {
-    cb(new Error('Chỉ cho phép tải lên file icon (PNG, JPG, SVG, WEBP).'), false);
-  }
-};
-
-const categoryUpload = multer({
-  storage: categoryStorage,
-  fileFilter: categoryFileFilter,
-  limits: {
-    fileSize: 2 * 1024 * 1024, // 2MB
-    files: 1
-  }
-});
-
-router.post('/category-icon', auth, categoryUpload.single('icon'), (req, res) => {
+router.post('/category-icon', auth, uploadSingle.single('icon'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'Vui lòng chọn 1 file icon để tải lên.' });
     }
 
-    const url = `http://localhost:5000/uploads/categories/${req.file.filename}`;
+    const result = await saveImage(req.file.buffer, req.file.originalname, req.file.mimetype, 'categories');
 
     res.json({
-      message: 'Tải lên icon danh mục thành công!',
-      url
+      message: `Tải lên icon danh mục thành công! (${result.storage})`,
+      url: result.url,
+      storage: result.storage
     });
   } catch (error) {
+    console.error('Lỗi upload icon danh mục:', error);
     res.status(500).json({ error: 'Lỗi tải lên icon danh mục.', details: error.message });
   }
 });
 
 // ==========================================================================
-// HOMEPAGE BUILDER: UPLOAD BANNER QUẢNG BÁ TRANG CHỦ
-// POST /api/upload/homepage-banner (field: 'banner', 1 file, max 10MB)
+// 4. UPLOAD BANNER TRANG CHỦ
+// POST /api/upload/homepage-banner (field: 'banner')
 // ==========================================================================
-const bannerUploadDir = path.join(__dirname, '..', 'public', 'uploads', 'banners');
-if (!fs.existsSync(bannerUploadDir)) {
-  fs.mkdirSync(bannerUploadDir, { recursive: true });
-}
-
-const bannerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, bannerUploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = path.extname(file.originalname);
-    cb(null, `banner-${uniqueSuffix}${ext}`);
-  }
-});
-
-const bannerUpload = multer({
-  storage: bannerStorage,
-  fileFilter,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
-    files: 1
-  }
-});
-
-router.post('/homepage-banner', auth, bannerUpload.single('banner'), (req, res) => {
+router.post('/homepage-banner', auth, uploadBanner.single('banner'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'Vui lòng chọn 1 ảnh banner để tải lên.' });
     }
 
-    const url = `http://localhost:5000/uploads/banners/${req.file.filename}`;
+    const result = await saveImage(req.file.buffer, req.file.originalname, req.file.mimetype, 'banners');
+
     res.json({
-      message: 'Tải lên ảnh banner trang chủ thành công!',
-      url
+      message: `Tải lên ảnh banner trang chủ thành công! (${result.storage})`,
+      url: result.url,
+      storage: result.storage
     });
   } catch (error) {
+    console.error('Lỗi upload banner:', error);
     res.status(500).json({ error: 'Lỗi tải lên ảnh banner trang chủ.', details: error.message });
   }
 });
@@ -219,10 +141,10 @@ router.post('/homepage-banner', auth, bannerUpload.single('banner'), (req, res) 
 router.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({ error: 'Dung lượng ảnh vượt quá giới hạn 5MB cho phép.' });
+      return res.status(400).json({ error: 'Dung lượng ảnh vượt quá giới hạn cho phép.' });
     }
     if (err.code === 'LIMIT_FILE_COUNT') {
-      return res.status(400).json({ error: 'Số lượng ảnh vượt quá giới hạn 6 ảnh cho phép.' });
+      return res.status(400).json({ error: 'Số lượng ảnh vượt quá giới hạn cho phép.' });
     }
     return res.status(400).json({ error: err.message });
   }

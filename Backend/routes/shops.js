@@ -564,10 +564,15 @@ router.get('/:id/storefront', async (req, res) => {
       followersCount = Number(shop.followers || 0);
     }
 
-    // Nhóm sản phẩm theo section phục vụ render động
-    const featured = activeProducts.filter(p => p.rating >= 4.5 || (p.oldPrice && p.oldPrice > p.price)).slice(0, 8);
+    // Nhóm sản phẩm theo section phục vụ render động (ưu tiên isFeatured được shop ghim, hoặc rating cao, hoặc giảm giá)
+    const featuredExplicit = activeProducts.filter(p => p.isFeatured === true);
+    const featuredAuto = activeProducts.filter(p => !p.isFeatured && (p.rating >= 4.5 || (p.oldPrice && p.oldPrice > p.price)));
+    let featured = [...featuredExplicit, ...featuredAuto].slice(0, 8);
+    if (featured.length === 0) {
+      featured = activeProducts.slice(0, 8);
+    }
     const newest = activeProducts.slice(0, 8);
-    const bestsellers = [...activeProducts].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 8);
+    const bestsellers = [...activeProducts].sort((a, b) => (b.soldCount || b.rating || 0) - (a.soldCount || a.rating || 0)).slice(0, 8);
 
     return res.json({
       shop: {

@@ -70,7 +70,19 @@ const HomepageSectionSchema = new mongoose.Schema({
     tagline: { type: String, default: 'CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ' },
 
     // Cho featured_products:
-    manualProductIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }]
+    manualProductIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
+
+    // Cho service_features:
+    items: [{
+      id: { type: String, default: '' },
+      title: { type: String, default: '' },
+      description: { type: String, default: '' },
+      badge: { type: String, default: '' },
+      badgeColor: { type: String, default: 'red' },
+      icon: { type: String, default: 'wrench' },
+      ctaText: { type: String, default: 'Xem ngay' },
+      link: { type: String, default: '/' }
+    }]
   }
 }, { _id: true, timestamps: true });
 

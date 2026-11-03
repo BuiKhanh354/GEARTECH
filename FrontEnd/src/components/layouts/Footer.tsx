@@ -78,10 +78,19 @@ export default function Footer() {
             <h3 className="text-xs font-black text-zinc-900 dark:text-white uppercase tracking-wider border-l-2 border-[#ff4655] pl-2.5">// VỀ GEARTECH</h3>
             <ul className="space-y-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
               <li>
-                <Link to="/about" className="hover:text-[#ff4655] transition-colors">Chúng tôi là ai</Link>
+                <Link to="/about" className="hover:text-[#ff4655] transition-colors">Giới thiệu GearTech</Link>
               </li>
               <li>
-                <Link to="/tintuc" className="hover:text-[#ff4655] transition-colors">Tin tức công nghệ</Link>
+                <Link to="/geartech-care" className="hover:text-[#ff4655] transition-colors flex items-center gap-1.5">
+                  <span>GearTech Care (Dịch vụ)</span>
+                  <span className="text-[9px] bg-blue-500/10 text-blue-500 font-bold px-1.5 py-0.2 rounded border border-blue-500/20">PRO</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/khuyen-mai" className="hover:text-[#ff4655] transition-colors flex items-center gap-1.5">
+                  <span>Khuyến mãi & Giảm giá</span>
+                  <span className="text-[9px] bg-red-500/10 text-red-500 font-bold px-1.5 py-0.2 rounded border border-red-500/20">HOT</span>
+                </Link>
               </li>
               <li>
                 <Link to="/Cua-hang" className="hover:text-[#ff4655] transition-colors">Cửa hàng & Các Shop</Link>

@@ -69,7 +69,10 @@ router.get('/', async (req, res) => {
 
     const vouchers = await Voucher.find({
       $and: baseConditions
-    }).sort({ created_at: -1, createdAt: -1 });
+    })
+      .populate('shopId', 'name shopName')
+      .populate('shop_id', 'name shopName')
+      .sort({ created_at: -1, createdAt: -1 });
 
     res.json(vouchers);
   } catch (error) {

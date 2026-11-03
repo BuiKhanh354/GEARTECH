@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "6ac11ff22de58adcc60f3c7f"
+  },
+  "customer_id": {
+    "$oid": "000000000000000000000006"
+  },
+  "product_id": {
+    "$oid": "000000000000000000000005"
+  },
+  "order_id": {
+    "$oid": "000000000000000000000008"
+  },
+  "rating": 5,
+  "comment": "Sản phẩm rất tốt",
+  "images": [],
+  "status": "approved",
+  "created_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  },
+  "updated_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  }
+}]

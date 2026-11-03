@@ -20,6 +20,7 @@ import {
   UploadSimple
 } from '@phosphor-icons/react'
 import { storefrontService, type StorefrontConfig } from '../../../../services/storefrontService'
+import { productService } from '../../../../services/productService'
 import { formatPrice } from '../../../../utils/format'
 
 interface ShopStorefrontDesignTabProps {
@@ -62,6 +63,34 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop')
   const [publishedAt, setPublishedAt] = useState<string | null>(null)
+
+  // Danh sách sản phẩm của shop (phục vụ chọn sản phẩm nổi bật trực tiếp)
+  const [productList, setProductList] = useState<any[]>(allProducts || [])
+  useEffect(() => {
+    setProductList(allProducts || [])
+  }, [allProducts])
+
+  const [togglingFeaturedId, setTogglingFeaturedId] = useState<string | null>(null)
+
+  const handleToggleProductFeatured = async (product: any) => {
+    const pId = product._id || product.id
+    if (!pId) return
+    const idStr = String(pId)
+    const nextFeatured = !product.isFeatured
+    try {
+      setTogglingFeaturedId(idStr)
+      await productService.updateProduct(idStr, { isFeatured: nextFeatured })
+      setProductList(prev => prev.map(p => {
+        const id = p._id || p.id
+        return String(id) === idStr ? { ...p, isFeatured: nextFeatured } : p
+      }))
+      setStatusMsg({ type: 'success', text: `Đã ${nextFeatured ? 'ghim' : 'bỏ ghim'} sản phẩm "${product.title}" vào mục Nổi bật!` })
+    } catch (err: any) {
+      setStatusMsg({ type: 'error', text: err.response?.data?.error || 'Không thể cập nhật sản phẩm nổi bật.' })
+    } finally {
+      setTogglingFeaturedId(null)
+    }
+  }
 
   // Current draft config being edited
   const [config, setConfig] = useState<StorefrontConfig>({
@@ -620,6 +649,71 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
               ))}
             </div>
           </div>
+
+          {/* 6. Chọn Sản Phẩm Nổi Bật của Gian Hàng */}
+          <div className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-lg p-5 space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-2">
+                <Star size={15} weight="fill" className="text-amber-500" />
+                <span>6. Chọn Sản phẩm Nổi bật</span>
+              </h4>
+              <span className="text-[10px] font-bold text-amber-500">
+                ({productList.filter(p => p.isFeatured).length} sản phẩm đã ghim)
+              </span>
+            </div>
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+              Nhấp vào sản phẩm bên dưới để ghim hoặc bỏ ghim trực tiếp lên mục <strong>"Sản phẩm nổi bật"</strong> ở đầu trang gian hàng.
+            </p>
+
+            <div className="max-h-64 overflow-y-auto space-y-1.5 pr-1 divide-y divide-zinc-100 dark:divide-zinc-850">
+              {productList.length === 0 ? (
+                <p className="text-[11px] text-zinc-400 text-center py-4">Chưa có sản phẩm nào để chọn</p>
+              ) : (
+                productList.map((p) => {
+                  const pId = p._id || p.id
+                  const isFeat = Boolean(p.isFeatured)
+                  const isLoadingThis = togglingFeaturedId === String(pId)
+                  return (
+                    <div
+                      key={pId}
+                      onClick={() => !isLoadingThis && handleToggleProductFeatured(p)}
+                      className={`p-2.5 rounded-lg flex items-center justify-between gap-2.5 cursor-pointer transition-all ${
+                        isFeat
+                          ? 'bg-amber-500/10 border border-amber-500/40 shadow-xs'
+                          : 'hover:bg-zinc-100 dark:hover:bg-zinc-900/60 border border-transparent'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <input
+                          type="checkbox"
+                          checked={isFeat}
+                          readOnly
+                          className="w-4 h-4 rounded text-amber-500 accent-amber-500 cursor-pointer pointer-events-none"
+                        />
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold text-zinc-900 dark:text-white truncate">
+                            {p.title || p.name}
+                          </p>
+                          <span className="text-[10px] font-mono text-[#ff4655] font-semibold">
+                            {formatPrice(p.price)}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className={`text-[9px] font-bold px-2 py-0.5 rounded shrink-0 flex items-center gap-1 ${
+                        isFeat
+                          ? 'bg-amber-500 text-black shadow-xs'
+                          : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-500'
+                      }`}>
+                        <Star size={10} weight={isFeat ? 'fill' : 'regular'} />
+                        {isLoadingThis ? 'Đang lưu...' : isFeat ? 'Đang nổi bật' : 'Chưa ghim'}
+                      </span>
+                    </div>
+                  )
+                })
+              )}
+            </div>
+          </div>
         </div>
 
         {/* ========================================================
@@ -752,7 +846,12 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
 
                 // Section 3: FEATURED PRODUCTS
                 if (sec.id === 'featured') {
-                  const featuredList = (allProducts || []).slice(0, 3)
+                  const featuredExplicit = productList.filter(p => p.isFeatured === true)
+                  const featuredAuto = productList.filter(p => !p.isFeatured && (p.rating >= 4.5 || (p.oldPrice && p.oldPrice > p.price)))
+                  let featuredList = [...featuredExplicit, ...featuredAuto].slice(0, 4)
+                  if (featuredList.length === 0) {
+                    featuredList = productList.slice(0, 4)
+                  }
                   return (
                     <div key={sec.id} className="space-y-3">
                       <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">

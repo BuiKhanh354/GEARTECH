@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react'
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { Ionicons } from '@expo/vector-icons'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { cartService } from '../services/cartService'
 import { orderService } from '../services/orderService'
 import { ErrorView, LoadingView } from '../components/StateViews'
-import { PrimaryButton } from '../components/ui'
+import { Card, Input, PrimaryButton } from '../components/ui'
 import { confirmAsync } from '../components/confirm'
-import { colors, formatPrice, radius, spacing } from '../constants/theme'
+import { elevation, formatPrice, palette, radius, spacing, type } from '../constants/theme'
 import { useAuthStore } from '../store/authStore'
 import { useCartStore } from '../store/cartStore'
 
-// Thanh toán — tạo đơn qua POST /api/orders
-// Giá và tồn kho do backend xác thực tại thời điểm đặt; app KHÔNG tự tính giá cuối.
-// Phương thức thanh toán: COD (backend cũng hỗ trợ BANK_TRANSFER nhưng chưa có cổng
-// thanh toán trực tuyến thật — phần này ghi rõ là chưa triển khai).
+// =============================================================================
+// MÀN HÌNH THANH TOÁN & ĐẶT HÀNG (v2)
+// - Nhóm Card: Sản phẩm / Địa chỉ giao hàng (dùng Input component mới) / Phương thức thanh toán
+// - Footer tổng tạm tính + Nút Đặt hàng nổi bật
+// - Giữ 100% logic createOrder qua /api/orders
+// =============================================================================
 export default function CheckoutScreen() {
   const token = useAuthStore((s) => s.token)
   const resetCartCount = useCartStore((s) => s.reset)
@@ -76,25 +79,24 @@ export default function CheckoutScreen() {
       queryClient.invalidateQueries({ queryKey: ['orders'] })
       Alert.alert(
         'Đặt hàng thành công',
-        res.message ?? 'Đơn hàng đã được ghi nhận vào hệ thống.',
+        res.message ?? 'Đơn hàng của bạn đã được ghi nhận vào hệ thống.',
         [
           { text: 'Xem đơn hàng', onPress: () => router.replace('/orders') },
-          { text: 'Ở lại', style: 'cancel' }
+          { text: 'Về trang chủ', onPress: () => router.replace('/(tabs)') }
         ]
       )
-      router.replace('/orders')
     },
     onError: (err: Error) => Alert.alert('Đặt hàng thất bại', err.message)
   })
 
   const handleSubmit = async () => {
     if (!receiverName.trim() || !receiverPhone.trim() || !detailAddress.trim()) {
-      Alert.alert('Thiếu thông tin', 'Vui lòng điền đầy đủ tên, số điện thoại và địa chỉ nhận hàng.')
+      Alert.alert('Thiếu thông tin', 'Vui lòng điền đầy đủ họ tên, số điện thoại và địa chỉ nhận hàng.')
       return
     }
     const ok = await confirmAsync(
       'Xác nhận đặt hàng',
-      `Thanh toán: ${paymentMethod === 'COD' ? 'Khi nhận hàng (COD)' : 'Chuyển khoản'}. Tổng tạm tính ${formatPrice(subtotal)}.`
+      `Hình thức: ${paymentMethod === 'COD' ? 'Thanh toán khi nhận (COD)' : 'Chuyển khoản'}.\nTổng tạm tính: ${formatPrice(subtotal)}.`
     )
     if (ok) createOrder.mutate()
   }
@@ -107,9 +109,9 @@ export default function CheckoutScreen() {
     )
   }
 
-  if (cart.isLoading || checkoutInfo.isLoading) return <LoadingView label="Đang chuẩn bị thanh toán..." />
+  if (cart.isLoading || checkoutInfo.isLoading) return <LoadingView label="Đang chuẩn bị đơn hàng..." />
   if (cart.isError) {
-    return <ErrorView message="Không tải được giỏ hàng." onRetry={() => cart.refetch()} />
+    return <ErrorView message="Không tải được dữ liệu giỏ hàng." onRetry={() => cart.refetch()} />
   }
 
   const cartData = cart.data
@@ -123,76 +125,134 @@ export default function CheckoutScreen() {
     )
   }
 
-  // Tạm tính từ subtotal backend trả về (đã tính đúng giá bán & khuyến mãi)
   const subtotal = cartData!.subtotal
 
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}>
-        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
-          {/* Danh sách sản phẩm */}
-          <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Sản phẩm ({selectedItems.length})</Text>
+        <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+          {/* Card: Danh sách sản phẩm thanh toán */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="bag-check-outline" size={17} color={palette.brand} />
+              <Text style={styles.cardHeaderTitle}>Kiểm tra sản phẩm ({selectedItems.length})</Text>
+            </View>
+
             {selectedItems.map((i) => (
               <View key={i._id} style={styles.itemRow}>
-                <Text style={styles.itemQty}>{i.quantity}×</Text>
-                <Text style={styles.itemName} numberOfLines={1}>{i.title}</Text>
+                <View style={styles.itemQtyBadge}>
+                  <Text style={styles.itemQtyText}>{i.quantity}x</Text>
+                </View>
+                <Text style={styles.itemName} numberOfLines={1}>
+                  {i.title}
+                </Text>
                 <Text style={styles.itemPrice}>{formatPrice(i.lineTotal)}</Text>
               </View>
             ))}
+
             <View style={styles.divider} />
             <View style={styles.rowBetween}>
-              <Text style={styles.sumLabel}>Tạm tính</Text>
-              <Text style={styles.sumValue}>{formatPrice(subtotal)}</Text>
+              <Text style={styles.subtotalLabel}>Tạm tính tiền hàng</Text>
+              <Text style={styles.subtotalValue}>{formatPrice(subtotal)}</Text>
             </View>
-            <Text style={styles.note}>
-              Phí vận chuyển theo quy định của từng shop và được xác nhận khi xử lý đơn
+            <Text style={styles.shippingNotice}>
+              * Phí vận chuyển được xác nhận cụ thể theo từng cửa hàng đối tác.
             </Text>
-          </View>
+          </Card>
 
-          {/* Địa chỉ nhận hàng */}
-          <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Địa chỉ nhận hàng</Text>
-            <Text style={styles.label}>NGƯỜI NHẬN</Text>
-            <TextInput style={styles.input} value={receiverName} onChangeText={setReceiverName} placeholder="Họ tên người nhận" placeholderTextColor={colors.faint} />
-            <Text style={styles.label}>SỐ ĐIỆN THOẠI</Text>
-            <TextInput style={styles.input} value={receiverPhone} onChangeText={setReceiverPhone} placeholder="09xx xxx xxx" placeholderTextColor={colors.faint} keyboardType="phone-pad" />
-            <Text style={styles.label}>ĐỊA CHỈ</Text>
-            <TextInput style={styles.input} value={detailAddress} onChangeText={setDetailAddress} placeholder="Số nhà, đường, phường/xã..." placeholderTextColor={colors.faint} multiline />
-            <Text style={styles.label}>TỈNH / THÀNH PHỐ</Text>
-            <TextInput style={styles.input} value={province} onChangeText={setProvince} placeholder="VD: TP. Hồ Chí Minh" placeholderTextColor={colors.faint} />
-            <Text style={styles.label}>GHI CHÚ (TÙY CHỌN)</Text>
-            <TextInput style={styles.input} value={note} onChangeText={setNote} placeholder="Ghi chú cho shop..." placeholderTextColor={colors.faint} multiline />
-          </View>
+          {/* Card: Thông tin người nhận hàng */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="location-outline" size={17} color={palette.brand} />
+              <Text style={styles.cardHeaderTitle}>Địa chỉ giao hàng</Text>
+            </View>
 
-          {/* Phương thức thanh toán */}
-          <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Phương thức thanh toán</Text>
-            {(['COD', 'BANK_TRANSFER'] as const).map((m) => (
-              <TouchableOpacity
-                key={m}
-                style={[styles.payOption, paymentMethod === m && styles.payOptionActive]}
-                onPress={() => setPaymentMethod(m)}
-              >
-                <View style={[styles.radio, paymentMethod === m && styles.radioActive]} />
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.payLabel}>{m === 'COD' ? 'Thanh toán khi nhận hàng (COD)' : 'Chuyển khoản ngân hàng'}</Text>
-                  {m === 'BANK_TRANSFER' && (
-                    <Text style={styles.payNote}>Xác nhận chuyển khoản sẽ được xử lý sau khi đặt</Text>
-                  )}
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
+            <Input
+              label="HỌ TÊN NGƯỜI NHẬN *"
+              value={receiverName}
+              onChangeText={setReceiverName}
+              placeholder="Nguyễn Văn A"
+            />
+            <Input
+              label="SỐ ĐIỆN THOẠI LIÊN HỆ *"
+              value={receiverPhone}
+              onChangeText={setReceiverPhone}
+              placeholder="09xx xxx xxx"
+              keyboardType="phone-pad"
+            />
+            <Input
+              label="ĐỊA CHỈ CHI TIẾT *"
+              value={detailAddress}
+              onChangeText={setDetailAddress}
+              placeholder="Số nhà, tên đường, phường/xã..."
+              multiline
+            />
+            <Input
+              label="TỈNH / THÀNH PHỐ"
+              value={province}
+              onChangeText={setProvince}
+              placeholder="TP. Hồ Chí Minh, Hà Nội..."
+            />
+            <Input
+              label="GHI CHÚ GIAO HÀNG (TÙY CHỌN)"
+              value={note}
+              onChangeText={setNote}
+              placeholder="Lưu ý về giờ giao hàng hoặc chỉ dẫn nhà..."
+            />
+          </Card>
+
+          {/* Card: Phương thức thanh toán */}
+          <Card style={styles.sectionCard}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="wallet-outline" size={17} color={palette.brand} />
+              <Text style={styles.cardHeaderTitle}>Phương thức thanh toán</Text>
+            </View>
+
+            {(['COD', 'BANK_TRANSFER'] as const).map((m) => {
+              const active = paymentMethod === m
+              return (
+                <TouchableOpacity
+                  key={m}
+                  style={[styles.payOption, active && styles.payOptionActive]}
+                  activeOpacity={0.8}
+                  onPress={() => setPaymentMethod(m)}
+                >
+                  <View style={[styles.radioCircle, active && styles.radioCircleActive]}>
+                    {active ? <View style={styles.radioDot} /> : null}
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={[styles.payTitle, active && styles.payTitleActive]}>
+                      {m === 'COD' ? 'Thanh toán khi nhận hàng (COD)' : 'Chuyển khoản ngân hàng'}
+                    </Text>
+                    <Text style={styles.paySub}>
+                      {m === 'COD'
+                        ? 'Nhận hàng, kiểm tra sản phẩm và thanh toán tiền mặt'
+                        : 'Thông tin số tài khoản sẽ được cung cấp sau khi tạo đơn'}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )
+            })}
+          </Card>
         </ScrollView>
 
-        {/* Nút đặt hàng */}
-        <View style={styles.footer}>
-          <View style={styles.rowBetween}>
-            <Text style={styles.footerLabel}>Tổng tạm tính</Text>
+        {/* Thanh cố định ở đáy */}
+        <View style={[styles.footer, elevation.float]}>
+          <View style={styles.footerRow}>
+            <View>
+              <Text style={styles.footerLabel}>Tổng thanh toán</Text>
+              <Text style={styles.footerSub}>Đã bao gồm thuế</Text>
+            </View>
             <Text style={styles.footerValue}>{formatPrice(subtotal)}</Text>
           </View>
-          <PrimaryButton label="Đặt hàng" icon="checkmark-circle-outline" onPress={() => { handleSubmit() }} loading={createOrder.isPending} />
+
+          <PrimaryButton
+            label="Xác nhận đặt hàng"
+            variant="dark"
+            icon="checkmark-circle"
+            onPress={handleSubmit}
+            loading={createOrder.isPending}
+          />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -200,40 +260,154 @@ export default function CheckoutScreen() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.bg },
-  scroll: { padding: spacing.lg, paddingBottom: 24, gap: spacing.md },
-  card: {
-    backgroundColor: colors.card, borderRadius: radius.md, borderWidth: 1, borderColor: colors.border, padding: spacing.md
+  safe: {
+    flex: 1,
+    backgroundColor: palette.bg
   },
-  sectionTitle: { fontSize: 13, fontWeight: '800', color: colors.ink, marginBottom: 8 },
-  itemRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 6 },
-  itemQty: { fontSize: 12, fontWeight: '800', color: colors.sub, width: 26 },
-  itemName: { flex: 1, fontSize: 12, fontWeight: '600', color: colors.ink },
-  itemPrice: { fontSize: 12, fontWeight: '700', color: colors.ink },
-  divider: { height: 1, backgroundColor: colors.border, marginVertical: 8 },
-  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  sumLabel: { fontSize: 12, color: colors.sub },
-  sumValue: { fontSize: 14, fontWeight: '900', color: colors.primary },
-  note: { fontSize: 10, color: colors.faint, marginTop: 4 },
-  label: { fontSize: 9, fontWeight: '800', color: colors.sub, letterSpacing: 1, marginTop: 10, marginBottom: 4 },
-  input: {
-    backgroundColor: colors.bg, borderWidth: 1, borderColor: colors.border,
-    borderRadius: radius.sm, paddingHorizontal: 12, paddingVertical: 10,
-    fontSize: 13, color: colors.ink
+  scroll: {
+    padding: spacing.lg,
+    paddingBottom: spacing.xxl,
+    gap: spacing.md
+  },
+  sectionCard: {
+    gap: spacing.xs
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: spacing.sm,
+    paddingBottom: spacing.xs,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: palette.border
+  },
+  cardHeaderTitle: {
+    ...type.h3,
+    fontSize: 14
+  },
+  itemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingVertical: 5
+  },
+  itemQtyBadge: {
+    backgroundColor: palette.surfaceAlt,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: radius.sm
+  },
+  itemQtyText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: palette.inkSoft
+  },
+  itemName: {
+    flex: 1,
+    fontSize: 12,
+    fontWeight: '600',
+    color: palette.ink
+  },
+  itemPrice: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: palette.ink
+  },
+  divider: {
+    height: 1,
+    backgroundColor: palette.border,
+    marginVertical: spacing.sm
+  },
+  rowBetween: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  subtotalLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: palette.muted
+  },
+  subtotalValue: {
+    fontSize: 14,
+    fontWeight: '900',
+    color: palette.brand
+  },
+  shippingNotice: {
+    ...type.caption,
+    color: palette.faint,
+    marginTop: 4
   },
   payOption: {
-    flexDirection: 'row', alignItems: 'center', gap: 10,
-    borderWidth: 1, borderColor: colors.border, borderRadius: radius.sm,
-    padding: 12, marginTop: 8
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    borderWidth: 1.5,
+    borderColor: palette.border,
+    borderRadius: radius.md,
+    padding: spacing.md,
+    marginTop: spacing.xs,
+    backgroundColor: palette.surface
   },
-  payOptionActive: { borderColor: colors.primary, backgroundColor: '#fff1f2' },
-  radio: { width: 16, height: 16, borderRadius: 8, borderWidth: 2, borderColor: colors.border },
-  radioActive: { borderColor: colors.primary, backgroundColor: colors.primary },
-  payLabel: { fontSize: 12, fontWeight: '700', color: colors.ink },
-  payNote: { fontSize: 10, color: colors.faint, marginTop: 2 },
+  payOptionActive: {
+    borderColor: palette.brand,
+    backgroundColor: palette.brandSoft
+  },
+  radioCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: palette.borderStrong,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  radioCircleActive: {
+    borderColor: palette.brand
+  },
+  radioDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: palette.brand
+  },
+  payTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: palette.ink
+  },
+  payTitleActive: {
+    color: palette.brand
+  },
+  paySub: {
+    ...type.caption,
+    marginTop: 2,
+    color: palette.muted
+  },
   footer: {
-    backgroundColor: colors.card, padding: spacing.lg, borderTopWidth: 1, borderTopColor: colors.border, gap: 10
+    backgroundColor: palette.surface,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: palette.border,
+    gap: spacing.sm
   },
-  footerLabel: { fontSize: 13, color: colors.sub },
-  footerValue: { fontSize: 18, fontWeight: '900', color: colors.primary }
+  footerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  footerLabel: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: palette.inkSoft
+  },
+  footerSub: {
+    ...type.caption
+  },
+  footerValue: {
+    fontSize: 20,
+    fontWeight: '900',
+    color: palette.brand
+  }
 })

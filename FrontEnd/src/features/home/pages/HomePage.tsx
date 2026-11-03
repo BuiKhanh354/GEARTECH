@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import {
   Lightning,
@@ -353,97 +353,94 @@ const HomePage: React.FC = () => {
         {publishedSections.length > 0 ? (
           publishedSections.map((sec) => {
             switch (sec.type) {
-              case 'service_features':
+              case 'service_features': {
+                const defaultItems = [
+                  {
+                    title: 'Build PC & Cấu Hình Đồ Họa',
+                    description: 'Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.',
+                    badge: 'LÃI SUẤT 0%',
+                    badgeColor: 'red',
+                    icon: 'wrench',
+                    ctaText: 'BẮT ĐẦU BUILD NGAY',
+                    link: '/ProductPage?category=desktops'
+                  },
+                  {
+                    title: 'Bảo Hành 1 Đổi 1 Tận Nơi',
+                    description: 'Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.',
+                    badge: '30 NGÀY VIP',
+                    badgeColor: 'blue',
+                    icon: 'shield',
+                    ctaText: 'TRA CỨU BẢO HÀNH',
+                    link: '/dich-vu'
+                  },
+                  {
+                    title: 'Giao Hàng Hỏa Tốc & Miễn Phí',
+                    description: 'Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.',
+                    badge: 'SIÊU TỐC 2H',
+                    badgeColor: 'emerald',
+                    icon: 'truck',
+                    ctaText: 'XEM CHÍNH SÁCH SHIP',
+                    link: '/about'
+                  }
+                ];
+
+                const items = (sec.populatedData as any)?.items && (sec.populatedData as any).items.length > 0
+                  ? (sec.populatedData as any).items
+                  : (sec.config?.items && sec.config.items.length > 0)
+                  ? sec.config.items
+                  : defaultItems;
+
                 return (
                   <section key={sec.sectionKey} className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <motion.div 
-                      whileHover={{ y: -5, borderColor: 'rgba(255, 70, 85, 0.6)' }}
-                      className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
-                    >
-                      <div className="absolute top-0 left-0 w-1.5 h-full bg-[#ff4655]"></div>
-                      <div className="space-y-3 pl-2">
-                        <div className="flex items-center justify-between">
-                          <span className="w-10 h-10 rounded-lg bg-[#ff4655]/10 border border-[#ff4655]/30 flex items-center justify-center text-[#ff4655] shadow-sm group-hover:scale-105 transition-transform">
-                            <Wrench size={20} weight="fill" />
-                          </span>
-                          <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-[#ff4655]/10 text-[#ff4655] border border-[#ff4655]/30 uppercase">
-                            LÃI SUẤT 0%
-                          </span>
-                        </div>
-                        <div>
-                          <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-[#ff4655] transition-colors">
-                            Build PC & Cấu Hình Đồ Họa
-                          </h3>
-                          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
-                            Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-[#ff4655] tracking-wider">
-                        <span>BẮT ĐẦU BUILD NGAY</span>
-                        <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </motion.div>
+                    {items.map((it: any, itIdx: number) => {
+                      const color = it.badgeColor || (itIdx === 0 ? 'red' : itIdx === 1 ? 'blue' : 'emerald');
+                      const barClass = color === 'blue' ? 'bg-blue-500' : color === 'emerald' ? 'bg-emerald-500' : 'bg-[#ff4655]';
+                      const badgeClass = color === 'blue' 
+                        ? 'bg-blue-500/10 text-blue-500 border-blue-500/30' 
+                        : color === 'emerald' 
+                        ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30' 
+                        : 'bg-[#ff4655]/10 text-[#ff4655] border-[#ff4655]/30';
+                      const textHover = color === 'blue' ? 'group-hover:text-blue-500' : color === 'emerald' ? 'group-hover:text-emerald-500' : 'group-hover:text-[#ff4655]';
+                      const textCta = color === 'blue' ? 'text-blue-500' : color === 'emerald' ? 'text-emerald-500' : 'text-[#ff4655]';
 
-                    <motion.div 
-                      whileHover={{ y: -5, borderColor: 'rgba(37, 99, 235, 0.6)' }}
-                      className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
-                    >
-                      <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
-                      <div className="space-y-3 pl-2">
-                        <div className="flex items-center justify-between">
-                          <span className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-500 shadow-sm group-hover:scale-105 transition-transform">
-                            <ShieldCheck size={20} weight="fill" />
-                          </span>
-                          <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-blue-500/10 text-blue-500 border border-blue-500/30 uppercase">
-                            30 NGÀY VIP
-                          </span>
-                        </div>
-                        <div>
-                          <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-blue-500 transition-colors">
-                            Bảo Hành 1 Đổi 1 Tận Nơi
-                          </h3>
-                          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
-                            Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-blue-500 tracking-wider">
-                        <span>TRA CỨU BẢO HÀNH</span>
-                        <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </motion.div>
-
-                    <motion.div 
-                      whileHover={{ y: -5, borderColor: 'rgba(16, 185, 129, 0.6)' }}
-                      className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden"
-                    >
-                      <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
-                      <div className="space-y-3 pl-2">
-                        <div className="flex items-center justify-between">
-                          <span className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-500 shadow-sm group-hover:scale-105 transition-transform">
-                            <Truck size={20} weight="fill" />
-                          </span>
-                          <span className="px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 uppercase">
-                            SIÊU TỐC 2H
-                          </span>
-                        </div>
-                        <div>
-                          <h3 className="text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white group-hover:text-emerald-500 transition-colors">
-                            Giao Hàng Hỏa Tốc & Miễn Phí
-                          </h3>
-                          <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
-                            Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase text-emerald-500 tracking-wider">
-                        <span>XEM CHÍNH SÁCH SHIP</span>
-                        <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </motion.div>
+                      return (
+                        <Link to={it.link || '/'} key={itIdx} className="block">
+                          <motion.div 
+                            whileHover={{ y: -5, borderColor: color === 'blue' ? 'rgba(37, 99, 235, 0.6)' : color === 'emerald' ? 'rgba(16, 185, 129, 0.6)' : 'rgba(255, 70, 85, 0.6)' }}
+                            className="bg-white dark:bg-gradient-to-br dark:from-zinc-900/90 dark:to-zinc-950/95 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 flex flex-col justify-between min-h-[175px] shadow-sm hover:shadow-xl relative group transition-all duration-300 overflow-hidden h-full"
+                          >
+                            <div className={`absolute top-0 left-0 w-1.5 h-full ${barClass}`}></div>
+                            <div className="space-y-3 pl-2">
+                              <div className="flex items-center justify-between">
+                                <span className={`w-10 h-10 rounded-lg flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform border ${badgeClass}`}>
+                                  {it.icon === 'shield' ? <ShieldCheck size={20} weight="fill" /> : it.icon === 'truck' ? <Truck size={20} weight="fill" /> : <Wrench size={20} weight="fill" />}
+                                </span>
+                                {it.badge && (
+                                  <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-mono font-bold uppercase border ${badgeClass}`}>
+                                    {it.badge}
+                                  </span>
+                                )}
+                              </div>
+                              <div>
+                                <h3 className={`text-base font-black tracking-tight uppercase text-zinc-900 dark:text-white transition-colors ${textHover}`}>
+                                  {it.title}
+                                </h3>
+                                <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed mt-1">
+                                  {it.description}
+                                </p>
+                              </div>
+                            </div>
+                            <div className={`pl-2 pt-3 flex items-center justify-between text-[10px] font-black uppercase tracking-wider ${textCta}`}>
+                              <span>{it.ctaText || 'XEM CHI TIẾT'}</span>
+                              <ArrowRight size={14} weight="bold" className="group-hover:translate-x-1 transition-transform" />
+                            </div>
+                          </motion.div>
+                        </Link>
+                      );
+                    })}
                   </section>
-                )
+                );
+              }
 
               case 'banner_slider':
                 return (
@@ -584,7 +581,7 @@ const HomePage: React.FC = () => {
                           className="group bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800/90 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
                         >
                           <div className="h-44 bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center text-4xl relative border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden">
-                            <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <SafeProductImage src={prod.imageEmoji} gallery={prod.gallery} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             <span className="absolute top-2.5 left-2.5 bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded-sm shadow-md flex items-center gap-1">
                               <Flame size={10} weight="fill" />
                               {prod.discount || '-15%'}
@@ -679,7 +676,7 @@ const HomePage: React.FC = () => {
                           className="group bg-white dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between relative"
                         >
                           <div className="h-44 bg-zinc-50 dark:bg-zinc-900/60 flex items-center justify-center text-3xl border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden relative">
-                            <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <SafeProductImage src={prod.imageEmoji} gallery={prod.gallery} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             {prod.discount && (
                               <span className="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-mono font-black px-1.5 py-0.5 rounded shadow">
                                 {prod.discount}
@@ -787,7 +784,7 @@ const HomePage: React.FC = () => {
                           className="group bg-white dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between relative"
                         >
                           <div className="h-44 bg-zinc-50 dark:bg-zinc-900/60 flex items-center justify-center text-3xl border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden relative">
-                            <SafeProductImage src={prod.imageEmoji} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            <SafeProductImage src={prod.imageEmoji} gallery={prod.gallery} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             {prod.discount && (
                               <span className="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-mono font-black px-1.5 py-0.5 rounded shadow">
                                 {prod.discount}

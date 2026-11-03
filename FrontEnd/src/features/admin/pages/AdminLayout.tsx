@@ -3,8 +3,8 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-do
 import { AnimatePresence, motion } from 'motion/react'
 import {
   SquaresFour, ChartLineUp, Users, Storefront, Package, TreeStructure,
-  Tag, Receipt, MapPin, CaretLeft, List, X, SignOut, User,
-  ArrowSquareOut, Gear, Browsers
+  Tag, Receipt, CaretLeft, List, X, SignOut, User,
+  ArrowSquareOut, Gear, Browsers, Wallet, Wrench
 } from '@phosphor-icons/react'
 import apiClient from '../../../api/client'
 
@@ -63,6 +63,18 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     ]
   },
   {
+    label: 'Tài chính & Giải ngân',
+    items: [
+      { to: '/admin/finance', end: true, icon: Wallet, label: 'Tài chính & Phí sàn' }
+    ]
+  },
+  {
+    label: 'Dịch vụ độc quyền sàn',
+    items: [
+      { to: '/admin/care', end: true, icon: Wrench, label: 'GearTech Care' }
+    ]
+  },
+  {
     label: 'Khuyến mãi',
     items: [
       { to: '/admin/vouchers', end: true, icon: Tag, label: 'Voucher toàn sàn' }
@@ -72,12 +84,6 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
     label: 'Giao diện & Nội dung',
     items: [
       { to: '/admin/homepage', end: true, icon: Browsers, label: 'Bố cục trang chủ' }
-    ]
-  },
-  {
-    label: 'Hệ thống',
-    items: [
-      { to: '/admin/showrooms', end: true, icon: MapPin, label: 'Showroom GPS' }
     ]
   }
 ]
@@ -92,9 +98,10 @@ function breadcrumbFor(pathname: string): string {
     '/admin/categories': 'Danh mục',
     '/admin/brands': 'Thương hiệu',
     '/admin/orders': 'Quản lý đơn hàng',
+    '/admin/finance': 'Quản lý tài chính sàn',
+    '/admin/care': 'Dịch vụ GearTech Care',
     '/admin/vouchers': 'Khuyến mãi',
-    '/admin/homepage': 'Quản lý bố cục trang chủ',
-    '/admin/showrooms': 'Showroom GPS'
+    '/admin/homepage': 'Quản lý bố cục trang chủ'
   }
   return map[pathname] || 'Quản trị hệ thống'
 }

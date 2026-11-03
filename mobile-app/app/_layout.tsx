@@ -6,6 +6,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useColorScheme } from 'react-native'
 import { useAuthStore } from '../store/authStore'
 
+import { palette } from '../constants/theme'
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -33,9 +35,9 @@ export default function RootLayout() {
         <StatusBar style="dark" />
         <Stack
           screenOptions={{
-            headerStyle: { backgroundColor: '#ffffff' },
-            headerTintColor: '#18181b',
-            headerTitleStyle: { fontWeight: '800', fontSize: 15 },
+            headerStyle: { backgroundColor: palette.surface },
+            headerTintColor: palette.brand,
+            headerTitleStyle: { fontWeight: '800', fontSize: 16, color: palette.ink },
             headerShadowVisible: false,
             headerBackTitle: ''
           }}

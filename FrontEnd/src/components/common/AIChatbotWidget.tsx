@@ -15,6 +15,7 @@ import {
 } from '@phosphor-icons/react'
 import aiService from '../../services/aiService'
 import type { AIChatMessage, SuggestedProduct } from '../../services/aiService'
+import { SafeProductImage } from './ProductImage'
 
 interface Message {
   id: string
@@ -23,6 +24,12 @@ interface Message {
   time: string
   thinking?: string | null
   suggestedProducts?: SuggestedProduct[]
+}
+
+let messageCounter = 1
+const generateMsgId = (prefix: string): string => {
+  messageCounter += 1
+  return `${prefix}-${messageCounter}`
 }
 
 export default function AIChatbotWidget() {
@@ -39,7 +46,7 @@ export default function AIChatbotWidget() {
       id: '1',
       sender: 'ai',
       text: 'Xin chào bạn! 🤖 Tôi là GearTech AI (chạy trên mô hình Qwen 2.5 siêu tốc). Tôi có thể tư vấn chọn bàn phím cơ, chuột gaming, màn hình, cấu hình PC theo đúng tầm giá và nhu cầu của bạn. Bạn đang quan tâm sản phẩm nào hôm nay?',
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      time: 'Vừa xong'
     }
   ])
 
@@ -71,17 +78,20 @@ export default function AIChatbotWidget() {
     if (isOpen) {
       scrollToBottom()
     }
-  }, [messages, isTyping])
+  }, [messages, isTyping, isOpen])
 
   const handleSend = async (textToSend?: string) => {
     const query = (textToSend || input).trim()
     if (!query || isTyping) return
 
+    const now = new Date()
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+
     const userMsg: Message = {
-      id: Date.now().toString(),
+      id: generateMsgId('user'),
       sender: 'user',
       text: query,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      time: timeStr
     }
 
     setMessages(prev => [...prev, userMsg])
@@ -98,16 +108,16 @@ export default function AIChatbotWidget() {
       const response = await aiService.chat(historyPayload)
 
       const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
+        id: generateMsgId('ai'),
         sender: 'ai',
         text: response.reply,
         thinking: response.thinking,
         suggestedProducts: response.suggestedProducts,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        time: timeStr
       }
 
       setMessages(prev => [...prev, aiMsg])
-    } catch (err: any) {
+    } catch {
       // Fallback thông minh nếu Ollama tạm thời bận
       let fallbackText = 'Dạ hiện tại máy chủ AI đang tải thêm dữ liệu. Bạn có thể tham khảo danh mục Bàn phím cơ hoặc Chuột gaming trên thanh menu để chọn thiết bị phù hợp nhất nhé!'
       const q = query.toLowerCase()
@@ -118,10 +128,10 @@ export default function AIChatbotWidget() {
       }
 
       const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
+        id: generateMsgId('ai-err'),
         sender: 'ai',
         text: fallbackText,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        time: timeStr
       }
       setMessages(prev => [...prev, aiMsg])
     } finally {
@@ -237,13 +247,14 @@ export default function AIChatbotWidget() {
                                 onClick={() => setIsOpen(false)}
                                 className="flex items-center gap-2.5 p-2 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-[#ff4655] transition-all group"
                               >
-                                {prod.image && (
-                                  <img 
-                                    src={prod.image} 
-                                    alt={prod.name} 
-                                    className="w-10 h-10 object-cover rounded-lg shrink-0 border border-zinc-100 dark:border-zinc-800"
+                                <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/60 p-1">
+                                  <SafeProductImage
+                                    src={prod.image}
+                                    alt={prod.name}
+                                    className="w-full h-full object-contain"
+                                    fallbackIcon="💻"
                                   />
-                                )}
+                                </div>
                                 <div className="flex-1 min-w-0">
                                   <h4 className="text-[11px] font-semibold text-zinc-800 dark:text-white truncate group-hover:text-[#ff4655] transition-colors">
                                     {prod.name}
@@ -336,7 +347,7 @@ export default function AIChatbotWidget() {
 
         {/* Nhãn mở rộng khi hover */}
         <span className="text-xs font-black uppercase tracking-wider pr-1 hidden sm:inline-block">
-          GearTech AI
+          GearTech BOT
         </span>
 
         {/* Hiệu ứng hào quang phát sáng */}

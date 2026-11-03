@@ -45,6 +45,7 @@ const ProductSchema = new mongoose.Schema({
   brand_id: { type: mongoose.Schema.Types.Mixed },
   rating: { type: Number, default: 5.0, min: 0, max: 5 },
   reviewsCount: { type: Number, default: 0 },
+  isFeatured: { type: Boolean, default: false }, // Đánh dấu sản phẩm nổi bật của shop
   salesCount: { type: String, default: 'ĐÃ BÁN 0' },
   // Số lượng đã bán thực tế (đếm từ đơn hàng COMPLETED, do backend cập nhật)
   soldCount: { type: Number, default: 0, min: 0 },
@@ -72,7 +73,13 @@ const ProductSchema = new mongoose.Schema({
   shopId: { type: mongoose.Schema.Types.ObjectId, ref: 'Shop', required: true },
   shop_id: { type: mongoose.Schema.Types.Mixed }, // Alias cho SQL import
   
-  // Thông số kỹ thuật động (Dynamic Technical Specs)
+  // Thông số kỹ thuật có cấu trúc (Structured Technical Specifications: Array of { name, value })
+  specifications: [{
+    name: { type: String, trim: true },
+    value: { type: String, trim: true }
+  }],
+
+  // Thông số kỹ thuật động (Dynamic Technical Specs - Map/Object for backward compatibility)
   specs: {
     type: Map,
     of: String
@@ -102,6 +109,33 @@ ProductSchema.pre('validate', function() {
   }
   if (this.stock === 0 && this.status === 'active') {
     this.status = 'out_of_stock';
+  }
+
+  // Chuẩn hóa và đồng bộ hai chiều giữa specifications (Array) và specs (Map)
+  if (Array.isArray(this.specifications)) {
+    // Lọc bỏ các dòng rỗng
+    this.specifications = this.specifications.filter(s => s && s.name && s.name.trim() && s.value && s.value.trim());
+    if (this.specifications.length > 0) {
+      if (!this.specs) this.specs = new Map();
+      this.specifications.forEach(s => {
+        this.specs.set(s.name.trim(), s.value.trim());
+      });
+    }
+  } else if (this.specs) {
+    // Nếu có specs nhưng chưa có specifications
+    const list = [];
+    if (this.specs instanceof Map) {
+      this.specs.forEach((val, key) => {
+        if (key && val) list.push({ name: String(key).trim(), value: String(val).trim() });
+      });
+    } else if (typeof this.specs === 'object') {
+      Object.entries(this.specs).forEach(([k, v]) => {
+        if (k && v) list.push({ name: String(k).trim(), value: String(v).trim() });
+      });
+    }
+    if (list.length > 0 && (!this.specifications || this.specifications.length === 0)) {
+      this.specifications = list;
+    }
   }
 });
 

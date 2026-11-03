@@ -1,0 +1,26 @@
+[{
+  "_id": {
+    "$oid": "6ac11efa2de58adcc60f3c56"
+  },
+  "user_id": {
+    "$oid": "000000000000000000000001"
+  },
+  "shop_name": "Gear Tech Store",
+  "description": "Cửa hàng máy tính và linh kiện",
+  "logo": "/images/shops/gear-tech.png",
+  "phone": "0901234567",
+  "email": "shop@geartech.vn",
+  "address": "TP. Hồ Chí Minh",
+  "commission_rate": {
+    "$numberDecimal": "5.00"
+  },
+  "rating": 4.8,
+  "total_products": 0,
+  "status": "active",
+  "created_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  },
+  "updated_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  }
+}]

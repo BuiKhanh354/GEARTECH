@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import {
   Users, Storefront, Package, Receipt, CurrencyDollar, LockSimple,
   HourglassMedium, WarningCircle, ArrowRight, ArrowClockwise,
-  ShoppingCart, SealCheck
+  ShoppingCart, SealCheck, Wrench
 } from '@phosphor-icons/react'
 import { formatPrice } from '../../../utils/format'
 import { adminService, type AdminOverview } from '../../../services/adminService'
+import { careService, type CareStats } from '../../../services/careService'
 import KpiCard from '../../shop/components/seller/KpiCard'
 import StatusBadge from '../../shop/components/seller/StatusBadge'
 
@@ -19,6 +20,7 @@ const TIME_RANGES = [
 export default function AdminDashboardPage() {
   const [days, setDays] = useState(7)
   const [data, setData] = useState<AdminOverview | null>(null)
+  const [careStats, setCareStats] = useState<CareStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
@@ -26,8 +28,18 @@ export default function AdminDashboardPage() {
     try {
       setLoading(true)
       setError(false)
-      const res = await adminService.getOverview(d)
-      setData(res)
+      const [res, careRes] = await Promise.allSettled([
+        adminService.getOverview(d),
+        careService.getAdminStats()
+      ])
+      if (res.status === 'fulfilled') {
+        setData(res.value)
+      } else {
+        setError(true)
+      }
+      if (careRes.status === 'fulfilled') {
+        setCareStats(careRes.value)
+      }
     } catch {
       setError(true)
     } finally {
@@ -78,6 +90,35 @@ export default function AdminDashboardPage() {
         </div>
       ) : (
         <>
+          {/* ============ GEARTECH CARE PLATFORM REVENUE HIGHLIGHT ============ */}
+          <div className="bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 border border-zinc-700 rounded-xl p-4 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#ff4655]/20 text-[#ff4655] flex items-center justify-center shrink-0">
+                <Wrench size={22} weight="bold" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-black uppercase tracking-wider text-rose-400">Dịch Vụ Kiếm Lời Sàn: GEARTECH CARE</span>
+                  {careStats && careStats.pending > 0 && (
+                    <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold">
+                      {careStats.pending} ca chờ xử lý
+                    </span>
+                  )}
+                </div>
+                <div className="text-xs text-zinc-300 mt-0.5">
+                  Doanh thu dịch vụ thuần thu về Admin: <strong className="text-emerald-400 font-mono text-sm">{formatPrice(careStats?.totalRevenue ?? 0)}</strong> (từ {careStats?.completed ?? 0} ca hoàn tất / {careStats?.total ?? 0} ca tiếp nhận)
+                </div>
+              </div>
+            </div>
+            <Link
+              to="/admin/care"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#ff4655] hover:bg-[#e03d4b] text-white text-xs font-bold uppercase tracking-wider transition shrink-0 cursor-pointer shadow-sm"
+            >
+              <span>Vào Quản lý GearTech Care</span>
+              <ArrowRight size={12} weight="bold" />
+            </Link>
+          </div>
+
           {/* ============ 5.1 KPI ============ */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             <KpiCard label="Tổng người dùng" value={data?.counts.totalUsers ?? 0}

@@ -1,6 +1,49 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { cartService } from '../services/cartService'
+import { useAuthStore } from './authStore'
+
+export interface CartProductShop {
+  _id?: string
+  name?: string
+  shopName?: string
+}
+
+export interface CartProductInput {
+  _id?: string
+  id?: string
+  productId?: string
+  title?: string
+  name?: string
+  price: number
+  oldPrice?: number
+  originalPrice?: number
+  quantity?: number
+  imageEmoji?: string
+  image?: string
+  imageUrl?: string
+  categoryName?: string
+  category?: string
+  brand?: string
+  discount?: string
+  shopName?: string
+  shopId?: string | CartProductShop
+  shop?: string | CartProductShop
+  stock?: number
+  status?: string
+}
+
+function extractShopName(product: CartProductInput): string {
+  if (product.shopName) return product.shopName
+  if (typeof product.shopId === 'object' && product.shopId) {
+    return product.shopId.name || product.shopId.shopName || 'GEARTECH OFFICIAL'
+  }
+  if (typeof product.shop === 'object' && product.shop) {
+    return product.shop.name || product.shop.shopName || 'GEARTECH OFFICIAL'
+  }
+  if (typeof product.shop === 'string') return product.shop
+  return 'GEARTECH OFFICIAL'
+}
 
 export interface CartStoreItem {
   id: string
@@ -29,7 +72,7 @@ interface CartState {
   items: CartStoreItem[]
   isLoading: boolean
   syncWithBackend: () => Promise<void>
-  addItem: (product: any, quantity?: number, variant?: string) => Promise<void>
+  addItem: (product: CartProductInput, quantity?: number, variant?: string) => Promise<void>
   removeItem: (productId: string) => Promise<void>
   updateQuantity: (productId: string, delta: number) => Promise<void>
   setQuantity: (productId: string, quantity: number) => Promise<void>
@@ -40,6 +83,9 @@ interface CartState {
   getSubtotal: () => number
   getTotalCount: () => number
 }
+
+// Helper lấy token xác thực từ AuthStore hoặc localStorage
+const getAuthToken = () => useAuthStore.getState().token || (typeof window !== 'undefined' ? localStorage.getItem('token') : null)
 
 // In-flight tracker để chống bấm double-click hoặc gọi trùng hàm thêm vào giỏ
 const inFlightAddSet = new Set<string>()
@@ -52,7 +98,7 @@ export const useCartStore = create<CartState>()(
 
       // 1. Đồng bộ giỏ hàng với Backend CSDL (Single Source of Truth)
       syncWithBackend: async () => {
-        const token = localStorage.getItem('token')
+        const token = getAuthToken()
         if (!token) return
 
         try {
@@ -102,7 +148,7 @@ export const useCartStore = create<CartState>()(
 
       // 2. Thêm sản phẩm vào giỏ (chống gọi trùng, chuẩn hóa số lượng và giới hạn tồn kho)
       addItem: async (product, quantity, variant = 'Tiêu chuẩn / Chính hãng') => {
-        const pId = product._id || product.id || product.productId
+        const pId = String(product._id || product.id || product.productId || '')
         if (!pId) return
 
         // Chống gọi trùng / race-condition do double click
@@ -111,7 +157,7 @@ export const useCartStore = create<CartState>()(
 
         const numQty = Math.max(1, (quantity !== undefined && quantity !== null) ? Number(quantity) : Number(product.quantity || 1))
         const maxStock = product.stock !== undefined ? product.stock : 999
-        const token = localStorage.getItem('token')
+        const token = getAuthToken()
 
         try {
           // Cập nhật optimistic local
@@ -124,18 +170,18 @@ export const useCartStore = create<CartState>()(
               updated[existingIndex].selected = true
               return { items: updated }
             } else {
-              const shopName = product.shopId?.name || product.shopId?.shopName || product.shop?.name || (typeof product.shop === 'string' ? product.shop : 'GEARTECH OFFICIAL')
+              const shopName = extractShopName(product)
               const isPromo = Boolean(product.oldPrice && product.oldPrice > product.price)
               const newItem: CartStoreItem = {
                 id: pId,
                 productId: pId,
-                title: product.title || product.name,
-                price: product.price,
+                title: String(product.title || product.name || 'Sản phẩm công nghệ'),
+                price: Number(product.price) || 0,
                 oldPrice: product.oldPrice,
                 originalPrice: isPromo ? product.oldPrice : product.price,
                 isPriceLocked: isPromo,
                 promotionNote: isPromo ? 'Giữ giá ưu đãi 48 giờ' : undefined,
-                imageEmoji: product.imageEmoji || product.image || product.imageUrl || '📦',
+                imageEmoji: String(product.imageEmoji || product.image || product.imageUrl || '📦'),
                 categoryName: product.categoryName || 'Linh kiện',
                 shopName,
                 quantity: Math.min(maxStock, numQty),
@@ -193,7 +239,7 @@ export const useCartStore = create<CartState>()(
           items: state.items.filter((item) => item.productId !== productId && item.id !== productId)
         }))
 
-        const token = localStorage.getItem('token')
+        const token = getAuthToken()
         if (token) {
           try {
             await cartService.removeCartItem(productId)
@@ -217,7 +263,7 @@ export const useCartStore = create<CartState>()(
           })
         }))
 
-        const token = localStorage.getItem('token')
+        const token = getAuthToken()
         if (token) {
           try {
             await cartService.updateCartItem(productId, { quantity: finalQty })
@@ -240,7 +286,7 @@ export const useCartStore = create<CartState>()(
           })
         }))
 
-        const token = localStorage.getItem('token')
+        const token = getAuthToken()
         if (token) {
           try {
             await cartService.updateCartItem(productId, { quantity: validQty })
@@ -263,7 +309,7 @@ export const useCartStore = create<CartState>()(
           })
         }))
 
-        const token = localStorage.getItem('token')
+        const token = getAuthToken()
         if (token) {
           try {
             await cartService.updateCartItem(productId, { selected: newSelected })
@@ -289,7 +335,7 @@ export const useCartStore = create<CartState>()(
           items: state.items.filter((item) => !item.selected)
         }))
 
-        const token = localStorage.getItem('token')
+        const token = getAuthToken()
         if (token) {
           try {
             await cartService.clearCart(true)
@@ -302,7 +348,7 @@ export const useCartStore = create<CartState>()(
       // 9. Xóa sạch giỏ hàng
       clearCart: async () => {
         set({ items: [] })
-        const token = localStorage.getItem('token')
+        const token = getAuthToken()
         if (token) {
           try {
             await cartService.clearCart(false)

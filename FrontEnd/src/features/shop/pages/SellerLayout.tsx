@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import {
   Storefront, Receipt, Package, SquaresFour, CaretDown, CaretLeft, List, X,
   ArrowSquareOut, Bell, SignOut, User, Buildings, ChartLineUp, Tag, Wrench,
-  Barbell, CurrencyDollar
+  Barbell, CurrencyDollar, Wallet
 } from '@phosphor-icons/react'
 import apiClient from '../../../api/client'
 
@@ -53,6 +53,10 @@ const NAV_GROUPS = [
     items: [{ to: '/shop/vouchers', end: true, icon: Tag, label: 'Voucher của shop' }]
   },
   {
+    label: 'Tài chính & Ví',
+    items: [{ to: '/shop/finance', end: true, icon: Wallet, label: 'Ví tiền & Doanh thu' }]
+  },
+  {
     label: 'Phân tích kinh doanh',
     items: [{ to: '/shop/analytics', end: true, icon: ChartLineUp, label: 'Doanh thu & hiệu suất' }]
   },
@@ -71,6 +75,7 @@ function breadcrumbFor(pathname: string): string {
     '/shop/inventory': 'Quản lý kho',
     '/shop/suppliers': 'Nhà cung cấp',
     '/shop/vouchers': 'Marketing',
+    '/shop/finance': 'Tài chính & Ví Shop',
     '/shop/analytics': 'Phân tích kinh doanh',
     '/shop/storefront': 'Tùy chỉnh giao diện'
   }

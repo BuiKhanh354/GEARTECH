@@ -4,7 +4,7 @@ import { useAuthStore } from '../store/authStore'
 // Địa chỉ backend lấy từ biến môi trường EXPO_PUBLIC_API_URL (.env của app).
 // KHÔNG dùng localhost khi chạy trên máy thật — xem .env.example
 export const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || 'http://10.0.2.2:5000/api'
+  process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.4:5000/api'
 
 console.log('[GearTech Mobile] Đang kết nối API Backend tại:', API_BASE_URL)
 

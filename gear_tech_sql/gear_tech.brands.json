@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "6ac11f302de58adcc60f3c5b"
+  },
+  "name": "ASUS",
+  "slug": "asus",
+  "logo": "/images/brands/asus.png",
+  "description": "Thương hiệu phần cứng máy tính",
+  "status": "active",
+  "created_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  },
+  "updated_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  }
+}]

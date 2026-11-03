@@ -165,6 +165,10 @@ export interface Order {
   shop?: ShopBrief
   shop_id?: ShopBrief | string
   shopId?: ShopBrief | string
+  trackingCode?: string
+  tracking_code?: string
+  carrier?: string
+  shippingFee?: number
   note?: string
 }
 

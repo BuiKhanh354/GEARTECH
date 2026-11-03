@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { ArrowLeft, House, ArrowRight } from '@phosphor-icons/react'
 import apiClient from '../../../api/client'
+import { useAuthStore } from '../../../store/authStore'
 import { productService } from '../../../services/productService'
 
 // Sub-components
@@ -10,7 +11,6 @@ import AdminOverviewTab from '../components/admin/AdminOverviewTab'
 import AdminUsersTab from '../components/admin/AdminUsersTab'
 import AdminShopsTab from '../components/admin/AdminShopsTab'
 import AdminVouchersTab from '../components/admin/AdminVouchersTab'
-import AdminShowroomsTab from '../components/admin/AdminShowroomsTab'
 import AdminCategoriesTab from '../components/admin/AdminCategoriesTab'
 import AdminBrandsTab from '../components/admin/AdminBrandsTab'
 import AdminOrdersTab from '../components/admin/AdminOrdersTab'
@@ -30,7 +30,7 @@ import UserVouchersTab from '../components/user/UserVouchersTab'
 
 type TabType = 
   | 'profile' | 'orders' | 'vouchers' | 'favorites' | 'security' 
-  | 'admin-overview' | 'admin-users' | 'admin-shops' | 'admin-categories' | 'admin-brands' | 'admin-vouchers' | 'admin-showrooms' | 'admin-orders'
+  | 'admin-overview' | 'admin-users' | 'admin-shops' | 'admin-categories' | 'admin-brands' | 'admin-vouchers' | 'admin-orders'
   | 'shop-overview' | 'shop-products' | 'shop-orders' | 'shop-inventory' | 'shop-suppliers' | 'shop-storefront' | 'shop-vouchers'
 
 interface ProfilePageProps {
@@ -40,23 +40,10 @@ interface ProfilePageProps {
 export default function ProfilePage({ initialRole }: ProfilePageProps) {
   const navigate = useNavigate()
   const location = useLocation()
-  const token = localStorage.getItem('token')
+  const { user: currentUser, token, logout, updateUser } = useAuthStore()
 
   const path = location.pathname.toLowerCase()
   const requiredRole = initialRole || (path.includes('admin') ? 'admin' : path.includes('shop') ? 'shop' : null)
-
-  // Auth & User States: Chỉ lấy role từ dữ liệu đăng nhập thực tế của user
-  const [currentUser, setCurrentUser] = useState<any>(() => {
-    const saved = localStorage.getItem('user')
-    if (saved) {
-      try {
-        return JSON.parse(saved)
-      } catch {
-        // ignore
-      }
-    }
-    return null
-  })
 
   const [currentShop, setCurrentShop] = useState<any>(null)
   const [activeTab, setActiveTab] = useState<TabType>(() => {
@@ -69,7 +56,6 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
   // Real Database Lists
   const [shopsList, setShopsList] = useState<any[]>([])
   const [dbVouchers, setDbVouchers] = useState<any[]>([])
-  const [dbShowrooms, setDbShowrooms] = useState<any[]>([])
   const [userOrders, setUserOrders] = useState<any[]>([])
   const [allProducts, setAllProducts] = useState<any[]>([])
 
@@ -84,9 +70,6 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
       // chỉ trả voucher active, khiến voucher ẩn mất ngay sau khi vô hiệu hóa.
       const resVouchers = await apiClient.get('/vouchers/admin')
       if (resVouchers.data) setDbVouchers(Array.isArray(resVouchers.data) ? resVouchers.data : [])
-
-      const resShowrooms = await apiClient.get('/showrooms')
-      if (resShowrooms.data) setDbShowrooms(resShowrooms.data)
     } catch (err) {
       console.error('Lỗi tải dữ liệu admin:', err)
     }
@@ -155,8 +138,7 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
           const data = res.data
 
           if (data.user) {
-            setCurrentUser(data.user)
-            localStorage.setItem('user', JSON.stringify(data.user))
+            updateUser(data.user)
 
             if (data.user.role === 'shop') {
               setCurrentShop(data.shop || null)
@@ -189,8 +171,7 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
     } catch {
       // ignore
     } finally {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
+      logout()
       navigate('/login')
     }
   }
@@ -343,13 +324,12 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
           {/* 1. ADMIN TABS (Chỉ render khi là Admin thật) */}
           {isAdmin && (
             <>
-              {activeTab === 'admin-overview' && <AdminOverviewTab shopsList={shopsList} dbVouchers={dbVouchers} dbShowrooms={dbShowrooms} />}
+              {activeTab === 'admin-overview' && <AdminOverviewTab shopsList={shopsList} dbVouchers={dbVouchers} />}
               {activeTab === 'admin-users' && <AdminUsersTab />}
               {activeTab === 'admin-shops' && <AdminShopsTab token={token} shopsList={shopsList} onRefresh={fetchAdminData} />}
               {activeTab === 'admin-categories' && <AdminCategoriesTab />}
               {activeTab === 'admin-brands' && <AdminBrandsTab />}
               {activeTab === 'admin-vouchers' && <AdminVouchersTab token={token} dbVouchers={dbVouchers} onRefresh={fetchAdminData} />}
-              {activeTab === 'admin-showrooms' && <AdminShowroomsTab token={token} dbShowrooms={dbShowrooms} shopsList={shopsList} onRefresh={fetchAdminData} />}
               {activeTab === 'admin-orders' && <AdminOrdersTab />}
             </>
           )}
@@ -370,7 +350,7 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
           {/* 3. USER / BUYER TABS (Render cho Khách hàng, hoặc Chủ Shop khi chuyển sang chế độ mua hàng) */}
           {!isAdmin && (!isShop || !activeTab.startsWith('shop-')) && (
             <>
-              {activeTab === 'profile' && <UserProfileTab token={token} currentUser={currentUser} onRefresh={setCurrentUser} />}
+              {activeTab === 'profile' && <UserProfileTab token={token} currentUser={currentUser} onRefresh={updateUser} />}
               {activeTab === 'orders' && <UserOrdersTab userOrders={userOrders} onRefreshOrders={fetchUserData} />}
               {activeTab === 'favorites' && <UserFavoritesTab />}
               {activeTab === 'vouchers' && <UserVouchersTab dbVouchers={dbVouchers} />}

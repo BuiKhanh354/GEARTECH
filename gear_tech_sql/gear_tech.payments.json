@@ -1,0 +1,18 @@
+[{
+  "_id": {
+    "$oid": "6ac11fb22de58adcc60f3c75"
+  },
+  "order_id": {
+    "$oid": "000000000000000000000008"
+  },
+  "payment_method": "COD",
+  "transaction_code": null,
+  "amount": {
+    "$numberDecimal": "30910000"
+  },
+  "payment_status": "pending",
+  "paid_at": null,
+  "created_at": {
+    "$date": "2026-10-03T00:00:00.000Z"
+  }
+}]

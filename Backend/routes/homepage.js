@@ -29,37 +29,14 @@ async function getDefaultSections() {
     },
     {
       sectionKey: 'sec_battle_station_banners',
-      title: 'Bộ sưu tập chiến hạm 2026',
-      subtitle: 'Trang bị cấu hình GeForce RTX 4090 & AI Workstation độc bản',
+      title: 'Banner nổi bật',
+      subtitle: '',
       type: 'banner_slider',
       status: 'active',
       order: 1,
       schedule: { isScheduled: false, startDate: null, endDate: null },
       config: {
-        banners: [
-          {
-            title: 'CHIẾN HẠM PC GAMING ĐỈNH CAO THI ĐẤU ESPORTS',
-            badge: 'ROG // TITAN SERIES 2026',
-            subtitle: 'FPS 240+ RAY TRACING',
-            description: 'Trang bị cấu hình GeForce RTX 4090, Intel Core Ultra 9 và bo mạch chủ ROG Strix tối tân nhất.',
-            priceTag: 'Giá từ 28.990.000₫',
-            ctaText: 'Khám phá ngay',
-            link: '/ProductPage?category=desktops',
-            bgGradient: 'from-zinc-950 via-zinc-900 to-black',
-            status: 'active'
-          },
-          {
-            title: 'HỆ THỐNG ĐỒ HỌA CHUYÊN NGHIỆP & TẢN NƯỚC ĐỘC BẢN',
-            badge: 'AI WORKSTATION & CUSTOM WATERCOOL',
-            subtitle: 'RENDER 8K // TRAINING AI',
-            description: 'Hỗ trợ Dual GPU, tản nhiệt nước ống đồng mạ niken tối ưu nhiệt độ hoạt động 24/7 không giới hạn.',
-            priceTag: 'Tùy biến theo yêu cầu',
-            ctaText: 'Nhận tư vấn',
-            link: '/ProductPage?category=components',
-            bgGradient: 'from-zinc-950 via-zinc-900 to-[#071324]',
-            status: 'active'
-          }
-        ]
+        banners: []
       }
     },
     {
@@ -321,6 +298,48 @@ async function populateSectionData(section, isPreview = false) {
         return {
           ...plainSection,
           populatedData: { products }
+        };
+      }
+
+      case 'service_features': {
+        const defaultItems = [
+          {
+            id: 'feat_1',
+            title: 'Build PC & Cấu Hình Đồ Họa',
+            description: 'Đội ngũ kỹ sư build cấu hình tối ưu hiệu năng. Hỗ trợ trả góp 0% qua thẻ tín dụng và CCCD duyệt nhanh 5 phút.',
+            badge: 'LÃI SUẤT 0%',
+            badgeColor: 'red',
+            icon: 'wrench',
+            ctaText: 'BẮT ĐẦU BUILD NGAY',
+            link: '/ProductPage?category=desktops'
+          },
+          {
+            id: 'feat_2',
+            title: 'Bảo Hành 1 Đổi 1 Tận Nơi',
+            description: 'Đặc quyền 1 đổi 1 trong 30 ngày nếu phát sinh lỗi phần cứng từ nhà sản xuất. Hỗ trợ mượn máy thay thế khi bảo hành.',
+            badge: '30 NGÀY VIP',
+            badgeColor: 'blue',
+            icon: 'shield',
+            ctaText: 'TRA CỨU BẢO HÀNH',
+            link: '/dich-vu'
+          },
+          {
+            id: 'feat_3',
+            title: 'Giao Hàng Hỏa Tốc & Miễn Phí',
+            description: 'Miễn phí giao hàng toàn quốc cho đơn từ 1.000.000₫. Đóng gói chuyên dụng chống sốc đạt chuẩn vận chuyển đồ công nghệ.',
+            badge: 'SIÊU TỐC 2H',
+            badgeColor: 'emerald',
+            icon: 'truck',
+            ctaText: 'XEM CHÍNH SÁCH SHIP',
+            link: '/about'
+          }
+        ];
+        const items = (plainSection.config?.items && plainSection.config.items.length > 0)
+          ? plainSection.config.items
+          : defaultItems;
+        return {
+          ...plainSection,
+          populatedData: { items }
         };
       }
 
