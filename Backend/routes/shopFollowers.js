@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const ShopFollower = require('../models/ShopFollower');
@@ -18,7 +19,7 @@ router.get('/my-followed', auth, async (req, res) => {
     const validFollowed = followed.filter(f => f.shop_id != null);
     return res.json(validFollowed);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy danh sách shop đang theo dõi.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy danh sách shop đang theo dõi.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -36,7 +37,7 @@ router.get('/check/:shopId', async (req, res) => {
       try {
         const jwt = require('jsonwebtoken');
         const token = authHeader.split(' ')[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'GEARTECH_VALORANT_EDITION_SECRET_2026');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded && decoded.id) {
           const exists = await ShopFollower.findOne({
             $and: [
@@ -60,7 +61,7 @@ router.get('/check/:shopId', async (req, res) => {
       followersCount
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi kiểm tra trạng thái theo dõi shop.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi kiểm tra trạng thái theo dõi shop.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -111,7 +112,7 @@ router.post('/:shopId', auth, async (req, res) => {
     if (error.code === 11000) {
       return res.status(200).json({ message: 'Đã theo dõi shop.', isFollowing: true });
     }
-    return res.status(500).json({ error: 'Lỗi theo dõi cửa hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi theo dõi cửa hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -139,7 +140,7 @@ router.delete('/:shopId', auth, async (req, res) => {
       followersCount: count
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi bỏ theo dõi cửa hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi bỏ theo dõi cửa hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

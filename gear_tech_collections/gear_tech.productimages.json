@@ -848,5 +848,273 @@
     "__v": {
       "$numberInt": "0"
     }
+  },
+  {
+    "_id": {
+      "$oid": "6aeafea7ce726bb10ee598d8"
+    },
+    "productId": {
+      "$oid": "6ae8bb466fee009710ce2b26"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793785511189-983888992.webp",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "0"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793785511201"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793785511201"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeafea7ce726bb10ee598d9"
+    },
+    "productId": {
+      "$oid": "6ae8bb466fee009710ce2b26"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793785511189-502693695.webp",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "1"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793785511201"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793785511201"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeafea7ce726bb10ee598da"
+    },
+    "productId": {
+      "$oid": "6ae8bb466fee009710ce2b26"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793785511190-63713362.webp",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "2"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793785511201"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793785511201"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeb06fe82490f5144a614e5"
+    },
+    "productId": {
+      "$oid": "6aeb06f982490f5144a61370"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793787626643-466977758.jpg",
+    "isPrimary": true,
+    "sortOrder": {
+      "$numberInt": "0"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793787646062"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793787646062"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeb06fe82490f5144a614e6"
+    },
+    "productId": {
+      "$oid": "6aeb06f982490f5144a61370"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793787626644-675424277.jpg",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "1"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793787646062"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793787646062"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeb1c0593768fea0ade0e45"
+    },
+    "productId": {
+      "$oid": "6aeb1c0293768fea0ade0db2"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793793013009-789720895.png",
+    "isPrimary": true,
+    "sortOrder": {
+      "$numberInt": "0"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793793029350"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793793062707"
+      }
+    },
+    "image_url": "http://localhost:5000/uploads/products/products-1793793013009-789720895.png",
+    "is_primary": true,
+    "product_id": {
+      "$oid": "6aeb1c0293768fea0ade0db2"
+    },
+    "sort_order": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeb1c0593768fea0ade0e47"
+    },
+    "productId": {
+      "$oid": "6aeb1c0293768fea0ade0db2"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793793018041-923884955.png",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "1"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793793029350"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793793062707"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeb1c0593768fea0ade0e48"
+    },
+    "productId": {
+      "$oid": "6aeb1c0293768fea0ade0db2"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793793018041-636474111.png",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "2"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793793029350"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793793062707"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeb1c0593768fea0ade0e49"
+    },
+    "productId": {
+      "$oid": "6aeb1c0293768fea0ade0db2"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793793018042-264856702.png",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "3"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793793029350"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793793062707"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeb1c1893768fea0ade0ffd"
+    },
+    "productId": {
+      "$oid": "6aeb1c0293768fea0ade0db2"
+    },
+    "imageUrl": "http://localhost:5000/uploads/products/products-1793793048506-703221122.png",
+    "isPrimary": false,
+    "sortOrder": {
+      "$numberInt": "4"
+    },
+    "__v": {
+      "$numberInt": "0"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793793048517"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793793062707"
+      }
+    }
   }
 ]

@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion } from 'motion/react'
 import { 
   Receipt, HourglassMedium, CheckCircle, Truck, XCircle, MapPin, 
-  User, Warning, ArrowClockwise, Package, X
+  User, Warning, ArrowClockwise, Package
 } from '@phosphor-icons/react'
 import { formatPrice } from '../../../../utils/format'
 import { orderService } from '../../../../services/orderService'
 import { shippingService, type ShipmentTrackingResponse } from '../../../../services/shippingService'
+import ShipmentTrackingModal from './ShipmentTrackingModal'
+import CreateShipmentModal, { type ShipmentParams } from './CreateShipmentModal'
+import CustomFulfillmentModal, { type CustomFulfillmentParams } from './CustomFulfillmentModal'
 
 interface ShopOrdersTabProps {
   initialStatus?: string;
@@ -22,7 +25,7 @@ export default function ShopOrdersTab({ initialStatus }: ShopOrdersTabProps) {
 
   // Modal tạo vận đơn GHN
   const [createModalOrder, setCreateModalOrder] = useState<any | null>(null)
-  const [shipmentParams, setShipmentParams] = useState({
+  const [shipmentParams, setShipmentParams] = useState<ShipmentParams>({
     weight: 500,
     length: 20,
     width: 15,
@@ -39,7 +42,7 @@ export default function ShopOrdersTab({ initialStatus }: ShopOrdersTabProps) {
 
   // Modal xác nhận gửi hàng linh hoạt (Hỏa tốc, SuperShip, Tự giao, Hãng khác)
   const [customFulfillOrder, setCustomFulfillOrder] = useState<any | null>(null)
-  const [customFulfillParams, setCustomFulfillParams] = useState({
+  const [customFulfillParams, setCustomFulfillParams] = useState<CustomFulfillmentParams>({
     carrier: 'Ahamove',
     customCarrierName: '',
     trackingCode: '',
@@ -534,448 +537,37 @@ export default function ShopOrdersTab({ initialStatus }: ShopOrdersTabProps) {
       {/* ========================================================================= */}
       {/* MODAL 1: TẠO VẬN ĐƠN GHN                                                */}
       {/* ========================================================================= */}
-      <AnimatePresence>
-        {createModalOrder && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden"
-            >
-              <div className="p-5 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50 dark:bg-zinc-950">
-                <div className="flex items-center gap-2">
-                  <Package size={20} className="text-[#ff4655]" />
-                  <h3 className="text-sm font-black uppercase text-zinc-900 dark:text-white tracking-wider">
-                    KHỞI TẠO VẬN ĐƠN GIAO HÀNG NHANH (GHN)
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setCreateModalOrder(null)}
-                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-white"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-
-              <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto text-xs">
-                {/* Thông tin đơn */}
-                <div className="p-3 bg-zinc-50 dark:bg-zinc-850/50 rounded-lg space-y-1.5 border border-zinc-100 dark:border-zinc-800">
-                  <div className="flex justify-between">
-                    <span className="text-zinc-500">Mã đơn hàng:</span>
-                    <span className="font-mono font-bold text-zinc-900 dark:text-white">
-                      #{String(createModalOrder._id).slice(-8).toUpperCase()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-zinc-500">Người nhận:</span>
-                    <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                      {createModalOrder.receiver_name || createModalOrder.shippingAddress?.receiverName} ({createModalOrder.phone})
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-zinc-500">Địa chỉ giao:</span>
-                    <span className="text-right max-w-[280px] font-medium text-zinc-700 dark:text-zinc-300 truncate">
-                      {createModalOrder.shipping_address || createModalOrder.shippingAddress?.detailAddress}
-                    </span>
-                  </div>
-                  <div className="flex justify-between border-t border-zinc-200 dark:border-zinc-700/50 pt-1.5">
-                    <span className="text-zinc-500">Thu hộ COD:</span>
-                    <span className="font-black text-[#ff4655]">
-                      {(createModalOrder.paymentMethod || 'COD').toUpperCase() === 'COD'
-                        ? formatPrice(createModalOrder.finalAmount || 0)
-                        : '0 đ (Đã thanh toán trước)'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Kích thước & Khối lượng */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">
-                      Khối lượng (gram) *
-                    </label>
-                    <input
-                      type="number"
-                      min={50}
-                      value={shipmentParams.weight}
-                      onChange={(e) => setShipmentParams({ ...shipmentParams, weight: Number(e.target.value) })}
-                      className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">
-                      Kích thước D x R x C (cm)
-                    </label>
-                    <div className="flex gap-1">
-                      <input
-                        type="number"
-                        min={1}
-                        title="Dài"
-                        placeholder="D"
-                        value={shipmentParams.length}
-                        onChange={(e) => setShipmentParams({ ...shipmentParams, length: Number(e.target.value) })}
-                        className="w-1/3 px-2 py-2 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700 text-center font-mono"
-                      />
-                      <input
-                        type="number"
-                        min={1}
-                        title="Rộng"
-                        placeholder="R"
-                        value={shipmentParams.width}
-                        onChange={(e) => setShipmentParams({ ...shipmentParams, width: Number(e.target.value) })}
-                        className="w-1/3 px-2 py-2 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700 text-center font-mono"
-                      />
-                      <input
-                        type="number"
-                        min={1}
-                        title="Cao"
-                        placeholder="C"
-                        value={shipmentParams.height}
-                        onChange={(e) => setShipmentParams({ ...shipmentParams, height: Number(e.target.value) })}
-                        className="w-1/3 px-2 py-2 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700 text-center font-mono"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Quy định xem hàng */}
-                <div>
-                  <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">
-                    Lưu ý khi giao hàng (GHN Policy)
-                  </label>
-                  <select
-                    value={shipmentParams.requiredNote}
-                    onChange={(e: any) => setShipmentParams({ ...shipmentParams, requiredNote: e.target.value })}
-                    className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
-                  >
-                    <option value="CHOXEMHANGKHONGTHU">Cho xem hàng không cho thử</option>
-                    <option value="CHOTHUHANG">Cho thử hàng trước khi nhận</option>
-                    <option value="KHONGCHOXEMHANG">Không cho xem hàng</option>
-                  </select>
-                </div>
-
-                {/* Ghi chú cho tài xế GHN */}
-                <div>
-                  <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">
-                    Ghi chú chi tiết cho Shipper
-                  </label>
-                  <input
-                    type="text"
-                    value={shipmentParams.note}
-                    onChange={(e) => setShipmentParams({ ...shipmentParams, note: e.target.value })}
-                    placeholder="VD: Hàng linh kiện điện tử, giao trước 17h..."
-                    className="w-full px-3 py-2 bg-zinc-100 dark:bg-zinc-800 rounded border border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-white"
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-800 flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setCreateModalOrder(null)}
-                  className="px-4 py-2 text-xs font-bold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded transition-colors"
-                >
-                  Đóng
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirmCreateShipment}
-                  disabled={isCreatingShipment}
-                  className="px-5 py-2 text-xs font-black uppercase tracking-wider text-white bg-[#ff4655] hover:bg-[#e03d4b] rounded shadow-md transition-all flex items-center gap-1.5 disabled:opacity-50"
-                >
-                  {isCreatingShipment ? (
-                    <>
-                      <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Đang kết nối GHN...
-                    </>
-                  ) : (
-                    <>
-                      <Package size={14} weight="bold" /> Xác nhận đẩy đơn sang GHN
-                    </>
-                  )}
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      <CreateShipmentModal
+        order={createModalOrder}
+        params={shipmentParams}
+        setParams={setShipmentParams}
+        isSubmitting={isCreatingShipment}
+        onClose={() => setCreateModalOrder(null)}
+        onSubmit={handleConfirmCreateShipment}
+      />
 
       {/* ========================================================================= */}
       {/* MODAL 2: XEM HÀNH TRÌNH VẬN ĐƠN GHN                                     */}
       {/* ========================================================================= */}
-      <AnimatePresence>
-        {trackingModalOrder && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl overflow-hidden"
-            >
-              <div className="p-5 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50 dark:bg-zinc-950">
-                <div className="flex items-center gap-2">
-                  <Truck size={20} className="text-[#ff4655]" />
-                  <div>
-                    <h3 className="text-sm font-black uppercase text-zinc-900 dark:text-white tracking-wider">
-                      HÀNH TRÌNH GIAO VẬN GHN
-                    </h3>
-                    <p className="text-[10px] text-zinc-400 font-mono">
-                      Mã vận đơn: #{trackingData?.trackingCode || trackingModalOrder.trackingCode || '—'}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setTrackingModalOrder(null)}
-                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-white"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-
-              <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto text-xs">
-                {isLoadingTracking ? (
-                  <div className="py-12 text-center text-zinc-400">
-                    <div className="inline-block animate-spin text-xl mb-2">⏳</div>
-                    <div>Đang cập nhật hành trình từ vệ tinh GHN...</div>
-                  </div>
-                ) : trackingData?.hasShipment ? (
-                  <>
-                    {/* Thẻ tóm tắt */}
-                    <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-blue-500">
-                          Đơn vị vận chuyển
-                        </span>
-                        <span className="font-black text-xs text-blue-600 dark:text-blue-400">
-                          {trackingData.carrier || 'GHN Express'}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-bold text-zinc-500">Trạng thái hiện tại:</span>
-                        <span className="font-bold text-zinc-900 dark:text-white">
-                          {trackingData.shippingStatus || 'Đang luân chuyển'}
-                        </span>
-                      </div>
-                      {trackingData.expectedDeliveryDate && (
-                        <div className="flex justify-between items-center">
-                          <span className="text-[10px] font-bold text-zinc-500">Dự kiến giao:</span>
-                          <span className="font-mono text-zinc-700 dark:text-zinc-300">
-                            {new Date(trackingData.expectedDeliveryDate).toLocaleDateString('vi-VN')}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Lịch sử các mốc timeline */}
-                    <div className="space-y-3 pt-2">
-                      <h4 className="text-[10px] font-black uppercase text-zinc-400 tracking-wider">
-                        Các mốc sự kiện vận chuyển
-                      </h4>
-                      <div className="space-y-3 border-l-2 border-zinc-200 dark:border-zinc-800 ml-2 pl-4">
-                        {(trackingData.timeline || []).map((tl, i) => (
-                          <div key={i} className="relative">
-                            <span className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-[#ff4655] ring-4 ring-white dark:ring-zinc-900" />
-                            <div className="text-[10px] text-zinc-400 font-mono">
-                              {new Date(tl.updated_at).toLocaleString('vi-VN')}
-                            </div>
-                            <div className="font-bold text-zinc-800 dark:text-zinc-200 mt-0.5">
-                              {tl.description || tl.status}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="py-8 text-center text-zinc-400">
-                    Chưa có thông tin vận đơn được ghi nhận.
-                  </div>
-                )}
-              </div>
-
-              <div className="p-4 bg-zinc-50 dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
-                {/* Nút hủy nếu kiện hàng chưa xuất kho */}
-                {trackingData?.shippingStatus === 'ready_to_pick' && (
-                  <button
-                    onClick={() => handleCancelShipment(trackingModalOrder._id)}
-                    className="px-3 py-1.5 text-[10px] font-bold text-red-500 hover:bg-red-500/10 border border-red-500/30 rounded transition-colors"
-                  >
-                    Hủy vận đơn GHN
-                  </button>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setTrackingModalOrder(null)}
-                  className="ml-auto px-4 py-2 text-xs font-bold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded transition-colors"
-                >
-                  Đóng
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      <ShipmentTrackingModal
+        order={trackingModalOrder}
+        data={trackingData}
+        loading={isLoadingTracking}
+        onClose={() => setTrackingModalOrder(null)}
+        onCancel={handleCancelShipment}
+      />
 
       {/* ========================================================================= */}
       {/* MODAL 3: XÁC NHẬN GỬI HÀNG LINH HOẠT (HỎA TỐC / SUPERSHIP / TỰ GIAO / KHÁC)*/}
       {/* ========================================================================= */}
-      <AnimatePresence>
-        {customFulfillOrder && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-6 max-w-lg w-full shadow-2xl space-y-4"
-            >
-              <div className="flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center">
-                    <Truck size={20} weight="bold" />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-black uppercase text-zinc-900 dark:text-white">
-                      XÁC NHẬN GỬI HÀNG / ĐIỀU PHỐI VẬN CHUYỂN
-                    </h4>
-                    <span className="text-[10px] font-mono text-zinc-400">
-                      Đơn #{String(customFulfillOrder._id).slice(-8).toUpperCase()}
-                    </span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setCustomFulfillOrder(null)}
-                  className="text-zinc-400 hover:text-white p-1 rounded"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-
-              {/* Thông tin phương thức khách chọn */}
-              <div className="p-3 bg-zinc-50 dark:bg-zinc-950/60 rounded-lg border border-zinc-200 dark:border-zinc-800 space-y-1.5 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-zinc-500">Khách chọn vận chuyển:</span>
-                  <span className="font-bold text-[#ff4655]">
-                    {customFulfillOrder.shippingMethodName || customFulfillOrder.shipping_method_name || (
-                      customFulfillOrder.shippingMethod === 'express' ? 'GEARTECH SuperShip (Nội thành)' :
-                      customFulfillOrder.shippingMethod === 'fast' ? 'Giao hàng hỏa tốc 24H' :
-                      'Giao Hàng Nhanh (GHN Express)'
-                    )}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-zinc-500">Người nhận:</span>
-                  <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                    {customFulfillOrder.receiver_name || customFulfillOrder.shippingAddress?.receiverName} (
-                    {customFulfillOrder.phone || customFulfillOrder.shippingAddress?.receiverPhone})
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-zinc-500">Địa chỉ:</span>
-                  <span className="font-medium text-zinc-700 dark:text-zinc-300 truncate max-w-[280px]">
-                    {customFulfillOrder.shipping_address || customFulfillOrder.shippingAddress?.detailAddress}
-                  </span>
-                </div>
-              </div>
-
-              {/* Form chọn hãng & nhập mã */}
-              <div className="space-y-3 text-xs">
-                <div>
-                  <label className="block text-[10px] font-bold uppercase text-zinc-500 mb-1">
-                    Đơn vị vận chuyển / Hình thức giao:
-                  </label>
-                  <select
-                    value={customFulfillParams.carrier}
-                    onChange={(e) => setCustomFulfillParams({ ...customFulfillParams, carrier: e.target.value })}
-                    className="w-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-[#ff4655]"
-                  >
-                    <option value="Ahamove">Ahamove (Giao hỏa tốc xe máy)</option>
-                    <option value="GrabExpress">GrabExpress (Giao siêu tốc 1-2H)</option>
-                    <option value="GEARTECH SuperShip (Tự giao)">GEARTECH SuperShip (Shop tự giao nội bộ)</option>
-                    <option value="Viettel Post">Viettel Post</option>
-                    <option value="J&T Express">J&T Express</option>
-                    <option value="Khác">Đơn vị khác (Tự nhập)</option>
-                  </select>
-                </div>
-
-                {customFulfillParams.carrier === 'Khác' && (
-                  <div>
-                    <label className="block text-[10px] font-bold uppercase text-zinc-500 mb-1">
-                      Tên đơn vị vận chuyển:
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Ví dụ: BeDelivery, Shopee Xpress..."
-                      value={customFulfillParams.customCarrierName}
-                      onChange={(e) => setCustomFulfillParams({ ...customFulfillParams, customCarrierName: e.target.value })}
-                      className="w-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-[#ff4655]"
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="block text-[10px] font-bold uppercase text-zinc-500">
-                      Mã vận đơn / Số theo dõi:
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => setCustomFulfillParams({
-                        ...customFulfillParams,
-                        trackingCode: `GT-${(customFulfillOrder.shippingMethod || 'EXP').toUpperCase()}-${Date.now().toString().slice(-6)}`
-                      })}
-                      className="text-[9px] text-blue-500 hover:underline font-mono"
-                    >
-                      Tự sinh mã GEARTECH
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Nhập mã vận đơn từ shipper hoặc bấm Tự sinh mã"
-                    value={customFulfillParams.trackingCode}
-                    onChange={(e) => setCustomFulfillParams({ ...customFulfillParams, trackingCode: e.target.value })}
-                    className="w-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-2.5 text-xs font-mono focus:outline-none focus:border-[#ff4655]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-bold uppercase text-zinc-500 mb-1">
-                    Ghi chú giao hàng (Tùy chọn):
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Ví dụ: Đã bàn giao shipper Ahamove lúc 14h30"
-                    value={customFulfillParams.note}
-                    onChange={(e) => setCustomFulfillParams({ ...customFulfillParams, note: e.target.value })}
-                    className="w-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg p-2.5 text-xs focus:outline-none focus:border-[#ff4655]"
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
-                <button
-                  type="button"
-                  onClick={() => setCustomFulfillOrder(null)}
-                  disabled={isSubmittingFulfill}
-                  className="px-4 py-2 text-xs font-bold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors"
-                >
-                  Đóng
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirmCustomFulfill}
-                  disabled={isSubmittingFulfill}
-                  className="px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-lg shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50"
-                >
-                  <CheckCircle size={14} weight="bold" />
-                  {isSubmittingFulfill ? 'Đang xác nhận...' : 'Xác nhận xuất kho & Giao hàng'}
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      <CustomFulfillmentModal
+        order={customFulfillOrder}
+        params={customFulfillParams}
+        setParams={setCustomFulfillParams}
+        isSubmitting={isSubmittingFulfill}
+        onClose={() => setCustomFulfillOrder(null)}
+        onSubmit={handleConfirmCustomFulfill}
+      />
     </motion.div>
   )
 }

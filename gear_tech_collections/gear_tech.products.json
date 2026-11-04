@@ -45,7 +45,7 @@
     ],
     "status": "active",
     "rating": {
-      "$numberDouble": "4.8"
+      "$numberInt": "0"
     },
     "review_count": {
       "$numberInt": "25"
@@ -69,7 +69,7 @@
     "title": "ASUS GeForce RTX Gaming",
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190337"
+        "$numberLong": "1793793488535"
       }
     },
     "salesCount": "ĐÃ BÁN 0",
@@ -80,7 +80,7 @@
       "$numberInt": "0"
     },
     "listedQty": {
-      "$numberInt": "0"
+      "$numberInt": "10"
     },
     "categoryId": {
       "$oid": "6ad6c432a4d565be918bd289"
@@ -96,6 +96,18 @@
       "Loại bộ nhớ": "GDDR7",
       "Chuẩn giao tiếp": "PCIe 5.0",
       "Công suất nguồn đề nghị": "650W"
+    },
+    "__v": {
+      "$numberInt": "1"
+    },
+    "gallery": [],
+    "imageEmoji": "📦",
+    "isFeatured": false,
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "10"
     }
   },
   {
@@ -112,7 +124,7 @@
     "category": "components",
     "categoryName": "LINH KIỆN MÁY TÍNH",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -138,7 +150,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792937948979"
+        "$numberLong": "1793793488543"
       }
     },
     "__v": {
@@ -184,7 +196,8 @@
         "name": "Bảo hành",
         "value": "36 tháng"
       }
-    ]
+    ],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -283,7 +296,8 @@
       "Keycap": "PBT Doubleshot siêu bền",
       "Đèn LED": "RGB từng phím Aura Sync",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -300,7 +314,7 @@
     "category": "peripherals",
     "categoryName": "BÀN PHÍM & CHUỘT",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -322,7 +336,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920801"
+        "$numberLong": "1793793488551"
       }
     },
     "__v": {
@@ -371,7 +385,8 @@
       "Trọng lượng": "58g siêu nhẹ",
       "Thời lượng pin": "Lên đến 80 giờ liên tục",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -388,7 +403,7 @@
     "category": "monitors",
     "categoryName": "MÀN HÌNH MÁY TÍNH",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -410,7 +425,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920794"
+        "$numberLong": "1793793488554"
       }
     },
     "__v": {
@@ -469,7 +484,8 @@
       "Thời gian đáp ứng": "1ms GTG",
       "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
       "Bảo hành": "36 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -486,7 +502,7 @@
     "category": "peripherals",
     "categoryName": "BÀN PHÍM & CHUỘT",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -508,7 +524,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920801"
+        "$numberLong": "1793793488557"
       }
     },
     "__v": {
@@ -557,7 +573,8 @@
       "Trọng lượng": "58g siêu nhẹ",
       "Thời lượng pin": "Lên đến 80 giờ liên tục",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -574,7 +591,7 @@
     "category": "monitors",
     "categoryName": "MÀN HÌNH MÁY TÍNH",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -596,7 +613,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920794"
+        "$numberLong": "1793793488559"
       }
     },
     "__v": {
@@ -655,7 +672,8 @@
       "Thời gian đáp ứng": "1ms GTG",
       "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
       "Bảo hành": "36 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -672,7 +690,7 @@
     "category": "peripherals",
     "categoryName": "BÀN PHÍM & CHUỘT",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -694,7 +712,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920801"
+        "$numberLong": "1793793488562"
       }
     },
     "__v": {
@@ -743,7 +761,8 @@
       "Trọng lượng": "58g siêu nhẹ",
       "Thời lượng pin": "Lên đến 80 giờ liên tục",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -760,7 +779,7 @@
     "category": "monitors",
     "categoryName": "MÀN HÌNH MÁY TÍNH",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -782,7 +801,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920794"
+        "$numberLong": "1793793488565"
       }
     },
     "__v": {
@@ -841,7 +860,8 @@
       "Thời gian đáp ứng": "1ms GTG",
       "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
       "Bảo hành": "36 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -858,7 +878,7 @@
     "category": "peripherals",
     "categoryName": "BÀN PHÍM & CHUỘT",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -880,7 +900,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920801"
+        "$numberLong": "1793793488569"
       }
     },
     "__v": {
@@ -929,7 +949,8 @@
       "Trọng lượng": "58g siêu nhẹ",
       "Thời lượng pin": "Lên đến 80 giờ liên tục",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -946,7 +967,7 @@
     "category": "monitors",
     "categoryName": "MÀN HÌNH MÁY TÍNH",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -968,7 +989,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920794"
+        "$numberLong": "1793793488573"
       }
     },
     "__v": {
@@ -1027,7 +1048,8 @@
       "Thời gian đáp ứng": "1ms GTG",
       "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
       "Bảo hành": "36 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -1056,7 +1078,7 @@
     "categoryName": "MÀN HÌNH MÁY TÍNH",
     "brand": "asus",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -1087,7 +1109,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190342"
+        "$numberLong": "1793793488575"
       }
     },
     "__v": {
@@ -1143,7 +1165,8 @@
         "name": "Bảo hành",
         "value": "36 tháng chính hãng"
       }
-    ]
+    ],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -1169,7 +1192,7 @@
     "categoryName": "MÀN HÌNH MÁY TÍNH",
     "brand": "asus",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -1200,7 +1223,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190343"
+        "$numberLong": "1793793488578"
       }
     },
     "__v": {
@@ -1256,7 +1279,8 @@
         "name": "Bảo hành",
         "value": "36 tháng chính hãng"
       }
-    ]
+    ],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -1283,7 +1307,7 @@
     "categoryName": "MÀN HÌNH MÁY TÍNH",
     "brand": "asus",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -1314,7 +1338,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793709069658"
+        "$numberLong": "1793793488580"
       }
     },
     "__v": {
@@ -1398,10 +1422,10 @@
     "categoryName": "PC & WORKSTATION",
     "brand": "geartech",
     "rating": {
-      "$numberDouble": "4.8"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "36"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 85",
     "soldCount": {
@@ -1430,7 +1454,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792935920813"
+        "$numberLong": "1793793488582"
       }
     },
     "__v": {
@@ -1464,7 +1488,8 @@
       "Giao tiếp": "PCIe 4.0 x16",
       "Nguồn đề nghị": "650W trở lên",
       "Bảo hành": "36 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -1491,10 +1516,10 @@
     "categoryName": "PC & WORKSTATION",
     "brand": "asus",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "18"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 24",
     "soldCount": {
@@ -1523,7 +1548,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190345"
+        "$numberLong": "1793793488585"
       }
     },
     "__v": {
@@ -1563,7 +1588,8 @@
       "Giao tiếp": "PCIe 4.0 x16",
       "Nguồn đề nghị": "650W trở lên",
       "Bảo hành": "36 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -1590,10 +1616,10 @@
     "categoryName": "PC & WORKSTATION",
     "brand": "msi",
     "rating": {
-      "$numberDouble": "4.9"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "14"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 19",
     "soldCount": {
@@ -1622,7 +1648,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190346"
+        "$numberLong": "1793793488587"
       }
     },
     "__v": {
@@ -1662,7 +1688,8 @@
       "Giao tiếp": "PCIe 4.0 x16",
       "Nguồn đề nghị": "650W trở lên",
       "Bảo hành": "36 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -1689,10 +1716,10 @@
     "categoryName": "PC & WORKSTATION",
     "brand": "asus",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "9"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 12",
     "soldCount": {
@@ -1721,7 +1748,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190346"
+        "$numberLong": "1793793488591"
       }
     },
     "__v": {
@@ -1761,7 +1788,8 @@
       "Giao tiếp": "PCIe 4.0 x16",
       "Nguồn đề nghị": "650W trở lên",
       "Bảo hành": "36 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -1788,10 +1816,10 @@
     "categoryName": "LAPTOP & MACBOOK",
     "brand": "asus",
     "rating": {
-      "$numberDouble": "4.9"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "22"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 45",
     "soldCount": {
@@ -1820,7 +1848,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190347"
+        "$numberLong": "1793793488593"
       }
     },
     "__v": {
@@ -1875,7 +1903,8 @@
       "Hệ điều hành": "Windows 11 Home",
       "Trọng lượng": "2.2 kg",
       "Bảo hành": "24 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -1902,10 +1931,10 @@
     "categoryName": "LAPTOP & MACBOOK",
     "brand": "apple",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "31"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 62",
     "soldCount": {
@@ -1934,7 +1963,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190348"
+        "$numberLong": "1793793488596"
       }
     },
     "__v": {
@@ -1989,7 +2018,8 @@
       "Hệ điều hành": "Windows 11 Home",
       "Trọng lượng": "2.2 kg",
       "Bảo hành": "24 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2018,10 +2048,10 @@
     "categoryName": "LAPTOP & MACBOOK",
     "brand": "acer",
     "rating": {
-      "$numberDouble": "4.8"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "19"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 43",
     "soldCount": {
@@ -2050,7 +2080,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793707388008"
+        "$numberLong": "1793793488598"
       }
     },
     "__v": {
@@ -2105,7 +2135,8 @@
       "Hệ điều hành": "Windows 11 Home",
       "Trọng lượng": "2.2 kg",
       "Bảo hành": "24 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2132,10 +2163,10 @@
     "categoryName": "LAPTOP & MACBOOK",
     "brand": "lenovo",
     "rating": {
-      "$numberDouble": "4.9"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "16"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 28",
     "soldCount": {
@@ -2164,7 +2195,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190349"
+        "$numberLong": "1793793488601"
       }
     },
     "__v": {
@@ -2219,7 +2250,8 @@
       "Hệ điều hành": "Windows 11 Home",
       "Trọng lượng": "2.2 kg",
       "Bảo hành": "24 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2238,7 +2270,7 @@
     "category": "peripherals",
     "categoryName": "Phụ kiện công nghệ",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -2276,7 +2308,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190350"
+        "$numberLong": "1793793488604"
       }
     },
     "__v": {
@@ -2310,7 +2342,8 @@
         "name": "Bảo hành",
         "value": "24 tháng"
       }
-    ]
+    ],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2329,7 +2362,7 @@
     "category": "peripherals",
     "categoryName": "Phụ kiện công nghệ",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -2367,7 +2400,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190351"
+        "$numberLong": "1793793488606"
       }
     },
     "__v": {
@@ -2401,7 +2434,8 @@
         "name": "Bảo hành",
         "value": "24 tháng"
       }
-    ]
+    ],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2417,7 +2451,7 @@
     "category": "chuột & bàn phím",
     "categoryName": "Phụ kiện công nghệ",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -2449,7 +2483,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793028594456"
+        "$numberLong": "1793793488608"
       }
     },
     "__v": {
@@ -2483,7 +2517,8 @@
       "Trọng lượng": "58g siêu nhẹ",
       "Thời lượng pin": "Lên đến 80 giờ liên tục",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2509,7 +2544,7 @@
     "categoryName": "MÀN HÌNH MÁY TÍNH",
     "brand": "acer",
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
       "$numberInt": "0"
@@ -2549,7 +2584,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190352"
+        "$numberLong": "1793793488610"
       }
     },
     "__v": {
@@ -2590,7 +2625,8 @@
         "name": "Bảo hành",
         "value": "36 tháng chính hãng"
       }
-    ]
+    ],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2601,19 +2637,17 @@
     "price": {
       "$numberInt": "3890000"
     },
-    "oldPrice": {
-      "$numberInt": "4290000"
-    },
-    "discount": "-9%",
-    "imageEmoji": "🖱️",
+    "imageEmoji": "http://localhost:5000/uploads/products/products-1793785511189-983888992.webp",
     "gallery": [
-      "🖱️"
+      "http://localhost:5000/uploads/products/products-1793785511189-983888992.webp",
+      "http://localhost:5000/uploads/products/products-1793785511189-502693695.webp",
+      "http://localhost:5000/uploads/products/products-1793785511190-63713362.webp"
     ],
     "category": "peripherals",
     "categoryId": {
       "$oid": "6ad6c432a4d565be918bd28b"
     },
-    "categoryName": "Bàn phím & Chuột",
+    "categoryName": "BÀN PHÍM & CHUỘT",
     "brand": "razer",
     "brandId": {
       "$oid": "6ad6c9179f350cfe3da73410"
@@ -2622,10 +2656,10 @@
       "$oid": "6ad6c9179f350cfe3da73410"
     },
     "rating": {
-      "$numberDouble": "4.9"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "42"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 156",
     "soldCount": {
@@ -2654,11 +2688,11 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190358"
+        "$numberLong": "1793793488612"
       }
     },
     "__v": {
-      "$numberInt": "0"
+      "$numberInt": "1"
     },
     "specifications": [
       {
@@ -2689,7 +2723,11 @@
       "Thời lượng pin": "Lên đến 80 giờ liên tục",
       "Bảo hành": "24 tháng"
     },
-    "isFeatured": true
+    "isFeatured": true,
+    "discount": "3%",
+    "oldPrice": {
+      "$numberInt": "4000000"
+    }
   },
   {
     "_id": {
@@ -2721,10 +2759,10 @@
       "$oid": "6ad6c9179f350cfe3da73410"
     },
     "rating": {
-      "$numberDouble": "4.8"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "28"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 89",
     "soldCount": {
@@ -2753,7 +2791,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190363"
+        "$numberLong": "1793793488615"
       }
     },
     "__v": {
@@ -2787,7 +2825,8 @@
       "Keycap": "PBT Doubleshot siêu bền",
       "Đèn LED": "RGB từng phím Aura Sync",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2819,10 +2858,10 @@
       "$oid": "6ad6c9179f350cfe3da73411"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "110"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 340",
     "soldCount": {
@@ -2851,7 +2890,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793637190368"
+        "$numberLong": "1793793488617"
       }
     },
     "__v": {
@@ -2885,7 +2924,8 @@
       "Trọng lượng": "58g siêu nhẹ",
       "Thời lượng pin": "Lên đến 80 giờ liên tục",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -2917,10 +2957,10 @@
       "$oid": "6ad6c9179f350cfe3da73411"
     },
     "rating": {
-      "$numberDouble": "4.8"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "65"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 210",
     "soldCount": {
@@ -2949,7 +2989,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793706357287"
+        "$numberLong": "1793793488619"
       }
     },
     "__v": {
@@ -2983,7 +3023,8 @@
       "Keycap": "PBT Doubleshot siêu bền",
       "Đèn LED": "RGB từng phím Aura Sync",
       "Bảo hành": "24 tháng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -3015,10 +3056,10 @@
       "$oid": "6ad6c9179f350cfe3da73413"
     },
     "rating": {
-      "$numberDouble": "4.9"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "34"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 95",
     "soldCount": {
@@ -3047,13 +3088,14 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793706259398"
+        "$numberLong": "1793793488621"
       }
     },
     "__v": {
       "$numberInt": "1"
     },
-    "specifications": []
+    "specifications": [],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -3085,10 +3127,10 @@
       "$oid": "6ad6c9179f350cfe3da73413"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "19"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 45",
     "soldCount": {
@@ -3117,13 +3159,14 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793706214411"
+        "$numberLong": "1793793488623"
       }
     },
     "__v": {
       "$numberInt": "1"
     },
-    "specifications": []
+    "specifications": [],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -3155,10 +3198,10 @@
       "$oid": "6ad6c9179f350cfe3da73414"
     },
     "rating": {
-      "$numberDouble": "4.9"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "52"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 180",
     "soldCount": {
@@ -3187,13 +3230,14 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793706155275"
+        "$numberLong": "1793793488625"
       }
     },
     "__v": {
       "$numberInt": "1"
     },
-    "specifications": []
+    "specifications": [],
+    "isFeatured": false
   },
   {
     "_id": {
@@ -3225,10 +3269,10 @@
       "$oid": "6ad6c9179f350cfe3da73415"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "88"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 260",
     "soldCount": {
@@ -3257,7 +3301,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793706101038"
+        "$numberLong": "1793793488628"
       }
     },
     "__v": {
@@ -3330,7 +3374,8 @@
       "Cổng kết nối": "2 x DisplayPort 1.4, 1 x HDMI 1.4, 2 x USB-A, 3 x USB Type-C (Display port,Power Delivery)",
       "Bảo hành": "36 tháng chính hãng",
       "Hiển thị màu sắc:": "16.7 triệu màu"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -3362,10 +3407,10 @@
       "$oid": "6ad6c9179f350cfe3da73416"
     },
     "rating": {
-      "$numberDouble": "4.9"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "31"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 72",
     "soldCount": {
@@ -3394,7 +3439,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793705964282"
+        "$numberLong": "1793793488630"
       }
     },
     "__v": {
@@ -3438,7 +3483,8 @@
       "Thời gian đáp ứng": "1ms GTG",
       "Cổng kết nối": "2x HDMI 2.0, 1x DP 1.4",
       "Bảo hành": "36 tháng chính hãng"
-    }
+    },
+    "isFeatured": false
   },
   {
     "_id": {
@@ -3472,10 +3518,10 @@
       "$oid": "6ad6c9179f350cfe3da73416"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "reviewsCount": {
-      "$numberInt": "145"
+      "$numberInt": "0"
     },
     "salesCount": "ĐÃ BÁN 520",
     "soldCount": {
@@ -3504,7 +3550,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793709063735"
+        "$numberLong": "1793793488633"
       }
     },
     "__v": {
@@ -3512,5 +3558,194 @@
     },
     "specifications": [],
     "isFeatured": true
+  },
+  {
+    "_id": {
+      "$oid": "6aeb06f982490f5144a61370"
+    },
+    "title": "PC TTG AMD GAMING RYZEN 7 9800X3D - RTX 5070 Ti 16GB OC (Cấu hình gốc)",
+    "name": "PC TTG AMD GAMING RYZEN 7 9800X3D - RTX 5070 Ti 16GB OC (Cấu hình gốc)",
+    "description": "CPU AMD Ryzen 7 9800X3D (AMD AM5 - 8 Core - 16 Thread - Base 4.7Ghz - Turbo 5.2Ghz - Cache 104MB) (TRAY)\nMainboard ASUS B650M-E TUF GAMING WIFI DDR5\nRAM APACER NOX 32GB (2x16GB) BUSS 5200MHZ DDR5 BLACK\nỔ cứng SSD HIKSEMI WAVE 512GB M.2 2280 PCIe 3.0x4\nNguồn Antec GSK850 850W (80 Plus Gold / Full-Modular / ATX 3.1 - PCIE 5.1)\nCard màn hình ZOTAC GAMING GeForce RTX 5070Ti SOLID SFF OC 16GB GDDR7\nVỎ CASE XIGMATEK PANO II BLACK - KÈM 8 FAN ARGB BLACK\nTản nhiệt nước AIO ID-Cooling FX360 LCD ARGB Black",
+    "price": {
+      "$numberInt": "71980000"
+    },
+    "oldPrice": {
+      "$numberInt": "75990000"
+    },
+    "discount": "5%",
+    "imageEmoji": "http://localhost:5000/uploads/products/products-1793787626643-466977758.jpg",
+    "gallery": [
+      "http://localhost:5000/uploads/products/products-1793787626643-466977758.jpg",
+      "http://localhost:5000/uploads/products/products-1793787626644-675424277.jpg"
+    ],
+    "category": "desktops",
+    "categoryName": "PC & WORKSTATION",
+    "brand": "asus",
+    "rating": {
+      "$numberInt": "0"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "isFeatured": false,
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "20"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "20"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specifications": [],
+    "specs": {},
+    "slug": "pc-ttg-amd-gaming-ryzen-7-9800x3d---rtx-5070-ti-16gb-oc-cau-hinh-goc",
+    "sku": "GT-MW1YUI5X",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793787641207"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793793488636"
+      }
+    },
+    "__v": {
+      "$numberInt": "0"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "6aeb1c0293768fea0ade0db2"
+    },
+    "title": "Chuột Razer Viper V3 Pro CS2 Counter-Strike 2 Edition",
+    "name": "Chuột Razer Viper V3 Pro CS2 Counter-Strike 2 Edition",
+    "description": "Chuột Razer Viper V3 Pro CS2 Counter-Strike 2 Edition\nPhiên bản đặc biệt với Skin CS2 Dragon Lore đẳng cấp nhất\n2 chế độ kết nối: Không dây HyperSpeed và có dây USB\nSử dụng cảm biến Razer Focus Pro 35K Gen-2\nDPI tối đa lên tới 35.000, tốc độ lướt tối đa 750IPS và gia tốc chịu đựng tối đa lên tới 70G\nNút bấm quang học thế hệ thứ 3, siêu bền\nTrọng lượng siêu nhẹ, chỉ 55gram\nFeet 100% PTFE\nKhông có LED\nThời lượng pin lên tới 95 giờ (ở polling rate 1000Hz)",
+    "price": {
+      "$numberInt": "4090000"
+    },
+    "oldPrice": {
+      "$numberInt": "4990000"
+    },
+    "discount": "18%",
+    "imageEmoji": "http://localhost:5000/uploads/products/products-1793793013009-789720895.png",
+    "gallery": [
+      "http://localhost:5000/uploads/products/products-1793793013009-789720895.png",
+      "http://localhost:5000/uploads/products/products-1793793018041-923884955.png",
+      "http://localhost:5000/uploads/products/products-1793793018041-636474111.png",
+      "http://localhost:5000/uploads/products/products-1793793018042-264856702.png",
+      "http://localhost:5000/uploads/products/products-1793793048506-703221122.png"
+    ],
+    "category": "peripherals",
+    "categoryName": "BÀN PHÍM & CHUỘT",
+    "brand": "razer",
+    "rating": {
+      "$numberInt": "0"
+    },
+    "reviewsCount": {
+      "$numberInt": "0"
+    },
+    "isFeatured": false,
+    "salesCount": "ĐÃ BÁN 0",
+    "soldCount": {
+      "$numberInt": "0"
+    },
+    "stock": {
+      "$numberInt": "20"
+    },
+    "warehouseStock": {
+      "$numberInt": "0"
+    },
+    "listedQty": {
+      "$numberInt": "20"
+    },
+    "status": "active",
+    "shopId": {
+      "$oid": "6ac11efa2de58adcc60f3c56"
+    },
+    "specifications": [
+      {
+        "name": "Form Factor (Kiểu dáng)",
+        "value": "Đối xứng, thiết kế cho người thuận tay phải",
+        "_id": {
+          "$oid": "6aeb1c0293768fea0ade0db3"
+        }
+      },
+      {
+        "name": "DPI",
+        "value": "35.000 DPI",
+        "_id": {
+          "$oid": "6aeb1c0293768fea0ade0db4"
+        }
+      },
+      {
+        "name": "Kết nối",
+        "value": "Razer HyperSpeed Wireless / Có dây (USB Type-C)",
+        "_id": {
+          "$oid": "6aeb1c0293768fea0ade0db5"
+        }
+      },
+      {
+        "name": "IPS",
+        "value": "750 IPS",
+        "_id": {
+          "$oid": "6aeb1c0293768fea0ade0db6"
+        }
+      },
+      {
+        "name": "Thời lượng pin",
+        "value": "- Lên đến 95 giờ ở 1000 Hz- Lên đến 62 giờ ở 2000 Hz- Lên đến 40 giờ ở 4000 Hz- Lên đến 17 giờ ở 8000 Hz",
+        "_id": {
+          "$oid": "6aeb1c0293768fea0ade0db7"
+        }
+      },
+      {
+        "name": "Đèn RGB",
+        "value": "Không có",
+        "_id": {
+          "$oid": "6aeb1c0293768fea0ade0db8"
+        }
+      },
+      {
+        "name": "Cảm biến",
+        "value": "Focus Pro 35K Optical Sensor Gen-2",
+        "_id": {
+          "$oid": "6aeb1c0293768fea0ade0db9"
+        }
+      }
+    ],
+    "specs": {
+      "Form Factor (Kiểu dáng)": "Đối xứng, thiết kế cho người thuận tay phải",
+      "DPI": "35.000 DPI",
+      "Kết nối": "Razer HyperSpeed Wireless / Có dây (USB Type-C)",
+      "IPS": "750 IPS",
+      "Thời lượng pin": "- Lên đến 95 giờ ở 1000 Hz- Lên đến 62 giờ ở 2000 Hz- Lên đến 40 giờ ở 4000 Hz- Lên đến 17 giờ ở 8000 Hz",
+      "Đèn RGB": "Không có",
+      "Cảm biến": "Focus Pro 35K Optical Sensor Gen-2"
+    },
+    "slug": "chuot-razer-viper-v3-pro-cs2-counter-strike-2-edition",
+    "sku": "GT-MW221XML",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1793793026693"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1793793488639"
+      }
+    },
+    "__v": {
+      "$numberInt": "5"
+    }
   }
 ]

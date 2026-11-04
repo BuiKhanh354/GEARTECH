@@ -227,8 +227,8 @@ export default function StorePage() {
                         </div>
 
                         <div className="flex items-center gap-3 shrink-0">
-                          <span className="flex items-center gap-1 text-amber-500 font-bold">
-                            <Star size={11} weight="fill" /> {shop.rating || 5.0}
+                          <span className={`flex items-center gap-1 font-bold ${Number(shop.rating) > 0 ? 'text-amber-500' : 'text-zinc-400'}`}>
+                            <Star size={11} weight={Number(shop.rating) > 0 ? 'fill' : 'regular'} /> {Number(shop.rating) > 0 ? Number(shop.rating).toFixed(1) : '0.0'}
                           </span>
                           <span className="text-zinc-400">•</span>
                           <span>{shop.total_products || 0} SP</span>

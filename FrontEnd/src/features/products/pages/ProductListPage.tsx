@@ -618,7 +618,7 @@ export default function ProductListPage() {
                           alt={prod.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        {prod.discount && (
+                        {prod.discount && prod.oldPrice && prod.oldPrice > prod.price && (
                           <span className="absolute top-3 right-3 bg-[#ff4655] text-white text-[10px] font-black px-2 py-0.5 rounded shadow">
                             {prod.discount}
                           </span>
@@ -631,15 +631,17 @@ export default function ProductListPage() {
                         <div className="space-y-1">
                           <div className="flex items-baseline gap-2">
                             <span className="current-price text-sm font-extrabold text-[#ff4655]">{formatPrice(prod.price)}</span>
-                            {prod.oldPrice && (
+                            {prod.oldPrice && prod.oldPrice > prod.price && (
                               <span className="old-price text-[10px] text-zinc-400 line-through">{formatPrice(prod.oldPrice)}</span>
                             )}
                           </div>
                           
                           <div className="flex items-center justify-between pt-1 border-t border-zinc-100 dark:border-zinc-800/60 mt-1">
                             <div className="flex items-center gap-0.5">
-                              {renderStars(prod.rating)}
-                              <span className="text-[10px] font-semibold text-amber-500 ml-1">{prod.rating}</span>
+                              {renderStars(prod.rating || 0)}
+                              <span className={`text-[10px] font-semibold ml-1 ${Number(prod.rating) > 0 ? 'text-amber-500' : 'text-zinc-400'}`}>
+                                {Number(prod.rating) > 0 ? Number(prod.rating).toFixed(1) : '0.0'}
+                              </span>
                             </div>
                             <span className="text-[10px] font-bold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">{prod.salesCount || 'Chính hãng'}</span>
                           </div>

@@ -5,14 +5,20 @@ require('dotenv').config();
 
 const connectDB = require('./config/db');
 
-// Khởi tạo Express
 const app = express();
 
-// Kết nối cơ sở dữ liệu MongoDB
-connectDB();
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',').map((origin) => origin.trim()).filter(Boolean)
+  : process.env.NODE_ENV === 'production'
+    ? []
+    : ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:8081'];
 
-// Cấu hình Middleware
-app.use(cors());
+app.use(cors({
+  origin(origin, callback) {
+    // Native clients and server-to-server requests do not send an Origin header.
+    return callback(null, !origin || allowedOrigins.includes(origin));
+  }
+}));
 app.use(express.json());
 
 // Phục vụ file tĩnh (ảnh sản phẩm đã upload)
@@ -60,11 +66,23 @@ app.use((req, res, next) => {
 // Middleware xử lý lỗi hệ thống toàn cục (Global Error Handler)
 app.use((err, req, res, next) => {
   console.error('❌ Lỗi hệ thống phát sinh:', err.stack);
-  res.status(500).json({ error: 'Lỗi hệ thống máy chủ.', details: err.message });
+  res.status(500).json({ error: 'Lỗi hệ thống máy chủ.' });
 });
 
-// Cổng chạy ứng dụng
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server backend GearTech đang chạy trên cổng ${PORT} (0.0.0.0)`);
+const startServer = async () => {
+  if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'your_jwt_secret_here') {
+    throw new Error('JWT_SECRET must be set to a strong, private value before starting the server.');
+  }
+
+  await connectDB();
+
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`GearTech backend listening on port ${PORT}`);
+  });
+};
+
+startServer().catch((error) => {
+  console.error(`Backend startup failed: ${error.message}`);
+  process.exit(1);
 });

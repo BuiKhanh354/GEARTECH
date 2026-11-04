@@ -49,13 +49,15 @@ export const ProductInfoActions: React.FC<ProductInfoActionsProps> = ({
         </h1>
 
         {/* Rating & Sales */}
-        <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-1 text-amber-500 font-bold">
-            <Star size={14} weight="fill" />
-            <span>{averageRating}</span>
+        <div className="flex items-center gap-3 sm:gap-4 text-xs flex-wrap">
+          <div className={`flex items-center gap-1 font-bold ${Number(averageRating) > 0 ? 'text-amber-500' : 'text-zinc-400'}`}>
+            <Star size={14} weight={Number(averageRating) > 0 ? 'fill' : 'regular'} />
+            <span>{Number(averageRating) > 0 ? Number(averageRating).toFixed(1) : '0.0'}</span>
           </div>
           <span className="text-zinc-400">|</span>
-          <span className="text-zinc-500 font-medium">{totalReviews} Đánh giá</span>
+          <span className="text-zinc-500 font-medium">
+            {totalReviews > 0 ? `${totalReviews} Đánh giá` : 'Chưa có đánh giá'}
+          </span>
           <span className="text-zinc-400">|</span>
           <span className="text-emerald-500 font-bold font-mono">{product.salesCount || 'ĐÃ BÁN 0'}</span>
         </div>

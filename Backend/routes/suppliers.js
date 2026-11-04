@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const Supplier = require('../models/Supplier');
@@ -50,7 +51,7 @@ router.get('/', auth, async (req, res) => {
 
     return res.json(suppliers);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy danh sách nhà cung cấp.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy danh sách nhà cung cấp.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -73,7 +74,7 @@ router.get('/:id', auth, async (req, res) => {
 
     return res.json(supplier);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy chi tiết nhà cung cấp.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy chi tiết nhà cung cấp.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -138,7 +139,7 @@ router.post('/', auth, async (req, res) => {
       supplier: newSupplier
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi thêm nhà cung cấp.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thêm nhà cung cấp.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -190,7 +191,7 @@ router.put('/:id', auth, async (req, res) => {
       supplier
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi cập nhật nhà cung cấp.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật nhà cung cấp.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -230,7 +231,7 @@ router.delete('/:id', auth, async (req, res) => {
     await Supplier.deleteOne({ _id: supplier._id });
     return res.json({ message: 'Xóa nhà cung cấp thành công!' });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi xóa nhà cung cấp.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xóa nhà cung cấp.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

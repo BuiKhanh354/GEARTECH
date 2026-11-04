@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const Voucher = require('../models/Voucher');
@@ -76,7 +77,7 @@ router.get('/', async (req, res) => {
 
     res.json(vouchers);
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi lấy danh sách mã giảm giá.', details: error.message });
+    res.status(500).json({ error: 'Lỗi lấy danh sách mã giảm giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -92,7 +93,7 @@ router.get('/admin', auth, checkRole(['admin']), async (req, res) => {
 
     res.json(vouchers);
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi lấy danh sách voucher quản trị.', details: error.message });
+    res.status(500).json({ error: 'Lỗi lấy danh sách voucher quản trị.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -115,7 +116,7 @@ router.get('/shop/my-vouchers', auth, checkRole(['shop', 'admin']), async (req, 
       vouchers
     });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi lấy danh sách voucher của shop.', details: error.message });
+    res.status(500).json({ error: 'Lỗi lấy danh sách voucher của shop.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -191,7 +192,7 @@ router.post('/shop', auth, checkRole(['shop', 'admin']), async (req, res) => {
     await newVoucher.save();
     res.status(201).json({ message: 'Tạo mã voucher cho gian hàng thành công!', voucher: newVoucher });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi tạo mã giảm giá cho shop.', details: error.message });
+    res.status(500).json({ error: 'Lỗi tạo mã giảm giá cho shop.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -272,7 +273,7 @@ router.put('/shop/:id', auth, checkRole(['shop', 'admin']), async (req, res) => 
     await voucher.save();
     res.json({ message: 'Cập nhật mã voucher thành công!', voucher });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi cập nhật voucher của shop.', details: error.message });
+    res.status(500).json({ error: 'Lỗi cập nhật voucher của shop.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -301,7 +302,7 @@ router.patch('/shop/:id/status', auth, checkRole(['shop', 'admin']), async (req,
     await voucher.save();
     res.json({ message: `Đã đổi trạng thái voucher sang "${status}".`, voucher });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi đổi trạng thái voucher.', details: error.message });
+    res.status(500).json({ error: 'Lỗi đổi trạng thái voucher.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -334,7 +335,7 @@ router.delete('/shop/:id', auth, checkRole(['shop', 'admin']), async (req, res) 
     await Voucher.findByIdAndDelete(req.params.id);
     res.json({ message: 'Đã xóa mã voucher thành công.' });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi xóa voucher của shop.', details: error.message });
+    res.status(500).json({ error: 'Lỗi xóa voucher của shop.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -432,7 +433,7 @@ router.post('/validate', async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi kiểm tra mã giảm giá.', details: error.message });
+    res.status(500).json({ error: 'Lỗi kiểm tra mã giảm giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -485,7 +486,7 @@ router.post('/', auth, checkRole(['admin']), async (req, res) => {
     await newVoucher.save();
     res.status(201).json({ message: 'Tạo mã giảm giá mới thành công!', voucher: newVoucher });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi tạo mã giảm giá.', details: error.message });
+    res.status(500).json({ error: 'Lỗi tạo mã giảm giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -539,7 +540,7 @@ router.put('/:id', auth, checkRole(['admin']), async (req, res) => {
     await voucher.save();
     res.json({ message: 'Cập nhật mã giảm giá thành công!', voucher });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi cập nhật mã giảm giá.', details: error.message });
+    res.status(500).json({ error: 'Lỗi cập nhật mã giảm giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -562,7 +563,7 @@ router.patch('/:id/status', auth, checkRole(['admin']), async (req, res) => {
 
     res.json({ message: `Đã chuyển trạng thái voucher sang "${status}".`, voucher });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi thay đổi trạng thái voucher.', details: error.message });
+    res.status(500).json({ error: 'Lỗi thay đổi trạng thái voucher.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -585,7 +586,7 @@ router.delete('/:id', auth, checkRole(['admin']), async (req, res) => {
     await Voucher.findByIdAndDelete(req.params.id);
     res.json({ message: 'Đã xóa mã giảm giá thành công.' });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi xóa mã giảm giá.', details: error.message });
+    res.status(500).json({ error: 'Lỗi xóa mã giảm giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

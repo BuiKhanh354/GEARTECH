@@ -1,6 +1,6 @@
 {
   "database": "gear_tech",
-  "exportedAt": "2026-11-03T16:09:52.893Z",
+  "exportedAt": "2026-11-04T14:17:18.092Z",
   "collections": {
     "financialtransactions": 9,
     "stock_movements": 30,
@@ -9,7 +9,7 @@
     "suppliers": 1,
     "homepageconfigs": 2,
     "brands": 11,
-    "productimages": 29,
+    "productimages": 39,
     "cartitems": 6,
     "carts": 15,
     "withdrawalrequests": 2,
@@ -17,9 +17,8 @@
     "shopwallets": 2,
     "favorites": 3,
     "categories": 9,
-    "products": 36,
+    "products": 38,
     "order_items": 22,
-    "products_backup_1793670553745": 36,
     "platformfeeconfigs": 1,
     "payments": 25,
     "cart_items": 1,

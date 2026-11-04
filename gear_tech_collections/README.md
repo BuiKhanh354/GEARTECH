@@ -22,3 +22,4 @@ npm run db:import
 
 ---
 Toàn bộ tài khoản quản trị (admin), gian hàng (shop), sản phẩm, danh mục, đơn hàng và cấu hình trang chủ sẽ được khôi phục đầy đủ.
+

@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const Favorite = require('../models/Favorite');
@@ -23,7 +24,7 @@ router.get('/', auth, async (req, res) => {
 
     return res.json(validFavorites);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy danh sách yêu thích.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy danh sách yêu thích.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -40,7 +41,7 @@ router.get('/check/:productId', auth, async (req, res) => {
 
     return res.json({ isFavorite: !!exists });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi kiểm tra yêu thích.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi kiểm tra yêu thích.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -87,7 +88,7 @@ router.post('/:productId', auth, async (req, res) => {
     if (error.code === 11000) {
       return res.status(200).json({ message: 'Sản phẩm đã được yêu thích.', isFavorite: true });
     }
-    return res.status(500).json({ error: 'Lỗi thêm sản phẩm yêu thích.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thêm sản phẩm yêu thích.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -112,7 +113,7 @@ router.delete('/:productId', auth, async (req, res) => {
       isFavorite: false
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi xóa sản phẩm yêu thích.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xóa sản phẩm yêu thích.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

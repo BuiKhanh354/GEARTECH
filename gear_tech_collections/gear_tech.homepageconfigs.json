@@ -5,11 +5,11 @@
     },
     "state": "published",
     "version": {
-      "$numberInt": "26"
+      "$numberInt": "27"
     },
     "publishedAt": {
       "$date": {
-        "$numberLong": "1793719698310"
+        "$numberLong": "1793793302275"
       }
     },
     "publishedBy": {
@@ -48,19 +48,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb013"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         }
       },
@@ -99,7 +100,7 @@
               "priceTag": "Giá từ 28.990.000₫",
               "ctaText": "Khám phá ngay",
               "link": "/ProductPage?category=desktops",
-              "imageUrl": "",
+              "imageUrl": "https://ttgshop.vn/media/product/250_1067310443_pc_ttg_amd_gaming_ryzen_5_7500f_rtx_5060_8gb_all_new_bao_hanh_36_thang14__1_.jpeg",
               "bgGradient": "from-zinc-950 via-zinc-900 to-black",
               "status": "active",
               "startDate": null,
@@ -128,19 +129,20 @@
           ],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb014"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         }
       },
@@ -173,19 +175,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb017"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         }
       },
@@ -222,19 +225,20 @@
             }
           },
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb018"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         }
       },
@@ -269,19 +273,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb019"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         }
       },
@@ -316,19 +321,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb01a"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         }
       },
@@ -361,19 +367,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb01b"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         }
       },
@@ -406,19 +413,66 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb01c"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793719698310"
+            "$numberLong": "1793793302275"
+          }
+        }
+      },
+      {
+        "sectionKey": "sec_service_features_1793720211566",
+        "title": "Trụ cột dịch vụ & Đặc quyền",
+        "subtitle": "3 Trụ cột dịch vụ: Trả góp 0%, Bảo hành 1 đổi 1 30 ngày, Gia",
+        "type": "service_features",
+        "status": "active",
+        "order": {
+          "$numberInt": "8"
+        },
+        "schedule": {
+          "isScheduled": false,
+          "startDate": null,
+          "endDate": null
+        },
+        "config": {
+          "categoryId": null,
+          "categorySlug": "",
+          "categoryName": "",
+          "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
+          "sortBy": "newest",
+          "showOutOfStock": false,
+          "showViewAll": true,
+          "viewAllLink": "",
+          "banners": [],
+          "countdownEnd": null,
+          "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
+          "manualProductIds": [],
+          "items": []
+        },
+        "_id": {
+          "$oid": "6ae9ff9874522d94c74e6a13"
+        },
+        "createdAt": {
+          "$date": {
+            "$numberLong": "1793793302275"
+          }
+        },
+        "updatedAt": {
+          "$date": {
+            "$numberLong": "1793793302275"
           }
         }
       }
@@ -430,7 +484,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793719698310"
+        "$numberLong": "1793793302275"
       }
     },
     "__v": {
@@ -482,19 +536,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb013"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       },
@@ -533,7 +588,7 @@
               "priceTag": "Giá từ 28.990.000₫",
               "ctaText": "Khám phá ngay",
               "link": "/ProductPage?category=desktops",
-              "imageUrl": "",
+              "imageUrl": "https://ttgshop.vn/media/product/250_1067310443_pc_ttg_amd_gaming_ryzen_5_7500f_rtx_5060_8gb_all_new_bao_hanh_36_thang14__1_.jpeg",
               "bgGradient": "from-zinc-950 via-zinc-900 to-black",
               "status": "active",
               "startDate": null,
@@ -562,19 +617,20 @@
           ],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb014"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       },
@@ -607,19 +663,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb017"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       },
@@ -656,19 +713,20 @@
             }
           },
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb018"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       },
@@ -703,19 +761,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb019"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       },
@@ -750,19 +809,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb01a"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       },
@@ -795,19 +855,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb01b"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       },
@@ -840,19 +901,20 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ade0711cdafcb29695cb01c"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       },
@@ -871,13 +933,13 @@
           "endDate": null
         },
         "config": {
-          "limit": {
-            "$numberInt": "8"
-          },
           "categoryId": null,
           "categorySlug": "",
           "categoryName": "",
           "includeChildren": true,
+          "limit": {
+            "$numberInt": "8"
+          },
           "sortBy": "newest",
           "showOutOfStock": false,
           "showViewAll": true,
@@ -885,26 +947,27 @@
           "banners": [],
           "countdownEnd": null,
           "tagline": "CẬP NHẬT GIÁ SỐC MỖI 24 GIỜ",
-          "manualProductIds": []
+          "manualProductIds": [],
+          "items": []
         },
         "_id": {
           "$oid": "6ae9ff9874522d94c74e6a13"
         },
         "createdAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         },
         "updatedAt": {
           "$date": {
-            "$numberLong": "1793720216253"
+            "$numberLong": "1793793302247"
           }
         }
       }
     ],
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793720216253"
+        "$numberLong": "1793793302247"
       }
     },
     "updatedBy": {

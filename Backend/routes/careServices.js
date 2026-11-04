@@ -13,7 +13,7 @@ const optionalAuth = async (req, res, next) => {
   }
   try {
     const token = authHeader.replace('Bearer ', '').trim();
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'GEARTECH_VALORANT_EDITION_SECRET_2026');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id);
     if (user && user.status === 'active') {
       req.user = user;

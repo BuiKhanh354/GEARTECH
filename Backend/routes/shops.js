@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const Shop = require('../models/Shop');
@@ -79,7 +80,7 @@ router.get('/', async (req, res) => {
 
     return res.json(formattedShops);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy danh sách đối tác shop.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy danh sách đối tác shop.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -126,7 +127,7 @@ router.get('/admin/all', auth, checkRole(['admin']), async (req, res) => {
       totalPages: Math.ceil(total / itemsPerPage)
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tải danh sách cửa hàng cho Admin.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải danh sách cửa hàng cho Admin.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -151,7 +152,7 @@ router.get('/my-shop', auth, async (req, res) => {
 
     return res.json({ shop });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tải thông tin gian hàng của bạn.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải thông tin gian hàng của bạn.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -298,7 +299,7 @@ router.get('/me/analytics', auth, async (req, res) => {
     });
   } catch (error) {
     console.error('Lỗi thống kê shop:', error);
-    return res.status(500).json({ error: 'Lỗi lấy thống kê kinh doanh.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy thống kê kinh doanh.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -332,7 +333,7 @@ router.get('/me/storefront', auth, async (req, res) => {
       publishedAt: shop.publishedAt
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy cấu hình giao diện shop.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy cấu hình giao diện shop.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -425,7 +426,7 @@ router.put('/me/storefront', auth, async (req, res) => {
       storefrontDraft: shop.storefrontDraft
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lưu bản nháp thiết kế gian hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lưu bản nháp thiết kế gian hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -463,7 +464,7 @@ router.post('/me/storefront/publish', auth, async (req, res) => {
       publishedAt: shop.publishedAt
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi xuất bản giao diện gian hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xuất bản giao diện gian hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -489,7 +490,7 @@ router.post('/me/storefront/reset', auth, async (req, res) => {
       storefrontDraft: shop.storefrontDraft
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi khôi phục giao diện mặc định.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi khôi phục giao diện mặc định.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -516,7 +517,7 @@ router.post('/me/storefront/discard', auth, async (req, res) => {
       storefrontDraft: shop.storefrontDraft
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi hủy thay đổi.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi hủy thay đổi.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -603,7 +604,7 @@ router.get('/:id/storefront', async (req, res) => {
       categories: Array.from(categoriesSet)
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy giao diện gian hàng công khai.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy giao diện gian hàng công khai.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -642,7 +643,7 @@ router.get('/:id', async (req, res) => {
       followersCount: realFollowers !== null ? realFollowers : Number(shop.followers || 0)
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy thông tin gian hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy thông tin gian hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -710,7 +711,7 @@ router.post('/apply', auth, async (req, res) => {
       shop: newShop
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi gửi yêu cầu mở gian hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi gửi yêu cầu mở gian hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -759,7 +760,7 @@ router.put('/:id', auth, async (req, res) => {
       shop
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi cập nhật thông tin gian hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật thông tin gian hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -812,7 +813,7 @@ router.put('/:id/status', auth, checkRole(['admin']), async (req, res) => {
       shop
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi thay đổi trạng thái gian hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thay đổi trạng thái gian hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

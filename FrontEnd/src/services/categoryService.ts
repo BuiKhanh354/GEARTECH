@@ -72,5 +72,11 @@ export const categoryService = {
   deleteCategory: async (id: string): Promise<{ message: string }> => {
     const res = await apiClient.delete<{ message: string }>(`/categories/${id}`)
     return res.data
+  },
+
+  // 8. Lấy mẫu thông số kỹ thuật theo danh mục
+  getCategorySpecifications: async (idOrSlug: string): Promise<{ categorySlug: string; categoryName?: string; attributes: Array<{ name: string; key?: string; placeholder?: string; options?: string[]; isRequired?: boolean; order?: number }> }> => {
+    const res = await apiClient.get(`/categories/${idOrSlug}/specifications`)
+    return res.data
   }
 }

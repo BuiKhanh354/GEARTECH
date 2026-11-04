@@ -380,12 +380,24 @@ const productService = {
       throw error;
     }
 
+    let finalOldPrice = undefined;
+    let finalDiscount = undefined;
+
     if (oldPrice !== undefined && oldPrice !== null && oldPrice !== '') {
       const numOldPrice = Number(oldPrice);
       if (isNaN(numOldPrice) || numOldPrice < 0) {
         const error = new Error('Giá gốc/cũ của sản phẩm không hợp lệ.');
         error.statusCode = 400;
         throw error;
+      }
+      // Chỉ khi giá gốc lớn hơn giá bán thì mới áp dụng giá khuyến mãi
+      if (numOldPrice > numPrice) {
+        finalOldPrice = numOldPrice;
+        if (discount && typeof discount === 'string' && discount.trim()) {
+          finalDiscount = discount.trim();
+        } else {
+          finalDiscount = `${Math.round((1 - numPrice / numOldPrice) * 100)}%`;
+        }
       }
     }
 
@@ -407,8 +419,8 @@ const productService = {
       name: finalTitle,
       description: description ? description.trim() : 'Thiết bị công nghệ cao cấp',
       price: numPrice,
-      oldPrice: oldPrice ? Number(oldPrice) : undefined,
-      discount: discount || undefined,
+      oldPrice: finalOldPrice,
+      discount: finalDiscount,
       imageEmoji: imageEmoji || '📦',
       gallery: Array.isArray(gallery) && gallery.length > 0 ? gallery : [imageEmoji || '📦'],
       category: category ? category.trim().toLowerCase() : 'accessories',
@@ -496,8 +508,11 @@ const productService = {
     }
 
     if (oldPrice !== undefined) {
-      if (oldPrice === null || oldPrice === '') {
+      if (oldPrice === null || oldPrice === '' || Number(oldPrice) <= 0) {
+        product.set('oldPrice', undefined);
         product.oldPrice = undefined;
+        product.set('discount', undefined);
+        product.discount = undefined;
       } else {
         const numOldPrice = Number(oldPrice);
         if (isNaN(numOldPrice) || numOldPrice < 0) {
@@ -505,11 +520,36 @@ const productService = {
           error.statusCode = 400;
           throw error;
         }
-        product.oldPrice = numOldPrice;
+        if (numOldPrice <= product.price) {
+          product.set('oldPrice', undefined);
+          product.oldPrice = undefined;
+          product.set('discount', undefined);
+          product.discount = undefined;
+        } else {
+          product.oldPrice = numOldPrice;
+          if (discount && typeof discount === 'string' && discount.trim()) {
+            product.discount = discount.trim();
+          } else {
+            product.discount = `${Math.round((1 - product.price / numOldPrice) * 100)}%`;
+          }
+        }
+      }
+    } else if (discount !== undefined) {
+      if (!product.oldPrice || product.oldPrice <= product.price) {
+        product.set('discount', undefined);
+        product.discount = undefined;
+      } else {
+        product.discount = discount || undefined;
       }
     }
 
-    if (discount !== undefined) product.discount = discount;
+    // Nếu giá bán mới >= giá cũ hiện có, tự động hủy bỏ khuyến mãi
+    if (product.oldPrice && product.oldPrice <= product.price) {
+      product.set('oldPrice', undefined);
+      product.oldPrice = undefined;
+      product.set('discount', undefined);
+      product.discount = undefined;
+    }
     if (imageEmoji !== undefined) product.imageEmoji = imageEmoji;
     if (gallery !== undefined) product.gallery = gallery;
     if (category !== undefined) product.category = category.trim().toLowerCase();

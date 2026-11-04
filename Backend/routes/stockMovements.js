@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -61,7 +62,7 @@ router.get('/', auth, async (req, res) => {
 
     return res.json(movements);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy lịch sử biến động tồn kho.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy lịch sử biến động tồn kho.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -242,7 +243,7 @@ router.post('/', auth, async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi thực hiện biến động kho.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thực hiện biến động kho.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -305,7 +306,7 @@ router.get('/summary', auth, async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy tổng hợp dữ liệu kho.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy tổng hợp dữ liệu kho.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

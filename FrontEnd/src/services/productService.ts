@@ -49,7 +49,7 @@ export const productService = {
   },
 
   // 5. Chủ shop cập nhật sản phẩm thuộc shop mình
-  updateProduct: async (id: string, productData: Partial<ProductItem>): Promise<{ message: string; product: ProductItem }> => {
+  updateProduct: async (id: string, productData: Partial<ProductItem> | Record<string, any>): Promise<{ message: string; product: ProductItem }> => {
     const res = await apiClient.put<{ message: string; product: ProductItem }>(`/products/${id}`, productData)
     return res.data
   },

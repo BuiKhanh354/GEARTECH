@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const productService = require('../services/productService');
 
 const productController = {
@@ -8,7 +9,7 @@ const productController = {
       return res.json(data);
     } catch (error) {
       console.error('Lỗi lấy danh sách sản phẩm:', error);
-      return res.status(500).json({ error: 'Lỗi lấy danh sách sản phẩm.', details: error.message });
+      return res.status(500).json({ error: 'Lỗi lấy danh sách sản phẩm.', ...getDevelopmentErrorDetails(error) });
     }
   },
 
@@ -20,7 +21,7 @@ const productController = {
     } catch (error) {
       console.error('Lỗi khi lấy danh sách sản phẩm của shop:', error);
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: error.message });
+      return res.status(status).json({ error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message });
     }
   },
 
@@ -33,7 +34,7 @@ const productController = {
       }
       return res.json(product);
     } catch (error) {
-      return res.status(500).json({ error: 'Lỗi lấy chi tiết sản phẩm.', details: error.message });
+      return res.status(500).json({ error: 'Lỗi lấy chi tiết sản phẩm.', ...getDevelopmentErrorDetails(error) });
     }
   },
 
@@ -48,9 +49,9 @@ const productController = {
     } catch (error) {
       console.error('Lỗi đăng bán sản phẩm:', error);
       const status = error.statusCode || 500;
-      const resp = { error: error.message };
+      const resp = { error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message };
       if (error.shopStatus) resp.shopStatus = error.shopStatus;
-      if (status === 500) resp.details = error.message;
+      if (status === 500 && process.env.NODE_ENV !== 'production') resp.details = error.message;
       return res.status(status).json(resp);
     }
   },
@@ -66,8 +67,8 @@ const productController = {
     } catch (error) {
       console.error('Lỗi cập nhật sản phẩm:', error);
       const status = error.statusCode || 500;
-      const resp = { error: error.message };
-      if (status === 500) resp.details = error.message;
+      const resp = { error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message };
+      if (status === 500 && process.env.NODE_ENV !== 'production') resp.details = error.message;
       return res.status(status).json(resp);
     }
   },
@@ -82,7 +83,7 @@ const productController = {
       });
     } catch (error) {
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: error.message });
+      return res.status(status).json({ error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message });
     }
   },
 
@@ -105,8 +106,8 @@ const productController = {
     } catch (error) {
       console.error('Lỗi xóa sản phẩm:', error);
       const status = error.statusCode || 500;
-      const resp = { error: error.message };
-      if (status === 500) resp.details = error.message;
+      const resp = { error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message };
+      if (status === 500 && process.env.NODE_ENV !== 'production') resp.details = error.message;
       return res.status(status).json(resp);
     }
   }

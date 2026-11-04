@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const orderService = require('../services/orderService');
 
 const orderController = {
@@ -9,7 +10,7 @@ const orderController = {
     } catch (error) {
       console.error('Lỗi lấy lịch sử đơn hàng:', error);
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: 'Lỗi lấy lịch sử đơn hàng.', details: error.message });
+      return res.status(status).json({ error: 'Lỗi lấy lịch sử đơn hàng.', ...getDevelopmentErrorDetails(error) });
     }
   },
 
@@ -21,7 +22,7 @@ const orderController = {
     } catch (error) {
       console.error('Lỗi khi lấy danh sách đơn hàng của shop:', error);
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: error.message });
+      return res.status(status).json({ error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message });
     }
   },
 
@@ -36,7 +37,7 @@ const orderController = {
     } catch (error) {
       console.error('Lỗi lấy danh sách đơn hàng toàn hệ thống:', error);
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: 'Lỗi lấy danh sách đơn hàng toàn hệ thống.', details: error.message });
+      return res.status(status).json({ error: 'Lỗi lấy danh sách đơn hàng toàn hệ thống.', ...getDevelopmentErrorDetails(error) });
     }
   },
 
@@ -48,7 +49,7 @@ const orderController = {
     } catch (error) {
       console.error('Lỗi lấy thông tin chi tiết đơn hàng:', error);
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: error.message, details: error.message });
+      return res.status(status).json({ error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message, ...getDevelopmentErrorDetails(error) });
     }
   },
 
@@ -67,7 +68,7 @@ const orderController = {
     } catch (error) {
       console.error('Lỗi đặt hàng:', error);
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: error.message, details: error.message });
+      return res.status(status).json({ error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message, ...getDevelopmentErrorDetails(error) });
     }
   },
 
@@ -82,7 +83,7 @@ const orderController = {
     } catch (error) {
       console.error('Lỗi cập nhật trạng thái đơn hàng:', error);
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: error.message, details: error.message });
+      return res.status(status).json({ error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message, ...getDevelopmentErrorDetails(error) });
     }
   },
 
@@ -97,7 +98,7 @@ const orderController = {
     } catch (error) {
       console.error('Lỗi hủy đơn hàng:', error);
       const status = error.statusCode || 500;
-      return res.status(status).json({ error: error.message, details: error.message });
+      return res.status(status).json({ error: status >= 500 && process.env.NODE_ENV === 'production' ? 'Lỗi máy chủ.' : error.message, ...getDevelopmentErrorDetails(error) });
     }
   }
 };

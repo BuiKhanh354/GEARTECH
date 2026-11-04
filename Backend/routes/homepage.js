@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -353,7 +354,7 @@ async function populateSectionData(section, isPreview = false) {
     console.error(`Lỗi populate section [${plainSection.sectionKey}]:`, err.message);
     return {
       ...plainSection,
-      populatedData: { error: err.message, products: [] }
+      populatedData: { error: process.env.NODE_ENV === 'production' ? 'Không thể tải sản phẩm xem trước.' : err.message, products: [] }
     };
   }
 }
@@ -409,7 +410,7 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Lỗi nạp cấu hình trang chủ:', error);
-    res.status(500).json({ error: 'Lỗi tải cấu hình trang chủ.', details: error.message });
+    res.status(500).json({ error: 'Lỗi tải cấu hình trang chủ.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -467,7 +468,7 @@ router.get('/admin/config', auth, checkRole(['admin']), async (req, res) => {
     });
   } catch (error) {
     console.error('Lỗi tải cấu hình Admin Homepage:', error);
-    res.status(500).json({ error: 'Lỗi nạp cấu hình quản trị trang chủ.', details: error.message });
+    res.status(500).json({ error: 'Lỗi nạp cấu hình quản trị trang chủ.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -501,7 +502,7 @@ router.get('/admin/category-preview', auth, checkRole(['admin']), async (req, re
     });
   } catch (error) {
     console.error('Lỗi xem trước sản phẩm danh mục:', error);
-    res.status(500).json({ error: 'Lỗi nạp sản phẩm danh mục.', details: error.message });
+    res.status(500).json({ error: 'Lỗi nạp sản phẩm danh mục.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -606,7 +607,7 @@ router.post('/admin/publish', auth, checkRole(['admin']), async (req, res) => {
     });
   } catch (error) {
     console.error('Lỗi xuất bản trang chủ:', error);
-    res.status(500).json({ error: 'Lỗi xuất bản trang chủ.', details: error.message });
+    res.status(500).json({ error: 'Lỗi xuất bản trang chủ.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -635,7 +636,7 @@ router.post('/admin/restore-default', auth, checkRole(['admin']), async (req, re
     });
   } catch (error) {
     console.error('Lỗi khôi phục cấu hình mặc định:', error);
-    res.status(500).json({ error: 'Lỗi khôi phục cấu hình mặc định.', details: error.message });
+    res.status(500).json({ error: 'Lỗi khôi phục cấu hình mặc định.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -685,7 +686,7 @@ router.get('/admin/preview', auth, checkRole(['admin']), async (req, res) => {
     });
   } catch (error) {
     console.error('Lỗi nạp xem trước bản nháp:', error);
-    res.status(500).json({ error: 'Lỗi nạp dữ liệu xem trước.', details: error.message });
+    res.status(500).json({ error: 'Lỗi nạp dữ liệu xem trước.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

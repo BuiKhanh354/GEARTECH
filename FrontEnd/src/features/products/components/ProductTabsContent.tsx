@@ -155,18 +155,24 @@ export const ProductTabsContent: React.FC<ProductTabsContentProps> = ({
           <div className="p-4 bg-zinc-50 dark:bg-zinc-900/40 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
             <div>
               <div className="text-2xl font-black text-[#ff4655]">
-                {reviewsData.averageRating} <span className="text-xs text-zinc-400 font-normal">/ 5.0</span>
+                {reviewsData.totalReviews > 0 ? Number(reviewsData.averageRating).toFixed(1) : '0.0'} <span className="text-xs text-zinc-400 font-normal">/ 5.0</span>
               </div>
               <div className="flex gap-1 text-amber-500 text-sm mt-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star 
-                    key={star} 
-                    size={14} 
-                    weight={star <= Math.round(reviewsData.averageRating) ? 'fill' : 'regular'} 
-                  />
-                ))}
+                {[1, 2, 3, 4, 5].map((star) => {
+                  const isFilled = reviewsData.totalReviews > 0 && star <= Math.round(reviewsData.averageRating)
+                  return (
+                    <Star 
+                      key={star} 
+                      size={14} 
+                      weight={isFilled ? 'fill' : 'regular'} 
+                      className={isFilled ? 'text-amber-400' : 'text-zinc-400 dark:text-zinc-600'}
+                    />
+                  )
+                })}
               </div>
-              <span className="text-[10px] text-zinc-400 mt-1 block">Dựa trên {reviewsData.totalReviews} đánh giá thực tế</span>
+              <span className="text-[10px] text-zinc-400 mt-1 block">
+                {reviewsData.totalReviews > 0 ? `Dựa trên ${reviewsData.totalReviews} đánh giá thực tế` : 'Sản phẩm chưa có đánh giá nào từ người mua'}
+              </span>
             </div>
 
             <div className="text-right text-[10px] text-zinc-400 space-y-0.5">

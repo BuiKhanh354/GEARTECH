@@ -582,10 +582,12 @@ const HomePage: React.FC = () => {
                         >
                           <div className="h-44 bg-zinc-50 dark:bg-zinc-950 flex items-center justify-center text-4xl relative border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden">
                             <SafeProductImage src={prod.imageEmoji} gallery={prod.gallery} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                            <span className="absolute top-2.5 left-2.5 bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded-sm shadow-md flex items-center gap-1">
-                              <Flame size={10} weight="fill" />
-                              {prod.discount || '-15%'}
-                            </span>
+                            {prod.discount && prod.oldPrice && prod.oldPrice > prod.price && (
+                              <span className="absolute top-2.5 left-2.5 bg-[#ff4655] text-white text-[10px] font-mono font-black px-2 py-0.5 rounded-sm shadow-md flex items-center gap-1">
+                                <Flame size={10} weight="fill" />
+                                {prod.discount}
+                              </span>
+                            )}
                             <button
                               onClick={(e) => handleAddToCart(e, prod)}
                               title="Thêm vào giỏ hàng ngay"
@@ -623,7 +625,7 @@ const HomePage: React.FC = () => {
                             <div className="pt-1">
                               <div className="flex items-baseline gap-2">
                                 <span className="current-price text-sm font-black text-[#ff4655]">{formatPrice(prod.price)}</span>
-                                {prod.oldPrice && (
+                                {prod.oldPrice && prod.oldPrice > prod.price && (
                                   <span className="old-price text-[10px] text-zinc-400 line-through">{formatPrice(prod.oldPrice)}</span>
                                 )}
                               </div>
@@ -677,13 +679,16 @@ const HomePage: React.FC = () => {
                         >
                           <div className="h-44 bg-zinc-50 dark:bg-zinc-900/60 flex items-center justify-center text-3xl border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden relative">
                             <SafeProductImage src={prod.imageEmoji} gallery={prod.gallery} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                            {prod.discount && (
+                            {prod.discount && prod.oldPrice && prod.oldPrice > prod.price && (
                               <span className="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-mono font-black px-1.5 py-0.5 rounded shadow">
                                 {prod.discount}
                               </span>
                             )}
-                            <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
-                              <Star size={10} weight="fill" /> {prod.rating || 5.0}
+                            <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
+                              <Star size={10} weight={Number(prod.rating) > 0 ? 'fill' : 'regular'} className={Number(prod.rating) > 0 ? 'text-amber-400' : 'text-zinc-400'} />
+                              <span className={Number(prod.rating) > 0 ? 'text-amber-400' : 'text-zinc-300'}>
+                                {Number(prod.rating) > 0 ? Number(prod.rating).toFixed(1) : '0.0'}
+                              </span>
                             </span>
                           </div>
 
@@ -715,7 +720,7 @@ const HomePage: React.FC = () => {
                                 <span className="text-sm font-black text-[#ff4655] block">
                                   {formatPrice(prod.price)}
                                 </span>
-                                {prod.oldPrice && (
+                                {prod.oldPrice && prod.oldPrice > prod.price && (
                                   <span className="text-[9px] text-zinc-400 line-through block">
                                     {formatPrice(prod.oldPrice)}
                                   </span>
@@ -785,13 +790,16 @@ const HomePage: React.FC = () => {
                         >
                           <div className="h-44 bg-zinc-50 dark:bg-zinc-900/60 flex items-center justify-center text-3xl border-b border-zinc-100 dark:border-zinc-800/80 overflow-hidden relative">
                             <SafeProductImage src={prod.imageEmoji} gallery={prod.gallery} alt={prod.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                            {prod.discount && (
+                            {prod.discount && prod.oldPrice && prod.oldPrice > prod.price && (
                               <span className="absolute top-2 left-2 bg-amber-500 text-black text-[9px] font-mono font-black px-1.5 py-0.5 rounded shadow">
                                 {prod.discount}
                               </span>
                             )}
-                            <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
-                              <Star size={10} weight="fill" /> {prod.rating || 5.0}
+                            <span className="absolute top-2 right-2 bg-black/60 backdrop-blur-sm text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
+                              <Star size={10} weight={Number(prod.rating) > 0 ? 'fill' : 'regular'} className={Number(prod.rating) > 0 ? 'text-amber-400' : 'text-zinc-400'} />
+                              <span className={Number(prod.rating) > 0 ? 'text-amber-400' : 'text-zinc-300'}>
+                                {Number(prod.rating) > 0 ? Number(prod.rating).toFixed(1) : '0.0'}
+                              </span>
                             </span>
                           </div>
 
@@ -822,7 +830,7 @@ const HomePage: React.FC = () => {
                                 <span className="text-sm font-black text-[#ff4655] block">
                                   {formatPrice(prod.price)}
                                 </span>
-                                {prod.oldPrice && (
+                                {prod.oldPrice && prod.oldPrice > prod.price && (
                                   <span className="text-[9px] text-zinc-400 line-through block">
                                     {formatPrice(prod.oldPrice)}
                                   </span>
@@ -888,8 +896,8 @@ const HomePage: React.FC = () => {
                           </div>
                           <div className="flex justify-between items-center pt-4 border-t border-white/10 mt-2 z-10">
                             <div className="flex gap-3 text-[10px] font-bold">
-                              <span className="flex items-center gap-1 text-amber-400">
-                                <Star size={12} weight="fill" /> {shop.rating || 5.0}
+                              <span className={`flex items-center gap-1 ${Number(shop.rating) > 0 ? 'text-amber-400' : 'text-zinc-400'}`}>
+                                <Star size={12} weight={Number(shop.rating) > 0 ? 'fill' : 'regular'} /> {Number(shop.rating) > 0 ? Number(shop.rating).toFixed(1) : '0.0'}
                               </span>
                               <span className="text-zinc-400 uppercase tracking-wide">{shop.followers || '1.2K'} Follower</span>
                             </div>

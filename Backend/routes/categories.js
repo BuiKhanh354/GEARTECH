@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const Category = require('../models/Category');
@@ -67,7 +68,7 @@ router.get('/', async (req, res) => {
 
     return res.json(categories);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tải danh sách danh mục.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải danh sách danh mục.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -130,7 +131,7 @@ router.get('/admin/all', auth, checkRole(['admin']), async (req, res) => {
       totalPages: Math.ceil(total / itemsPerPage)
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tải danh mục cho Admin.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải danh mục cho Admin.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -189,7 +190,7 @@ router.get('/:idOrSlug/specifications', async (req, res) => {
 
     return res.json(specTemplate);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy mẫu thông số kỹ thuật.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy mẫu thông số kỹ thuật.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -221,7 +222,7 @@ router.get('/:id', async (req, res) => {
 
     return res.json({ category, children });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy chi tiết danh mục.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy chi tiết danh mục.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -286,7 +287,7 @@ router.post('/', auth, checkRole(['admin']), async (req, res) => {
       category: newCategory
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi thêm danh mục sản phẩm.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thêm danh mục sản phẩm.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -351,7 +352,7 @@ router.put('/:id', auth, checkRole(['admin']), async (req, res) => {
       category
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi cập nhật danh mục.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật danh mục.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -381,7 +382,7 @@ router.put('/:id/status', auth, checkRole(['admin']), async (req, res) => {
       category
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi thay đổi trạng thái danh mục.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thay đổi trạng thái danh mục.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -430,7 +431,7 @@ router.delete('/:id', auth, checkRole(['admin']), async (req, res) => {
       message: `Xóa danh mục "${category.name}" thành công!`
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi xóa danh mục.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xóa danh mục.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

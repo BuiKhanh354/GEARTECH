@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { cartService } from '../services/cartService'
 import { orderService } from '../services/orderService'
+import { buildCheckoutOrderPayload, getSelectedCheckoutItems } from '../services/checkoutHelpers'
 import { ErrorView, LoadingView } from '../components/StateViews'
 import { Card, Input, PrimaryButton } from '../components/ui'
 import { confirmAsync } from '../components/confirm'
@@ -55,24 +56,14 @@ export default function CheckoutScreen() {
   }, [checkoutInfo.data])
 
   const createOrder = useMutation({
-    mutationFn: () => {
-      const cartData = cart.data
-      const items = (cartData?.items ?? [])
-        .filter((i) => i.isAvailable && i.selected)
-        .map((i) => ({ productId: i.productId, quantity: i.quantity }))
-
-      return orderService.createOrder({
-        items,
-        shippingAddress: {
-          receiverName: receiverName.trim(),
-          receiverPhone: receiverPhone.trim(),
-          detailAddress: detailAddress.trim(),
-          province: province.trim()
-        },
-        paymentMethod,
-        note: note.trim() || undefined
-      })
-    },
+    mutationFn: () => orderService.createOrder(buildCheckoutOrderPayload(cart.data, {
+      receiverName,
+      receiverPhone,
+      detailAddress,
+      province,
+      paymentMethod,
+      note
+    })),
     onSuccess: (res) => {
       resetCartCount()
       queryClient.invalidateQueries({ queryKey: ['cart'] })
@@ -115,7 +106,7 @@ export default function CheckoutScreen() {
   }
 
   const cartData = cart.data
-  const selectedItems = (cartData?.items ?? []).filter((i) => i.isAvailable && i.selected)
+  const selectedItems = getSelectedCheckoutItems(cartData)
 
   if (selectedItems.length === 0) {
     return (
@@ -125,7 +116,7 @@ export default function CheckoutScreen() {
     )
   }
 
-  const subtotal = cartData!.subtotal
+  const subtotal = cartData?.subtotal ?? 0
 
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>

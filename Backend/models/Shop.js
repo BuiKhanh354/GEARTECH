@@ -36,7 +36,7 @@ const ShopSchema = new mongoose.Schema({
   email: { type: String, trim: true, lowercase: true },
   address: { type: String, trim: true },
   commission_rate: { type: mongoose.Schema.Types.Mixed, default: 5.0 },
-  rating: { type: Number, default: 5.0, min: 0, max: 5 },
+  rating: { type: Number, default: 0, min: 0, max: 5 },
   followers: { type: String, default: '0' },
   total_products: { type: Number, default: 0 },
   bgClass: { type: String, default: 'from-zinc-900 to-black' },

@@ -16,8 +16,8 @@ export interface CartProductInput {
   title?: string
   name?: string
   price: number
-  oldPrice?: number
-  originalPrice?: number
+  oldPrice?: number | null
+  originalPrice?: number | null
   quantity?: number
   imageEmoji?: string
   image?: string
@@ -25,7 +25,7 @@ export interface CartProductInput {
   categoryName?: string
   category?: string
   brand?: string
-  discount?: string
+  discount?: string | null
   shopName?: string
   shopId?: string | CartProductShop
   shop?: string | CartProductShop
@@ -177,8 +177,8 @@ export const useCartStore = create<CartState>()(
                 productId: pId,
                 title: String(product.title || product.name || 'Sản phẩm công nghệ'),
                 price: Number(product.price) || 0,
-                oldPrice: product.oldPrice,
-                originalPrice: isPromo ? product.oldPrice : product.price,
+                oldPrice: product.oldPrice ?? undefined,
+                originalPrice: isPromo ? (product.oldPrice ?? undefined) : product.price,
                 isPriceLocked: isPromo,
                 promotionNote: isPromo ? 'Giữ giá ưu đãi 48 giờ' : undefined,
                 imageEmoji: String(product.imageEmoji || product.image || product.imageUrl || '📦'),

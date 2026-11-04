@@ -33,7 +33,9 @@ export const ProductShopCard: React.FC<ProductShopCardProps> = ({
             <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-black bg-[#ff4655] text-white">CHÍNH HÃNG</span>
           </h4>
           <div className="flex gap-3 text-[9px] font-bold text-zinc-400 uppercase tracking-widest mt-1">
-            <span className="text-amber-500">★ {shopRating} ĐÁNH GIÁ</span>
+            <span className={Number(shopRating) > 0 ? 'text-amber-500' : 'text-zinc-400'}>
+              ★ {Number(shopRating) > 0 ? Number(shopRating).toFixed(1) : '0.0'} ĐÁNH GIÁ
+            </span>
             <span>{shopFollowersCount} FOLLOWER</span>
           </div>
         </div>

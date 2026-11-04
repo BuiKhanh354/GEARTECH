@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -75,7 +76,7 @@ router.get('/shop/overview', auth, checkRole(['shop', 'admin']), async (req, res
     });
   } catch (error) {
     console.error('Lỗi lấy tổng quan tài chính shop:', error);
-    return res.status(500).json({ error: 'Lỗi máy chủ khi lấy dữ liệu tài chính.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi máy chủ khi lấy dữ liệu tài chính.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -119,7 +120,7 @@ router.get('/shop/transactions', auth, checkRole(['shop', 'admin']), async (req,
     });
   } catch (error) {
     console.error('Lỗi lấy lịch sử giao dịch shop:', error);
-    return res.status(500).json({ error: 'Lỗi tải danh sách giao dịch.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải danh sách giao dịch.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -136,7 +137,7 @@ router.get('/shop/withdrawals', auth, checkRole(['shop', 'admin']), async (req, 
 
     return res.json(withdrawals);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tải yêu cầu rút tiền.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải yêu cầu rút tiền.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -210,7 +211,7 @@ router.put('/shop/payout-account', auth, checkRole(['shop', 'admin']), async (re
       payoutAccount: wallet.payoutAccount
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi cập nhật tài khoản ngân hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật tài khoản ngân hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -253,7 +254,7 @@ router.get('/admin/overview', auth, checkRole(['admin']), async (req, res) => {
     });
   } catch (error) {
     console.error('Lỗi lấy tổng quan tài chính admin:', error);
-    return res.status(500).json({ error: 'Lỗi nạp dữ liệu tài chính admin.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi nạp dữ liệu tài chính admin.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -285,7 +286,7 @@ router.get('/admin/withdrawals', auth, checkRole(['admin']), async (req, res) =>
       totalPages: Math.ceil(total / Number(limit))
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tải danh sách yêu cầu rút tiền.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải danh sách yêu cầu rút tiền.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -347,7 +348,7 @@ router.get('/admin/fee-config', auth, checkRole(['admin']), async (req, res) => 
     }
     return res.json(config);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi nạp cấu hình phí nền tảng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi nạp cấu hình phí nền tảng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -377,7 +378,7 @@ router.put('/admin/fee-config', auth, checkRole(['admin']), async (req, res) => 
       config: newConfig
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi cập nhật cấu hình phí.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật cấu hình phí.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -418,7 +419,7 @@ router.get('/admin/transactions', auth, checkRole(['admin']), async (req, res) =
       totalPages: Math.ceil(total / Number(limit))
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tải sổ cái tài chính toàn sàn.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải sổ cái tài chính toàn sàn.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

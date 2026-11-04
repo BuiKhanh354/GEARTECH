@@ -14,10 +14,8 @@ import {
   X,
   Images,
   Star,
-  ArrowUp,
-  ArrowDown,
   Plus,
-  UploadSimple
+  Cpu
 } from '@phosphor-icons/react'
 import { formatPrice } from '../../../../utils/format'
 import { categoryService, type CategoryItem } from '../../../../services/categoryService'
@@ -26,6 +24,13 @@ import { productService, type ProductItem } from '../../../../services/productSe
 import { productImageService, type ProductImageItem } from '../../../../services/productImageService'
 import { SafeProductImage } from '../../../../components/common/ProductImage'
 import { isImageUrl } from '../../../../utils/image'
+import ProductImagesManagerModal from './ProductImagesManagerModal'
+
+export interface SpecRow {
+  name: string
+  value: string
+  placeholder?: string
+}
 
 interface ShopProductsTabProps {
   token: string | null;
@@ -39,21 +44,23 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
   const [productForm, setProductForm] = useState({
     title: '',
     description: '',
-    price: 1500000,
-    oldPrice: 1800000,
-    discount: '16%',
+    price: '' as number | string,
+    hasPromotion: false,
+    oldPrice: '' as number | string,
+    discount: '',
     category: 'laptops',
     categoryName: 'LAPTOP & MACBOOK',
     brand: 'asus',
     imageEmoji: '💻',
-    stock: 20,
-    isFeatured: false,
-    specKey1: 'CPU', specVal1: '',
-    specKey2: 'RAM', specVal2: '',
-    specKey3: 'SSD', specVal3: '',
-    specKey4: 'VGA', specVal4: ''
+    stock: 20 as number | string,
+    isFeatured: false
   })
   
+  const [specsList, setSpecsList] = useState<SpecRow[]>([])
+  const [loadingSpecsTemplate, setLoadingSpecsTemplate] = useState<boolean>(false)
+  const [editSpecsList, setEditSpecsList] = useState<SpecRow[]>([])
+  const [loadingEditSpecsTemplate, setLoadingEditSpecsTemplate] = useState<boolean>(false)
+
   const [galleryUrls, setGalleryUrls] = useState<string[]>([])
   const [uploadingImages, setUploadingImages] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -72,8 +79,10 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
   const [editForm, setEditForm] = useState({
     title: '',
     description: '',
-    price: 0,
-    oldPrice: 0,
+    price: 0 as number | string,
+    hasPromotion: false,
+    oldPrice: '' as number | string,
+    discount: '',
     stock: 0,
     category: '',
     categoryName: '',
@@ -239,11 +248,88 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
     }
   }
 
+  // Load category specs template helper
+  const loadCategorySpecs = async (catSlugOrId: string, isForEdit = false) => {
+    if (!catSlugOrId) return
+    if (isForEdit) setLoadingEditSpecsTemplate(true)
+    else setLoadingSpecsTemplate(true)
+
+    try {
+      const template = await productService.getCategorySpecifications(catSlugOrId)
+      if (template && template.attributes && template.attributes.length > 0) {
+        const rows: SpecRow[] = template.attributes.map(attr => ({
+          name: attr.name,
+          value: '',
+          placeholder: attr.placeholder || `Nhập ${attr.name}...`
+        }))
+        if (isForEdit) {
+          setEditSpecsList(rows)
+        } else {
+          setSpecsList(rows)
+        }
+      } else {
+        const defaultRows: SpecRow[] = [
+          { name: 'Thương hiệu / Xuất xứ', value: '', placeholder: 'VD: Chính hãng' },
+          { name: 'Bảo hành', value: '', placeholder: 'VD: 12 tháng' },
+          { name: 'Tính năng nổi bật', value: '', placeholder: 'VD: Chống nước, RGB...' }
+        ]
+        if (isForEdit) setEditSpecsList(defaultRows)
+        else setSpecsList(defaultRows)
+      }
+    } catch (err) {
+      console.warn('Lỗi nạp template thông số kỹ thuật:', err)
+      const fallbackRows: SpecRow[] = [
+        { name: 'Bảo hành', value: '', placeholder: 'VD: 12 tháng' },
+        { name: 'Tính năng', value: '', placeholder: '' }
+      ]
+      if (isForEdit) setEditSpecsList(fallbackRows)
+      else setSpecsList(fallbackRows)
+    } finally {
+      if (isForEdit) setLoadingEditSpecsTemplate(false)
+      else setLoadingSpecsTemplate(false)
+    }
+  }
+
+  // Spec row change handlers for Create Product
+  const handleAddSpecRow = () => {
+    setSpecsList(prev => [...prev, { name: '', value: '', placeholder: 'Giá trị thông số...' }])
+  }
+
+  const handleRemoveSpecRow = (index: number) => {
+    setSpecsList(prev => prev.filter((_, idx) => idx !== index))
+  }
+
+  const handleSpecChange = (index: number, field: 'name' | 'value', val: string) => {
+    setSpecsList(prev => {
+      const updated = [...prev]
+      updated[index] = { ...updated[index], [field]: val }
+      return updated
+    })
+  }
+
+  // Spec row change handlers for Edit Product Modal
+  const handleAddEditSpecRow = () => {
+    setEditSpecsList(prev => [...prev, { name: '', value: '', placeholder: 'Giá trị thông số...' }])
+  }
+
+  const handleRemoveEditSpecRow = (index: number) => {
+    setEditSpecsList(prev => prev.filter((_, idx) => idx !== index))
+  }
+
+  const handleEditSpecChange = (index: number, field: 'name' | 'value', val: string) => {
+    setEditSpecsList(prev => {
+      const updated = [...prev]
+      updated[index] = { ...updated[index], [field]: val }
+      return updated
+    })
+  }
+
   useEffect(() => {
     categoryService.getCategories()
       .then(cats => {
         if (Array.isArray(cats) && cats.length > 0) {
           setCategories(cats)
+          const targetSlug = productForm.category || cats[0].slug
           if (!productForm.category) {
             setProductForm(prev => ({
               ...prev,
@@ -251,6 +337,8 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
               categoryName: cats[0].name
             }))
           }
+          // Tự động nạp danh sách thuộc tính kỹ thuật mẫu cho danh mục khởi tạo
+          loadCategorySpecs(targetSlug, false)
         }
       })
       .catch(err => console.error('Lỗi nạp danh mục cho shop:', err))
@@ -315,11 +403,36 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
     setSuccess(null)
     setSubmitting(true)
 
-    const specs: Record<string, string> = {}
-    if (productForm.specKey1 && productForm.specVal1) specs[productForm.specKey1] = productForm.specVal1
-    if (productForm.specKey2 && productForm.specVal2) specs[productForm.specKey2] = productForm.specVal2
-    if (productForm.specKey3 && productForm.specVal3) specs[productForm.specKey3] = productForm.specVal3
-    if (productForm.specKey4 && productForm.specVal4) specs[productForm.specKey4] = productForm.specVal4
+    const numPrice = Number(productForm.price)
+    if (isNaN(numPrice) || numPrice < 0 || productForm.price === '') {
+      setError('Vui lòng nhập giá bán sản phẩm hợp lệ.')
+      setSubmitting(false)
+      return
+    }
+
+    let finalOldPrice: number | undefined = undefined
+    let finalDiscount: string | undefined = undefined
+
+    if (productForm.hasPromotion) {
+      const numOldPrice = Number(productForm.oldPrice)
+      if (isNaN(numOldPrice) || numOldPrice <= numPrice || productForm.oldPrice === '') {
+        setError('Khi áp dụng khuyến mãi, giá gốc niêm yết phải lớn hơn giá bán khuyến mãi.')
+        setSubmitting(false)
+        return
+      }
+      finalOldPrice = numOldPrice
+      finalDiscount = `${Math.round((1 - numPrice / numOldPrice) * 100)}%`
+    }
+
+    const validSpecs = specsList.filter(s => s.name.trim() && s.value.trim())
+    const specsMap: Record<string, string> = {}
+    const specificationsArray: { name: string; value: string }[] = []
+    validSpecs.forEach(s => {
+      const k = s.name.trim()
+      const v = s.value.trim()
+      specsMap[k] = v
+      specificationsArray.push({ name: k, value: v })
+    })
 
     const selectedCat = categories.find(c => c.slug === productForm.category)
     const mappedCategoryName = selectedCat ? selectedCat.name : productForm.categoryName
@@ -327,9 +440,9 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
     const payload = {
       title: productForm.title,
       description: productForm.description,
-      price: Number(productForm.price),
-      oldPrice: Number(productForm.oldPrice),
-      discount: productForm.discount,
+      price: numPrice,
+      oldPrice: finalOldPrice,
+      discount: finalDiscount,
       category: productForm.category,
       categoryName: mappedCategoryName,
       brand: productForm.brand,
@@ -337,7 +450,8 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
       gallery: galleryUrls.length > 0 ? galleryUrls : [productForm.imageEmoji],
       stock: Number(productForm.stock),
       isFeatured: Boolean(productForm.isFeatured),
-      specs
+      specs: specsMap,
+      specifications: specificationsArray
     }
 
     try {
@@ -355,24 +469,23 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
 
       setSuccess(`Sản phẩm "${data.product.title}" đã được đăng bán thành công!`)
       
+      const defaultCategory = categories.length > 0 ? categories[0].slug : 'laptops'
       setProductForm({
         title: '',
         description: '',
-        price: 1500000,
-        oldPrice: 1800000,
-        discount: '16%',
-        category: categories.length > 0 ? categories[0].slug : 'laptops',
+        price: '',
+        hasPromotion: false,
+        oldPrice: '',
+        discount: '',
+        category: defaultCategory,
         categoryName: categories.length > 0 ? categories[0].name : 'LAPTOP & MACBOOK',
         brand: brands.length > 0 ? brands[0].slug : 'asus',
         imageEmoji: '📦',
         stock: 20,
-        isFeatured: false,
-        specKey1: 'CPU', specVal1: '',
-        specKey2: 'RAM', specVal2: '',
-        specKey3: 'SSD', specVal3: '',
-        specKey4: 'VGA', specVal4: ''
+        isFeatured: false
       })
       setGalleryUrls([])
+      loadCategorySpecs(defaultCategory, false)
 
       onRefresh()
     } catch (err: any) {
@@ -385,11 +498,14 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
   // Open Edit Modal
   const handleOpenEditModal = (p: any) => {
     setEditingProduct(p)
+    const hasPromo = Boolean(p.oldPrice && p.oldPrice > p.price)
     setEditForm({
       title: p.title || p.name || '',
       description: p.description || '',
-      price: p.price || 0,
-      oldPrice: p.oldPrice || 0,
+      price: p.price ?? 0,
+      hasPromotion: hasPromo,
+      oldPrice: hasPromo ? (p.oldPrice ?? '') : '',
+      discount: hasPromo ? (p.discount || '') : '',
       stock: p.stock ?? 10,
       category: p.category || 'accessories',
       categoryName: p.categoryName || '',
@@ -398,6 +514,37 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
       imageEmoji: p.imageEmoji || '📦',
       isFeatured: Boolean(p.isFeatured)
     })
+
+    // Nạp thông số kỹ thuật hiện có của sản phẩm
+    let initialSpecs: SpecRow[] = []
+    if (p.specifications && Array.isArray(p.specifications) && p.specifications.length > 0) {
+      initialSpecs = p.specifications
+        .filter((s: any) => s && s.name && s.value)
+        .map((s: any) => ({
+          name: String(s.name),
+          value: String(s.value),
+          placeholder: ''
+        }))
+    } else if (p.specs) {
+      const obj = p.specs instanceof Map ? Object.fromEntries(p.specs) : p.specs
+      if (typeof obj === 'object') {
+        initialSpecs = Object.entries(obj)
+          .filter(([k, v]) => k && v)
+          .map(([k, v]) => ({
+            name: String(k),
+            value: String(v),
+            placeholder: ''
+          }))
+      }
+    }
+
+    if (initialSpecs.length > 0) {
+      setEditSpecsList(initialSpecs)
+    } else {
+      // Nếu sản phẩm cũ chưa có specs thì nạp theo template danh mục
+      loadCategorySpecs(p.category || 'laptops', true)
+    }
+
     setEditError(null)
     setIsEditModalOpen(true)
   }
@@ -410,23 +557,57 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
     setEditError(null)
     setEditSubmitting(true)
 
+    const numPrice = Number(editForm.price)
+    if (isNaN(numPrice) || numPrice < 0) {
+      setEditError('Giá bán sản phẩm không hợp lệ.')
+      setEditSubmitting(false)
+      return
+    }
+
+    let finalOldPrice: number | null = null
+    let finalDiscount: string | null = null
+
+    if (editForm.hasPromotion) {
+      const numOldPrice = Number(editForm.oldPrice)
+      if (isNaN(numOldPrice) || numOldPrice <= numPrice || editForm.oldPrice === '') {
+        setEditError('Khi áp dụng khuyến mãi, giá gốc niêm yết phải lớn hơn giá bán khuyến mãi.')
+        setEditSubmitting(false)
+        return
+      }
+      finalOldPrice = numOldPrice
+      finalDiscount = `${Math.round((1 - numPrice / numOldPrice) * 100)}%`
+    }
+
     try {
       const pId = editingProduct._id || editingProduct.id
       if (!pId) return
       const selectedCat = categories.find(c => c.slug === editForm.category)
       const mappedCategoryName = selectedCat ? selectedCat.name : editForm.categoryName
 
+      const validSpecs = editSpecsList.filter(s => s.name.trim() && s.value.trim())
+      const specsMap: Record<string, string> = {}
+      const specificationsArray: { name: string; value: string }[] = []
+      validSpecs.forEach(s => {
+        const k = s.name.trim()
+        const v = s.value.trim()
+        specsMap[k] = v
+        specificationsArray.push({ name: k, value: v })
+      })
+
       const payload = {
         title: editForm.title.trim(),
         description: editForm.description.trim(),
-        price: Number(editForm.price),
-        oldPrice: editForm.oldPrice ? Number(editForm.oldPrice) : undefined,
+        price: numPrice,
+        oldPrice: finalOldPrice,
+        discount: finalDiscount,
         stock: Number(editForm.stock),
         category: editForm.category,
         categoryName: mappedCategoryName,
         brand: editForm.brand,
         status: editForm.status,
-        isFeatured: Boolean(editForm.isFeatured)
+        isFeatured: Boolean(editForm.isFeatured),
+        specs: specsMap,
+        specifications: specificationsArray
       }
 
       await productService.updateProduct(String(pId), payload)
@@ -582,14 +763,16 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
               required
               value={productForm.category}
               onChange={(e) => {
-                const selected = categories.find(c => c.slug === e.target.value)
+                const selectedSlug = e.target.value
+                const selected = categories.find(c => c.slug === selectedSlug)
                 setProductForm({ 
                   ...productForm, 
-                  category: e.target.value,
-                  categoryName: selected ? selected.name : e.target.value
+                  category: selectedSlug,
+                  categoryName: selected ? selected.name : selectedSlug
                 })
+                loadCategorySpecs(selectedSlug, false)
               }}
-              className="w-full text-xs font-bold pl-3 pr-3 pt-4.5 pb-2.5 border border-zinc-200 dark:border-zinc-850 rounded-sm bg-white dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#ff4655]"
+              className="w-full text-xs font-bold pl-3 pr-3 pt-4.5 pb-2.5 border border-zinc-200 dark:border-zinc-850 rounded-sm bg-white dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#ff4655]"
             >
               {categories.length > 0 ? (
                 categories.map(c => (
@@ -617,27 +800,68 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
             </select>
           </div>
           <div className="relative">
-            <span className="absolute left-3 top-1.5 text-[7px] font-mono text-zinc-455 dark:text-zinc-655 tracking-wider">GIÁ BÁN (VND) *</span>
+            <span className="absolute left-3 top-1.5 text-[7px] font-mono text-zinc-455 dark:text-zinc-655 tracking-wider">
+              {productForm.hasPromotion ? 'GIÁ KHUYẾN MÃI (VND) *' : 'GIÁ BÁN (VND) *'}
+            </span>
             <input
               type="number"
               required
               min="0"
               value={productForm.price}
-              onChange={(e) => setProductForm({ ...productForm, price: Number(e.target.value) })}
-              placeholder="3500000"
+              onChange={(e) => setProductForm({ ...productForm, price: e.target.value === '' ? '' : Number(e.target.value) })}
+              placeholder="Ví dụ: 2500000"
               className="w-full text-xs font-bold pl-3 pr-3 pt-4.5 pb-2.5 border border-zinc-200 dark:border-zinc-850 rounded-sm bg-white dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#ff4655]"
             />
           </div>
           <div className="relative">
-            <span className="absolute left-3 top-1.5 text-[7px] font-mono text-zinc-455 dark:text-zinc-655 tracking-wider">GIÁ GỐC / CŨ (VND)</span>
-            <input
-              type="number"
-              min="0"
-              value={productForm.oldPrice}
-              onChange={(e) => setProductForm({ ...productForm, oldPrice: Number(e.target.value) })}
-              placeholder="3990000"
-              className="w-full text-xs font-bold pl-3 pr-3 pt-4.5 pb-2.5 border border-zinc-200 dark:border-zinc-850 rounded-sm bg-white dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#ff4655]"
-            />
+            {productForm.hasPromotion ? (
+              <>
+                <div className="flex items-center justify-between absolute left-3 right-3 top-1.5 text-[7px] font-mono tracking-wider">
+                  <span className="text-zinc-455 dark:text-zinc-655">GIÁ GỐC NIÊM YẾT (VND) *</span>
+                  <button 
+                    type="button" 
+                    onClick={() => setProductForm({ ...productForm, hasPromotion: false, oldPrice: '', discount: '' })}
+                    className="text-red-500 hover:underline uppercase text-[8px] font-bold"
+                  >
+                    Tắt KM
+                  </button>
+                </div>
+                <input
+                  type="number"
+                  min="0"
+                  required={productForm.hasPromotion}
+                  value={productForm.oldPrice}
+                  onChange={(e) => {
+                    const val = e.target.value === '' ? '' : Number(e.target.value)
+                    const pNum = Number(productForm.price)
+                    let disc = ''
+                    if (typeof val === 'number' && val > pNum && pNum > 0) {
+                      disc = `${Math.round((1 - pNum / val) * 100)}%`
+                    }
+                    setProductForm({ ...productForm, oldPrice: val, discount: disc })
+                  }}
+                  placeholder="Ví dụ: 3000000"
+                  className="w-full text-xs font-bold pl-3 pr-3 pt-4.5 pb-2.5 border border-amber-300 dark:border-amber-700/60 rounded-sm bg-white dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-amber-500"
+                />
+              </>
+            ) : (
+              <label className="flex items-center gap-2 cursor-pointer h-full px-3 py-2.5 rounded-sm border border-dashed border-zinc-300 dark:border-zinc-700 hover:border-[#ff4655]/60 bg-white dark:bg-zinc-955 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={productForm.hasPromotion}
+                  onChange={(e) => setProductForm({ ...productForm, hasPromotion: e.target.checked })}
+                  className="w-4 h-4 rounded text-[#ff4655] accent-[#ff4655] cursor-pointer"
+                />
+                <div className="leading-tight">
+                  <span className="text-[10px] font-bold text-zinc-700 dark:text-zinc-300 block">
+                    + Thêm giá khuyến mãi
+                  </span>
+                  <span className="text-[8px] text-zinc-400 font-mono block">
+                    (Không bắt buộc)
+                  </span>
+                </div>
+              </label>
+            )}
           </div>
           <div className="relative">
             <span className="absolute left-3 top-1.5 text-[7px] font-mono text-zinc-455 dark:text-zinc-655 tracking-wider">SỐ LƯỢNG KHO (TỒN KHO) *</span>
@@ -661,6 +885,23 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
               className="w-full text-xs font-bold pl-3 pr-3 pt-4.5 pb-2.5 border border-zinc-200 dark:border-zinc-850 rounded-sm bg-white dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#ff4655]"
             />
           </div>
+
+          {productForm.hasPromotion && Number(productForm.oldPrice) > Number(productForm.price) && Number(productForm.price) > 0 && (
+            <div className="md:col-span-4 px-3 py-2 rounded bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-amber-800 dark:text-amber-300 text-xs flex items-center justify-between">
+              <span className="font-bold flex items-center gap-1.5">
+                🔥 Khuyến mãi: Giảm {Math.round((1 - Number(productForm.price) / Number(productForm.oldPrice)) * 100)}%
+              </span>
+              <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                Tiết kiệm cho khách: {(Number(productForm.oldPrice) - Number(productForm.price)).toLocaleString()} đ
+              </span>
+            </div>
+          )}
+          {productForm.hasPromotion && productForm.oldPrice !== '' && Number(productForm.oldPrice) <= Number(productForm.price) && (
+            <div className="md:col-span-4 px-3 py-2 rounded bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/40 text-red-600 dark:text-red-400 text-xs flex items-center gap-1.5">
+              <WarningCircle size={14} />
+              <span>Giá gốc niêm yết phải lớn hơn giá bán khuyến mãi ({formatPrice(Number(productForm.price))})</span>
+            </div>
+          )}
           <div className="md:col-span-4">
             <label className="flex items-center gap-2.5 cursor-pointer p-3 rounded border border-amber-500/30 bg-amber-500/5 hover:bg-amber-500/10 transition-colors">
               <input
@@ -689,6 +930,95 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
               placeholder="Mô tả công năng, ngoại hình và điểm vượt trội..."
               className="w-full text-xs font-bold pl-3 pr-3 pt-4.5 pb-2 border border-zinc-200 dark:border-zinc-850 rounded-sm bg-white dark:bg-zinc-955 text-zinc-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-[#ff4655]"
             />
+          </div>
+
+          {/* THÔNG SỐ KỸ THUẬT (SPECIFICATIONS) */}
+          <div className="md:col-span-4 border border-zinc-200 dark:border-zinc-800 rounded-sm p-4 bg-white/60 dark:bg-zinc-950/40 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-zinc-200 dark:border-zinc-850">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Cpu size={16} className="text-[#ff4655]" weight="bold" />
+                  <span className="text-[11px] font-black uppercase text-zinc-900 dark:text-white tracking-wider">
+                    THÔNG SỐ KỸ THUẬT SẢN PHẨM
+                  </span>
+                  <span className="px-2 py-0.5 text-[8px] font-mono font-bold bg-zinc-150 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 rounded-full">
+                    {specsList.length} thông số
+                  </span>
+                </div>
+                <p className="text-[10px] text-zinc-500 mt-0.5">
+                  Đặc tả cấu hình phần cứng hoặc thông số kỹ thuật chi tiết giúp khách hàng dễ dàng tìm kiếm và đối chiếu.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => loadCategorySpecs(productForm.category, false)}
+                  disabled={loadingSpecsTemplate}
+                  className="px-2.5 py-1.5 text-[9px] font-mono border border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 rounded text-zinc-600 dark:text-zinc-300 flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer"
+                  title="Tự động nạp mẫu thông số chuẩn theo danh mục đang chọn"
+                >
+                  <ArrowsClockwise size={13} className={loadingSpecsTemplate ? 'animate-spin text-[#ff4655]' : ''} />
+                  {loadingSpecsTemplate ? 'Đang nạp mẫu...' : 'Tải lại mẫu danh mục'}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleAddSpecRow}
+                  className="px-2.5 py-1.5 text-[9px] font-bold bg-[#ff4655]/10 hover:bg-[#ff4655]/20 text-[#ff4655] border border-[#ff4655]/30 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <Plus size={13} weight="bold" />
+                  + Thêm thông số
+                </button>
+              </div>
+            </div>
+
+            {specsList.length === 0 ? (
+              <div className="text-center py-6 border border-dashed border-zinc-300 dark:border-zinc-800 rounded bg-zinc-50/50 dark:bg-zinc-900/50 text-zinc-500 text-xs">
+                <p className="font-medium">Chưa có thông số kỹ thuật nào.</p>
+                <button
+                  type="button"
+                  onClick={handleAddSpecRow}
+                  className="mt-2 text-[#ff4655] hover:underline font-bold text-[11px] cursor-pointer inline-flex items-center gap-1"
+                >
+                  <Plus size={12} weight="bold" /> Bấm vào đây để thêm thông số đầu tiên
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                {specsList.map((spec, idx) => (
+                  <div 
+                    key={idx} 
+                    className="flex items-center gap-1.5 p-2 rounded bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors shadow-xs"
+                  >
+                    <div className="w-1/3 min-w-[105px]">
+                      <input
+                        type="text"
+                        value={spec.name}
+                        onChange={(e) => handleSpecChange(idx, 'name', e.target.value)}
+                        placeholder="Tên thông số (CPU, RAM...)"
+                        className="w-full text-xs font-bold px-2 py-1.5 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        value={spec.value}
+                        onChange={(e) => handleSpecChange(idx, 'value', e.target.value)}
+                        placeholder={spec.placeholder || 'Giá trị thông số...'}
+                        className="w-full text-xs px-2 py-1.5 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveSpecRow(idx)}
+                      className="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-500/10 rounded transition-colors cursor-pointer"
+                      title="Xóa thông số này"
+                    >
+                      <Trash size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Upload ảnh */}
@@ -886,7 +1216,14 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
 
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-black text-[#ff4655]">{formatPrice(p.price)}</span>
-                        {p.oldPrice && <span className="text-[10px] text-zinc-400 line-through">{formatPrice(p.oldPrice)}</span>}
+                        {p.oldPrice && p.oldPrice > p.price && (
+                          <span className="text-[10px] text-zinc-400 line-through">{formatPrice(p.oldPrice)}</span>
+                        )}
+                        {p.discount && p.oldPrice && p.oldPrice > p.price && (
+                          <span className="text-[9px] bg-red-100 text-[#ff4655] dark:bg-red-950/40 px-1 py-0.5 rounded font-black font-mono">
+                            {p.discount}
+                          </span>
+                        )}
                       </div>
 
                       <p className="text-[9px] text-zinc-400 dark:text-zinc-500 font-mono">
@@ -965,7 +1302,7 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-lg w-full p-6 shadow-2xl space-y-4"
+              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-900 pb-3">
                 <div className="flex items-center gap-2">
@@ -997,28 +1334,77 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase text-zinc-500 mb-1">Giá bán (VND) *</label>
-                    <input
-                      type="number"
-                      required
-                      min="0"
-                      value={editForm.price}
-                      onChange={e => setEditForm(prev => ({ ...prev, price: Number(e.target.value) }))}
-                      className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-mono text-zinc-900 dark:text-white"
-                    />
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[10px] font-mono uppercase text-zinc-500">
+                      {editForm.hasPromotion ? 'Giá khuyến mãi (VND) *' : 'Giá bán (VND) *'}
+                    </label>
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[10px] text-amber-600 dark:text-amber-400 font-semibold">
+                      <input
+                        type="checkbox"
+                        checked={editForm.hasPromotion}
+                        onChange={e => {
+                          const checked = e.target.checked
+                          setEditForm(prev => ({
+                            ...prev,
+                            hasPromotion: checked,
+                            oldPrice: checked ? prev.oldPrice : '',
+                            discount: checked ? prev.discount : ''
+                          }))
+                        }}
+                        className="w-3.5 h-3.5 rounded text-amber-500 accent-amber-500 cursor-pointer"
+                      />
+                      <span>Áp dụng khuyến mãi</span>
+                    </label>
                   </div>
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase text-zinc-500 mb-1">Giá cũ (VND)</label>
-                    <input
-                      type="number"
-                      min="0"
-                      value={editForm.oldPrice}
-                      onChange={e => setEditForm(prev => ({ ...prev, oldPrice: Number(e.target.value) }))}
-                      className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-mono text-zinc-900 dark:text-white"
-                    />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <input
+                        type="number"
+                        required
+                        min="0"
+                        value={editForm.price}
+                        onChange={e => setEditForm(prev => ({ ...prev, price: e.target.value === '' ? '' : Number(e.target.value) }))}
+                        className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-mono text-zinc-900 dark:text-white"
+                        placeholder="Giá bán"
+                      />
+                    </div>
+                    <div>
+                      {editForm.hasPromotion ? (
+                        <input
+                          type="number"
+                          min="0"
+                          required
+                          value={editForm.oldPrice}
+                          onChange={e => {
+                            const val = e.target.value === '' ? '' : Number(e.target.value)
+                            const pNum = Number(editForm.price)
+                            let disc = ''
+                            if (typeof val === 'number' && val > pNum && pNum > 0) {
+                              disc = `${Math.round((1 - pNum / val) * 100)}%`
+                            }
+                            setEditForm(prev => ({ ...prev, oldPrice: val, discount: disc }))
+                          }}
+                          className="w-full px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-amber-400 dark:border-amber-600 rounded font-mono text-zinc-900 dark:text-white"
+                          placeholder="Giá gốc niêm yết"
+                        />
+                      ) : (
+                        <div className="flex items-center h-full px-3 py-2 bg-zinc-100 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-800 rounded text-[11px] text-zinc-400 italic">
+                          Không có khuyến mãi
+                        </div>
+                      )}
+                    </div>
                   </div>
+                  {editForm.hasPromotion && Number(editForm.oldPrice) > Number(editForm.price) && Number(editForm.price) > 0 && (
+                    <p className="mt-1 text-[11px] text-amber-600 dark:text-amber-400 font-medium">
+                      🔥 Giảm {Math.round((1 - Number(editForm.price) / Number(editForm.oldPrice)) * 100)}% (Tiết kiệm {(Number(editForm.oldPrice) - Number(editForm.price)).toLocaleString()} đ)
+                    </p>
+                  )}
+                  {editForm.hasPromotion && editForm.oldPrice !== '' && Number(editForm.oldPrice) <= Number(editForm.price) && (
+                    <p className="mt-1 text-[11px] text-red-500 font-medium">
+                      ⚠️ Giá gốc niêm yết phải lớn hơn giá bán khuyến mãi ({formatPrice(Number(editForm.price))})
+                    </p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
@@ -1108,6 +1494,80 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
                   />
                 </div>
 
+                {/* THÔNG SỐ KỸ THUẬT (SPECIFICATIONS) TRONG MODAL SỬA */}
+                <div className="border border-zinc-200 dark:border-zinc-800 rounded-sm p-3 bg-zinc-50/60 dark:bg-zinc-900/40 space-y-2.5">
+                  <div className="flex items-center justify-between pb-1.5 border-b border-zinc-200 dark:border-zinc-800">
+                    <div className="flex items-center gap-1.5">
+                      <Cpu size={14} className="text-[#ff4655]" weight="bold" />
+                      <span className="text-[10px] font-mono uppercase text-zinc-800 dark:text-zinc-200 font-bold">
+                        Thông số kỹ thuật ({editSpecsList.length})
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => loadCategorySpecs(editForm.category, true)}
+                        disabled={loadingEditSpecsTemplate}
+                        className="px-2 py-1 text-[8px] font-mono border border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 rounded text-zinc-600 dark:text-zinc-300 flex items-center gap-1 transition-colors cursor-pointer disabled:opacity-50"
+                        title="Nạp mẫu thông số chuẩn theo danh mục"
+                      >
+                        <ArrowsClockwise size={10} className={loadingEditSpecsTemplate ? 'animate-spin text-[#ff4655]' : ''} />
+                        Nạp mẫu danh mục
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleAddEditSpecRow}
+                        className="px-2 py-1 text-[8px] font-bold bg-[#ff4655]/10 hover:bg-[#ff4655]/20 text-[#ff4655] border border-[#ff4655]/30 rounded flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <Plus size={10} weight="bold" />
+                        + Thêm thông số
+                      </button>
+                    </div>
+                  </div>
+
+                  {editSpecsList.length === 0 ? (
+                    <div className="text-center py-4 border border-dashed border-zinc-300 dark:border-zinc-800 rounded text-zinc-500 text-xs">
+                      <p className="text-[10px] italic">Chưa có thông số kỹ thuật nào.</p>
+                      <button
+                        type="button"
+                        onClick={handleAddEditSpecRow}
+                        className="mt-1.5 text-[#ff4655] hover:underline font-bold text-[10px] cursor-pointer"
+                      >
+                        + Bấm vào đây để thêm thông số
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="max-h-56 overflow-y-auto space-y-1.5 pr-1">
+                      {editSpecsList.map((spec, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5">
+                          <input
+                            type="text"
+                            value={spec.name}
+                            onChange={(e) => handleEditSpecChange(idx, 'name', e.target.value)}
+                            placeholder="Tên thông số"
+                            className="w-1/3 text-xs font-bold px-2 py-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                          />
+                          <input
+                            type="text"
+                            value={spec.value}
+                            onChange={(e) => handleEditSpecChange(idx, 'value', e.target.value)}
+                            placeholder={spec.placeholder || 'Giá trị thông số...'}
+                            className="flex-1 text-xs px-2 py-1.5 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveEditSpecRow(idx)}
+                            className="p-1.5 text-zinc-400 hover:text-red-500 hover:bg-red-500/10 rounded transition-colors cursor-pointer"
+                            title="Xóa thông số này"
+                          >
+                            <Trash size={13} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex justify-end gap-2 pt-2 border-t border-zinc-100 dark:border-zinc-900">
                   <button
                     type="button"
@@ -1185,245 +1645,26 @@ export default function ShopProductsTab({ token, allProducts, onRefresh, initial
       </AnimatePresence>
 
       {/* MODAL: QUẢN LÝ HÌNH ẢNH SẢN PHẨM (Section 3.6 - product_images) */}
-      <AnimatePresence>
-        {isImagesModalOpen && imagesModalProduct && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto"
-            >
-              {/* Header */}
-              <div className="flex items-center justify-between border-b border-zinc-150 dark:border-zinc-850 pb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="p-2 bg-[#ff4655]/10 rounded-lg border border-[#ff4655]/20 text-[#ff4655]">
-                    <Images size={20} weight="bold" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-black uppercase text-zinc-900 dark:text-white tracking-wider flex items-center gap-2">
-                      QUẢN LÝ THƯ VIỆN HÌNH ẢNH // PRODUCT_IMAGES
-                    </h4>
-                    <p className="text-[11px] text-zinc-500 font-medium truncate max-w-md">
-                      Thiết bị: <strong className="text-zinc-800 dark:text-zinc-200">{imagesModalProduct.title}</strong>
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setIsImagesModalOpen(false)}
-                  className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-
-              {/* Alert Feedback */}
-              {imagesModalError && (
-                <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-xs font-semibold text-red-500 flex items-center gap-2">
-                  <WarningCircle size={16} weight="bold" className="shrink-0" />
-                  <span>{imagesModalError}</span>
-                </div>
-              )}
-              {imagesModalSuccess && (
-                <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-xs font-semibold text-emerald-500 flex items-center gap-2">
-                  <CheckCircle size={16} weight="bold" className="shrink-0" />
-                  <span>{imagesModalSuccess}</span>
-                </div>
-              )}
-
-              {/* Thêm ảnh mới (Upload hoặc Dán URL) */}
-              <div className="p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-850 rounded-lg space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">// THÊM ẢNH MỚI CHO THIẾT BỊ</span>
-                  <label className="flex items-center gap-1.5 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={newImageIsPrimary}
-                      onChange={e => setNewImageIsPrimary(e.target.checked)}
-                      className="rounded border-zinc-700 text-[#ff4655] focus:ring-0"
-                    />
-                    <span className="text-[11px] font-bold text-amber-500 flex items-center gap-1">
-                      <Star size={12} weight="fill" /> Đặt làm ảnh chính ngay
-                    </span>
-                  </label>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
-                  {/* Upload File Input */}
-                  <div className="sm:col-span-5">
-                    <input
-                      type="file"
-                      ref={modalFileInputRef}
-                      multiple
-                      accept="image/*"
-                      className="hidden"
-                      onChange={e => handleUploadModalFiles(e.target.files)}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => modalFileInputRef.current?.click()}
-                      disabled={imageActionLoading}
-                      className="w-full h-10 px-3 border border-dashed border-zinc-300 dark:border-zinc-700 hover:border-[#ff4655] rounded-lg text-xs font-bold text-zinc-600 dark:text-zinc-300 flex items-center justify-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-850 transition-colors"
-                    >
-                      <UploadSimple size={16} className="text-[#ff4655]" />
-                      <span>Tải ảnh từ máy tính</span>
-                    </button>
-                  </div>
-
-                  {/* URL Input Form */}
-                  <form onSubmit={handleAddImageUrl} className="sm:col-span-7 flex gap-2">
-                    <input
-                      type="url"
-                      value={newImageUrl}
-                      onChange={e => setNewImageUrl(e.target.value)}
-                      placeholder="Hoặc dán URL ảnh (https://...)"
-                      className="flex-1 px-3 py-2 text-xs bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
-                    />
-                    <button
-                      type="submit"
-                      disabled={imageActionLoading || !newImageUrl.trim()}
-                      className="px-3.5 py-2 bg-[#ff4655] hover:bg-[#e03d4b] disabled:opacity-50 text-white rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1 shrink-0 transition-colors"
-                    >
-                      <Plus size={14} weight="bold" /> Thêm
-                    </button>
-                  </form>
-                </div>
-              </div>
-
-              {/* Danh sách ảnh hiện có (Sắp xếp, Đặt ảnh chính, Xóa) */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h5 className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
-                    // DANH SÁCH HÌNH ẢNH ({productImagesList.length}) - SẮP XẾP & CHỌN ẢNH ĐẠI DIỆN
-                  </h5>
-                  {imageActionLoading && (
-                    <span className="text-[10px] text-amber-500 font-bold flex items-center gap-1 animate-pulse">
-                      <ArrowsClockwise size={12} className="animate-spin" /> Đang cập nhật...
-                    </span>
-                  )}
-                </div>
-
-                {loadingImages ? (
-                  <div className="py-12 text-center text-xs text-zinc-400 font-bold flex flex-col items-center justify-center gap-2">
-                    <ArrowsClockwise size={20} className="animate-spin text-[#ff4655]" />
-                    <span>Đang nạp thư viện ảnh của thiết bị...</span>
-                  </div>
-                ) : productImagesList.length === 0 ? (
-                  <div className="py-10 text-center border border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl text-zinc-500 text-xs space-y-2">
-                    <Images size={28} className="mx-auto text-zinc-600 opacity-60" />
-                    <p>Sản phẩm này chưa có hình ảnh nào trong thư viện.</p>
-                    <p className="text-[11px] text-zinc-600">Hãy chọn tải ảnh lên từ máy tính hoặc dán URL ở khung phía trên.</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {productImagesList.map((img, index) => {
-                      const isFirst = index === 0
-                      const isLast = index === productImagesList.length - 1
-
-                      return (
-                        <div
-                          key={img._id || index}
-                          className={`p-3 rounded-xl border relative flex gap-3 transition-all ${
-                            img.isPrimary
-                              ? 'bg-amber-500/5 border-amber-500/40 shadow-sm'
-                              : 'bg-zinc-50 dark:bg-zinc-900/40 border-zinc-200 dark:border-zinc-800'
-                          }`}
-                        >
-                          {/* Image Box with SafeProductImage Fallback */}
-                          <div className="w-20 h-20 bg-white dark:bg-zinc-950 rounded-lg border border-zinc-200 dark:border-zinc-800 overflow-hidden shrink-0 relative">
-                            <SafeProductImage
-                              src={img.imageUrl}
-                              alt="Product"
-                              className="w-full h-full object-cover"
-                            />
-                            {img.isPrimary && (
-                              <span className="absolute top-1 left-1 bg-amber-500 text-black text-[8px] font-black px-1.5 py-0.5 rounded shadow flex items-center gap-0.5">
-                                <Star size={10} weight="fill" /> CHÍNH
-                              </span>
-                            )}
-                          </div>
-
-                          {/* Info & Action Controls */}
-                          <div className="flex-1 min-w-0 flex flex-col justify-between">
-                            <div className="space-y-1">
-                              <div className="flex items-center justify-between">
-                                <span className="text-[9px] font-mono text-zinc-400">
-                                  Thứ tự #{img.sortOrder !== undefined ? img.sortOrder : index}
-                                </span>
-                                {img.isPrimary ? (
-                                  <span className="text-[9px] font-bold text-amber-500 flex items-center gap-0.5">
-                                    ★ Ảnh đại diện
-                                  </span>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    onClick={() => handleSetPrimaryImage(img._id)}
-                                    disabled={imageActionLoading}
-                                    className="text-[9px] font-bold text-zinc-400 hover:text-amber-500 underline"
-                                  >
-                                    Đặt làm ảnh chính
-                                  </button>
-                                )}
-                              </div>
-                              <p className="text-[10px] text-zinc-500 truncate font-mono" title={img.imageUrl}>
-                                {img.imageUrl}
-                              </p>
-                            </div>
-
-                            {/* Buttons bar */}
-                            <div className="flex items-center justify-between pt-2 border-t border-zinc-150 dark:border-zinc-850 mt-1">
-                              <div className="flex items-center gap-1">
-                                <button
-                                  type="button"
-                                  onClick={() => handleMoveImage(index, 'up')}
-                                  disabled={isFirst || imageActionLoading}
-                                  title="Đưa lên trước"
-                                  className="p-1 border border-zinc-200 dark:border-zinc-800 rounded hover:border-[#ff4655] hover:text-[#ff4655] text-zinc-400 disabled:opacity-20"
-                                >
-                                  <ArrowUp size={12} weight="bold" />
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleMoveImage(index, 'down')}
-                                  disabled={isLast || imageActionLoading}
-                                  title="Đưa xuống sau"
-                                  className="p-1 border border-zinc-200 dark:border-zinc-800 rounded hover:border-[#ff4655] hover:text-[#ff4655] text-zinc-400 disabled:opacity-20"
-                                >
-                                  <ArrowDown size={12} weight="bold" />
-                                </button>
-                              </div>
-
-                              <button
-                                type="button"
-                                onClick={() => handleDeleteImage(img._id)}
-                                disabled={imageActionLoading}
-                                className="px-2 py-1 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded text-[10px] font-bold flex items-center gap-1 transition-colors"
-                              >
-                                <Trash size={12} /> Xóa
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-
-              {/* Footer */}
-              <div className="flex justify-end pt-3 border-t border-zinc-150 dark:border-zinc-850">
-                <button
-                  type="button"
-                  onClick={() => setIsImagesModalOpen(false)}
-                  className="px-5 py-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-850 text-zinc-900 dark:text-white rounded-lg text-xs font-bold uppercase tracking-wider"
-                >
-                  Đóng cửa sổ
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      <ProductImagesManagerModal
+        isOpen={isImagesModalOpen}
+        product={imagesModalProduct}
+        images={productImagesList}
+        loading={loadingImages}
+        busy={imageActionLoading}
+        error={imagesModalError}
+        success={imagesModalSuccess}
+        newImageUrl={newImageUrl}
+        newImageIsPrimary={newImageIsPrimary}
+        fileInputRef={modalFileInputRef}
+        onOpenChange={setIsImagesModalOpen}
+        onNewImageUrlChange={setNewImageUrl}
+        onNewImageIsPrimaryChange={setNewImageIsPrimary}
+        onUploadFiles={handleUploadModalFiles}
+        onAddImageUrl={handleAddImageUrl}
+        onSetPrimaryImage={handleSetPrimaryImage}
+        onMoveImage={handleMoveImage}
+        onDeleteImage={handleDeleteImage}
+      />
     </motion.div>
   )
 }

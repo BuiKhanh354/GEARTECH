@@ -16,10 +16,10 @@
       "$numberDecimal": "5.00"
     },
     "rating": {
-      "$numberDouble": "4.8"
+      "$numberInt": "0"
     },
     "total_products": {
-      "$numberInt": "4"
+      "$numberInt": "8"
     },
     "status": "active",
     "created_at": {
@@ -42,7 +42,7 @@
     "rejectReason": "",
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793705625860"
+        "$numberLong": "1793793488645"
       }
     },
     "publishedAt": {
@@ -195,7 +195,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -214,7 +214,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938349510"
+        "$numberLong": "1793793488647"
       }
     },
     "user_id": {
@@ -369,7 +369,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -389,7 +389,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938350879"
+        "$numberLong": "1793793488649"
       }
     },
     "shop_name": "CỬA HÀNG CÔNG NGHỆ",
@@ -546,7 +546,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -565,7 +565,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938352136"
+        "$numberLong": "1793793488651"
       }
     },
     "shop_name": "Tech Store Alpha 1792465728592",
@@ -722,7 +722,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -741,7 +741,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938353568"
+        "$numberLong": "1793793488653"
       }
     },
     "shop_name": "Tech Store Beta 1792465728592",
@@ -898,7 +898,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -917,7 +917,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938354985"
+        "$numberLong": "1793793488655"
       }
     },
     "shop_name": "Tech Store Alpha 1792465750949",
@@ -1074,7 +1074,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -1093,7 +1093,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938356440"
+        "$numberLong": "1793793488657"
       }
     },
     "shop_name": "Tech Store Beta 1792465750949",
@@ -1250,7 +1250,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -1269,7 +1269,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938357636"
+        "$numberLong": "1793793488659"
       }
     },
     "shop_name": "Tech Store Alpha 1792465763030",
@@ -1426,7 +1426,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -1445,7 +1445,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938359960"
+        "$numberLong": "1793793488660"
       }
     },
     "shop_name": "Tech Store Beta 1792465763030",
@@ -1602,7 +1602,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -1621,7 +1621,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938361230"
+        "$numberLong": "1793793488662"
       }
     },
     "shop_name": "Tech Store Alpha 1792465777068",
@@ -1778,7 +1778,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -1797,7 +1797,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938362864"
+        "$numberLong": "1793793488664"
       }
     },
     "shop_name": "Tech Store Beta 1792465777068",
@@ -1954,7 +1954,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -1973,7 +1973,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938365773"
+        "$numberLong": "1793793488666"
       }
     },
     "shop_name": "Tech Store Alpha 1792465804243",
@@ -2130,7 +2130,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -2149,7 +2149,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938364250"
+        "$numberLong": "1793793488667"
       }
     },
     "shop_name": "Tech Store Beta 1792465804243",
@@ -2305,7 +2305,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -2455,7 +2455,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938367583"
+        "$numberLong": "1793793488669"
       }
     },
     "shop_name": "ASUS ROG Pavilion Shop",
@@ -2482,7 +2482,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -2634,7 +2634,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938368850"
+        "$numberLong": "1793793488671"
       }
     },
     "user_id": {
@@ -2660,7 +2660,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -2812,7 +2812,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1792938370474"
+        "$numberLong": "1793793488672"
       }
     },
     "user_id": {
@@ -2836,7 +2836,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -2988,7 +2988,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793027130204"
+        "$numberLong": "1793793488674"
       }
     },
     "shop_name": "GearTech Flagship Store HN",
@@ -3013,7 +3013,7 @@
       "$numberInt": "5"
     },
     "rating": {
-      "$numberInt": "5"
+      "$numberInt": "0"
     },
     "followers": "0",
     "total_products": {
@@ -3165,7 +3165,7 @@
     },
     "updatedAt": {
       "$date": {
-        "$numberLong": "1793027130219"
+        "$numberLong": "1793793488676"
       }
     },
     "shop_name": "GearTech Saigon Store",

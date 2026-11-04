@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -55,7 +56,7 @@ router.get('/:orderId', auth, async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy thông tin thanh toán.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy thông tin thanh toán.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -201,7 +202,7 @@ router.post('/create-intent', auth, async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi khởi tạo phiên thanh toán.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi khởi tạo phiên thanh toán.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -289,7 +290,7 @@ router.post('/verify', auth, async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi xác thực giao dịch thanh toán.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xác thực giao dịch thanh toán.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -377,7 +378,7 @@ router.post('/retry', auth, async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi thử lại thanh toán.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thử lại thanh toán.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -402,7 +403,7 @@ router.get('/my-payments/history', auth, async (req, res) => {
 
     return res.json(payments);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy lịch sử thanh toán.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy lịch sử thanh toán.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -432,7 +433,7 @@ router.get('/admin/all', auth, async (req, res) => {
 
     return res.json(payments);
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy danh sách thanh toán toàn sàn.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy danh sách thanh toán toàn sàn.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -494,7 +495,7 @@ router.post('/momo/ipn', async (req, res) => {
     return res.status(204).json({ message: 'IPN processed successfully' });
   } catch (error) {
     console.error('[MoMo IPN] Lỗi xử lý webhook:', error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: 'Lỗi xử lý thanh toán.' });
   }
 });
 
@@ -562,7 +563,7 @@ router.post('/momo/simulate-success', auth, async (req, res) => {
     });
   } catch (error) {
     console.error('[MoMo Simulate] Lỗi:', error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: 'Lỗi xử lý thanh toán.' });
   }
 });
 
@@ -745,7 +746,7 @@ router.post('/vnpay/simulate-success', auth, async (req, res) => {
     });
   } catch (error) {
     console.error('[VNPay Simulate] Lỗi:', error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: 'Lỗi xử lý thanh toán.' });
   }
 });
 

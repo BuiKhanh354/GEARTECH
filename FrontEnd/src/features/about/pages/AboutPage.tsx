@@ -458,9 +458,9 @@ export default function AboutPage() {
                 {/* Footer Action */}
                 <div className="pt-3 border-t border-zinc-100 dark:border-zinc-900 flex items-center justify-between">
                   <div className="flex items-center gap-2 text-[10px] font-mono font-bold">
-                    <span className="flex items-center gap-1 text-amber-500">
-                      <Star size={12} weight="fill" />
-                      {shop.rating || 5.0}
+                    <span className={`flex items-center gap-1 ${Number(shop.rating) > 0 ? 'text-amber-500' : 'text-zinc-400'}`}>
+                      <Star size={12} weight={Number(shop.rating) > 0 ? 'fill' : 'regular'} />
+                      {Number(shop.rating) > 0 ? Number(shop.rating).toFixed(1) : '0.0'}
                     </span>
                     <span className="text-zinc-400">•</span>
                     <span className="text-zinc-400">{shop.total_products || 0} sản phẩm</span>

@@ -810,8 +810,8 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
                         <div className="flex items-center gap-4 border-t sm:border-t-0 sm:border-l border-white/10 pt-3 sm:pt-0 sm:pl-4 text-center shrink-0">
                           <div>
                             <span className="text-[8px] text-zinc-400 block uppercase">ĐÁNH GIÁ</span>
-                            <span className="text-xs font-black text-amber-400 flex items-center justify-center gap-0.5">
-                              <Star size={12} weight="fill" /> {currentShop?.rating || 5.0}
+                            <span className={`text-xs font-black flex items-center justify-center gap-0.5 ${Number(currentShop?.rating) > 0 ? 'text-amber-400' : 'text-zinc-400'}`}>
+                              <Star size={12} weight={Number(currentShop?.rating) > 0 ? 'fill' : 'regular'} /> {Number(currentShop?.rating) > 0 ? Number(currentShop?.rating).toFixed(1) : '0.0'}
                             </span>
                           </div>
                           <div>

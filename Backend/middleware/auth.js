@@ -10,7 +10,7 @@ const auth = async (req, res, next) => {
 
   const token = authHeader.replace('Bearer ', '').trim();
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'GEARTECH_VALORANT_EDITION_SECRET_2026');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
     // Kiểm tra tài khoản trong cơ sở dữ liệu để đảm bảo tài khoản tồn tại và không bị khóa
     const user = await User.findById(decoded.id);

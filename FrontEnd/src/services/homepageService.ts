@@ -79,6 +79,7 @@ export interface PopulatedSection extends HomepageSection {
     products?: ProductItem[]
     totalCount?: number
     banners?: HomepageBannerItem[]
+    items?: ServiceFeatureItem[]
     categories?: any[]
     shops?: ShopItem[]
     countdownEnd?: string

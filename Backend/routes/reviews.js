@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -33,7 +34,7 @@ async function recalculateProductRating(productId) {
         product.rating = Number(stats[0].avgRating.toFixed(1));
         product.reviewsCount = stats[0].count;
       } else {
-        product.rating = 5.0;
+        product.rating = 0;
         product.reviewsCount = 0;
       }
       await product.save();
@@ -69,7 +70,7 @@ router.get('/product/:productId', async (req, res) => {
       }
     });
 
-    const averageRating = reviews.length > 0 ? Number((totalScore / reviews.length).toFixed(1)) : 5.0;
+    const averageRating = reviews.length > 0 ? Number((totalScore / reviews.length).toFixed(1)) : 0;
 
     return res.json({
       reviews,
@@ -78,7 +79,7 @@ router.get('/product/:productId', async (req, res) => {
       starCounts
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy danh sách đánh giá.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy danh sách đánh giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -130,7 +131,7 @@ router.get('/check-eligibility/:productId', auth, async (req, res) => {
       review: existingReview || null
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi kiểm tra điều kiện đánh giá.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi kiểm tra điều kiện đánh giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -241,7 +242,7 @@ router.post('/', auth, async (req, res) => {
     if (error.code === 11000) {
       return res.status(400).json({ error: 'Bạn đã đánh giá sản phẩm này rồi, vui lòng chỉnh sửa đánh giá hiện có.' });
     }
-    return res.status(500).json({ error: 'Lỗi gửi đánh giá sản phẩm.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi gửi đánh giá sản phẩm.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -282,7 +283,7 @@ router.put('/:id', auth, async (req, res) => {
       review
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi cập nhật đánh giá.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật đánh giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -311,7 +312,7 @@ router.delete('/:id', auth, async (req, res) => {
 
     return res.json({ message: 'Xóa đánh giá thành công!' });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi xóa đánh giá.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xóa đánh giá.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -340,7 +341,7 @@ async function recalculateShopRating(shopId) {
       if (stats.length > 0) {
         shop.rating = Number(stats[0].avgRating.toFixed(1));
       } else {
-        shop.rating = 5.0;
+        shop.rating = 0;
       }
       await shop.save();
     }
@@ -373,7 +374,7 @@ router.get('/shop/:shopId', async (req, res) => {
       }
     });
 
-    const averageRating = reviews.length > 0 ? Number((totalScore / reviews.length).toFixed(1)) : 5.0;
+    const averageRating = reviews.length > 0 ? Number((totalScore / reviews.length).toFixed(1)) : 0;
 
     return res.json({
       reviews,
@@ -382,7 +383,7 @@ router.get('/shop/:shopId', async (req, res) => {
       starCounts
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy đánh giá gian hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy đánh giá gian hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -446,7 +447,7 @@ router.post('/shop/:shopId', auth, async (req, res) => {
       review
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi gửi đánh giá gian hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi gửi đánh giá gian hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

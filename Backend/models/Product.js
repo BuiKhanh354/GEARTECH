@@ -43,7 +43,7 @@ const ProductSchema = new mongoose.Schema({
   brand: { type: String, trim: true, lowercase: true },
   brandId: { type: mongoose.Schema.Types.ObjectId, ref: 'Brand' },
   brand_id: { type: mongoose.Schema.Types.Mixed },
-  rating: { type: Number, default: 5.0, min: 0, max: 5 },
+  rating: { type: Number, default: 0, min: 0, max: 5 },
   reviewsCount: { type: Number, default: 0 },
   isFeatured: { type: Boolean, default: false }, // Đánh dấu sản phẩm nổi bật của shop
   salesCount: { type: String, default: 'ĐÃ BÁN 0' },

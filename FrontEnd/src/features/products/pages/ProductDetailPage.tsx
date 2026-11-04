@@ -50,7 +50,7 @@ export default function ProductDetailPage() {
   const [isFollowingShop, setIsFollowingShop] = useState<boolean>(false)
   const [shopFollowersCount, setShopFollowersCount] = useState<number>(0)
 
-  const [reviewsData, setReviewsData] = useState<any>({ reviews: [], totalReviews: 0, averageRating: 5.0, starCounts: {} })
+  const [reviewsData, setReviewsData] = useState<any>({ reviews: [], totalReviews: 0, averageRating: 0, starCounts: {} })
   const [isEligibleReview, setIsEligibleReview] = useState<boolean>(false)
   const [userReviewRating, setUserReviewRating] = useState<number>(5)
   const [userReviewComment, setUserReviewComment] = useState<string>('')
@@ -271,7 +271,7 @@ export default function ProductDetailPage() {
   const shopIdValue = typeof product.shopId === 'object' ? (product.shopId._id || product.shopId.id) : (product.shopId || '')
   const shopName = typeof product.shopId === 'object' ? (product.shopId.shopName || product.shopId.name || 'GEARTECH') : 'GEARTECH Official'
   const shopLogo = typeof product.shopId === 'object' ? (product.shopId.logoUrl || '🏬') : '🏬'
-  const shopRating = typeof product.shopId === 'object' ? (product.shopId.rating || 5.0) : 5.0
+  const shopRating = typeof product.shopId === 'object' ? (product.shopId.rating ?? 0) : 0
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 py-8 px-4 sm:px-6 lg:px-8 relative">
@@ -308,7 +308,7 @@ export default function ProductDetailPage() {
           <div className="lg:col-span-6">
             <ProductGalleryViewer
               title={product.title}
-              discount={product.discount}
+              discount={product.oldPrice && product.oldPrice > product.price ? (product.discount || undefined) : undefined}
               productImages={productImages}
               selectedImageIndex={selectedImageIndex}
               fallbackImage={product.imageEmoji || product.gallery?.[0]}
@@ -322,8 +322,8 @@ export default function ProductDetailPage() {
           <div className="lg:col-span-6 space-y-6">
             <ProductInfoActions
               product={product}
-              averageRating={reviewsData.averageRating || product.rating || 5.0}
-              totalReviews={reviewsData.totalReviews || product.reviewsCount || 0}
+              averageRating={reviewsData.totalReviews > 0 ? reviewsData.averageRating : (product.reviewsCount && product.reviewsCount > 0 ? (product.rating ?? 0) : 0)}
+              totalReviews={reviewsData.totalReviews > 0 ? reviewsData.totalReviews : (product.reviewsCount ?? 0)}
               quantity={quantity}
               isAdding={isAdding}
               onIncrement={handleIncrement}

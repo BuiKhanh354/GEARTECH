@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -19,7 +20,7 @@ router.get('/provinces', async (req, res) => {
     const provinces = await ghnService.getProvinces();
     res.json(provinces);
   } catch (error) {
-    res.status(500).json({ error: 'Không thể lấy danh mục Tỉnh/Thành phố từ GHN.', details: error.message });
+    res.status(500).json({ error: 'Không thể lấy danh mục Tỉnh/Thành phố từ GHN.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -33,7 +34,7 @@ router.get('/districts', async (req, res) => {
     const districts = await ghnService.getDistricts(province_id);
     res.json(districts);
   } catch (error) {
-    res.status(500).json({ error: 'Không thể lấy danh mục Quận/Huyện từ GHN.', details: error.message });
+    res.status(500).json({ error: 'Không thể lấy danh mục Quận/Huyện từ GHN.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -47,7 +48,7 @@ router.get('/wards', async (req, res) => {
     const wards = await ghnService.getWards(district_id);
     res.json(wards);
   } catch (error) {
-    res.status(500).json({ error: 'Không thể lấy danh mục Phường/Xã từ GHN.', details: error.message });
+    res.status(500).json({ error: 'Không thể lấy danh mục Phường/Xã từ GHN.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -112,7 +113,7 @@ router.post('/calculate-fee', async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: 'Không thể tính phí vận chuyển từ GHN.',
-      details: error.message
+      ...getDevelopmentErrorDetails(error)
     });
   }
 });
@@ -299,8 +300,8 @@ router.post('/create', auth, async (req, res) => {
   } catch (error) {
     console.error('Lỗi khi tạo vận đơn GHN:', error.message || error);
     res.status(400).json({
-      error: error.message || 'Lỗi phát sinh khi tạo vận đơn GHN.',
-      details: error.message
+      error: process.env.NODE_ENV === 'production' ? 'Không thể tạo vận đơn.' : error.message || 'Lỗi phát sinh khi tạo vận đơn GHN.',
+      ...getDevelopmentErrorDetails(error)
     });
   }
 });
@@ -365,7 +366,7 @@ router.get('/track/:orderId', auth, async (req, res) => {
       timeline: shipment.timeline || []
     });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi lấy thông tin hành trình vận đơn.', details: error.message });
+    res.status(500).json({ error: 'Lỗi lấy thông tin hành trình vận đơn.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -441,7 +442,7 @@ router.post('/cancel/:orderId', auth, async (req, res) => {
       order
     });
   } catch (error) {
-    res.status(500).json({ error: 'Lỗi khi hủy vận đơn trên GHN.', details: error.message });
+    res.status(500).json({ error: 'Lỗi khi hủy vận đơn trên GHN.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -537,7 +538,7 @@ router.post('/webhook', async (req, res) => {
     });
   } catch (error) {
     console.error('❌ Lỗi xử lý Webhook GHN:', error);
-    return res.status(500).json({ error: 'Lỗi nội bộ khi xử lý Webhook GHN.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi nội bộ khi xử lý Webhook GHN.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

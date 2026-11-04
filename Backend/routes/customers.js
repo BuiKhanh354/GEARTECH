@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const Customer = require('../models/Customer');
@@ -58,7 +59,7 @@ router.get('/me', auth, async (req, res) => {
     });
   } catch (error) {
     console.error('Lỗi khi lấy thông tin khách hàng:', error);
-    return res.status(500).json({ error: 'Lỗi lấy thông tin khách hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy thông tin khách hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -68,7 +69,7 @@ router.get('/profile', auth, async (req, res) => {
     const customer = await findOrCreateCustomer(req.user);
     return res.json({ customer });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy hồ sơ khách hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy hồ sơ khách hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -150,7 +151,7 @@ router.put('/me', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi khi cập nhật hồ sơ khách hàng:', error);
-    return res.status(500).json({ error: 'Lỗi cập nhật hồ sơ khách hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật hồ sơ khách hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -190,7 +191,7 @@ router.get('/checkout-info', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi lấy thông tin đặt hàng:', error);
-    return res.status(500).json({ error: 'Không thể lấy thông tin đặt hàng.', details: error.message });
+    return res.status(500).json({ error: 'Không thể lấy thông tin đặt hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -235,7 +236,7 @@ router.get('/', auth, checkRole(['admin']), async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi lấy danh sách khách hàng:', error);
-    return res.status(500).json({ error: 'Lỗi lấy danh sách khách hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy danh sách khách hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -273,7 +274,7 @@ router.get('/:id', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi lấy chi tiết khách hàng:', error);
-    return res.status(500).json({ error: 'Lỗi lấy chi tiết khách hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy chi tiết khách hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -317,7 +318,7 @@ router.post('/', auth, checkRole(['admin']), async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi thêm khách hàng mới:', error);
-    return res.status(500).json({ error: 'Lỗi thêm khách hàng mới.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thêm khách hàng mới.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

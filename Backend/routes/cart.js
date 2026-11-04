@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const Cart = require('../models/Cart');
@@ -192,7 +193,7 @@ router.get('/', auth, async (req, res) => {
     return res.json(cartDetails);
   } catch (error) {
     console.error('Lỗi khi lấy giỏ hàng:', error);
-    return res.status(500).json({ error: 'Lỗi tải giỏ hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải giỏ hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -309,7 +310,7 @@ router.post('/items', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi khi thêm vào giỏ hàng:', error);
-    return res.status(500).json({ error: 'Lỗi thêm sản phẩm vào giỏ hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thêm sản phẩm vào giỏ hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -388,7 +389,7 @@ router.put('/items/:productId', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi cập nhật giỏ hàng:', error);
-    return res.status(500).json({ error: 'Lỗi cập nhật giỏ hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật giỏ hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -425,7 +426,7 @@ router.delete('/items/:productId', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi khi xóa khỏi giỏ hàng:', error);
-    return res.status(500).json({ error: 'Lỗi xóa sản phẩm khỏi giỏ hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xóa sản phẩm khỏi giỏ hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -457,7 +458,7 @@ router.delete('/clear', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi khi dọn giỏ hàng:', error);
-    return res.status(500).json({ error: 'Lỗi dọn sạch giỏ hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi dọn sạch giỏ hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -530,7 +531,7 @@ router.post('/sync', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi đồng bộ giỏ hàng:', error);
-    return res.status(500).json({ error: 'Lỗi đồng bộ giỏ hàng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi đồng bộ giỏ hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -633,7 +634,7 @@ router.get('/validate', auth, async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi kiểm tra tính hợp lệ trước khi đặt hàng:', error);
-    return res.status(500).json({ error: 'Không thể kiểm tra giỏ hàng.', details: error.message });
+    return res.status(500).json({ error: 'Không thể kiểm tra giỏ hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

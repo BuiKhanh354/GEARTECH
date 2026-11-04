@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -64,7 +65,7 @@ router.post('/product-images', auth, uploadProducts.array('images', 6), async (r
     });
   } catch (error) {
     console.error('Lỗi upload ảnh sản phẩm:', error);
-    res.status(500).json({ error: 'Lỗi tải lên ảnh sản phẩm.', details: error.message });
+    res.status(500).json({ error: 'Lỗi tải lên ảnh sản phẩm.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -87,7 +88,7 @@ router.post('/shop-images', auth, uploadSingle.single('image'), async (req, res)
     });
   } catch (error) {
     console.error('Lỗi upload ảnh cửa hàng:', error);
-    res.status(500).json({ error: 'Lỗi tải lên ảnh cửa hàng.', details: error.message });
+    res.status(500).json({ error: 'Lỗi tải lên ảnh cửa hàng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -110,7 +111,7 @@ router.post('/category-icon', auth, uploadSingle.single('icon'), async (req, res
     });
   } catch (error) {
     console.error('Lỗi upload icon danh mục:', error);
-    res.status(500).json({ error: 'Lỗi tải lên icon danh mục.', details: error.message });
+    res.status(500).json({ error: 'Lỗi tải lên icon danh mục.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -133,7 +134,7 @@ router.post('/homepage-banner', auth, uploadBanner.single('banner'), async (req,
     });
   } catch (error) {
     console.error('Lỗi upload banner:', error);
-    res.status(500).json({ error: 'Lỗi tải lên ảnh banner trang chủ.', details: error.message });
+    res.status(500).json({ error: 'Lỗi tải lên ảnh banner trang chủ.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

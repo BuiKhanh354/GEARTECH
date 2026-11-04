@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const Product = require('../models/Product');
@@ -99,7 +100,7 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Lỗi lấy danh sách ảnh sản phẩm:', error);
-    return res.status(500).json({ error: 'Lỗi lấy danh sách hình ảnh sản phẩm.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy danh sách hình ảnh sản phẩm.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -184,7 +185,7 @@ router.post('/', auth, checkRole(['shop', 'admin']), async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi khi thêm ảnh sản phẩm:', error);
-    return res.status(500).json({ error: 'Lỗi thêm ảnh sản phẩm.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi thêm ảnh sản phẩm.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -223,7 +224,7 @@ router.put('/reorder', auth, checkRole(['shop', 'admin']), async (req, res) => {
 
   } catch (error) {
     console.error('Lỗi cập nhật thứ tự ảnh:', error);
-    return res.status(500).json({ error: 'Lỗi sắp xếp thứ tự ảnh.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi sắp xếp thứ tự ảnh.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -273,7 +274,7 @@ router.put('/:imageId', auth, checkRole(['shop', 'admin']), async (req, res) => 
 
   } catch (error) {
     console.error('Lỗi cập nhật hình ảnh:', error);
-    return res.status(500).json({ error: 'Lỗi cập nhật hình ảnh.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật hình ảnh.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -314,7 +315,7 @@ router.delete('/:imageId', auth, checkRole(['shop', 'admin']), async (req, res) 
 
   } catch (error) {
     console.error('Lỗi khi xóa ảnh sản phẩm:', error);
-    return res.status(500).json({ error: 'Lỗi xóa ảnh sản phẩm.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xóa ảnh sản phẩm.', ...getDevelopmentErrorDetails(error) });
   }
 });
 

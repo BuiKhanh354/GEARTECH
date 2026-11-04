@@ -452,7 +452,7 @@ export default function AdminShopsTab({ token, onRefresh }: AdminShopsTabProps) 
                           <div>
                             <div className="font-bold text-zinc-900 dark:text-white uppercase flex items-center gap-2">
                               <span>{s.name || s.shop_name}</span>
-                              <span className="text-[10px] text-amber-500 font-extrabold">⭐ {s.rating || 5.0}</span>
+                              <span className={`text-[10px] font-extrabold ${Number(s.rating) > 0 ? 'text-amber-500' : 'text-zinc-400'}`}>⭐ {Number(s.rating) > 0 ? Number(s.rating).toFixed(1) : '0.0'}</span>
                             </div>
                             {s.address && (
                               <div className="text-[10px] text-zinc-400 flex items-center gap-1 mt-0.5">

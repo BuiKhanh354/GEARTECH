@@ -67,9 +67,9 @@ export interface ProductItem {
   sku?: string
   description: string
   price: number
-  oldPrice?: number
-  originalPrice?: number
-  discount?: string
+  oldPrice?: number | null
+  originalPrice?: number | null
+  discount?: string | null
   image?: string
   imageUrl?: string
   imageEmoji?: string

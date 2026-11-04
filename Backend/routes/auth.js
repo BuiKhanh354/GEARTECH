@@ -1,3 +1,4 @@
+const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
@@ -80,7 +81,7 @@ router.post('/register', async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi đăng ký tài khoản.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi đăng ký tài khoản.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -162,7 +163,7 @@ router.post('/login', async (req, res) => {
     // Tạo JWT Token
     const token = jwt.sign(
       { id: user._id, role: user.role, shopId: user.shopId },
-      process.env.JWT_SECRET || 'GEARTECH_VALORANT_EDITION_SECRET_2026',
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
@@ -184,7 +185,7 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi xử lý đăng nhập.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi xử lý đăng nhập.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -216,7 +217,7 @@ router.get('/profile', auth, async (req, res) => {
 
     return res.json({ user });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy thông tin tài khoản.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy thông tin tài khoản.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -283,7 +284,7 @@ router.put('/profile', auth, async (req, res) => {
 
     return res.json({ message: 'Cập nhật hồ sơ tài khoản thành công!', user });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi cập nhật hồ sơ.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật hồ sơ.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -338,7 +339,7 @@ router.get('/users', auth, checkRole(['admin']), async (req, res) => {
       totalPages: Math.ceil(total / itemsPerPage)
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tải danh sách người dùng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tải danh sách người dùng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -444,7 +445,7 @@ router.put('/users/:id/status', auth, checkRole(['admin']), async (req, res) => 
       }
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi cập nhật trạng thái tài khoản.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi cập nhật trạng thái tài khoản.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -573,7 +574,7 @@ router.get('/admin/overview', auth, checkRole(['admin']), async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi lấy thống kê tổng quan.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi lấy thống kê tổng quan.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -666,7 +667,7 @@ router.post('/users', auth, checkRole(['admin']), async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tạo tài khoản người dùng.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tạo tài khoản người dùng.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -726,7 +727,7 @@ router.post('/register-shop', auth, checkRole(['admin']), async (req, res) => {
       shop: newShop
     });
   } catch (error) {
-    return res.status(500).json({ error: 'Lỗi tạo tài khoản doanh nghiệp.', details: error.message });
+    return res.status(500).json({ error: 'Lỗi tạo tài khoản doanh nghiệp.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
