@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const connectDB = require('./config/db');
 
@@ -71,7 +71,12 @@ app.use((err, req, res, next) => {
 
 const startServer = async () => {
   if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'your_jwt_secret_here') {
-    throw new Error('JWT_SECRET must be set to a strong, private value before starting the server.');
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_SECRET must be set to a strong, private value before starting the server.');
+    } else {
+      console.warn('⚠️ [Auth] JWT_SECRET chưa được đặt trong .env, sử dụng khóa mặc định cho môi trường dev.');
+      process.env.JWT_SECRET = 'GEARTECH_VALORANT_EDITION_SECRET_2026';
+    }
   }
 
   await connectDB();
