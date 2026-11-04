@@ -3,7 +3,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const { auth } = require('../middleware/auth');
-const { saveImage } = require('../services/cloudinaryService');
+const { saveImage } = require('../services/storageService');
 
 const router = express.Router();
 
