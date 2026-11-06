@@ -294,9 +294,9 @@ export default function ShopDetailPage() {
                         <ShieldCheck size={12} weight="fill" /> Đối tác xác minh
                       </span>
                     </div>
-                    <p className="text-xs font-semibold opacity-90">{shop.category || 'Gian hàng phần cứng chính hãng'}</p>
+                    <p className="text-xs font-semibold opacity-90 transition-colors" style={{ color: textColor }}>{shop.category || 'Gian hàng phần cứng chính hãng'}</p>
                     {shop.description && (
-                      <p className="text-[11px] opacity-75 max-w-xl leading-relaxed">{shop.description}</p>
+                      <p className="text-[11px] opacity-75 max-w-xl leading-relaxed transition-colors" style={{ color: textColor }}>{shop.description}</p>
                     )}
                   </div>
                 </div>
@@ -312,7 +312,7 @@ export default function ShopDetailPage() {
                     </div>
                     <div>
                       <span className="text-[9px] opacity-60 block uppercase tracking-wider">SẢN PHẨM</span>
-                      <span className="text-sm font-black mt-1 block">
+                      <span className="text-sm font-black mt-1 block transition-colors" style={{ color: textColor }}>
                         {allProducts.length}
                       </span>
                     </div>

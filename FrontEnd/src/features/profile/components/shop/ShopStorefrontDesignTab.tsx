@@ -57,6 +57,17 @@ const COLOR_PRESETS = [
   { name: 'Minimal Dark', hex: '#3f3f46' }
 ]
 
+const TEXT_COLOR_PRESETS = [
+  { name: 'Trắng Sáng', hex: '#ffffff' },
+  { name: 'Vàng Cyber', hex: '#facc15' },
+  { name: 'Đỏ Valorant', hex: '#ff4655' },
+  { name: 'Xanh Cyan', hex: '#00ffcc' },
+  { name: 'Tím Neon', hex: '#c084fc' },
+  { name: 'Cam Gaming', hex: '#fb923c' },
+  { name: 'Xanh Ngọc', hex: '#34d399' },
+  { name: 'Xám Titan', hex: '#cbd5e1' }
+]
+
 export default function ShopStorefrontDesignTab({ currentShop, allProducts, onShopUpdated }: ShopStorefrontDesignTabProps) {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -105,6 +116,7 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
     template: 'modern-tech',
     primaryColor: '#ff4655',
     secondaryColor: '#09090b',
+    textColor: '#ffffff',
     bannerUrl: '',
     introText: '',
     viewMode: 'grid',
@@ -124,7 +136,10 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
         setLoading(true)
         const data = await storefrontService.getMyStorefront()
         if (data.storefrontDraft) {
-          setConfig(data.storefrontDraft)
+          setConfig({
+            ...data.storefrontDraft,
+            textColor: data.storefrontDraft.textColor || '#ffffff'
+          })
         }
         if (data.shop?.name) {
           setShopName(data.shop.name)
@@ -417,10 +432,14 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
               2. Màu sắc nhận diện thương hiệu
             </h4>
 
-            <div>
-              <label className="text-[11px] font-bold text-zinc-500 uppercase block mb-1.5">
-                Màu chủ đạo (Primary Accent)
-              </label>
+            {/* Màu chủ đạo */}
+            <div className="pb-3 border-b border-zinc-100 dark:border-zinc-800/80">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-[11px] font-bold text-zinc-500 uppercase block">
+                  Màu chủ đạo (Primary Accent)
+                </label>
+                <span className="text-[10px] text-zinc-400 font-mono">Viền, nút bấm, huy hiệu</span>
+              </div>
               <div className="flex items-center gap-3">
                 <input
                   type="color"
@@ -432,7 +451,7 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                   type="text"
                   value={config.primaryColor}
                   onChange={(e) => setConfig({ ...config, primaryColor: e.target.value })}
-                  className="flex-1 px-3 py-2 text-xs font-mono rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white"
+                  className="flex-1 px-3 py-2 text-xs font-mono rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white uppercase font-bold"
                   placeholder="#ff4655"
                 />
               </div>
@@ -444,10 +463,58 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                     key={color.hex}
                     type="button"
                     onClick={() => setConfig({ ...config, primaryColor: color.hex })}
-                    className="flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-semibold border border-zinc-200 dark:border-zinc-800 hover:border-zinc-400"
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-semibold border transition-all ${
+                      config.primaryColor?.toLowerCase() === color.hex.toLowerCase()
+                        ? 'border-[#ff4655] bg-[#ff4655]/10 text-[#ff4655]'
+                        : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 text-zinc-600 dark:text-zinc-400'
+                    }`}
                   >
                     <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: color.hex }} />
-                    <span className="text-zinc-600 dark:text-zinc-400">{color.name}</span>
+                    <span>{color.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Màu chữ gian hàng / Tên shop */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-[11px] font-bold text-zinc-500 uppercase block">
+                  Màu chữ thương hiệu / Tên shop (Text Color)
+                </label>
+                <span className="text-[10px] text-zinc-400 font-mono">Tên shop & tiêu đề banner</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <input
+                  type="color"
+                  value={config.textColor || '#ffffff'}
+                  onChange={(e) => setConfig({ ...config, textColor: e.target.value })}
+                  className="w-10 h-10 rounded cursor-pointer border border-zinc-300 dark:border-zinc-700 bg-transparent p-0.5"
+                />
+                <input
+                  type="text"
+                  value={config.textColor || '#ffffff'}
+                  onChange={(e) => setConfig({ ...config, textColor: e.target.value })}
+                  className="flex-1 px-3 py-2 text-xs font-mono rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white uppercase font-bold"
+                  placeholder="#ffffff"
+                />
+              </div>
+
+              {/* Quick text color preset chips */}
+              <div className="flex flex-wrap gap-1.5 mt-2.5">
+                {TEXT_COLOR_PRESETS.map((color) => (
+                  <button
+                    key={color.hex}
+                    type="button"
+                    onClick={() => setConfig({ ...config, textColor: color.hex })}
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-semibold border transition-all ${
+                      (config.textColor || '#ffffff').toLowerCase() === color.hex.toLowerCase()
+                        ? 'border-[#ff4655] bg-[#ff4655]/10 text-[#ff4655]'
+                        : 'border-zinc-200 dark:border-zinc-800 hover:border-zinc-400 text-zinc-600 dark:text-zinc-400'
+                    }`}
+                  >
+                    <span className="w-2.5 h-2.5 rounded-full border border-zinc-400/50" style={{ backgroundColor: color.hex }} />
+                    <span>{color.name}</span>
                   </button>
                 ))}
               </div>
@@ -824,7 +891,8 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                   return (
                     <div
                       key={sec.id}
-                      className={`relative overflow-hidden rounded-2xl text-white shadow-lg ${
+                      style={{ color: config.textColor || '#ffffff' }}
+                      className={`relative overflow-hidden rounded-2xl shadow-lg transition-colors ${
                         config.template === 'gaming'
                           ? 'border-2 border-red-500/40 bg-zinc-950 shadow-red-500/10'
                           : config.template === 'minimal'
@@ -853,7 +921,10 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                           </span>
                           <div>
                             <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="text-base sm:text-lg font-black uppercase tracking-wider">
+                              <h3
+                                className="text-base sm:text-lg font-black uppercase tracking-wider transition-colors"
+                                style={{ color: config.textColor || '#ffffff' }}
+                              >
                                 {shopName.trim() || currentShop?.name || currentShop?.shop_name || 'Gear Tech Store'}
                               </h3>
                               <span
@@ -863,7 +934,10 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                                 <ShieldCheck size={11} weight="fill" /> Đối tác xác minh
                               </span>
                             </div>
-                            <p className="text-[11px] text-zinc-300 font-medium mt-0.5">
+                            <p
+                              className="text-[11px] font-medium mt-0.5 opacity-90 transition-colors"
+                              style={{ color: config.textColor || '#ffffff' }}
+                            >
                               {currentShop?.category || 'Phần cứng & Gaming Gear'}
                             </p>
                           </div>
@@ -879,7 +953,7 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                           </div>
                           <div>
                             <span className="text-[8px] text-zinc-400 block uppercase">SẢN PHẨM</span>
-                            <span className="text-xs font-black text-white">
+                            <span className="text-xs font-black transition-colors" style={{ color: config.textColor || '#ffffff' }}>
                               {allProducts?.length || 0}
                             </span>
                           </div>

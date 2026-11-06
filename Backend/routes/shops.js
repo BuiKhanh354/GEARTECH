@@ -585,9 +585,15 @@ router.put('/me/storefront', auth, async (req, res) => {
 
     // Validate colors (Hex code regex)
     const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-    const validPrimary = (primaryColor && hexColorRegex.test(primaryColor)) ? primaryColor : '#ff4655';
-    const validSecondary = (secondaryColor && hexColorRegex.test(secondaryColor)) ? secondaryColor : '#18181b';
-    const validTextColor = (textColor && hexColorRegex.test(textColor)) ? textColor : '#ffffff';
+    const validPrimary = (primaryColor && hexColorRegex.test(primaryColor)) 
+      ? primaryColor 
+      : (shop.storefrontDraft?.primaryColor || '#ff4655');
+    const validSecondary = (secondaryColor && hexColorRegex.test(secondaryColor)) 
+      ? secondaryColor 
+      : (shop.storefrontDraft?.secondaryColor || '#18181b');
+    const validTextColor = (textColor && hexColorRegex.test(textColor)) 
+      ? textColor 
+      : (shop.storefrontDraft?.textColor || '#ffffff');
 
     // Validate sections array
     let validSections = Shop.defaultStorefrontConfig.sections;
