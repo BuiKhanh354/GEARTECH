@@ -270,7 +270,7 @@ export default function ProductDetailPage() {
 
   const shopIdValue = typeof product.shopId === 'object' ? (product.shopId._id || product.shopId.id) : (product.shopId || '')
   const shopName = typeof product.shopId === 'object' ? (product.shopId.shopName || product.shopId.name || 'GEARTECH') : 'GEARTECH Official'
-  const shopLogo = typeof product.shopId === 'object' ? (product.shopId.logoUrl || '🏬') : '🏬'
+  const shopLogo = typeof product.shopId === 'object' ? (product.shopId.logo || product.shopId.logoUrl || '🏬') : '🏬'
   const shopRating = typeof product.shopId === 'object' ? (product.shopId.rating ?? 0) : 0
 
   return (

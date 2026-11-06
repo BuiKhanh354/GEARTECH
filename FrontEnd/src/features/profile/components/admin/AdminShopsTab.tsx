@@ -19,6 +19,7 @@ import {
   Eye
 } from '@phosphor-icons/react'
 import { shopService, type ShopItem } from '../../../../services/shopService'
+import ShopLogo from '../../../../components/common/ShopLogo'
 
 interface AdminShopsTabProps {
   initialStatus?: string
@@ -572,9 +573,11 @@ export default function AdminShopsTab({
                       {/* Logo and Name */}
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-3">
-                          <span className="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-xl shrink-0">
-                            {s.logo || '🏬'}
-                          </span>
+                          <ShopLogo
+                            logo={s.logo}
+                            name={s.name || s.shop_name}
+                            className="w-10 h-10 rounded-lg text-xl"
+                          />
                           <div>
                             <div className="font-bold text-zinc-900 dark:text-white uppercase flex items-center gap-2">
                               <span>{s.name || s.shop_name}</span>
@@ -765,9 +768,11 @@ export default function AdminShopsTab({
             {/* Thông tin chi tiết Shop */}
             <div className="bg-zinc-50 dark:bg-zinc-800/50 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700/80 space-y-3">
               <div className="flex items-center gap-3">
-                <span className="w-12 h-12 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-2xl shrink-0 shadow-sm">
-                  {reviewShop.logo || '🏬'}
-                </span>
+                <ShopLogo
+                  logo={reviewShop.logo}
+                  name={reviewShop.name || reviewShop.shop_name}
+                  className="w-12 h-12 rounded-xl text-2xl shadow-sm"
+                />
                 <div>
                   <h4 className="text-sm font-black uppercase text-zinc-900 dark:text-white">
                     {reviewShop.name || reviewShop.shop_name}
@@ -1106,13 +1111,20 @@ export default function AdminShopsTab({
 
                   <div>
                     <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Logo / Emoji đại diện</label>
-                    <input
-                      type="text"
-                      value={createForm.logo}
-                      onChange={e => setCreateForm({ ...createForm, logo: e.target.value })}
-                      placeholder="🏬 hoặc link ảnh https://..."
-                      className="w-full text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
-                    />
+                    <div className="flex items-center gap-2">
+                      <ShopLogo
+                        logo={createForm.logo}
+                        name={createForm.shopName || 'Shop'}
+                        className="w-9 h-9 rounded-lg text-lg shrink-0"
+                      />
+                      <input
+                        type="text"
+                        value={createForm.logo}
+                        onChange={e => setCreateForm({ ...createForm, logo: e.target.value })}
+                        placeholder="🏬 hoặc link ảnh https://..."
+                        className="flex-1 text-xs font-bold px-3 py-2 border border-zinc-200 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655]"
+                      />
+                    </div>
                   </div>
 
                   <div>

@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { shopService, type ShopItem } from '../../../services/shopService'
+import ShopLogo from '../../../components/common/ShopLogo'
 import { 
   Storefront, 
   Phone, 
@@ -73,13 +74,7 @@ export default function StorePage() {
   }, [shops, selectedCity, searchQuery])
 
   const renderShopLogo = (shop: ShopItem) => {
-    const logo = shop.logo?.trim()
-    if (logo && (logo.startsWith('http://') || logo.startsWith('https://') || logo.startsWith('/'))) {
-      return <img src={logo} alt={shop.name} className="w-full h-full object-cover" />
-    }
-    return (
-      <span className="text-xl font-black">{logo && logo !== '??' ? logo : '🏪'}</span>
-    )
+    return <ShopLogo logo={shop.logo} name={shop.name} className="w-full h-full text-xl" />
   }
 
   return (

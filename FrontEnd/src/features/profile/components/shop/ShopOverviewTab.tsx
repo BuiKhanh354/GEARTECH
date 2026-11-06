@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Storefront, CheckCircle, WarningCircle, FloppyDisk, PencilSimple, Clock, Lock, XCircle, Star, ChatCircleText, User } from '@phosphor-icons/react'
 import { shopService, type ShopItem } from '../../../../services/shopService'
+import ShopLogo from '../../../../components/common/ShopLogo'
 import apiClient from '../../../../api/client'
 
 interface ShopOverviewTabProps {
@@ -188,9 +189,11 @@ export default function ShopOverviewTab({ currentUser, currentShop, allProducts 
       {/* Shop Detail Hero Presentation (C2: Hiển thị Follower & Đánh giá thật) */}
       <div className={`p-6 rounded-2xl bg-gradient-to-r ${shop?.bgClass || 'from-zinc-900 to-black'} text-white space-y-4 shadow-xl border border-zinc-800`}>
         <div className="flex items-center gap-4">
-          <span className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md text-4xl flex items-center justify-center border border-white/20 shadow-inner">
-            {shop?.logo || '🏬'}
-          </span>
+          <ShopLogo
+            logo={shop?.logo}
+            name={shop?.name || shop?.shop_name}
+            className="w-16 h-16 rounded-2xl text-4xl shadow-inner border border-white/20 bg-white/10 backdrop-blur-md"
+          />
           <div>
             <div className="flex items-center gap-2">
               <h4 className="text-base font-black uppercase tracking-wider leading-none">

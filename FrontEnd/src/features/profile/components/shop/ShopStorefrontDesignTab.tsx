@@ -22,6 +22,8 @@ import {
 import { storefrontService, type StorefrontConfig } from '../../../../services/storefrontService'
 import { productService } from '../../../../services/productService'
 import { formatPrice } from '../../../../utils/format'
+import ShopLogo from '../../../../components/common/ShopLogo'
+import { resolveImageUrl } from '../../../../utils/image'
 
 interface ShopStorefrontDesignTabProps {
   currentShop: any
@@ -583,7 +585,7 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                 </label>
                 {config.bannerUrl && (
                   <img
-                    src={config.bannerUrl}
+                    src={resolveImageUrl(config.bannerUrl)}
                     alt="Xem trước banner"
                     className="h-10 w-24 object-cover rounded border border-zinc-200 dark:border-zinc-800"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
@@ -611,7 +613,7 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                 </label>
                 {config.logoUrl && (
                   <img
-                    src={config.logoUrl}
+                    src={resolveImageUrl(config.logoUrl)}
                     alt="Xem trước logo"
                     className="h-10 w-10 object-contain rounded border border-zinc-200 dark:border-zinc-800 bg-white"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
@@ -904,21 +906,17 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts, onSh
                       {config.bannerUrl && (
                         <div
                           className="absolute inset-0 bg-cover bg-center opacity-30 pointer-events-none"
-                          style={{ backgroundImage: `url(${config.bannerUrl})` }}
+                          style={{ backgroundImage: `url(${resolveImageUrl(config.bannerUrl)})` }}
                         />
                       )}
 
                       <div className="relative p-5 sm:p-6 z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
-                          <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white/10 backdrop-blur-md text-3xl sm:text-4xl flex items-center justify-center border border-white/20 shrink-0 overflow-hidden">
-                            {config.logoUrl ? (
-                              <img src={config.logoUrl} alt="Logo" className="w-full h-full object-contain p-1" />
-                            ) : currentShop?.logo && (currentShop.logo.startsWith('http') || currentShop.logo.startsWith('/')) ? (
-                              <img src={currentShop.logo} alt="Logo" className="w-full h-full object-contain p-1" />
-                            ) : (
-                              currentShop?.logo || '🏬'
-                            )}
-                          </span>
+                          <ShopLogo
+                            logo={config.logoUrl || currentShop?.logo}
+                            name={shopName.trim() || currentShop?.name || 'Shop'}
+                            className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl text-3xl sm:text-4xl border border-white/20 shadow-inner bg-white/10 backdrop-blur-md"
+                          />
                           <div>
                             <div className="flex items-center gap-2 flex-wrap">
                               <h3

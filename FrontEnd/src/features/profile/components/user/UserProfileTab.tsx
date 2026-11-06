@@ -6,6 +6,7 @@ import {
   ClockCountdown, WarningCircle, ArrowRight, ArrowCounterClockwise, ShieldWarning
 } from '@phosphor-icons/react'
 import { shopService, type ShopItem } from '../../../../services/shopService'
+import ShopLogo from '../../../../components/common/ShopLogo'
 import apiClient from '../../../../api/client'
 
 interface UserProfileTabProps {
@@ -307,8 +308,9 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
                       Chờ duyệt
                     </span>
                   </div>
-                  <p className="text-[11px] text-zinc-300 font-semibold mt-0.5">
-                    {myShop.logo} <span className="font-black text-white">{myShop.name || myShop.shop_name}</span> • {myShop.category}
+                  <p className="text-[11px] text-zinc-300 font-semibold mt-0.5 flex items-center gap-1.5">
+                    <ShopLogo logo={myShop.logo} name={myShop.name || myShop.shop_name} className="w-5 h-5 rounded text-xs shrink-0" />
+                    <span className="font-black text-white">{myShop.name || myShop.shop_name}</span> • {myShop.category}
                   </p>
                 </div>
               </div>
@@ -347,8 +349,9 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
                       Từ chối
                     </span>
                   </div>
-                  <p className="text-[11px] text-zinc-300 font-semibold mt-0.5">
-                    {myShop.logo} <span className="font-black text-white">{myShop.name || myShop.shop_name}</span> • {myShop.category}
+                  <p className="text-[11px] text-zinc-300 font-semibold mt-0.5 flex items-center gap-1.5">
+                    <ShopLogo logo={myShop.logo} name={myShop.name || myShop.shop_name} className="w-5 h-5 rounded text-xs shrink-0" />
+                    <span className="font-black text-white">{myShop.name || myShop.shop_name}</span> • {myShop.category}
                   </p>
                 </div>
               </div>
@@ -377,9 +380,11 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
           /* TRẠNG THÁI: ĐÃ ĐƯỢC DUYỆT & HOẠT ĐỘNG */
           <div className="p-5 rounded-xl bg-gradient-to-r from-emerald-950/40 via-zinc-900 to-black border border-emerald-500/30 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-xl">
-                {myShop.logo || '🏬'}
-              </div>
+              <ShopLogo
+                logo={myShop.logo}
+                name={myShop.name || myShop.shop_name}
+                className="w-11 h-11 rounded-lg text-xl border-emerald-500/30 bg-emerald-500/10 shrink-0"
+              />
               <div className="space-y-0.5">
                 <div className="flex items-center gap-2">
                   <h4 className="text-xs font-black uppercase tracking-wider text-emerald-400">

@@ -20,6 +20,8 @@ import {
 import { storefrontService, type StorefrontConfig, type StorefrontShopInfo } from '../../../services/storefrontService'
 import { formatPrice } from '../../../utils/format'
 import { SafeProductImage } from '../../../components/common/ProductImage'
+import ShopLogo from '../../../components/common/ShopLogo'
+import { resolveImageUrl } from '../../../utils/image'
 import apiClient from '../../../api/client'
 
 export default function ShopDetailPage() {
@@ -267,7 +269,7 @@ export default function ShopDetailPage() {
               {storefront?.bannerUrl && (
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-30 pointer-events-none"
-                  style={{ backgroundImage: `url(${storefront.bannerUrl})` }}
+                  style={{ backgroundImage: `url(${resolveImageUrl(storefront.bannerUrl)})` }}
                 />
               )}
 
@@ -279,9 +281,11 @@ export default function ShopDetailPage() {
 
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
                 <div className="flex items-center gap-5">
-                  <span className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/10 backdrop-blur-md text-5xl flex items-center justify-center border border-white/20 shadow-inner shrink-0">
-                    {shop.logo || '🏬'}
-                  </span>
+                  <ShopLogo
+                    logo={shop.logo}
+                    name={shop.name}
+                    className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl text-5xl shadow-inner border border-white/20 bg-white/10 backdrop-blur-md"
+                  />
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2.5 flex-wrap">
                       <h1 className="text-xl sm:text-2xl font-black uppercase tracking-wider" style={{ color: textColor }}>

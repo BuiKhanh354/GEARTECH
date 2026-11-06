@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { UserCheck, UserPlus, Storefront } from '@phosphor-icons/react'
+import ShopLogo from '../../../components/common/ShopLogo'
 
 export interface ProductShopCardProps {
   shopLogo: any
@@ -24,9 +25,17 @@ export const ProductShopCard: React.FC<ProductShopCardProps> = ({
   return (
     <div className="bg-white dark:bg-zinc-950/60 backdrop-blur-sm border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-2xl shrink-0">
-          {shopLogo}
-        </div>
+        {React.isValidElement(shopLogo) ? (
+          <div className="w-12 h-12 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-2xl shrink-0">
+            {shopLogo}
+          </div>
+        ) : (
+          <ShopLogo
+            logo={typeof shopLogo === 'string' ? shopLogo : undefined}
+            name={shopName}
+            className="w-12 h-12 rounded-xl text-2xl"
+          />
+        )}
         <div>
           <h4 className="text-xs font-black uppercase text-zinc-900 dark:text-white flex items-center gap-1.5 tracking-wider">
             {shopName}

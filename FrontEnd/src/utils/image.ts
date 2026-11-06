@@ -23,17 +23,56 @@ export const FALLBACK_PRODUCT_IMAGE = `data:image/svg+xml;utf8,${encodeURICompon
 </svg>
 `)}`;
 
-const BACKEND_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/api\/?$/, '');
+export const getBackendBaseUrl = (): string => {
+  const envApi = import.meta.env.VITE_API_URL
+  if (typeof window !== 'undefined' && window.location?.hostname) {
+    const currentHost = window.location.hostname
+    if (currentHost !== 'localhost' && currentHost !== '127.0.0.1') {
+      const protocol = window.location.protocol || 'http:'
+      return `${protocol}//${currentHost}:5000`
+    }
+  }
+  if (envApi) {
+    return envApi.replace(/\/api\/?$/, '')
+  }
+  return 'http://localhost:5000'
+}
 
 export const resolveImageUrl = (url?: string | null): string => {
-  if (!url || typeof url !== 'string') return '';
-  const trimmed = url.trim();
+  if (!url || typeof url !== 'string') return ''
+  const trimmed = url.trim()
+  if (!trimmed) return ''
+
+  const base = getBackendBaseUrl()
+
+  // 1. Relative upload path: /uploads/... or uploads/...
   if (trimmed.startsWith('/uploads/') || trimmed.startsWith('uploads/')) {
-    const clean = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
-    return `${BACKEND_BASE}${clean}`;
+    const clean = trimmed.startsWith('/') ? trimmed : `/${trimmed}`
+    return `${base}${clean}`
   }
-  return trimmed;
-};
+
+  // 2. Full URL containing /uploads/ with localhost or 127.0.0.1
+  if (trimmed.includes('/uploads/')) {
+    try {
+      const parsed = new URL(trimmed)
+      if (typeof window !== 'undefined' && window.location?.hostname) {
+        const currentHost = window.location.hostname
+        if (currentHost !== 'localhost' && currentHost !== '127.0.0.1') {
+          if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
+            parsed.hostname = currentHost
+            parsed.protocol = window.location.protocol || 'http:'
+          }
+        }
+      }
+      return parsed.toString()
+    } catch {
+      const uploadIdx = trimmed.indexOf('/uploads/')
+      return `${base}${trimmed.substring(uploadIdx)}`
+    }
+  }
+
+  return trimmed
+}
 
 export const isImageUrl = (url?: string | null): boolean => {
   if (!url || typeof url !== 'string') return false;

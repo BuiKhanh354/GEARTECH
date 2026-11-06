@@ -23,6 +23,8 @@ import { shopService, type ShopItem } from '../../../services/shopService'
 import { homepageService, type PopulatedSection } from '../../../services/homepageService'
 import { useCartStore } from '../../../store/cartStore'
 import { SafeProductImage } from '../../../components/common/ProductImage'
+import ShopLogo from '../../../components/common/ShopLogo'
+import { isImageUrl } from '../../../utils/image'
 import backgroundVideo from '../../../assets/video/BackgroundLoop.mp4'
 import lightHeroImage from '../../../assets/images/predator-helios-neo-16s-ai-phn16s-71-(agw)-banner-2560x1080-(DT).avif'
 import { formatPrice } from '../../../utils/format'
@@ -877,14 +879,16 @@ const HomePage: React.FC = () => {
                           onClick={() => navigate(`/shop/${shop._id || shop.id}`)}
                           className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${shop.bgClass || 'from-zinc-900 to-black'} p-5 flex flex-col justify-between min-h-[170px] shadow-sm hover:shadow-xl border border-zinc-800 transition-all duration-300 cursor-pointer group text-white`}
                         >
-                          <div className="absolute right-0 bottom-0 text-7xl opacity-5 group-hover:scale-110 transition-transform duration-300 select-none">
-                            {shop.logo}
+                          <div className="absolute right-0 bottom-0 text-7xl opacity-5 group-hover:scale-110 transition-transform duration-300 select-none overflow-hidden pointer-events-none">
+                            {!isImageUrl(shop.logo) ? (shop.logo || '🏬') : '🏬'}
                           </div>
                           <div className="space-y-2">
                             <div className="flex items-center gap-3">
-                              <span className="w-11 h-11 rounded-lg bg-white/10 flex items-center justify-center text-2xl backdrop-blur-sm shrink-0 border border-white/10 shadow-inner group-hover:scale-105 transition-transform">
-                                {shop.logo}
-                              </span>
+                              <ShopLogo
+                                logo={shop.logo}
+                                name={shop.name}
+                                className="w-11 h-11 rounded-lg text-2xl backdrop-blur-sm border border-white/10 shadow-inner group-hover:scale-105 transition-transform"
+                              />
                               <div>
                                 <div className="flex items-center gap-1.5">
                                   <h4 className="text-xs font-black tracking-wider uppercase text-white group-hover:text-[#ff4655] transition-colors">{shop.name}</h4>

@@ -27,8 +27,8 @@ function uploadToLocal(buffer, originalname, folder = 'products') {
 
   fs.writeFileSync(filePath, buffer);
 
-  const baseUrl = process.env.BACKEND_URL || 'http://localhost:5000';
-  return `${baseUrl}/uploads/${folder}/${fileName}`;
+  const baseUrl = process.env.BACKEND_URL;
+  return baseUrl ? `${baseUrl}/uploads/${folder}/${fileName}` : `/uploads/${folder}/${fileName}`;
 }
 
 /**
