@@ -1,20 +1,87 @@
 import axios, { AxiosError } from 'axios'
 import { Platform } from 'react-native'
+import Constants from 'expo-constants'
 import { useAuthStore } from '../store/authStore'
 
-// Xác định địa chỉ backend linh hoạt:
-// - Trên Web: tự động dùng hostname hiện tại (localhost hoặc IP LAN)
-// - Trên Mobile: ưu tiên EXPO_PUBLIC_API_URL từ file .env (IP LAN máy tính)
-// Xác định địa chỉ backend linh hoạt:
-// 1. Trên Web: tự động dùng hostname hiện tại
-// 2. Có EXPO_PUBLIC_API_URL trong .env: dùng đúng địa chỉ cấu hình
-// 3. Fallback: IP LAN máy tính hiện tại (192.168.1.6:5000)
-const getApiBaseUrl = (): string => {
+/**
+ * Tự động phát hiện IP của máy tính đang chạy Expo ở BẤT KỲ mạng nào:
+ * Khi bạn đổi sang Wi-Fi khác (quán cafe, trường học, hotspot...), Expo Metro Bundler
+ * tự động cấp hostUri = "<IP-máy-tính-ở-mạng-đó>:8081".
+ * Ta tách lấy IP này và ghép với cổng backend 5000: http://<IP>:5000/api
+ */
+export const getAutoDetectedHost = (): string | null => {
+  try {
+    // 1. expoConfig.hostUri (Expo SDK 49+)
+    const hostUri = Constants.expoConfig?.hostUri
+    if (hostUri) {
+      const host = hostUri.split(':')[0]
+      if (host && host !== 'localhost' && host !== '127.0.0.1') return host
+    }
+
+    // 2. expoGoConfig (Expo Go)
+    const expoGoHost = (Constants as any).expoGoConfig?.debuggerHost
+    if (expoGoHost) {
+      const host = expoGoHost.split(':')[0]
+      if (host && host !== 'localhost' && host !== '127.0.0.1') return host
+    }
+
+    // 3. manifest (Legacy debuggerHost)
+    const debuggerHost = (Constants as any).manifest?.debuggerHost
+    if (debuggerHost) {
+      const host = debuggerHost.split(':')[0]
+      if (host && host !== 'localhost' && host !== '127.0.0.1') return host
+    }
+
+    // 4. linkingUri (e.g. exp://192.168.x.x:8081)
+    const linkingUri = Constants.linkingUri
+    if (linkingUri) {
+      const match = linkingUri.match(/exp:\/\/([^:/]+)/)
+      if (match && match[1] && match[1] !== 'localhost' && match[1] !== '127.0.0.1') {
+        return match[1]
+      }
+    }
+  } catch (err) {
+    console.warn('[Auto-IP] Lỗi phát hiện IP:', err)
+  }
+  return null
+}
+
+// Biến lưu URL do người dùng tự đổi trực tiếp trên app (nếu có)
+let inAppCustomApiUrl: string | null = null
+
+export const setInAppApiUrl = (url: string | null) => {
+  inAppCustomApiUrl = url ? url.trim() : null
+  const newBase = getApiBaseUrl()
+  api.defaults.baseURL = newBase
+  console.log('[GearTech Mobile] Đã chuyển địa chỉ API sang:', newBase)
+}
+
+export const getApiBaseUrl = (): string => {
+  // 1. Nếu người dùng đổi thủ công trong app
+  if (inAppCustomApiUrl) {
+    return inAppCustomApiUrl
+  }
+
+  // 2. Nếu chạy trên nền Web: tự động dùng hostname hiện tại
   if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.hostname) {
     const host = window.location.hostname
     return `http://${host}:5000/api`
   }
-  return process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.6:5000/api'
+
+  // 3. Nếu cấu hình biến môi trường cố định (không phải 'auto')
+  const envUrl = process.env.EXPO_PUBLIC_API_URL?.trim()
+  if (envUrl && envUrl !== 'auto' && !envUrl.startsWith('#')) {
+    return envUrl
+  }
+
+  // 4. Tự động nhận diện IP từ máy chủ Expo đang kết nối (hoạt động ở mọi mạng)
+  const autoHost = getAutoDetectedHost()
+  if (autoHost) {
+    return `http://${autoHost}:5000/api`
+  }
+
+  // 5. Mặc định khi cắm cáp USB (adb reverse) hoặc chạy máy ảo
+  return 'http://localhost:5000/api'
 }
 
 export const API_BASE_URL = getApiBaseUrl()
@@ -27,8 +94,9 @@ export const api = axios.create({
   headers: { 'Content-Type': 'application/json' }
 })
 
-// Gắn token cho mọi request nếu đã đăng nhập
+// Cập nhật baseURL linh hoạt trước mỗi request
 api.interceptors.request.use((config) => {
+  config.baseURL = getApiBaseUrl()
   const token = useAuthStore.getState().token
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
