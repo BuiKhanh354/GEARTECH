@@ -5,17 +5,16 @@ import { useAuthStore } from '../store/authStore'
 // Xác định địa chỉ backend linh hoạt:
 // - Trên Web: tự động dùng hostname hiện tại (localhost hoặc IP LAN)
 // - Trên Mobile: ưu tiên EXPO_PUBLIC_API_URL từ file .env (IP LAN máy tính)
+// Xác định địa chỉ backend linh hoạt:
+// 1. Trên Web: tự động dùng hostname hiện tại
+// 2. Có EXPO_PUBLIC_API_URL trong .env: dùng đúng địa chỉ cấu hình
+// 3. Fallback: IP LAN máy tính hiện tại (192.168.1.6:5000)
 const getApiBaseUrl = (): string => {
   if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.hostname) {
     const host = window.location.hostname
     return `http://${host}:5000/api`
   }
-  let url = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.6:5000/api'
-  // Tự động chuyển đổi localhost sang 10.0.2.2 khi chạy trên Android Emulator
-  if (Platform.OS === 'android' && (url.includes('localhost') || url.includes('127.0.0.1'))) {
-    url = url.replace('localhost', '10.0.2.2').replace('127.0.0.1', '10.0.2.2')
-  }
-  return url
+  return process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.6:5000/api'
 }
 
 export const API_BASE_URL = getApiBaseUrl()

@@ -33,6 +33,8 @@
   "scripts": {
     "start": "expo start --go -c",
     "start:lan": "expo start --go --host lan -c",
+    "start:usb": "adb reverse tcp:5000 tcp:5000 && adb reverse tcp:8081 tcp:8081 && expo start --go --localhost -c",
+    "reverse": "adb reverse tcp:5000 tcp:5000 && adb reverse tcp:8081 tcp:8081",
     "tunnel": "expo start --go --tunnel -c",
     "android": "cross-env ANDROID_HOME=D:\\Android\\SDK ANDROID_SDK_ROOT=D:\\Android\\SDK ANDROID_AVD_HOME=D:\\Android\\avd expo start --android --go -c",
     "ios": "expo start --ios",
