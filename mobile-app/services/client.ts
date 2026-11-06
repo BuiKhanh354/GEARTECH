@@ -1,10 +1,24 @@
 import axios, { AxiosError } from 'axios'
+import { Platform } from 'react-native'
 import { useAuthStore } from '../store/authStore'
 
-// Địa chỉ backend lấy từ biến môi trường EXPO_PUBLIC_API_URL (.env của app).
-// KHÔNG dùng localhost khi chạy trên máy thật — xem .env.example
-export const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.4:5000/api'
+// Xác định địa chỉ backend linh hoạt:
+// - Trên Web: tự động dùng hostname hiện tại (localhost hoặc IP LAN)
+// - Trên Mobile: ưu tiên EXPO_PUBLIC_API_URL từ file .env (IP LAN máy tính)
+const getApiBaseUrl = (): string => {
+  if (Platform.OS === 'web' && typeof window !== 'undefined' && window.location?.hostname) {
+    const host = window.location.hostname
+    return `http://${host}:5000/api`
+  }
+  let url = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.6:5000/api'
+  // Tự động chuyển đổi localhost sang 10.0.2.2 khi chạy trên Android Emulator
+  if (Platform.OS === 'android' && (url.includes('localhost') || url.includes('127.0.0.1'))) {
+    url = url.replace('localhost', '10.0.2.2').replace('127.0.0.1', '10.0.2.2')
+  }
+  return url
+}
+
+export const API_BASE_URL = getApiBaseUrl()
 
 console.log('[GearTech Mobile] Đang kết nối API Backend tại:', API_BASE_URL)
 
@@ -49,7 +63,7 @@ export function toAppError(err: unknown): AppError {
         'network',
         axiosErr.code === 'ECONNABORTED'
           ? 'Kết nối quá chậm. Vui lòng thử lại.'
-          : `Không thể kết nối máy chủ (${axiosErr.message || 'Lỗi mạng'}). Đích: ${API_BASE_URL}`,
+          : `Không thể kết nối máy chủ (${API_BASE_URL}). Hãy đảm bảo Backend đang chạy (port 5000) và cùng mạng Wi-Fi.`,
         undefined
       )
     }

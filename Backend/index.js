@@ -15,9 +15,13 @@ const allowedOrigins = process.env.CORS_ORIGINS
 
 app.use(cors({
   origin(origin, callback) {
-    // Native clients and server-to-server requests do not send an Origin header.
-    return callback(null, !origin || allowedOrigins.includes(origin));
-  }
+    // Cho phép tất cả các nguồn khi chạy ở môi trường development (bao gồm web, mobile expo, IP LAN)
+    if (!origin || process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+    return callback(null, allowedOrigins.includes(origin));
+  },
+  credentials: true
 }));
 app.use(express.json());
 
