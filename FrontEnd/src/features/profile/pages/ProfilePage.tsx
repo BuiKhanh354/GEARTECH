@@ -342,7 +342,16 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
               {activeTab === 'shop-orders' && <ShopOrdersTab />}
               {activeTab === 'shop-inventory' && <ShopInventoryTab allProducts={allProducts} />}
               {activeTab === 'shop-suppliers' && <ShopSuppliersTab />}
-              {activeTab === 'shop-storefront' && <ShopStorefrontDesignTab currentShop={currentShop} allProducts={allProducts} />}
+              {activeTab === 'shop-storefront' && (
+                <ShopStorefrontDesignTab
+                  currentShop={currentShop}
+                  allProducts={allProducts}
+                  onShopUpdated={(newShop) => {
+                    setCurrentShop(newShop)
+                    if (currentUser?.shopId) fetchShopData(currentUser.shopId)
+                  }}
+                />
+              )}
               {activeTab === 'shop-vouchers' && <ShopVouchersTab currentShop={currentShop} />}
             </>
           )}

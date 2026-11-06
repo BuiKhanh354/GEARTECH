@@ -26,6 +26,7 @@ import { formatPrice } from '../../../../utils/format'
 interface ShopStorefrontDesignTabProps {
   currentShop: any
   allProducts: any[]
+  onShopUpdated?: (newShop: any) => void
 }
 
 const PRESET_BANNERS = [
@@ -56,13 +57,20 @@ const COLOR_PRESETS = [
   { name: 'Minimal Dark', hex: '#3f3f46' }
 ]
 
-export default function ShopStorefrontDesignTab({ currentShop, allProducts }: ShopStorefrontDesignTabProps) {
+export default function ShopStorefrontDesignTab({ currentShop, allProducts, onShopUpdated }: ShopStorefrontDesignTabProps) {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [publishing, setPublishing] = useState(false)
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [previewMode, setPreviewMode] = useState<'desktop' | 'mobile'>('desktop')
   const [publishedAt, setPublishedAt] = useState<string | null>(null)
+  const [shopName, setShopName] = useState<string>(currentShop?.name || currentShop?.shop_name || '')
+
+  useEffect(() => {
+    if (currentShop?.name || currentShop?.shop_name) {
+      setShopName(currentShop.name || currentShop.shop_name || '')
+    }
+  }, [currentShop?.name, currentShop?.shop_name])
 
   // Danh sách sản phẩm của shop (phục vụ chọn sản phẩm nổi bật trực tiếp)
   const [productList, setProductList] = useState<any[]>(allProducts || [])
@@ -117,6 +125,9 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
         const data = await storefrontService.getMyStorefront()
         if (data.storefrontDraft) {
           setConfig(data.storefrontDraft)
+        }
+        if (data.shop?.name) {
+          setShopName(data.shop.name)
         }
         if (data.publishedAt) {
           setPublishedAt(data.publishedAt)
@@ -181,10 +192,20 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
 
   // Save Draft handler
   const handleSaveDraft = async () => {
+    if (!shopName.trim()) {
+      setStatusMsg({ type: 'error', text: 'Tên gian hàng không được để trống.' })
+      return
+    }
     try {
       setSaving(true)
       setStatusMsg(null)
-      const res = await storefrontService.saveDraft(config)
+      const res = await storefrontService.saveDraft({
+        ...config,
+        name: shopName.trim()
+      })
+      if (res.shop && onShopUpdated) {
+        onShopUpdated(res.shop)
+      }
       setStatusMsg({ type: 'success', text: res.message || 'Lưu bản nháp thiết kế thành công!' })
     } catch (err: any) {
       setStatusMsg({ type: 'error', text: err.response?.data?.error || 'Lỗi khi lưu bản nháp.' })
@@ -195,13 +216,26 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
 
   // Publish handler
   const handlePublish = async () => {
+    if (!shopName.trim()) {
+      setStatusMsg({ type: 'error', text: 'Tên gian hàng không được để trống.' })
+      return
+    }
     try {
       setPublishing(true)
       setStatusMsg(null)
       // Save draft first then publish
-      await storefrontService.saveDraft(config)
+      const draftRes = await storefrontService.saveDraft({
+        ...config,
+        name: shopName.trim()
+      })
+      if (draftRes.shop && onShopUpdated) {
+        onShopUpdated(draftRes.shop)
+      }
       const res = await storefrontService.publish()
       setPublishedAt(res.publishedAt)
+      if (res.shop && onShopUpdated) {
+        onShopUpdated(res.shop)
+      }
       setStatusMsg({ 
         type: 'success', 
         text: '🚀 Xuất bản gian hàng thành công! Khách hàng đã có thể nhìn thấy giao diện mới nhất.' 
@@ -424,8 +458,31 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
           <div className="bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800 rounded-lg p-5 space-y-4">
             <h4 className="text-xs font-black uppercase tracking-wider text-zinc-900 dark:text-white flex items-center gap-2">
               <Storefront size={15} className="text-[#ff4655]" />
-              3. Ảnh Banner & Giới thiệu gian hàng
+              3. Tên & Nhận diện thương hiệu (Banner, Logo)
             </h4>
+
+            {/* Shop Name Input */}
+            <div className="space-y-1.5 pb-2 border-b border-zinc-100 dark:border-zinc-800/80">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-bold text-zinc-700 dark:text-zinc-300 uppercase block">
+                  Tên gian hàng / Thương hiệu <span className="text-[#ff4655]">*</span>
+                </label>
+                <span className="text-[10px] text-zinc-400 font-mono">
+                  {shopName.length}/100
+                </span>
+              </div>
+              <input
+                type="text"
+                maxLength={100}
+                value={shopName}
+                onChange={(e) => setShopName(e.target.value)}
+                className="w-full px-3 py-2 text-xs font-bold rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655] focus:ring-1 focus:ring-[#ff4655] transition-all"
+                placeholder="Nhập tên shop của bạn (VD: GEARTECH Official, Apex Gaming...)"
+              />
+              <p className="text-[10px] text-zinc-500">
+                Tên gian hàng hiển thị trực tiếp cho khách mua hàng trên toàn bộ hệ thống & trang chi tiết sản phẩm.
+              </p>
+            </div>
 
             <div className="space-y-2">
               <label className="text-[11px] font-bold text-zinc-500 uppercase block">
@@ -785,13 +842,19 @@ export default function ShopStorefrontDesignTab({ currentShop, allProducts }: Sh
 
                       <div className="relative p-5 sm:p-6 z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
-                          <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white/10 backdrop-blur-md text-3xl sm:text-4xl flex items-center justify-center border border-white/20 shrink-0">
-                            {currentShop?.logo || '🏬'}
+                          <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white/10 backdrop-blur-md text-3xl sm:text-4xl flex items-center justify-center border border-white/20 shrink-0 overflow-hidden">
+                            {config.logoUrl ? (
+                              <img src={config.logoUrl} alt="Logo" className="w-full h-full object-contain p-1" />
+                            ) : currentShop?.logo && (currentShop.logo.startsWith('http') || currentShop.logo.startsWith('/')) ? (
+                              <img src={currentShop.logo} alt="Logo" className="w-full h-full object-contain p-1" />
+                            ) : (
+                              currentShop?.logo || '🏬'
+                            )}
                           </span>
                           <div>
                             <div className="flex items-center gap-2 flex-wrap">
                               <h3 className="text-base sm:text-lg font-black uppercase tracking-wider">
-                                {currentShop?.name || currentShop?.shop_name || 'Gear Tech Store'}
+                                {shopName.trim() || currentShop?.name || currentShop?.shop_name || 'Gear Tech Store'}
                               </h3>
                               <span
                                 style={{ backgroundColor: `${config.primaryColor}25`, color: config.primaryColor, borderColor: `${config.primaryColor}50` }}

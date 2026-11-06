@@ -618,8 +618,19 @@ router.put('/me/storefront', auth, async (req, res) => {
 
     // Đồng bộ thông tin thương hiệu cơ bản nếu có thay đổi
     if (name && name.trim()) {
-      shop.name = name.trim();
-      shop.shop_name = name.trim();
+      const finalName = name.trim();
+      const existing = await Shop.findOne({
+        _id: { $ne: shop._id },
+        $or: [
+          { name: { $regex: `^${finalName}$`, $options: 'i' } },
+          { shop_name: { $regex: `^${finalName}$`, $options: 'i' } }
+        ]
+      });
+      if (existing) {
+        return res.status(400).json({ error: 'Tên gian hàng này đã có người đăng ký. Vui lòng chọn tên khác.' });
+      }
+      shop.name = finalName;
+      shop.shop_name = finalName;
     }
     if (logoUrl && logoUrl.trim()) {
       shop.logo = logoUrl.trim();
@@ -632,7 +643,14 @@ router.put('/me/storefront', auth, async (req, res) => {
 
     return res.json({
       message: 'Đã lưu bản nháp thiết kế gian hàng thành công!',
-      storefrontDraft: shop.storefrontDraft
+      storefrontDraft: shop.storefrontDraft,
+      shop: {
+        _id: shop._id,
+        name: shop.name || shop.shop_name,
+        logo: shop.logo,
+        description: shop.description,
+        status: shop.status
+      }
     });
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi lưu bản nháp thiết kế gian hàng.', ...getDevelopmentErrorDetails(error) });
@@ -670,7 +688,14 @@ router.post('/me/storefront/publish', auth, async (req, res) => {
     return res.json({
       message: 'Xuất bản giao diện gian hàng thành công! Khách hàng đã có thể nhìn thấy giao diện mới nhất.',
       storefrontPublished: shop.storefrontPublished,
-      publishedAt: shop.publishedAt
+      publishedAt: shop.publishedAt,
+      shop: {
+        _id: shop._id,
+        name: shop.name || shop.shop_name,
+        logo: shop.logo,
+        description: shop.description,
+        status: shop.status
+      }
     });
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi xuất bản giao diện gian hàng.', ...getDevelopmentErrorDetails(error) });

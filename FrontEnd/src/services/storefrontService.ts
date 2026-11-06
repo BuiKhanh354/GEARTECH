@@ -65,15 +65,15 @@ export const storefrontService = {
     return res.data
   },
 
-  // 2. Chủ shop lưu bản nháp giao diện
-  saveDraft: async (data: Partial<StorefrontConfig>): Promise<{ message: string; storefrontDraft: StorefrontConfig }> => {
-    const res = await apiClient.put<{ message: string; storefrontDraft: StorefrontConfig }>('/shops/me/storefront', data)
+  // 2. Chủ shop lưu bản nháp giao diện (hỗ trợ đổi tên gian hàng)
+  saveDraft: async (data: Partial<StorefrontConfig> & { name?: string }): Promise<{ message: string; storefrontDraft: StorefrontConfig; shop?: StorefrontShopInfo }> => {
+    const res = await apiClient.put<{ message: string; storefrontDraft: StorefrontConfig; shop?: StorefrontShopInfo }>('/shops/me/storefront', data)
     return res.data
   },
 
   // 3. Chủ shop xuất bản giao diện từ bản nháp
-  publish: async (): Promise<{ message: string; storefrontPublished: StorefrontConfig; publishedAt: string }> => {
-    const res = await apiClient.post<{ message: string; storefrontPublished: StorefrontConfig; publishedAt: string }>('/shops/me/storefront/publish')
+  publish: async (): Promise<{ message: string; storefrontPublished: StorefrontConfig; publishedAt: string; shop?: StorefrontShopInfo }> => {
+    const res = await apiClient.post<{ message: string; storefrontPublished: StorefrontConfig; publishedAt: string; shop?: StorefrontShopInfo }>('/shops/me/storefront/publish')
     return res.data
   },
 

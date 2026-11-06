@@ -24,6 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 .DS_Store
 Thumbs.db
+Backend/public/uploads/
 
 # Documentation & Backups
 Documentation/

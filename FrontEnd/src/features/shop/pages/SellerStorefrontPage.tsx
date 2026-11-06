@@ -11,7 +11,7 @@ interface StorefrontContext {
 // Tùy chỉnh giao diện gian hàng — tái sử dụng ShopStorefrontDesignTab
 // (draft/publish/reset + upload banner & logo từ máy đã hoạt động)
 export default function SellerStorefrontPage() {
-  const { shop } = useOutletContext<StorefrontContext>()
+  const { shop, refreshShop } = useOutletContext<StorefrontContext>()
   const [allProducts, setAllProducts] = useState<any[]>([])
 
   const loadProducts = useCallback(async () => {
@@ -27,5 +27,5 @@ export default function SellerStorefrontPage() {
     loadProducts()
   }, [loadProducts])
 
-  return <ShopStorefrontDesignTab currentShop={shop} allProducts={allProducts} />
+  return <ShopStorefrontDesignTab currentShop={shop} allProducts={allProducts} onShopUpdated={refreshShop} />
 }
