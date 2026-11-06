@@ -67,9 +67,54 @@ export const shopService = {
     return res.data
   },
 
-  // 2. Admin lấy danh sách toàn bộ shop (kèm trạng thái pending, locked, rejected)
-  getAdminShops: async (params?: { status?: string; search?: string; page?: number; limit?: number }): Promise<{ shops: ShopItem[]; total: number; totalPages: number }> => {
-    const res = await apiClient.get<{ shops: ShopItem[]; total: number; totalPages: number }>('/shops/admin/all', { params })
+  // 2. Admin lấy danh sách toàn bộ shop (kèm trạng thái pending, locked, rejected và bộ đếm status)
+  getAdminShops: async (params?: { status?: string; search?: string; page?: number; limit?: number }): Promise<{
+    shops: ShopItem[]
+    total: number
+    totalPages: number
+    counts?: { all: number; pending: number; active: number; locked: number; rejected: number }
+  }> => {
+    const res = await apiClient.get<{
+      shops: ShopItem[]
+      total: number
+      totalPages: number
+      counts?: { all: number; pending: number; active: number; locked: number; rejected: number }
+    }>('/shops/admin/all', { params })
+    return res.data
+  },
+
+  // 2B. Admin lấy danh sách người dùng khả dụng để gán gian hàng
+  getCandidateUsers: async (params?: { search?: string }): Promise<{
+    users: { _id: string; name: string; email: string; phone?: string; role: string; status: string }[]
+  }> => {
+    const res = await apiClient.get<{
+      users: { _id: string; name: string; email: string; phone?: string; role: string; status: string }[]
+    }>('/shops/admin/candidate-users', { params })
+    return res.data
+  },
+
+  // 2C. Admin tạo cửa hàng thủ công (hỗ trợ tạo tài khoản mới hoặc gán cho user có sẵn)
+  adminCreateShop: async (data: {
+    mode: 'new_owner' | 'existing_owner'
+    ownerName?: string
+    ownerEmail?: string
+    ownerPassword?: string
+    ownerPhone?: string
+    userId?: string
+    userEmail?: string
+    name: string
+    shopName?: string
+    description?: string
+    logo?: string
+    category?: string
+    phone?: string
+    email?: string
+    address?: string
+    commission_rate?: number
+    status?: 'active' | 'pending' | 'locked'
+    bgClass?: string
+  }): Promise<{ message: string; shop: ShopItem; user?: any }> => {
+    const res = await apiClient.post<{ message: string; shop: ShopItem; user?: any }>('/shops/admin/create', data)
     return res.data
   },
 

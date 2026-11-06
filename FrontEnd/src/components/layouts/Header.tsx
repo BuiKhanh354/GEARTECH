@@ -678,6 +678,14 @@ export default function Header() {
                           </Link>
                         )}
 
+                        {/* Người dùng thông thường: Menu nhanh Đăng ký mở shop */}
+                        {currentUser.role === 'user' && (
+                          <Link to="/profile" className="px-4 py-2 text-xs font-bold text-amber-500 hover:bg-amber-500/10 transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
+                            <Storefront size={14} weight="bold" />
+                            Đăng Ký Mở Shop
+                          </Link>
+                        )}
+
                         <Link to="/orders" className="px-4 py-2 text-xs font-bold text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-2 uppercase tracking-wide" onClick={() => setUserMenuOpen(false)}>
                           <Receipt size={14} />
                           Đơn mua của tôi

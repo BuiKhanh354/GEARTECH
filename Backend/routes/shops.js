@@ -1,6 +1,7 @@
 const { getDevelopmentErrorDetails } = require('../utils/errorDetails')
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const Shop = require('../models/Shop');
 const User = require('../models/User');
 const Product = require('../models/Product');
@@ -85,7 +86,7 @@ router.get('/', async (req, res) => {
 });
 
 // ==========================================
-// 2. ADMIN LẤY TOÀN BỘ DANH SÁCH SHOP (KÈM LỌC STATUS & TÌM KIẾM)
+// 2. ADMIN LẤY TOÀN BỘ DANH SÁCH SHOP (KÈM LỌC STATUS, TÌM KIẾM & BỘ ĐẾM STATUS)
 // GET /api/shops/admin/all
 // ==========================================
 router.get('/admin/all', auth, checkRole(['admin']), async (req, res) => {
@@ -111,23 +112,216 @@ router.get('/admin/all', auth, checkRole(['admin']), async (req, res) => {
     const itemsPerPage = Math.max(1, Number(limit));
     const skip = (currentPage - 1) * itemsPerPage;
 
-    const [shops, total] = await Promise.all([
+    const [shops, total, countsAgg] = await Promise.all([
       Shop.find(query)
         .populate('ownerId', 'name email phone role status')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(itemsPerPage),
-      Shop.countDocuments(query)
+      Shop.countDocuments(query),
+      Shop.aggregate([
+        {
+          $group: {
+            _id: '$status',
+            count: { $sum: 1 }
+          }
+        }
+      ])
     ]);
+
+    const counts = { all: 0, pending: 0, active: 0, locked: 0, rejected: 0 };
+    countsAgg.forEach((item) => {
+      const s = item._id || 'active';
+      if (counts[s] !== undefined) {
+        counts[s] = item.count;
+      }
+      counts.all += item.count;
+    });
 
     return res.json({
       shops,
       total,
+      counts,
       page: currentPage,
       totalPages: Math.ceil(total / itemsPerPage)
     });
   } catch (error) {
     return res.status(500).json({ error: 'Lỗi tải danh sách cửa hàng cho Admin.', ...getDevelopmentErrorDetails(error) });
+  }
+});
+
+// ==========================================
+// 2B. ADMIN LẤY DANH SÁCH NGƯỜI DÙNG KHẢ DỤNG ĐỂ GÁN SHOP
+// GET /api/shops/admin/candidate-users
+// ==========================================
+router.get('/admin/candidate-users', auth, checkRole(['admin']), async (req, res) => {
+  try {
+    const { search } = req.query;
+    const query = { role: 'user' };
+
+    if (search && search.trim()) {
+      const q = search.trim();
+      query.$or = [
+        { name: { $regex: q, $options: 'i' } },
+        { email: { $regex: q, $options: 'i' } },
+        { phone: { $regex: q, $options: 'i' } }
+      ];
+    }
+
+    // Lấy tối đa 50 user chưa có quyền shop
+    const users = await User.find(query)
+      .select('name email phone role status shopId createdAt')
+      .sort({ createdAt: -1 })
+      .limit(50)
+      .lean();
+
+    return res.json({ users });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi tải danh sách người dùng khả dụng.', ...getDevelopmentErrorDetails(error) });
+  }
+});
+
+// ==========================================
+// 2C. ADMIN TẠO CỬA HÀNG THỦ CÔNG
+// POST /api/shops/admin/create
+// ==========================================
+router.post('/admin/create', auth, checkRole(['admin']), async (req, res) => {
+  try {
+    const {
+      mode = 'new_owner', // 'new_owner' | 'existing_owner'
+      // Thông tin chủ sở hữu mới (nếu mode === 'new_owner')
+      ownerName,
+      ownerEmail,
+      ownerPassword,
+      ownerPhone,
+      // Chủ sở hữu có sẵn (nếu mode === 'existing_owner')
+      userId,
+      userEmail,
+      // Thông tin gian hàng
+      name,
+      shopName,
+      description,
+      logo,
+      category,
+      phone,
+      email,
+      address,
+      commission_rate,
+      status = 'active',
+      bgClass
+    } = req.body;
+
+    const finalShopName = (name || shopName || '').trim();
+    if (!finalShopName) {
+      return res.status(400).json({ error: 'Vui lòng cung cấp tên cửa hàng.' });
+    }
+
+    // Kiểm tra trùng tên shop (case-insensitive)
+    const existingShop = await Shop.findOne({
+      $or: [
+        { name: { $regex: `^${finalShopName}$`, $options: 'i' } },
+        { shop_name: { $regex: `^${finalShopName}$`, $options: 'i' } }
+      ]
+    });
+    if (existingShop) {
+      return res.status(400).json({ error: `Tên gian hàng "${finalShopName}" đã tồn tại trên hệ thống. Vui lòng chọn tên khác.` });
+    }
+
+    let targetUser = null;
+
+    if (mode === 'existing_owner') {
+      // Gán gian hàng cho tài khoản đã có trên hệ thống
+      if (userId) {
+        targetUser = await User.findById(userId);
+      } else if (userEmail) {
+        targetUser = await User.findOne({ email: userEmail.trim().toLowerCase() });
+      }
+
+      if (!targetUser) {
+        return res.status(404).json({ error: 'Không tìm thấy tài khoản người dùng để gán gian hàng.' });
+      }
+
+      // Kiểm tra xem người dùng này đã có shop đang hoạt động hoặc chờ duyệt chưa
+      const existingUserShop = await Shop.findOne({
+        ownerId: targetUser._id,
+        status: { $in: ['active', 'pending'] }
+      });
+      if (existingUserShop) {
+        return res.status(400).json({
+          error: `Người dùng "${targetUser.name}" (${targetUser.email}) đã sở hữu gian hàng "${existingUserShop.name || existingUserShop.shop_name}".`
+        });
+      }
+
+      // Nâng quyền tài khoản lên 'shop'
+      targetUser.role = 'shop';
+    } else {
+      // Tạo mới tài khoản chủ sở hữu
+      if (!ownerName || !ownerName.trim()) {
+        return res.status(400).json({ error: 'Vui lòng cung cấp họ tên chủ sở hữu.' });
+      }
+      if (!ownerEmail || !ownerEmail.trim()) {
+        return res.status(400).json({ error: 'Vui lòng cung cấp email chủ sở hữu.' });
+      }
+      if (!ownerPassword || ownerPassword.length < 6) {
+        return res.status(400).json({ error: 'Mật khẩu phải có độ dài tối thiểu 6 ký tự.' });
+      }
+
+      const cleanEmail = ownerEmail.trim().toLowerCase();
+      const existingEmail = await User.findOne({ email: cleanEmail });
+      if (existingEmail) {
+        return res.status(400).json({ error: `Email "${cleanEmail}" đã được sử dụng bởi tài khoản khác.` });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(ownerPassword, salt);
+
+      targetUser = new User({
+        name: ownerName.trim(),
+        email: cleanEmail,
+        password: hashedPassword,
+        phone: ownerPhone ? ownerPhone.trim() : (phone ? phone.trim() : ''),
+        role: 'shop',
+        status: 'active'
+      });
+      await targetUser.save();
+    }
+
+    // Khởi tạo gian hàng mới
+    const newShop = new Shop({
+      name: finalShopName,
+      shop_name: finalShopName,
+      description: description ? description.trim() : 'Gian hàng đối tác phân phối chính hãng GearTech',
+      logo: logo || '🏬',
+      category: category ? category.trim() : 'Gaming Hardware & Gear',
+      phone: phone ? phone.trim() : (targetUser.phone || ''),
+      email: email ? email.trim().toLowerCase() : targetUser.email,
+      address: address ? address.trim() : 'Việt Nam',
+      commission_rate: commission_rate !== undefined ? Number(commission_rate) : 5.0,
+      bgClass: bgClass || 'from-zinc-900 to-black',
+      status: ['active', 'pending', 'locked'].includes(status) ? status : 'active',
+      ownerId: targetUser._id,
+      user_id: targetUser._id
+    });
+
+    await newShop.save();
+
+    // Liên kết shopId vào user
+    targetUser.shopId = newShop._id;
+    await targetUser.save();
+
+    return res.status(201).json({
+      message: `Tạo gian hàng "${newShop.name}" thành công!`,
+      shop: newShop,
+      user: {
+        id: targetUser._id,
+        name: targetUser.name,
+        email: targetUser.email,
+        phone: targetUser.phone,
+        role: targetUser.role
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi tạo cửa hàng thủ công.', ...getDevelopmentErrorDetails(error) });
   }
 });
 
@@ -660,18 +854,7 @@ router.post('/apply', auth, async (req, res) => {
       return res.status(400).json({ error: 'Vui lòng cung cấp tên cửa hàng.' });
     }
 
-    // Kiểm tra tên shop đã tồn tại chưa
-    const existingName = await Shop.findOne({
-      $or: [
-        { name: { $regex: `^${finalName}$`, $options: 'i' } },
-        { shop_name: { $regex: `^${finalName}$`, $options: 'i' } }
-      ]
-    });
-    if (existingName) {
-      return res.status(400).json({ error: 'Tên cửa hàng này đã có người đăng ký. Vui lòng chọn tên khác.' });
-    }
-
-    // Kiểm tra người dùng đã có shop chưa
+    // Kiểm tra người dùng đã có shop active hoặc pending chưa
     const existingUserShop = await Shop.findOne({ 
       ownerId: req.user._id,
       status: { $in: ['pending', 'active'] }
@@ -679,6 +862,44 @@ router.post('/apply', auth, async (req, res) => {
     if (existingUserShop) {
       return res.status(400).json({ 
         error: `Bạn đã có cửa hàng "${existingUserShop.name || existingUserShop.shop_name}" đang ở trạng thái ${existingUserShop.status}.` 
+      });
+    }
+
+    // Kiểm tra xem người dùng có shop từng bị từ chối trước đó để tái sử dụng
+    let rejectedShop = await Shop.findOne({ ownerId: req.user._id, status: 'rejected' });
+
+    // Kiểm tra tên shop đã tồn tại ở cửa hàng khác chưa
+    const nameQuery = {
+      $or: [
+        { name: { $regex: `^${finalName}$`, $options: 'i' } },
+        { shop_name: { $regex: `^${finalName}$`, $options: 'i' } }
+      ]
+    };
+    if (rejectedShop) {
+      nameQuery._id = { $ne: rejectedShop._id };
+    }
+
+    const existingName = await Shop.findOne(nameQuery);
+    if (existingName) {
+      return res.status(400).json({ error: 'Tên cửa hàng này đã có người đăng ký. Vui lòng chọn tên khác.' });
+    }
+
+    if (rejectedShop) {
+      rejectedShop.name = finalName;
+      rejectedShop.shop_name = finalName;
+      rejectedShop.description = description ? description.trim() : rejectedShop.description;
+      rejectedShop.phone = phone ? phone.trim() : (req.user.phone || rejectedShop.phone);
+      rejectedShop.email = email ? email.trim().toLowerCase() : (req.user.email || rejectedShop.email);
+      rejectedShop.address = address ? address.trim() : (rejectedShop.address || 'Việt Nam');
+      rejectedShop.logo = logo || rejectedShop.logo || '🏬';
+      rejectedShop.category = category || rejectedShop.category || 'Đối tác phần cứng công nghệ';
+      rejectedShop.status = 'pending';
+      rejectedShop.rejectReason = '';
+      await rejectedShop.save();
+
+      return res.status(200).json({
+        message: 'Hồ sơ mở gian hàng đã được cập nhật và gửi lại xét duyệt thành công!',
+        shop: rejectedShop
       });
     }
 

@@ -38,7 +38,10 @@ const NAV_GROUPS: { label: string; items: NavItem[] }[] = [
   {
     label: 'Quản lý cửa hàng',
     items: [
-      { to: '/admin/shops', end: true, icon: Storefront, label: 'Danh sách cửa hàng' }
+      { to: '/admin/shops', end: true, icon: Storefront, label: 'Tất cả cửa hàng', matchExact: true },
+      { to: '/admin/shops?status=pending', end: false, icon: null, dot: 'bg-amber-400', label: 'Chờ xét duyệt', matchPrefix: '/admin/shops?status=pending' },
+      { to: '/admin/shops?status=active', end: false, icon: null, dot: 'bg-emerald-400', label: 'Đang hoạt động', matchPrefix: '/admin/shops?status=active' },
+      { to: '/admin/shops?status=locked', end: false, icon: null, dot: 'bg-rose-400', label: 'Bị khóa', matchPrefix: '/admin/shops?status=locked' }
     ]
   },
   {

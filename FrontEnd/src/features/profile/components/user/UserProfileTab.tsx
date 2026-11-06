@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { PencilSimple, FloppyDisk, Storefront, CheckCircle, X, Plus } from '@phosphor-icons/react'
-import { shopService } from '../../../../services/shopService'
+import { 
+  PencilSimple, FloppyDisk, Storefront, CheckCircle, X, Plus, 
+  ClockCountdown, WarningCircle, ArrowRight, ArrowCounterClockwise, ShieldWarning
+} from '@phosphor-icons/react'
+import { shopService, type ShopItem } from '../../../../services/shopService'
 import apiClient from '../../../../api/client'
 
 interface UserProfileTabProps {
@@ -26,6 +30,8 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
   })
 
   // Trạng thái đơn xin mở gian hàng
+  const [myShop, setMyShop] = useState<ShopItem | null>(null)
+  const [loadingShop, setLoadingShop] = useState(false)
   const [showApplyModal, setShowApplyModal] = useState(false)
   const [applying, setApplying] = useState(false)
   const [applySuccess, setApplySuccess] = useState<string | null>(null)
@@ -40,6 +46,32 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
     logo: '🏬'
   })
 
+  // Lấy thông tin shop của user (nếu có)
+  const loadMyShop = useCallback(async () => {
+    if (!currentUser) return
+    setLoadingShop(true)
+    try {
+      const res = await shopService.getMyShop()
+      if (res?.shop) {
+        setMyShop(res.shop)
+        setApplyForm({
+          name: res.shop.name || res.shop.shop_name || '',
+          description: res.shop.description || '',
+          phone: res.shop.phone || currentUser.phone || '',
+          email: res.shop.email || currentUser.email || '',
+          address: res.shop.address || '',
+          category: res.shop.category || 'Gaming Hardware & Gear',
+          logo: res.shop.logo || '🏬'
+        })
+      }
+    } catch {
+      // 404 nghĩa là user chưa tạo shop
+      setMyShop(null)
+    } finally {
+      setLoadingShop(false)
+    }
+  }, [currentUser])
+
   // Sync state when currentUser changes (e.g. initial load)
   useEffect(() => {
     if (currentUser) {
@@ -51,8 +83,36 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
         gender: currentUser.gender || 'Nam',
         birthday: currentUser.birthday ? currentUser.birthday.split('T')[0] : ''
       })
+      loadMyShop()
     }
-  }, [currentUser])
+  }, [currentUser, loadMyShop])
+
+  const handleOpenApplyModal = () => {
+    setApplyError(null)
+    setApplySuccess(null)
+    if (myShop) {
+      setApplyForm({
+        name: myShop.name || myShop.shop_name || '',
+        description: myShop.description || '',
+        phone: myShop.phone || profileForm.phone,
+        email: myShop.email || profileForm.email,
+        address: myShop.address || profileForm.address,
+        category: myShop.category || 'Gaming Hardware & Gear',
+        logo: myShop.logo || '🏬'
+      })
+    } else {
+      setApplyForm({
+        name: '',
+        description: '',
+        phone: profileForm.phone || '',
+        email: profileForm.email || '',
+        address: profileForm.address || '',
+        category: 'Gaming Hardware & Gear',
+        logo: '🏬'
+      })
+    }
+    setShowApplyModal(true)
+  }
 
   const handleSaveProfile = async () => {
     setError(null)
@@ -93,6 +153,7 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
       setApplySuccess(res.message || 'Yêu cầu mở gian hàng đã được gửi thành công!')
       setShowApplyModal(false)
       if (res.shop) {
+        setMyShop(res.shop)
         onRefresh({ ...currentUser, shopId: res.shop._id || res.shop.id })
       }
     } catch (err: any) {
@@ -223,29 +284,164 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
         </div>
       </div>
 
-      {/* Become a Shop Partner Card */}
+      {/* Shop Status / Partner Application Section */}
       <div className="pt-6 border-t border-zinc-100 dark:border-zinc-900">
-        <div className="p-5 rounded-xl bg-gradient-to-r from-zinc-900 to-black border border-zinc-800 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <Storefront size={20} className="text-[#ff4655]" />
-              <h4 className="text-xs font-black uppercase tracking-wider">
-                TRỞ THÀNH ĐỐI TÁC GIAN HÀNG GEARTECH
-              </h4>
-            </div>
-            <p className="text-[11px] text-zinc-400 leading-relaxed max-w-xl">
-              Bạn là doanh nghiệp, đại lý bán lẻ thiết bị PC & Gaming? Gửi hồ sơ đăng ký mở gian hàng để tiếp cận hàng triệu khách hàng công nghệ trên toàn quốc.
-            </p>
+        {loadingShop ? (
+          <div className="p-4 text-center text-xs text-zinc-500 font-medium animate-pulse">
+            Đang tải thông tin gian hàng...
           </div>
+        ) : myShop?.status === 'pending' ? (
+          /* TRẠNG THÁI: CHỜ PHÊ DUYỆT */
+          <div className="p-5 rounded-xl bg-gradient-to-r from-amber-950/40 via-zinc-900 to-black border border-amber-500/30 text-white space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <ClockCountdown size={22} weight="bold" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-xs font-black uppercase tracking-wider text-amber-300">
+                      HỒ SƠ ĐĂNG KÝ SHOP ĐANG CHỜ PHÊ DUYỆT
+                    </h4>
+                    <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                      Chờ duyệt
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-zinc-300 font-semibold mt-0.5">
+                    {myShop.logo} <span className="font-black text-white">{myShop.name || myShop.shop_name}</span> • {myShop.category}
+                  </p>
+                </div>
+              </div>
 
-          <button
-            onClick={() => setShowApplyModal(true)}
-            className="px-4 py-2.5 rounded-lg bg-[#ff4655] hover:bg-[#e03d4b] text-white font-black text-xs uppercase tracking-wider shrink-0 transition-all shadow-md shadow-[#ff4655]/30 cursor-pointer flex items-center justify-center gap-1.5"
-          >
-            <Plus size={14} weight="bold" />
-            Đăng ký mở shop
-          </button>
-        </div>
+              <button
+                onClick={handleOpenApplyModal}
+                className="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-black uppercase tracking-wider transition-all border border-zinc-700 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+              >
+                <PencilSimple size={14} /> Chỉnh sửa hồ sơ
+              </button>
+            </div>
+
+            <div className="p-3 bg-black/40 rounded-lg border border-amber-500/20 text-[11px] text-zinc-300 space-y-1">
+              <p className="flex items-center gap-1.5 font-bold text-amber-300">
+                ⏳ Ban quản trị GEARTECH đang tiếp nhận và thẩm định hồ sơ:
+              </p>
+              <p className="text-zinc-400 leading-relaxed text-[11px]">
+                Thời gian xử lý dự kiến từ 24 - 48 giờ làm việc. Bạn sẽ được kích hoạt quyền hạn Kênh Người Bán (Seller Centre) ngay sau khi hồ sơ đạt chuẩn.
+              </p>
+            </div>
+          </div>
+        ) : myShop?.status === 'rejected' ? (
+          /* TRẠNG THÁI: BỊ TỪ CHỐI */
+          <div className="p-5 rounded-xl bg-gradient-to-r from-red-950/40 via-zinc-900 to-black border border-red-500/30 text-white space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
+                  <WarningCircle size={22} weight="bold" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-xs font-black uppercase tracking-wider text-red-400">
+                      HỒ SƠ ĐĂNG KÝ SHOP BỊ TỪ CHỐI
+                    </h4>
+                    <span className="px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/30">
+                      Từ chối
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-zinc-300 font-semibold mt-0.5">
+                    {myShop.logo} <span className="font-black text-white">{myShop.name || myShop.shop_name}</span> • {myShop.category}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={handleOpenApplyModal}
+                className="px-4 py-2.5 rounded-lg bg-[#ff4655] hover:bg-[#e03d4b] text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-[#ff4655]/20 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+              >
+                <ArrowCounterClockwise size={14} weight="bold" /> Cập nhật & Gửi lại đơn
+              </button>
+            </div>
+
+            <div className="p-3 bg-red-500/10 rounded-lg border border-red-500/20 text-[11px] space-y-1">
+              <span className="font-bold text-red-400 uppercase tracking-wider text-[10px] block">
+                LÝ DO TỪ CHỐI TỪ BAN QUẢN TRỊ:
+              </span>
+              <p className="text-zinc-200 font-medium">
+                {myShop.rejectReason || 'Hồ sơ chưa cung cấp đầy đủ thông tin xác thực kinh doanh theo quy định.'}
+              </p>
+              <p className="text-zinc-400 text-[10px] pt-1">
+                Vui lòng bổ sung hoặc điều chỉnh thông tin chính xác rồi nhấn "Cập nhật & Gửi lại đơn" để được thẩm định lại.
+              </p>
+            </div>
+          </div>
+        ) : myShop?.status === 'active' ? (
+          /* TRẠNG THÁI: ĐÃ ĐƯỢC DUYỆT & HOẠT ĐỘNG */
+          <div className="p-5 rounded-xl bg-gradient-to-r from-emerald-950/40 via-zinc-900 to-black border border-emerald-500/30 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-xl">
+                {myShop.logo || '🏬'}
+              </div>
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <h4 className="text-xs font-black uppercase tracking-wider text-emerald-400">
+                    GIAN HÀNG CHÍNH THỨC GEARTECH
+                  </h4>
+                  <span className="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    ĐANG HOẠT ĐỘNG
+                  </span>
+                </div>
+                <p className="text-sm font-black text-white">{myShop.name || myShop.shop_name}</p>
+                <p className="text-[10px] text-zinc-400 font-medium">
+                  {myShop.category} • Đánh giá: {myShop.rating || 5.0} ⭐ • {myShop.followers || '0'} người theo dõi
+                </p>
+              </div>
+            </div>
+
+            <Link
+              to="/shop"
+              className="px-4 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-black uppercase tracking-wider transition-all shadow-md shadow-emerald-500/20 flex items-center justify-center gap-1.5 shrink-0"
+            >
+              Kênh Người Bán <ArrowRight size={14} weight="bold" />
+            </Link>
+          </div>
+        ) : myShop?.status === 'locked' ? (
+          /* TRẠNG THÁI: BỊ KHÓA */
+          <div className="p-5 rounded-xl bg-gradient-to-r from-zinc-900 to-black border border-zinc-800 text-white flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <ShieldWarning size={28} className="text-amber-500" />
+              <div>
+                <h4 className="text-xs font-black uppercase tracking-wider text-amber-400">
+                  GIAN HÀNG ĐANG TẠM KHÓA
+                </h4>
+                <p className="text-[11px] text-zinc-400">
+                  Gian hàng của bạn hiện đang bị tạm dừng do vi phạm chính sách hoặc yêu cầu bảo mật. Vui lòng liên hệ CSKH.
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* CHƯA CÓ SHOP: BANNER ĐĂNG KÝ MỞ SHOP */
+          <div className="p-5 rounded-xl bg-gradient-to-r from-zinc-900 to-black border border-zinc-800 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <Storefront size={20} className="text-[#ff4655]" />
+                <h4 className="text-xs font-black uppercase tracking-wider">
+                  TRỞ THÀNH ĐỐI TÁC GIAN HÀNG GEARTECH
+                </h4>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed max-w-xl">
+                Bạn là doanh nghiệp, đại lý bán lẻ thiết bị PC & Gaming? Gửi hồ sơ đăng ký mở gian hàng để tiếp cận hàng triệu khách hàng công nghệ trên toàn quốc.
+              </p>
+            </div>
+
+            <button
+              onClick={handleOpenApplyModal}
+              className="px-4 py-2.5 rounded-lg bg-[#ff4655] hover:bg-[#e03d4b] text-white font-black text-xs uppercase tracking-wider shrink-0 transition-all shadow-md shadow-[#ff4655]/30 cursor-pointer flex items-center justify-center gap-1.5"
+            >
+              <Plus size={14} weight="bold" />
+              Đăng ký mở shop
+            </button>
+          </div>
+        )}
 
         {applySuccess && (
           <div className="mt-3 p-3 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-xs font-bold flex items-center gap-2">
@@ -263,7 +459,11 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
               <div className="flex items-center gap-2">
                 <Storefront size={18} className="text-[#ff4655]" />
                 <h3 className="text-xs font-black uppercase text-zinc-900 dark:text-white tracking-wider">
-                  HỒ SƠ ĐĂNG KÝ GIAN HÀNG MỚI
+                  {myShop?.status === 'rejected'
+                    ? 'CẬP NHẬT & GỬI LẠI HỒ SƠ XÉT DUYỆT'
+                    : myShop?.status === 'pending'
+                    ? 'CHỈNH SỬA HỒ SƠ GIAN HÀNG CHỜ DUYỆT'
+                    : 'HỒ SƠ ĐĂNG KÝ GIAN HÀNG MỚI'}
                 </h3>
               </div>
               <button 
@@ -362,9 +562,15 @@ export default function UserProfileTab({ currentUser, onRefresh }: UserProfileTa
                 <button
                   type="submit"
                   disabled={applying}
-                  className="px-5 py-2 text-xs font-black uppercase rounded bg-[#ff4655] hover:bg-[#e03d4b] text-white transition-all shadow-md shadow-[#ff4655]/20"
+                  className="px-5 py-2 text-xs font-black uppercase rounded bg-[#ff4655] hover:bg-[#e03d4b] text-white transition-all shadow-md shadow-[#ff4655]/20 cursor-pointer"
                 >
-                  {applying ? 'ĐANG GỬI...' : 'GỬI ĐƠN XÉT DUYỆT'}
+                  {applying
+                    ? 'ĐANG GỬI...'
+                    : myShop?.status === 'rejected'
+                    ? 'LƯU & GỬI LẠI ĐƠN'
+                    : myShop?.status === 'pending'
+                    ? 'LƯU THAY ĐỔI'
+                    : 'GỬI ĐƠN XÉT DUYỆT'}
                 </button>
               </div>
             </form>
