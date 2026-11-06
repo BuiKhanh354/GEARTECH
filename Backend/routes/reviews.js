@@ -136,6 +136,24 @@ router.get('/check-eligibility/:productId', auth, async (req, res) => {
 });
 
 // ==========================================
+// 2b. GET /api/reviews/my-reviews - Lấy danh sách đánh giá của tôi
+// ==========================================
+router.get('/my-reviews', auth, async (req, res) => {
+  try {
+    const reviews = await Review.find({
+      $or: [{ user_id: req.user.id }, { userId: req.user.id }]
+    })
+      .populate('product_id', 'title name price images gallery imageEmoji')
+      .populate('productId', 'title name price images gallery imageEmoji')
+      .sort({ created_at: -1, createdAt: -1 });
+
+    return res.json({ reviews });
+  } catch (error) {
+    return res.status(500).json({ error: 'Lỗi lấy danh sách đánh giá của tôi.', ...getDevelopmentErrorDetails(error) });
+  }
+});
+
+// ==========================================
 // 3. POST /api/reviews - Gửi hoặc cập nhật đánh giá sản phẩm
 // ==========================================
 router.post('/', auth, async (req, res) => {

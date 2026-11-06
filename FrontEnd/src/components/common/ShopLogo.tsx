@@ -51,3 +51,4 @@ export const ShopLogo: React.FC<ShopLogoProps> = ({
 }
 
 export default ShopLogo
+

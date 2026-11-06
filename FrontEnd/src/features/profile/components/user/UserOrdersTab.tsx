@@ -1,13 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { 
   HourglassMedium, CheckCircle, Truck, XCircle, MapPin, Receipt, Warning, 
-  CreditCard, Bank, X, ArrowClockwise, CurrencyCircleDollar, DeviceMobile
+  CreditCard, Bank, X, ArrowClockwise, CurrencyCircleDollar, DeviceMobile, Star
 } from '@phosphor-icons/react'
 import { formatPrice } from '../../../../utils/format'
 import { orderService } from '../../../../services/orderService'
 import { paymentService } from '../../../../services/paymentService'
 import { shippingService, type ShipmentTrackingResponse } from '../../../../services/shippingService'
+import { reviewService } from '../../../../services/reviewService'
+import { resolveImageUrl } from '../../../../utils/image'
 
 interface UserOrdersTabProps {
   userOrders: any[];
@@ -18,6 +21,96 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
   const [cancellingId, setCancellingId] = useState<string | null>(null)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
+
+  // Reviews state: Map productId -> review object
+  const [myReviews, setMyReviews] = useState<Record<string, any>>({})
+  const [reviewModalData, setReviewModalData] = useState<{
+    orderId: string
+    product: {
+      id: string
+      title: string
+      image?: string
+      sku?: string
+      price?: number
+    }
+    existingReview?: any
+  } | null>(null)
+  const [reviewRating, setReviewRating] = useState<number>(5)
+  const [reviewComment, setReviewComment] = useState<string>('')
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false)
+
+  // Tải danh sách đánh giá của người dùng để kiểm tra sản phẩm nào đã đánh giá
+  const fetchUserReviews = async () => {
+    try {
+      const res = await reviewService.getMyReviews()
+      if (res.reviews && Array.isArray(res.reviews)) {
+        const map: Record<string, any> = {}
+        res.reviews.forEach((r: any) => {
+          const pId = String(r.product_id?._id || r.productId?._id || r.product_id || r.productId || '')
+          if (pId) map[pId] = r
+        })
+        setMyReviews(map)
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  useEffect(() => {
+    fetchUserReviews()
+  }, [])
+
+  const handleOpenReviewModal = (ord: any, item: any) => {
+    const pId = String(item.product_id?._id || item.product_id?.id || item.product_id || item.productId || item._id || '')
+    const existing = myReviews[pId]
+    setReviewModalData({
+      orderId: String(ord._id),
+      product: {
+        id: pId,
+        title: item.product_name || item.title || item.product_id?.title || 'Sản phẩm',
+        image: item.product_id?.imageUrl || (item.product_id?.images && item.product_id?.images[0]) || item.product_id?.gallery?.[0],
+        sku: item.sku || item.product_id?.sku,
+        price: item.unitPrice ?? item.unit_price ?? item.price ?? 0
+      },
+      existingReview: existing
+    })
+    setReviewRating(existing?.rating || 5)
+    setReviewComment(existing?.comment || '')
+  }
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!reviewModalData) return
+    if (!reviewComment.trim()) {
+      setErrorMsg('Vui lòng nhập nội dung đánh giá sản phẩm.')
+      return
+    }
+
+    try {
+      setIsSubmittingReview(true)
+      setErrorMsg(null)
+      const res = await reviewService.submitReview({
+        productId: reviewModalData.product.id,
+        rating: reviewRating,
+        comment: reviewComment.trim()
+      })
+
+      setMyReviews(prev => ({
+        ...prev,
+        [reviewModalData.product.id]: res.review || {
+          rating: reviewRating,
+          comment: reviewComment.trim()
+        }
+      }))
+
+      setSuccessMsg(res.message || 'Gửi đánh giá sản phẩm thành công! Cảm ơn bạn đã phản hồi.')
+      setReviewModalData(null)
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.error || 'Không thể gửi đánh giá lúc này.')
+    } finally {
+      setIsSubmittingReview(false)
+    }
+  }
 
   // E1: Loc don hang theo trang thai xu ly
   const [statusFilter, setStatusFilter] = useState<string>('all')
@@ -275,6 +368,7 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
             const paymentMethod = ord.paymentMethod || ord.payment_method || 'COD'
             const isPending = status === 'pending'
             const isCancelled = status === 'cancelled'
+            const isCompleted = status === 'completed'
             const isPaid = paymentStatus.toLowerCase() === 'paid'
             const shippingMethod = ord.shippingMethod || ord.shipping_method || 'ghn'
             const shippingMethodName = ord.shippingMethodName || ord.shipping_method_name || (
@@ -350,32 +444,77 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
                     const itemSku = item.sku || item.product_id?.sku || ''
                     const itemPrice = item.unitPrice ?? item.unit_price ?? item.price ?? 0
                     const itemQty = item.quantity ?? item.qty ?? 1
-                    const itemImg = item.product_id?.imageUrl || (item.product_id?.images && item.product_id?.images[0])
+                    const rawImg = item.product_id?.imageUrl || (item.product_id?.images && item.product_id?.images[0]) || item.product_id?.gallery?.[0]
+                    const itemImg = rawImg ? resolveImageUrl(rawImg) : null
+                    const prodId = item.product_id?._id || item.product_id?.id || item.product_id || item.productId
+
+                    const existingReview = prodId ? myReviews[String(prodId)] : null
 
                     return (
-                      <div key={idx} className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded overflow-hidden flex items-center justify-center text-xl shrink-0">
-                          {itemImg ? (
-                            <img src={itemImg} alt={itemName} className="w-full h-full object-cover" />
+                      <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-lg bg-white dark:bg-zinc-950/50 border border-zinc-100 dark:border-zinc-800/80">
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          {prodId ? (
+                            <Link
+                              to={`/product/${prodId}`}
+                              className="w-13 h-13 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden flex items-center justify-center text-xl shrink-0 group hover:border-[#ff4655] transition-colors"
+                              title="Bấm để xem chi tiết sản phẩm"
+                            >
+                              {itemImg ? (
+                                <img src={itemImg} alt={itemName} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                              ) : (
+                                '📦'
+                              )}
+                            </Link>
                           ) : (
-                            '📦'
+                            <div className="w-13 h-13 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden flex items-center justify-center text-xl shrink-0">
+                              {itemImg ? <img src={itemImg} alt={itemName} className="w-full h-full object-cover" /> : '📦'}
+                            </div>
                           )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h5 className="text-xs font-bold text-zinc-900 dark:text-white truncate tracking-wide">
-                            {itemName}
-                          </h5>
-                          <div className="flex items-center gap-2 text-[9px] text-zinc-400 dark:text-zinc-500 font-semibold mt-0.5">
-                            {itemSku && <span className="font-mono text-zinc-400">SKU: {itemSku}</span>}
-                            <span>Số lượng: {itemQty}</span>
-                            <span>•</span>
-                            <span className="text-[#ff4655] font-bold">{formatPrice(Number(itemPrice))}</span>
+
+                          <div className="flex-1 min-w-0">
+                            {prodId ? (
+                              <Link
+                                to={`/product/${prodId}`}
+                                className="text-xs font-bold text-zinc-900 dark:text-white hover:text-[#ff4655] dark:hover:text-[#ff4655] transition-colors truncate tracking-wide block"
+                                title="Bấm để xem chi tiết sản phẩm"
+                              >
+                                {itemName}
+                              </Link>
+                            ) : (
+                              <h5 className="text-xs font-bold text-zinc-900 dark:text-white truncate tracking-wide">
+                                {itemName}
+                              </h5>
+                            )}
+                            <div className="flex items-center gap-2 text-[9px] text-zinc-400 dark:text-zinc-500 font-semibold mt-0.5 flex-wrap">
+                              {itemSku && <span className="font-mono text-zinc-400">SKU: {itemSku}</span>}
+                              <span>Số lượng: {itemQty}</span>
+                              <span>•</span>
+                              <span className="text-[#ff4655] font-bold">{formatPrice(Number(itemPrice))}</span>
+                            </div>
                           </div>
                         </div>
-                        <div className="text-right shrink-0">
-                          <span className="text-xs font-bold text-zinc-900 dark:text-zinc-200">
+
+                        {/* Giá & Nút Đánh giá sản phẩm */}
+                        <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100 dark:border-zinc-800">
+                          <span className="text-xs font-black text-zinc-900 dark:text-zinc-200">
                             {formatPrice(Number(itemPrice) * Number(itemQty))}
                           </span>
+
+                          {/* Nút Đánh giá sản phẩm khi đơn hàng đã hoàn tất (Completed) */}
+                          {isCompleted && prodId && (
+                            <button
+                              type="button"
+                              onClick={() => handleOpenReviewModal(ord, item)}
+                              className={`px-3 py-1 text-[10px] font-black uppercase tracking-wider rounded-md border flex items-center gap-1.5 transition-all cursor-pointer shadow-xs ${
+                                existingReview
+                                  ? 'bg-amber-500/10 text-amber-500 border-amber-500/30 hover:bg-amber-500/20'
+                                  : 'bg-[#ff4655] text-white border-transparent hover:bg-[#e03d4b]'
+                              }`}
+                            >
+                              <Star size={13} weight={existingReview ? 'fill' : 'bold'} />
+                              {existingReview ? `Đã đánh giá (${existingReview.rating}★)` : 'Đánh giá'}
+                            </button>
+                          )}
                         </div>
                       </div>
                     )
@@ -693,6 +832,129 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
                   Đóng
                 </button>
               </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal Đánh giá sản phẩm trực tiếp từ Lịch sử đơn hàng */}
+      <AnimatePresence>
+        {reviewModalData && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4"
+            >
+              <div className="flex justify-between items-center border-b border-zinc-100 dark:border-zinc-800 pb-3">
+                <h4 className="text-sm font-black uppercase text-zinc-900 dark:text-white flex items-center gap-2">
+                  <Star size={18} weight="fill" className="text-amber-400" />
+                  {reviewModalData.existingReview ? 'CẬP NHẬT ĐÁNH GIÁ SẢN PHẨM' : 'ĐÁNH GIÁ SẢN PHẨM'}
+                </h4>
+                <button
+                  type="button"
+                  onClick={() => setReviewModalData(null)}
+                  className="p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 rounded-lg cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Thông tin sản phẩm */}
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200/80 dark:border-zinc-800/80">
+                <div className="w-12 h-12 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center overflow-hidden shrink-0">
+                  {reviewModalData.product.image ? (
+                    <img src={resolveImageUrl(reviewModalData.product.image)} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    '📦'
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h5 className="text-xs font-bold text-zinc-900 dark:text-white truncate">
+                    {reviewModalData.product.title}
+                  </h5>
+                  <p className="text-[10px] text-zinc-400 font-mono mt-0.5">
+                    Mã đơn: #{reviewModalData.orderId.slice(-8).toUpperCase()}
+                  </p>
+                </div>
+              </div>
+
+              {/* Form đánh giá */}
+              <form onSubmit={handleSubmitReview} className="space-y-4">
+                {/* Chọn số sao 1 - 5 */}
+                <div>
+                  <label className="text-[11px] font-bold text-zinc-500 uppercase block mb-1.5">
+                    Chất lượng sản phẩm
+                  </label>
+                  <div className="flex items-center gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setReviewRating(star)}
+                        className="p-1 text-2xl transition-transform hover:scale-110 focus:outline-none cursor-pointer"
+                      >
+                        <Star
+                          size={26}
+                          weight={star <= reviewRating ? 'fill' : 'regular'}
+                          className={star <= reviewRating ? 'text-amber-400' : 'text-zinc-300 dark:text-zinc-700'}
+                        />
+                      </button>
+                    ))}
+                    <span className="text-xs font-bold text-amber-500 ml-2">
+                      {reviewRating === 5 && 'Tuyệt vời'}
+                      {reviewRating === 4 && 'Hài lòng'}
+                      {reviewRating === 3 && 'Bình thường'}
+                      {reviewRating === 2 && 'Không hài lòng'}
+                      {reviewRating === 1 && 'Rất tệ'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Nhập nội dung nhận xét */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-[11px] font-bold text-zinc-500 uppercase block">
+                      Nhận xét & Trải nghiệm thực tế <span className="text-[#ff4655]">*</span>
+                    </label>
+                    <span className="text-[10px] text-zinc-400 font-mono">{reviewComment.length}/500</span>
+                  </div>
+                  <textarea
+                    rows={4}
+                    maxLength={500}
+                    value={reviewComment}
+                    onChange={(e) => setReviewComment(e.target.value)}
+                    placeholder="Hãy chia sẻ cảm nhận về đóng gói, chất lượng thiết bị, thời gian giao hàng và trải nghiệm thực tế của bạn..."
+                    className="w-full text-xs p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-white focus:outline-none focus:border-[#ff4655] resize-none"
+                    required
+                  />
+                </div>
+
+                {/* Nút hành động */}
+                <div className="flex items-center justify-end gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setReviewModalData(null)}
+                    disabled={isSubmittingReview}
+                    className="px-4 py-2 rounded-xl text-xs font-bold border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                  >
+                    Hủy bỏ
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmittingReview}
+                    className="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-[#ff4655] hover:bg-[#e03d4b] text-white shadow-md shadow-[#ff4655]/20 flex items-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+                  >
+                    <Star size={14} weight="fill" />
+                    {isSubmittingReview
+                      ? 'Đang gửi...'
+                      : reviewModalData.existingReview
+                      ? 'Cập nhật đánh giá'
+                      : 'Gửi đánh giá'}
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </div>
         )}

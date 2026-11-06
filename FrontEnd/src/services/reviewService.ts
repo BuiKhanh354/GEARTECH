@@ -20,6 +20,12 @@ export const reviewService = {
     return res.data
   },
 
+  // Lấy tất cả đánh giá của tôi
+  getMyReviews: async () => {
+    const res = await apiClient.get<{ reviews: any[] }>('/reviews/my-reviews')
+    return res.data
+  },
+
   // Gửi hoặc cập nhật đánh giá
   submitReview: async (payload: CreateReviewPayload) => {
     const res = await apiClient.post('/reviews', payload)
