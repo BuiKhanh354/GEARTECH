@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, Component, type ErrorInfo, type ReactNode } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import {
@@ -107,6 +107,55 @@ function breadcrumbFor(pathname: string): string {
     '/admin/homepage': 'Quản lý bố cục trang chủ'
   }
   return map[pathname] || 'Quản trị hệ thống'
+}
+
+interface ErrorBoundaryProps {
+  children: ReactNode
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean
+  error: Error | null
+}
+
+class AdminErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props)
+    this.state = { hasError: false, error: null }
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error }
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('[Admin Error Boundary caught error]:', error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-8 bg-red-500/5 border border-red-500/20 rounded-2xl text-center space-y-4 my-6">
+          <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto text-xl">
+            ⚠️
+          </div>
+          <h3 className="text-base font-black text-red-500 uppercase tracking-wider">
+            ĐÃ XẢY RA LỖI KHI TẢI KHU VỰC NÀY
+          </h3>
+          <p className="text-xs text-zinc-500 max-w-md mx-auto">
+            {this.state.error?.message || 'Có lỗi xảy ra trong quá trình kết xuất dữ liệu.'}
+          </p>
+          <button
+            onClick={() => this.setState({ hasError: false, error: null })}
+            className="px-4 py-2 bg-[#ff4655] hover:bg-[#e03d4b] text-white rounded-lg text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-md"
+          >
+            Thử tải lại
+          </button>
+        </div>
+      )
+    }
+    return this.props.children
+  }
 }
 
 export type AdminContext = {
@@ -343,7 +392,9 @@ export default function AdminLayout() {
 
       <main className={`${collapsed ? 'lg:pl-[68px]' : 'lg:pl-60'} transition-all duration-200`}>
         <div className="p-4 lg:p-6 max-w-[1500px] mx-auto">
-          <Outlet context={{ admin } satisfies AdminContext} />
+          <AdminErrorBoundary>
+            <Outlet context={{ admin } satisfies AdminContext} />
+          </AdminErrorBoundary>
         </div>
       </main>
     </div>

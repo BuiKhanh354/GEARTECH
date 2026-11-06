@@ -138,8 +138,23 @@ router.get('/admin/all', auth, checkRole(['admin']), async (req, res) => {
       counts.all += item.count;
     });
 
+    const safeShops = shops.map((shop) => {
+      const s = shop.toObject ? shop.toObject() : { ...shop };
+      if (s.commission_rate && typeof s.commission_rate === 'object' && s.commission_rate.$numberDecimal) {
+        s.commission_rate = parseFloat(s.commission_rate.$numberDecimal);
+      } else if (s.commission_rate !== undefined && s.commission_rate !== null) {
+        s.commission_rate = parseFloat(s.commission_rate.toString()) || 5;
+      }
+      if (s.rating && typeof s.rating === 'object' && s.rating.$numberDecimal) {
+        s.rating = parseFloat(s.rating.$numberDecimal);
+      } else if (s.rating !== undefined && s.rating !== null) {
+        s.rating = parseFloat(s.rating.toString()) || 0;
+      }
+      return s;
+    });
+
     return res.json({
-      shops,
+      shops: safeShops,
       total,
       counts,
       page: currentPage,

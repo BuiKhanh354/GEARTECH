@@ -27,6 +27,25 @@ interface AdminShopsTabProps {
   onRefresh?: () => void
 }
 
+function getSafeNumber(val: any, fallback = 0): number {
+  if (val === null || val === undefined) return fallback
+  if (typeof val === 'number') return isNaN(val) ? fallback : val
+  if (typeof val === 'object' && val.$numberDecimal) {
+    const n = parseFloat(val.$numberDecimal)
+    return isNaN(n) ? fallback : n
+  }
+  const n = parseFloat(String(val))
+  return isNaN(n) ? fallback : n
+}
+
+function getSafeCommission(val: any): string {
+  if (val === null || val === undefined) return '5'
+  if (typeof val === 'number') return String(val)
+  if (typeof val === 'object' && val.$numberDecimal) return String(val.$numberDecimal)
+  if (typeof val === 'object') return '5'
+  return String(val)
+}
+
 export default function AdminShopsTab({
   initialStatus,
   onRefresh
@@ -561,10 +580,10 @@ export default function AdminShopsTab({
                               <span>{s.name || s.shop_name}</span>
                               <span
                                 className={`text-[10px] font-extrabold ${
-                                  Number(s.rating) > 0 ? 'text-amber-500' : 'text-zinc-400'
+                                  getSafeNumber(s.rating) > 0 ? 'text-amber-500' : 'text-zinc-400'
                                 }`}
                               >
-                                ⭐ {Number(s.rating) > 0 ? Number(s.rating).toFixed(1) : '0.0'}
+                                ⭐ {getSafeNumber(s.rating) > 0 ? getSafeNumber(s.rating).toFixed(1) : '0.0'}
                               </span>
                             </div>
                             {s.address && (
@@ -586,9 +605,9 @@ export default function AdminShopsTab({
                         <div className="text-zinc-700 dark:text-zinc-300 font-medium">
                           {s.category || 'Phần cứng & Thiết bị'}
                         </div>
-                        {s.commission_rate !== undefined && (
+                        {s.commission_rate !== undefined && s.commission_rate !== null && (
                           <div className="text-[10px] text-zinc-400 font-mono mt-0.5">
-                            Phí sàn: {s.commission_rate}%
+                            Phí sàn: {getSafeCommission(s.commission_rate)}%
                           </div>
                         )}
                       </td>
