@@ -179,6 +179,13 @@ export default function ProfilePage({ initialRole }: ProfilePageProps) {
   const isAdmin = currentUser?.role === 'admin'
   const isShop = currentUser?.role === 'shop'
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    if (params.get('tab') === 'orders') {
+      setActiveTab('orders')
+    }
+  }, [location.search])
+
   // ==========================================
   // KIỂM TRA PHÂN QUYỀN TRUY CẬP (ACCESS CONTROL)
   // ==========================================

@@ -17,6 +17,66 @@ function generateTransactionCode(prefix = 'TXN') {
   return `${prefix}-${dateStr}-${randomStr}`;
 }
 
+// Helper khởi tạo hướng dẫn thanh toán đa kênh (ưu tiên VNPAY và VietQR)
+async function generatePaymentInstruction(order, method, ipAddr = '127.0.0.1') {
+  const authoritativeAmount = order.finalAmount || (order.final_amount ? parseFloat(order.final_amount.toString()) : 0);
+  const memo = `GT ${String(order._id).slice(-8).toUpperCase()}`;
+
+  if (method.toUpperCase() === 'BANK_TRANSFER' || method.toLowerCase() === 'bank_transfer') {
+    return {
+      type: 'VIETQR',
+      bankName: 'MB Bank (Ngân hàng Quân Đội)',
+      accountNumber: '999988889999',
+      accountHolder: 'CONG TY GEARTECH VIET NAM',
+      amount: authoritativeAmount,
+      memo,
+      qrUrl: `https://api.vietqr.io/image/970422-999988889999-compact2.png?amount=${authoritativeAmount}&addInfo=GT%20${String(order._id).slice(-8).toUpperCase()}&accountName=GEARTECH`
+    };
+  } else if (method.toUpperCase() === 'VNPAY' || method.toLowerCase() === 'vnpay') {
+    const vnpayResult = vnpayService.buildPaymentUrl({
+      orderId: order._id,
+      amount: authoritativeAmount,
+      orderInfo: `Thanh toan don hang GearTech GT${String(order._id).slice(-8).toUpperCase()}`,
+      ipAddr
+    });
+
+    return {
+      type: 'VNPAY',
+      checkoutUrl: vnpayResult.paymentUrl,
+      paymentUrl: vnpayResult.paymentUrl,
+      amount: authoritativeAmount,
+      memo,
+      testCard: {
+        bank: 'NCB',
+        cardNumber: '9704198526191432198',
+        cardHolder: 'NGUYEN VAN A',
+        issueDate: '07/15',
+        otp: '123456'
+      }
+    };
+  } else if (method.toUpperCase() === 'MOMO' || method.toLowerCase() === 'momo') {
+    const momoResult = await momoService.createPayment({
+      orderId: order._id,
+      amount: authoritativeAmount,
+      orderInfo: `Thanh toan don hang GearTech GT${String(order._id).slice(-8).toUpperCase()}`,
+      redirectUrl: `http://localhost:5173/profile?tab=orders&paidOrderId=${order._id}`,
+      ipnUrl: `http://localhost:5000/api/payments/momo/ipn`
+    });
+
+    return {
+      type: 'MOMO',
+      checkoutUrl: momoResult.payUrl,
+      payUrl: momoResult.payUrl,
+      qrCodeUrl: momoResult.qrCodeUrl,
+      deeplink: momoResult.deeplink,
+      amount: authoritativeAmount,
+      memo,
+      isSimulated: momoResult.isSimulated
+    };
+  }
+  return {};
+}
+
 // ==========================================
 // 1. GET /api/payments/:orderId - Lấy thông tin thanh toán của 1 đơn hàng
 // ==========================================
@@ -142,54 +202,8 @@ router.post('/create-intent', auth, async (req, res) => {
     order.payment_method = method;
     await order.save();
 
-    // Dữ liệu hỗ trợ giao diện thanh toán
-    let paymentInstruction = {};
-    if (method.toUpperCase() === 'BANK_TRANSFER' || method.toLowerCase() === 'bank_transfer') {
-      paymentInstruction = {
-        type: 'VIETQR',
-        bankName: 'MB Bank (Ngân hàng Quân Đội)',
-        accountNumber: '999988889999',
-        accountHolder: 'CONG TY GEARTECH VIET NAM',
-        amount: authoritativeAmount,
-        memo: `GT ${String(order._id).slice(-8).toUpperCase()}`,
-        qrUrl: `https://api.vietqr.io/image/970422-999988889999-compact2.png?amount=${authoritativeAmount}&addInfo=GT%20${String(order._id).slice(-8).toUpperCase()}&accountName=GEARTECH`
-      };
-    } else if (method.toUpperCase() === 'MOMO' || method.toLowerCase() === 'momo') {
-      const momoResult = await momoService.createPayment({
-        orderId: order._id,
-        amount: authoritativeAmount,
-        orderInfo: `Thanh toan don hang GearTech GT${String(order._id).slice(-8).toUpperCase()}`,
-        redirectUrl: `http://localhost:5173/profile?tab=orders&paidOrderId=${order._id}`,
-        ipnUrl: `http://localhost:5000/api/payments/momo/ipn`
-      });
-
-      paymentInstruction = {
-        type: 'MOMO',
-        checkoutUrl: momoResult.payUrl,
-        payUrl: momoResult.payUrl,
-        qrCodeUrl: momoResult.qrCodeUrl,
-        deeplink: momoResult.deeplink,
-        amount: authoritativeAmount,
-        memo: `GT ${String(order._id).slice(-8).toUpperCase()}`,
-        isSimulated: momoResult.isSimulated
-      };
-    } else if (method.toUpperCase() === 'VNPAY' || method.toLowerCase() === 'vnpay') {
-      const ipAddr = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '13.160.92.202';
-      const vnpayResult = vnpayService.buildPaymentUrl({
-        orderId: order._id,
-        amount: authoritativeAmount,
-        orderInfo: `Thanh toan don hang GearTech GT${String(order._id).slice(-8).toUpperCase()}`,
-        ipAddr
-      });
-
-      paymentInstruction = {
-        type: 'VNPAY',
-        checkoutUrl: vnpayResult.paymentUrl,
-        paymentUrl: vnpayResult.paymentUrl,
-        amount: authoritativeAmount,
-        memo: `GT ${String(order._id).slice(-8).toUpperCase()}`
-      };
-    }
+    const ipAddr = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    const paymentInstruction = await generatePaymentInstruction(order, method, ipAddr);
 
     return res.status(200).json({
       message: 'Khởi tạo phiên thanh toán thành công!',
@@ -368,12 +382,16 @@ router.post('/retry', auth, async (req, res) => {
     order.paymentStatus = 'pending';
     await order.save();
 
+    const ipAddr = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    const paymentInstruction = await generatePaymentInstruction(order, method, ipAddr);
+
     return res.json({
       message: 'Khởi động lại tiến trình thanh toán thành công!',
       transactionCode: newTxnCode,
       amount: authoritativeAmount,
       paymentMethod: method,
       paymentStatus: payment.payment_status,
+      instruction: paymentInstruction,
       payment
     });
 
@@ -603,6 +621,7 @@ router.get('/vnpay/return', async (req, res) => {
           order.order_status = 'confirmed';
         }
         await order.save();
+        await financeService.recordOrderPayment(order._id).catch(err => console.error('Lỗi ghi nhận doanh thu VNPAY Return:', err));
         return res.redirect(`http://localhost:5173/profile?tab=orders&paidOrderId=${orderId}&vnpayStatus=success`);
       } else {
         if (payment) {
@@ -637,6 +656,10 @@ router.get('/vnpay/ipn', async (req, res) => {
     const order = await Order.findById(verifyResult.orderId);
     if (!order) {
       return res.status(200).json({ RspCode: '01', Message: 'Order not found' });
+    }
+
+    if (order.paymentStatus === 'paid' || order.payment_status === 'paid') {
+      return res.status(200).json({ RspCode: '02', Message: 'Order already confirmed' });
     }
 
     let payment = await Payment.findOne({

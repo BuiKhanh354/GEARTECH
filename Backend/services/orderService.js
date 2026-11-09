@@ -455,7 +455,8 @@ const orderService = {
         : (currentUser.name || 'Khách hàng');
 
       const isCod = paymentMethod === 'COD' || paymentMethod === 'cod';
-      const initialPayStatus = isCod ? 'pending' : 'paid';
+      // COD: cho thanh toan khi nhan hang; cac phuong thuc online (VNPAY, MoMo, chuyen khoan): de 'pending' cho den khi cong thanh toan xac nhan
+      const initialPayStatus = 'pending';
 
       const newOrder = new Order({
         customer_id: customerId,
@@ -518,12 +519,8 @@ const orderService = {
         payment_method: paymentMethod || 'COD',
         amount: mongoose.Types.Decimal128.fromString(finalAmount.toString()),
         payment_status: initialPayStatus,
-        paid_at: isCod ? null : new Date()
+        paid_at: null
       }).catch(() => {});
-
-      if (initialPayStatus === 'paid') {
-        await financeService.recordOrderPayment(newOrder._id).catch(err => console.error('Lỗi ghi nhận doanh thu ví:', err));
-      }
 
       createdOrders.push(newOrder);
     }

@@ -6,7 +6,7 @@ function sortObject(obj) {
   let str = [];
   let key;
   for (key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       str.push(encodeURIComponent(key));
     }
   }
@@ -18,19 +18,26 @@ function sortObject(obj) {
 }
 
 async function testVnpayUrl() {
-  const tmnCode = 'CGXZLS0Z';
-  const secretKey = 'XNBCJFAKAZQSGTARRLGCHVZWCIOIGSHN';
-  const vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-  const returnUrl = 'http://localhost:5173/payment/vnpay-return';
+  const tmnCode = process.env.VNP_TMN_CODE || '5GWMVNEI';
+  const secretKey = process.env.VNP_HASH_SECRET || 'SSNYYNZFJDFBAVMNXPAEQMWVCHXUMOHQ';
+  const vnpUrl = process.env.VNP_URL || 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
+  const returnUrl = process.env.VNP_RETURN_URL || 'http://localhost:5000/api/payments/vnpay/return';
 
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-  const createDate = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  const vnFormatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+  const parts = vnFormatter.formatToParts(new Date());
+  const p = {};
+  parts.forEach(({ type, value }) => { p[type] = value; });
+  const createDate = `${p.year}${p.month}${p.day}${p.hour}${p.minute}${p.second}`;
+
   const orderId = 'GT' + Date.now();
   const amount = 50000;
 
@@ -41,11 +48,11 @@ async function testVnpayUrl() {
     vnp_Locale: 'vn',
     vnp_CurrCode: 'VND',
     vnp_TxnRef: orderId,
-    vnp_OrderInfo: 'Thanh toan don hang GearTech #' + orderId,
+    vnp_OrderInfo: 'Thanh toan don hang GearTech ' + orderId,
     vnp_OrderType: 'other',
     vnp_Amount: amount * 100,
     vnp_ReturnUrl: returnUrl,
-    vnp_IpAddr: '13.160.92.202',
+    vnp_IpAddr: '127.0.0.1',
     vnp_CreateDate: createDate
   };
 
@@ -57,6 +64,8 @@ async function testVnpayUrl() {
 
   const paymentUrl = vnpUrl + '?' + qs.stringify(vnp_Params, { encode: false });
   console.log('Testing VNPay URL HTTP status...');
+  console.log('Payment URL:', paymentUrl);
+
   const res = await fetch(paymentUrl);
   console.log('HTTP Status:', res.status, res.statusText);
   const html = await res.text();

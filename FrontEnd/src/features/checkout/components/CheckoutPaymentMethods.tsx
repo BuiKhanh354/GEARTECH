@@ -4,8 +4,7 @@ import {
   CreditCard,
   Check,
   CurrencyCircleDollar,
-  Bank,
-  DeviceMobile
+  Bank
 } from '@phosphor-icons/react'
 
 export interface PaymentMethodItem {
@@ -18,10 +17,10 @@ export interface PaymentMethodItem {
 
 export const defaultPaymentMethods: PaymentMethodItem[] = [
   {
-    id: 'cod',
-    name: 'Thanh toán khi nhận hàng (COD)',
-    description: 'Thanh toán tiền mặt khi đơn hàng được giao tới nơi',
-    icon: CurrencyCircleDollar,
+    id: 'vnpay',
+    name: 'Cổng thanh toán VNPAY (ATM, Visa, QR)',
+    description: 'Thanh toán bảo mật qua cổng VNPAY kết nối 40+ ngân hàng Việt Nam',
+    icon: CreditCard,
     popular: true
   },
   {
@@ -32,25 +31,18 @@ export const defaultPaymentMethods: PaymentMethodItem[] = [
     popular: true
   },
   {
+    id: 'cod',
+    name: 'Thanh toán khi nhận hàng (COD)',
+    description: 'Thanh toán tiền mặt khi đơn hàng được giao tới nơi',
+    icon: CurrencyCircleDollar,
+    popular: false
+  },
+  {
     id: 'credit_card',
     name: 'Thẻ tín dụng / Ghi nợ quốc tế',
     description: 'Hỗ trợ Visa, MasterCard, JCB, American Express',
     icon: CreditCard,
     popular: false
-  },
-  {
-    id: 'momo',
-    name: 'Ví điện tử MoMo',
-    description: 'Quét mã QR thanh toán nhanh qua ứng dụng MoMo',
-    icon: DeviceMobile,
-    popular: false
-  },
-  {
-    id: 'vnpay',
-    name: 'Cổng thanh toán VNPAY (ATM, Visa, QR)',
-    description: 'Thanh toán bảo mật qua cổng VNPAY kết nối 40+ ngân hàng Việt Nam',
-    icon: CreditCard,
-    popular: true
   }
 ]
 
@@ -131,6 +123,28 @@ export const CheckoutPaymentMethods: React.FC<CheckoutPaymentMethodsProps> = ({
                   </div>
                 </div>
               </div>
+
+              {/* VNPAY Info View */}
+              {isSelected && pm.id === 'vnpay' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-800 bg-blue-50/60 dark:bg-blue-950/20 p-4 rounded-xl border border-blue-200/60 dark:border-blue-900/40 space-y-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-black">V</span>
+                    <span className="text-xs font-bold text-blue-700 dark:text-blue-400">Cổng thanh toán quốc gia VNPAY</span>
+                  </div>
+                  <p className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                    Sau khi nhấn <strong>"Đặt hàng"</strong>, bạn sẽ có thể thanh toán trực tiếp qua Cổng VNPAY (hỗ trợ quét mã VNPAY-QR từ ứng dụng Mobile Banking, thẻ ATM nội địa 40+ ngân hàng NCB, Vietcombank, MB, Techcombank..., thẻ quốc tế Visa, Mastercard).
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    <span className="px-2 py-0.5 bg-white dark:bg-zinc-800 text-[10px] font-semibold text-zinc-600 dark:text-zinc-300 rounded border border-zinc-200 dark:border-zinc-700">VNPAY-QR</span>
+                    <span className="px-2 py-0.5 bg-white dark:bg-zinc-800 text-[10px] font-semibold text-zinc-600 dark:text-zinc-300 rounded border border-zinc-200 dark:border-zinc-700">Thẻ ATM Nội Địa</span>
+                    <span className="px-2 py-0.5 bg-white dark:bg-zinc-800 text-[10px] font-semibold text-zinc-600 dark:text-zinc-300 rounded border border-zinc-200 dark:border-zinc-700">Visa / Master / JCB</span>
+                  </div>
+                </motion.div>
+              )}
 
               {/* Thẻ tín dụng input view */}
               {isSelected && pm.id === 'credit_card' && (
@@ -218,4 +232,3 @@ export const CheckoutPaymentMethods: React.FC<CheckoutPaymentMethodsProps> = ({
     </div>
   )
 }
-

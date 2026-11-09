@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'motion/react'
 import { 
   HourglassMedium, CheckCircle, Truck, XCircle, MapPin, Receipt, Warning, 
-  CreditCard, Bank, X, ArrowClockwise, CurrencyCircleDollar, DeviceMobile, Star
+  CreditCard, Bank, X, ArrowClockwise, CurrencyCircleDollar, Star
 } from '@phosphor-icons/react'
 import { formatPrice } from '../../../../utils/format'
 import { orderService } from '../../../../services/orderService'
@@ -21,6 +21,24 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
   const [cancellingId, setCancellingId] = useState<string | null>(null)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [successMsg, setSuccessMsg] = useState<string | null>(null)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  useEffect(() => {
+    const vnpayStatus = searchParams.get('vnpayStatus')
+    const paidOrderId = searchParams.get('paidOrderId')
+    if (vnpayStatus === 'success') {
+      setSuccessMsg(`Thanh toán đơn hàng ${paidOrderId ? '#' + paidOrderId.slice(-6).toUpperCase() : ''} qua VNPAY thành công!`)
+      if (onRefreshOrders) onRefreshOrders()
+      searchParams.delete('vnpayStatus')
+      searchParams.delete('paidOrderId')
+      setSearchParams(searchParams, { replace: true })
+    } else if (vnpayStatus === 'failed') {
+      setErrorMsg('Giao dịch thanh toán VNPAY không thành công hoặc đã bị người dùng hủy.')
+      searchParams.delete('vnpayStatus')
+      searchParams.delete('paidOrderId')
+      setSearchParams(searchParams, { replace: true })
+    }
+  }, [searchParams])
 
   // Reviews state: Map productId -> review object
   const [myReviews, setMyReviews] = useState<Record<string, any>>({})
@@ -126,7 +144,7 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
   // Payment Modal State
   const [paymentModalOrder, setPaymentModalOrder] = useState<any | null>(null)
   const [paymentIntentData, setPaymentIntentData] = useState<any | null>(null)
-  const [selectedMethod, setSelectedMethod] = useState<'COD' | 'BANK_TRANSFER' | 'MOMO' | 'VNPAY' | 'credit_card'>('BANK_TRANSFER')
+  const [selectedMethod, setSelectedMethod] = useState<'COD' | 'BANK_TRANSFER' | 'VNPAY' | 'credit_card' | 'MOMO'>('VNPAY')
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
 
   // GHN Tracking Modal State
@@ -589,94 +607,64 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
                 <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
                   Chọn phương thức thanh toán:
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  <button
-                    onClick={() => handleChangePaymentMethod('BANK_TRANSFER')}
-                    className={`p-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
-                      selectedMethod === 'BANK_TRANSFER'
-                        ? 'border-[#ff4655] bg-[#ff4655]/10 text-[#ff4655]'
-                        : 'border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400'
-                    }`}
-                  >
-                    <Bank size={15} /> VietQR
-                  </button>
-                  <button
-                    onClick={() => handleChangePaymentMethod('MOMO')}
-                    className={`p-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
-                      selectedMethod === 'MOMO'
-                        ? 'border-[#d82d8b] bg-[#d82d8b]/10 text-[#d82d8b]'
-                        : 'border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400'
-                    }`}
-                  >
-                    <DeviceMobile size={15} /> Ví MoMo
-                  </button>
+                <div className="grid grid-cols-3 gap-2">
                   <button
                     onClick={() => handleChangePaymentMethod('VNPAY')}
-                    className={`p-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                    className={`p-2.5 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
                       selectedMethod === 'VNPAY'
-                        ? 'border-blue-600 bg-blue-500/10 text-blue-600 dark:text-blue-400'
-                        : 'border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400'
+                        ? 'border-blue-600 bg-blue-500/10 text-blue-600 dark:text-blue-400 shadow-sm'
+                        : 'border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300'
                     }`}
                   >
-                    <CreditCard size={15} /> VNPAY
+                    <CreditCard size={16} /> Cổng VNPAY
+                  </button>
+                  <button
+                    onClick={() => handleChangePaymentMethod('BANK_TRANSFER')}
+                    className={`p-2.5 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                      selectedMethod === 'BANK_TRANSFER'
+                        ? 'border-[#ff4655] bg-[#ff4655]/10 text-[#ff4655] shadow-sm'
+                        : 'border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300'
+                    }`}
+                  >
+                    <Bank size={16} /> VietQR MB
                   </button>
                   <button
                     onClick={() => handleChangePaymentMethod('COD')}
-                    className={`p-2 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                    className={`p-2.5 rounded-lg border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
                       selectedMethod === 'COD'
-                        ? 'border-[#ff4655] bg-[#ff4655]/10 text-[#ff4655]'
-                        : 'border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400'
+                        ? 'border-[#ff4655] bg-[#ff4655]/10 text-[#ff4655] shadow-sm'
+                        : 'border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300'
                     }`}
                   >
-                    <CurrencyCircleDollar size={15} /> Tiền mặt COD
+                    <CurrencyCircleDollar size={16} /> Tiền mặt COD
                   </button>
                 </div>
               </div>
 
               {/* VNPAY Display */}
               {selectedMethod === 'VNPAY' && (
-                <div className="p-4 bg-blue-50/50 dark:bg-blue-950/20 rounded-xl border border-blue-200 dark:border-blue-900/50 text-center space-y-3">
-                  <div className="flex items-center justify-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                <div className="p-4 bg-blue-50/60 dark:bg-blue-950/20 rounded-xl border border-blue-200 dark:border-blue-900/50 text-left space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
                     <span className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">V</span>
                     Cổng thanh toán quốc gia VNPAY
                   </div>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
-                    Hỗ trợ quét mã VNPAY-QR, thẻ ATM nội địa 40+ ngân hàng, Visa, Mastercard, JCB
+                  <p className="text-[11px] text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                    Hỗ trợ quét mã VNPAY-QR, thẻ ATM nội địa 40+ ngân hàng (NCB, Vietcombank, MB, Techcombank...), Visa, Mastercard, JCB.
                   </p>
+
                   {paymentIntentData?.instruction?.checkoutUrl && (
                     <a
                       href={paymentIntentData.instruction.checkoutUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all"
+                      className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all text-center"
                     >
-                      Mở cổng thanh toán VNPAY Gateway ➔
+                      Mở Cổng VNPAY Gateway để thanh toán ➔
                     </a>
                   )}
-                  <div className="text-[11px] text-zinc-600 dark:text-zinc-300">
-                    Số tiền: <strong className="text-blue-600 dark:text-blue-400 font-bold text-sm">{formatPrice(paymentModalOrder.finalAmount || paymentModalOrder.totalAmount)}</strong>
-                  </div>
-                </div>
-              )}
 
-              {/* MoMo QR Display */}
-              {selectedMethod === 'MOMO' && (
-                <div className="p-4 bg-pink-50/50 dark:bg-pink-950/20 rounded-xl border border-pink-200 dark:border-pink-900/50 text-center space-y-3">
-                  <div className="flex items-center justify-center gap-2 text-xs font-black text-[#d82d8b] uppercase tracking-wider">
-                    <span className="w-5 h-5 rounded-full bg-[#d82d8b] text-white flex items-center justify-center text-[10px] font-bold">M</span>
-                    Thanh toán qua Ví điện tử MoMo
-                  </div>
-                  <div className="inline-block p-2.5 bg-white rounded-xl border border-pink-200 shadow-md">
-                    <img
-                      src={`https://api.vietqr.io/image/970422-0938793972-compact2.png?amount=${paymentModalOrder.finalAmount || paymentModalOrder.totalAmount}&addInfo=GT%20${String(paymentModalOrder._id).slice(-8).toUpperCase()}&accountName=MOMO%20GEARTECH`}
-                      alt="MoMo Payment QR"
-                      className="w-48 h-48 mx-auto object-contain rounded-lg"
-                    />
-                  </div>
-                  <div className="text-[11px] text-zinc-600 dark:text-zinc-300 space-y-1">
-                    <div>Người nhận: <strong>GEARTECH VIETNAM (MoMo)</strong></div>
-                    <div>Số tiền: <strong className="text-[#d82d8b] font-bold text-sm">{formatPrice(paymentModalOrder.finalAmount || paymentModalOrder.totalAmount)}</strong></div>
-                    <div>Nội dung: <strong className="text-[#d82d8b] font-mono bg-pink-100 dark:bg-pink-900/40 px-2 py-0.5 rounded">GT {String(paymentModalOrder._id).slice(-8).toUpperCase()}</strong></div>
+                  <div className="text-[11px] text-zinc-600 dark:text-zinc-300 text-center">
+                    Số tiền cần thanh toán: <strong className="text-blue-600 dark:text-blue-400 font-bold text-sm">{formatPrice(paymentModalOrder.finalAmount || paymentModalOrder.totalAmount)}</strong>
                   </div>
                 </div>
               )}
@@ -714,7 +702,7 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
                   onClick={handleVerifyPayment}
                   disabled={isProcessingPayment}
                   className={`flex-1 py-2.5 px-3 rounded-lg disabled:opacity-50 text-white font-black text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-1.5 ${
-                    selectedMethod === 'MOMO' ? 'bg-[#d82d8b] hover:bg-[#b02270]' : 'bg-[#ff4655] hover:bg-[#e03d4b]'
+                    selectedMethod === 'VNPAY' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-[#ff4655] hover:bg-[#e03d4b]'
                   }`}
                 >
                   {isProcessingPayment ? (
@@ -724,9 +712,7 @@ export default function UserOrdersTab({ userOrders, onRefreshOrders }: UserOrder
                   )}
                   {selectedMethod === 'COD' 
                     ? 'Xác nhận chọn COD' 
-                    : selectedMethod === 'MOMO' 
-                      ? 'Xác nhận đã thanh toán MoMo' 
-                      : selectedMethod === 'VNPAY'
+                    : selectedMethod === 'VNPAY'
                         ? 'Xác nhận đã thanh toán VNPAY'
                         : 'Tôi đã chuyển khoản'}
                 </button>

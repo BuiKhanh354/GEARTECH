@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
-import { CheckCircle, Receipt } from '@phosphor-icons/react'
+import { CheckCircle, Receipt, ArrowSquareOut } from '@phosphor-icons/react'
 import { formatPrice } from '../../../utils/format'
+import { paymentService } from '../../../services/paymentService'
 
 export interface CheckoutSuccessProps {
   orderId: string
@@ -27,6 +28,23 @@ export const CheckoutSuccess: React.FC<CheckoutSuccessProps> = ({
   paymentMethods,
   finalTotal
 }) => {
+  const [vnpayCheckoutUrl, setVnpayCheckoutUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (paymentMethod === 'vnpay' || paymentMethod === 'VNPAY') {
+      paymentService.createPaymentIntent({
+        orderId,
+        paymentMethod: 'VNPAY'
+      }).then((res) => {
+        if (res?.instruction?.checkoutUrl) {
+          setVnpayCheckoutUrl(res.instruction.checkoutUrl)
+        }
+      }).catch((err) => {
+        console.warn('Lỗi khởi tạo URL VNPAY:', err)
+      })
+    }
+  }, [orderId, paymentMethod])
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 py-16 px-4">
       <motion.div
@@ -69,7 +87,7 @@ export const CheckoutSuccess: React.FC<CheckoutSuccessProps> = ({
           <div className="flex justify-between items-center text-sm">
             <span className="text-zinc-500">Phương thức thanh toán:</span>
             <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-              {paymentMethods.find((p) => p.id === paymentMethod)?.name}
+              {paymentMethods.find((p) => p.id === paymentMethod)?.name || (paymentMethod === 'vnpay' ? 'Cổng thanh toán VNPAY' : paymentMethod)}
             </span>
           </div>
           <div className="border-t border-zinc-200 dark:border-zinc-800 pt-3 flex justify-between items-center">
@@ -78,24 +96,37 @@ export const CheckoutSuccess: React.FC<CheckoutSuccessProps> = ({
           </div>
         </div>
 
-        {/* Khung thanh toán MoMo QR nếu chọn MoMo */}
-        {paymentMethod === 'momo' && (
-          <div className="p-5 bg-pink-50/70 dark:bg-pink-950/20 border border-pink-200 dark:border-pink-900/50 rounded-2xl text-center space-y-3">
-            <div className="flex items-center justify-center gap-2 text-xs font-black text-[#d82d8b] uppercase tracking-wider">
-              <span className="w-5 h-5 rounded-full bg-[#d82d8b] text-white flex items-center justify-center text-[10px] font-bold">M</span>
-              Quét mã MoMo để thanh toán ngay
+        {/* Khung thanh toán VNPAY */}
+        {(paymentMethod === 'vnpay' || paymentMethod === 'VNPAY') && (
+          <div className="p-5 bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/50 rounded-2xl text-left space-y-4">
+            <div className="flex items-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+              <span className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">V</span>
+              Cổng thanh toán quốc gia VNPAY
             </div>
-            <div className="inline-block p-2.5 bg-white rounded-xl border border-pink-200 shadow-md">
-              <img
-                src={`https://api.vietqr.io/image/970422-0938793972-compact2.png?amount=${finalTotal}&addInfo=GT%20${String(orderId).slice(-8).toUpperCase()}&accountName=MOMO%20GEARTECH`}
-                alt="MoMo Payment QR"
-                className="w-44 h-44 mx-auto object-contain rounded-lg"
-              />
-            </div>
-            <div className="text-xs text-zinc-600 dark:text-zinc-300 space-y-1">
-              <div>Người nhận: <strong>GEARTECH VIETNAM (Ví MoMo)</strong></div>
-              <div>Nội dung CK: <strong className="text-[#d82d8b] font-mono bg-pink-100 dark:bg-pink-900/40 px-2 py-0.5 rounded">GT {String(orderId).slice(-8).toUpperCase()}</strong></div>
-              <div className="text-[11px] text-zinc-400 mt-1">Mở ứng dụng MoMo và chọn Quét Mã để thanh toán</div>
+
+            <p className="text-xs text-zinc-600 dark:text-zinc-300">
+              Đơn hàng sẵn sàng thanh toán qua cổng VNPAY. Nhấn nút bên dưới để mở cổng thanh toán và hoàn tất giao dịch.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-2 pt-1">
+              {vnpayCheckoutUrl ? (
+                <a
+                  href={vnpayCheckoutUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all text-center"
+                >
+                  <span>Mở Cổng VNPAY để Thanh Toán</span>
+                  <ArrowSquareOut size={16} weight="bold" />
+                </a>
+              ) : (
+                <Link
+                  to="/profile?tab=orders"
+                  className="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all text-center"
+                >
+                  <span>Vào Đơn Hàng Để Thanh Toán</span>
+                </Link>
+              )}
             </div>
           </div>
         )}
@@ -119,25 +150,6 @@ export const CheckoutSuccess: React.FC<CheckoutSuccessProps> = ({
           </div>
         )}
 
-        {/* Khung thanh toán VNPAY nếu chọn VNPAY */}
-        {paymentMethod === 'vnpay' && (
-          <div className="p-5 bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/50 rounded-2xl text-center space-y-3">
-            <div className="flex items-center justify-center gap-2 text-xs font-black text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-              <span className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">V</span>
-              Cổng thanh toán quốc gia VNPAY
-            </div>
-            <p className="text-xs text-zinc-600 dark:text-zinc-300">
-              Đơn hàng của bạn đã sẵn sàng thanh toán qua cổng VNPAY (Thẻ ATM 40+ ngân hàng, Visa, Mastercard, VNPAY-QR).
-            </p>
-            <Link
-              to="/profile?tab=orders"
-              className="inline-flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all"
-            >
-              Mở đơn hàng để tiến hành thanh toán VNPAY ➔
-            </Link>
-          </div>
-        )}
-
         <div className="flex flex-col sm:flex-row gap-3 pt-2">
           <Link
             to="/orders"
@@ -157,4 +169,3 @@ export const CheckoutSuccess: React.FC<CheckoutSuccessProps> = ({
     </div>
   )
 }
-
