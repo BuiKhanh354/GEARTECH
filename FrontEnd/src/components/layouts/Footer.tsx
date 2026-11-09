@@ -109,7 +109,7 @@ export default function Footer() {
             <div>
               <h3 className="text-xs font-black text-zinc-900 dark:text-white uppercase tracking-wider border-l-2 border-[#ff4655] pl-2.5 mb-2.5">// ĐỐI TÁC THANH TOÁN</h3>
               <div className="flex flex-wrap gap-2">
-                <span className="px-2.5 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-black text-[9px] text-[#ff4655] shadow-sm select-none">MOMO</span>
+                <span className="px-2.5 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-black text-[9px] text-blue-600 shadow-sm select-none">VNPAY</span>
                 <span className="px-2.5 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-black text-[9px] text-blue-600 shadow-sm select-none">VNPAY</span>
                 <span className="px-2.5 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-black text-[9px] text-blue-800 shadow-sm select-none">VISA</span>
                 <span className="px-2.5 py-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded font-black text-[9px] text-amber-600 shadow-sm select-none">MASTER</span>
