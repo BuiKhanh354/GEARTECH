@@ -33,3 +33,6 @@ gear_tech_mongo_backup/
 # Root documents & spreadsheets
 /*.xlsx
 /*.md
+*.pptx
+*.docx
+mobile-app/.codex-export-web/
