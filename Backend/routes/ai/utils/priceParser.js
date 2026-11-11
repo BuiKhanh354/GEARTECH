@@ -7,7 +7,20 @@ function extractPriceRange(text) {
   let maxPrice = null;
   let minPrice = null;
 
-  // Dưới X, nhỏ hơn X, tối đa X, X đổ lại
+  // 1. Khoảng giá giữa 2 số: VD "10-15 triệu", "tầm 2 đến 4tr", "từ 500k tới 1 triệu"
+  const rangeMatch = lower.match(/(?:tầm|khoảng|từ)?\s*(\d+(?:[.,]\d+)?)\s*(?:-|đến|tới)\s*(\d+(?:[.,]\d+)?)\s*(triệu|tr|m|k|nghìn|ngàn)?/i);
+  if (rangeMatch) {
+    let num1 = parseFloat(rangeMatch[1].replace(',', '.'));
+    let num2 = parseFloat(rangeMatch[2].replace(',', '.'));
+    const unit = (rangeMatch[3] || '').toLowerCase();
+    const multiplier = (unit === 'triệu' || unit === 'tr' || unit === 'm' || (!unit && num2 < 100)) ? 1000000
+                     : (unit === 'k' || unit === 'nghìn' || unit === 'ngàn') ? 1000 : 1;
+    minPrice = Math.min(num1, num2) * multiplier;
+    maxPrice = Math.max(num1, num2) * multiplier;
+    return { minPrice, maxPrice };
+  }
+
+  // 2. Dưới X, nhỏ hơn X, tối đa X, X đổ lại
   const underMatch = lower.match(/(?:dưới|nhỏ hơn|ít hơn|<|tối đa|đổ lại|tầm|khoảng)\s*(\d+(?:[.,]\d+)?)\s*(triệu|tr|m|k|nghìn|ngàn|đ|vnd)?/i)
     || lower.match(/(\d+(?:[.,]\d+)?)\s*(triệu|tr|m|k|nghìn|ngàn)?\s*(?:đổ lại|trở xuống)/i);
 

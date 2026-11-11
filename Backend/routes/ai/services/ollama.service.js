@@ -41,48 +41,62 @@ async function checkStatus() {
 }
 
 /**
- * Gửi tin nhắn đến Ollama để nhận phản hồi tư vấn
+ * Gửi tin nhắn đến Ollama để nhận phản hồi tư vấn (hỗ trợ Tool Calling / Function Calling)
  */
-async function chat({ messages, systemPrompt, timeoutMs = 6000 }) {
+async function chat({ messages, systemPrompt, tools = null, timeoutMs = 25000, options = null }) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
+    const formattedMessages = systemPrompt 
+      ? [{ role: 'system', content: systemPrompt }, ...messages]
+      : messages;
+
+    const requestPayload = {
+      model: DEFAULT_MODEL,
+      messages: formattedMessages,
+      stream: false,
+      options: options || {
+        temperature: 0.1,
+        num_predict: 350
+      }
+    };
+
+    if (tools && Array.isArray(tools) && tools.length > 0) {
+      requestPayload.tools = tools;
+    }
+
     const ollamaRes = await fetch(`${OLLAMA_HOST}/api/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal,
-      body: JSON.stringify({
-        model: DEFAULT_MODEL,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...messages.slice(-4)
-        ],
-        stream: false,
-        options: {
-          temperature: 0.1,
-          num_predict: 220
-        }
-      })
+      body: JSON.stringify(requestPayload)
     });
 
     if (!ollamaRes.ok) {
-      return { replyContent: '', thinkingContent: null };
+      return { replyContent: '', thinkingContent: null, toolCalls: null, rawMessage: null };
     }
 
     const ollamaData = await ollamaRes.json();
-    let replyContent = ollamaData.message?.content?.trim() || '';
-    let thinkingContent = ollamaData.message?.thinking || null;
+    const message = ollamaData.message || {};
+    let replyContent = message.content?.trim() || '';
+    let thinkingContent = message.thinking || null;
+    const toolCalls = message.tool_calls || null;
 
-    if (!replyContent && thinkingContent) {
+    if (!replyContent && thinkingContent && (!toolCalls || toolCalls.length === 0)) {
       const lines = thinkingContent.split('\n').map(l => l.trim()).filter(Boolean);
       replyContent = lines.slice(-2).join('\n');
     }
 
-    return { replyContent, thinkingContent };
+    return { 
+      replyContent, 
+      thinkingContent, 
+      toolCalls,
+      rawMessage: message 
+    };
   } catch (error) {
-    console.warn('Ollama không phản hồi hoặc timeout, chuyển sang bộ tư vấn thông minh nội bộ:', error.message);
-    return { replyContent: '', thinkingContent: null };
+    console.warn('Ollama không phản hồi hoặc timeout:', error.message);
+    return { replyContent: '', thinkingContent: null, toolCalls: null, rawMessage: null };
   } finally {
     clearTimeout(timeoutId);
   }

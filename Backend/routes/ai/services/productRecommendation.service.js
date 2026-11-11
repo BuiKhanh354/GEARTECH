@@ -4,7 +4,23 @@ const { detectCategoryIntents, scoreProduct } = require('../utils/productScoring
 const { formatVND } = require('../utils/currencyFormatter');
 
 /**
- * Lấy danh sách sản phẩm active từ các shop đang active
+ * Trích xuất chuỗi thông số kỹ thuật gọn đẹp từ specs / specifications của sản phẩm
+ */
+function formatSpecsString(p) {
+  if (p.specs && typeof p.specs === 'object') {
+    const entries = p.specs instanceof Map ? Array.from(p.specs.entries()) : Object.entries(p.specs);
+    const keySpecs = entries.slice(0, 4).map(([k, v]) => `${k}: ${v}`).join(', ');
+    if (keySpecs) return ` | Thông số: [${keySpecs}]`;
+  }
+  if (Array.isArray(p.specifications) && p.specifications.length > 0) {
+    const keySpecs = p.specifications.slice(0, 4).map(s => `${s.name}: ${s.value}`).join(', ');
+    if (keySpecs) return ` | Thông số: [${keySpecs}]`;
+  }
+  return '';
+}
+
+/**
+ * Lấy danh sách sản phẩm active từ các shop đang active (loại bỏ 100% shop bị khóa)
  */
 async function getActiveProducts() {
   try {
@@ -13,17 +29,29 @@ async function getActiveProducts() {
     const shopMap = {};
     activeShops.forEach(s => { shopMap[s._id.toString()] = s.name; });
 
-    const allProds = await Product.find({ status: 'active' })
-      .select('title name price oldPrice discount category categoryName brand slug description stock gallery imageEmoji shopId')
+    const allProds = await Product.find({ 
+      status: 'active',
+      $or: [
+        { shopId: { $in: activeShops.map(s => s._id) } },
+        { shop_id: { $in: activeShops.map(s => s._id) } }
+      ]
+    })
+      .select('title name price oldPrice discount category categoryName brand slug description stock gallery imageEmoji shopId shop_id specs specifications')
       .lean();
 
     return allProds
-      .filter(p => !p.shopId || activeShopIds.includes(p.shopId.toString()))
-      .map(p => ({
-        ...p,
-        displayName: p.title || p.name || 'Sản phẩm GearTech',
-        shopName: p.shopId ? (shopMap[p.shopId.toString()] || 'GearTech Partner') : 'GearTech Official'
-      }));
+      .filter(p => {
+        const rawShopId = p.shopId || p.shop_id;
+        return rawShopId && activeShopIds.includes(rawShopId.toString());
+      })
+      .map(p => {
+        const rawShopId = (p.shopId || p.shop_id).toString();
+        return {
+          ...p,
+          displayName: p.title || p.name || 'Sản phẩm GearTech',
+          shopName: shopMap[rawShopId] || 'GearTech Official'
+        };
+      });
   } catch (error) {
     console.warn('Lỗi truy vấn sản phẩm từ DB:', error.message);
     return [];
@@ -52,7 +80,8 @@ function findRecommendations({ userQuery, priceRange, activeProducts, productId 
   if (productId) {
     const curP = activeProducts.find(p => p._id.toString() === productId);
     if (curP) {
-      currentProductInfo = `\nKHÁCH HÀNG ĐANG XEM TRỰC TIẾP:\n- [${curP.displayName}] | Giá: ${formatVND(curP.price)} | Tồn kho: ${curP.stock} cái\n`;
+      const curSpecs = formatSpecsString(curP);
+      currentProductInfo = `\nKHÁCH HÀNG ĐANG XEM TRỰC TIẾP:\n- [${curP.displayName}] | Giá: ${formatVND(curP.price)}${curSpecs} | Tồn kho: ${curP.stock} cái\n`;
     }
   }
 
@@ -61,7 +90,8 @@ function findRecommendations({ userQuery, priceRange, activeProducts, productId 
     contextProductText += `SẢN PHẨM KHỚP CHÍNH XÁC YÊU CẦU VÀ NGÂN SÁCH CỦA KHÁCH:\n`;
     exactMatches.slice(0, 4).forEach(p => {
       const promoStr = (p.oldPrice && p.oldPrice > p.price) ? ` (Giá gốc: ${formatVND(p.oldPrice)}${p.discount ? ', Giảm ' + p.discount : ''})` : '';
-      contextProductText += `- [${p.displayName}] | Giá bán: ${formatVND(p.price)}${promoStr} | Hãng: ${p.brand?.toUpperCase() || 'Chính hãng'} | Tồn kho: ${p.stock} cái\n`;
+      const specsStr = formatSpecsString(p);
+      contextProductText += `- [${p.displayName}] | Giá bán: ${formatVND(p.price)}${promoStr} | Hãng: ${p.brand?.toUpperCase() || 'Chính hãng'}${specsStr} | Tồn kho: ${p.stock} cái\n`;
     });
   }
 
@@ -69,14 +99,16 @@ function findRecommendations({ userQuery, priceRange, activeProducts, productId 
     contextProductText += `\nSẢN PHẨM LIÊN QUAN THAM KHẢO THÊM:\n`;
     alternativeMatches.slice(0, 3).forEach(p => {
       const promoStr = (p.oldPrice && p.oldPrice > p.price) ? ` (Giá gốc: ${formatVND(p.oldPrice)})` : '';
-      contextProductText += `- [${p.displayName}] | Giá bán: ${formatVND(p.price)}${promoStr} | Hãng: ${p.brand?.toUpperCase() || 'Chính hãng'}\n`;
+      const specsStr = formatSpecsString(p);
+      contextProductText += `- [${p.displayName}] | Giá bán: ${formatVND(p.price)}${promoStr} | Hãng: ${p.brand?.toUpperCase() || 'Chính hãng'}${specsStr}\n`;
     });
   }
 
   if (!contextProductText) {
-    contextProductText = activeProducts.slice(0, 6).map(p => 
-      `- [${p.displayName}] | Giá bán: ${formatVND(p.price)} | Hãng: ${p.brand?.toUpperCase() || 'Chính hãng'}`
-    ).join('\n');
+    contextProductText = activeProducts.slice(0, 6).map(p => {
+      const specsStr = formatSpecsString(p);
+      return `- [${p.displayName}] | Giá bán: ${formatVND(p.price)} | Hãng: ${p.brand?.toUpperCase() || 'Chính hãng'}${specsStr}`;
+    }).join('\n');
   }
 
   return {
